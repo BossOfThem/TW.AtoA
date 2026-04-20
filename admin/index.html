@@ -1,0 +1,1431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ash to Altar — Commander Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     Tokens — war-table palette
+     ============================================================ */
+  :root {
+    --bg-0: #07070a;
+    --bg-1: #0e0e12;
+    --bg-2: #16161c;
+    --bg-3: #1e1e26;
+    --ink-0: #e9dfcf;
+    --ink-1: #c9bfae;
+    --ink-2: #8a8172;
+    --ink-3: #57534e;
+    --line:  #2b2a34;
+    --line-2:#3b3947;
+    --ember: #d97706;
+    --ember-hi: #f59e0b;
+    --ember-glow: rgba(245, 158, 11, 0.35);
+    --ash-glow: rgba(168, 162, 158, 0.15);
+    --danger: #b3261e;
+    --t-commander: #8b5cf6;
+    --t-lineage:   #dc2626;
+    --t-hybrid:    #d97706;
+    --t-age:       #3b82f6;
+    --t-fork:      #0891b2;
+    --t-mode:      #16a34a;
+    --t-stage:     #78716c;
+    --font-display: "Cinzel", "Trajan Pro", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    --font-body: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%;
+    font-family: var(--font-body);
+    color: var(--ink-0);
+    background:
+      radial-gradient(ellipse at 50% 40%, #141118 0%, var(--bg-0) 70%),
+      var(--bg-0);
+    overflow: hidden;
+  }
+  body::before {
+    /* Faint topographic parchment overlay */
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(217,119,6,0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(139,92,246,0.03) 0%, transparent 45%);
+  }
+
+  button, input, textarea, select { font: inherit; color: inherit; }
+  button {
+    background: linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--line-2);
+    color: var(--ink-0);
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.05s;
+  }
+  button:hover {
+    border-color: var(--ember);
+    box-shadow: 0 0 0 1px var(--ember-glow), 0 0 10px var(--ember-glow);
+  }
+  button:active { transform: translateY(1px); }
+  button.primary {
+    background: linear-gradient(180deg, var(--ember-hi) 0%, var(--ember) 100%);
+    border-color: var(--ember);
+    color: #2a1a04;
+    font-weight: 600;
+  }
+  button.primary:hover { box-shadow: 0 0 12px var(--ember-glow); }
+  button.danger {
+    background: linear-gradient(180deg, #5a1a16 0%, #3a110e 100%);
+    border-color: var(--danger);
+  }
+  button.danger:hover { box-shadow: 0 0 10px rgba(179,38,30,0.4); }
+
+  input[type=text], textarea, select {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    color: var(--ink-0);
+    padding: 6px 8px;
+    border-radius: 2px;
+    width: 100%;
+  }
+  input[type=text]:focus, textarea:focus, select:focus {
+    outline: none; border-color: var(--ember); box-shadow: 0 0 0 1px var(--ember-glow);
+  }
+  textarea { resize: vertical; min-height: 54px; font-family: inherit; }
+  label {
+    display: block;
+    font-size: 10px;
+    color: var(--ink-2);
+    margin-top: 10px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
+
+  /* ============================================================
+     War Banner (topbar)
+     ============================================================ */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 50px;
+    background: linear-gradient(180deg, #0a0a10 0%, #05050a 100%);
+    border-bottom: 1px solid var(--line-2);
+    box-shadow: 0 1px 0 rgba(217,119,6,0.12), 0 2px 16px rgba(0,0,0,0.6);
+    display: flex; align-items: center; padding: 0 16px; gap: 10px; z-index: 100;
+  }
+  #topbar .title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--ember-hi);
+    text-shadow: 0 0 18px var(--ember-glow);
+    margin-right: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #topbar .title::before, #topbar .title::after {
+    content: "◆"; color: var(--ember); font-size: 10px; opacity: 0.8;
+  }
+  #topbar .sep { width: 1px; height: 26px; background: var(--line-2); margin: 0 4px; }
+  #topbar .dropdown { position: relative; }
+  #topbar .dropdown-menu {
+    position: absolute; top: 100%; left: 0; min-width: 200px;
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);
+    border: 1px solid var(--line-2);
+    border-radius: 3px; padding: 4px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.7), 0 0 0 1px rgba(217,119,6,0.08);
+    display: none; z-index: 200;
+  }
+  #topbar .dropdown.open .dropdown-menu { display: block; }
+  #topbar .dropdown-menu button {
+    display: block; width: 100%; text-align: left;
+    border: 0; background: transparent; padding: 7px 10px;
+    font-size: 13px;
+  }
+  #topbar .dropdown-menu button:hover {
+    background: var(--bg-3); box-shadow: none; border-color: transparent;
+  }
+
+  .banner-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  #perspective-toggle {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    border: 1px solid var(--ember);
+    background: transparent;
+    color: var(--ember-hi);
+  }
+  #perspective-toggle:hover { background: rgba(217,119,6,0.08); }
+  #perspective-toggle .dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ember-hi); box-shadow: 0 0 8px var(--ember-glow);
+    margin-right: 6px; vertical-align: middle;
+  }
+
+  #topbar .filters { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+  #topbar .filters > span { color: var(--ink-2); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  #topbar .filters label {
+    margin: 0; text-transform: none; letter-spacing: 0;
+    font-size: 12px; color: var(--ink-1);
+    display: flex; align-items: center; gap: 3px;
+  }
+
+  /* ============================================================
+     Canvas
+     ============================================================ */
+  #canvas-wrap {
+    position: fixed; top: 50px; bottom: 30px; left: 0; right: 380px;
+    overflow: hidden; cursor: grab;
+    background:
+      radial-gradient(ellipse at 50% 45%, #121018 0%, var(--bg-0) 75%);
+  }
+  #canvas-wrap.panning { cursor: grabbing; }
+  #canvas-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(217,119,6,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(217,119,6,0.025) 1px, transparent 1px),
+      radial-gradient(circle, rgba(201,191,174,0.06) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px, 40px 40px;
+    background-position: 0 0, 0 0, 0 0;
+  }
+  #world { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+  #edges-svg { position: absolute; top: 0; left: 0; width: 4000px; height: 2400px; overflow: visible; pointer-events: none; }
+  #edges-svg path { fill: none; stroke-width: 2; opacity: 0.75; filter: drop-shadow(0 0 4px currentColor); }
+  #edges-svg .label {
+    fill: var(--ink-2); font-size: 10px; font-family: var(--font-body);
+    paint-order: stroke; stroke: var(--bg-0); stroke-width: 3px;
+  }
+  .edge-tilt          { stroke: var(--t-commander); stroke-dasharray: 4 3; color: var(--t-commander); }
+  .edge-hybrid-parent { stroke: var(--t-hybrid);    color: var(--t-hybrid); }
+  .edge-age-next      { stroke: var(--t-age);       color: var(--t-age); }
+  .edge-fork-at       { stroke: var(--t-fork);      stroke-dasharray: 2 3; color: var(--t-fork); }
+  .edge-stage-next    { stroke: var(--t-stage);     color: var(--t-stage); }
+
+  #nodes-layer { position: absolute; top: 0; left: 0; width: 4000px; height: 2400px; }
+  .node {
+    position: absolute; width: 180px; min-height: 76px;
+    background: linear-gradient(180deg, var(--bg-3) 0%, var(--bg-1) 100%);
+    border: 1px solid var(--line-2);
+    border-radius: 5px;
+    padding: 9px 12px 10px 34px;
+    cursor: grab; user-select: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .node::before {
+    /* Left-edge color bar encoding type */
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--node-accent, var(--ink-3));
+    box-shadow: 0 0 8px var(--node-accent, var(--ink-3));
+    border-radius: 5px 0 0 5px;
+  }
+  .node .sigil {
+    position: absolute; left: 8px; top: 10px;
+    width: 18px; height: 18px;
+    fill: none; stroke: var(--node-accent, var(--ink-2));
+    stroke-width: 1.4; opacity: 0.9;
+    filter: drop-shadow(0 0 4px var(--node-accent, transparent));
+  }
+  .node:hover { border-color: var(--node-accent, var(--ink-3)); box-shadow: 0 4px 16px rgba(0,0,0,0.7), 0 0 14px var(--node-accent-glow, transparent); }
+  .node.dragging { cursor: grabbing; opacity: 0.95; z-index: 50; }
+  .node.selected {
+    border-color: var(--ember);
+    box-shadow: 0 0 0 1px var(--ember), 0 0 18px var(--ember-glow), 0 4px 16px rgba(0,0,0,0.7);
+  }
+  .node .type {
+    display: inline-block; font-family: var(--font-display);
+    font-size: 9px; letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--node-accent, var(--ink-2)); margin-bottom: 3px;
+  }
+  .node .name {
+    font-weight: 600; font-size: 13px; line-height: 1.3;
+    margin-bottom: 2px; word-wrap: break-word; color: var(--ink-0);
+    font-family: var(--font-display); letter-spacing: 0.5px;
+  }
+  .node .sub { font-size: 11px; color: var(--ink-2); line-height: 1.35; word-wrap: break-word; }
+  .node .badges { position: absolute; top: 5px; right: 8px; display: flex; gap: 4px; font-size: 10px; }
+  .node .badge {
+    background: var(--bg-3); color: var(--ink-1);
+    border: 1px solid var(--line-2);
+    padding: 1px 6px; border-radius: 999px; font-size: 10px;
+  }
+  .node.commander { --node-accent: var(--t-commander); --node-accent-glow: rgba(139,92,246,0.3); }
+  .node.lineage   { --node-accent: var(--t-lineage);   --node-accent-glow: rgba(220,38,38,0.3); }
+  .node.hybrid    { --node-accent: var(--t-hybrid);    --node-accent-glow: rgba(217,119,6,0.35); }
+  .node.age       { --node-accent: var(--t-age);       --node-accent-glow: rgba(59,130,246,0.3); }
+  .node.fork      { --node-accent: var(--t-fork);      --node-accent-glow: rgba(8,145,178,0.3); width: 120px; min-height: 44px; padding: 5px 8px 5px 30px; }
+  .node.fork .name { font-size: 11px; }
+  .node.mode      { --node-accent: var(--t-mode);      --node-accent-glow: rgba(22,163,74,0.3); }
+  .node.stage     { --node-accent: var(--t-stage);     --node-accent-glow: rgba(120,113,108,0.3); width: 220px; }
+
+  /* ============================================================
+     Dossier / Codex sidebar
+     ============================================================ */
+  #sidebar {
+    position: fixed; top: 50px; bottom: 30px; right: 0; width: 380px;
+    background: linear-gradient(180deg, var(--bg-1) 0%, #08080c 100%);
+    border-left: 1px solid var(--line-2);
+    box-shadow: inset 1px 0 0 rgba(217,119,6,0.08), -2px 0 16px rgba(0,0,0,0.5);
+    overflow-y: auto; padding: 18px 20px 20px; z-index: 10;
+  }
+  #sidebar h3 {
+    margin: 0 0 10px 0;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ember-hi);
+  }
+  #sidebar h3::before { content: "❧ "; color: var(--ember); opacity: 0.8; }
+  #sidebar .selector-title { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+  #sidebar .type-chip {
+    display: inline-block; padding: 3px 10px;
+    font-family: var(--font-display);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    border-radius: 2px; background: var(--bg-3); color: var(--ink-1);
+  }
+  #sidebar .meta-row { font-size: 11px; color: var(--ink-3); font-family: ui-monospace, monospace; }
+  #sidebar .action-row { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  #sidebar .comments { margin-top: 10px; }
+  #sidebar .comment {
+    background: var(--bg-2); border-left: 2px solid var(--ember);
+    padding: 7px 9px; margin-bottom: 7px;
+    border-radius: 0 3px 3px 0; font-size: 12px;
+  }
+  #sidebar .comment .ts { font-size: 10px; color: var(--ink-3); margin-top: 3px; }
+  #sidebar .empty { color: var(--ink-3); font-style: italic; font-size: 12px; }
+  #sidebar .read-field {
+    background: var(--bg-1); border: 1px solid var(--line);
+    padding: 6px 9px; border-radius: 2px; font-size: 13px;
+    color: var(--ink-1); min-height: 22px; white-space: pre-wrap;
+  }
+  #sidebar .lore-blurb {
+    background: linear-gradient(180deg, rgba(217,119,6,0.05), transparent);
+    border: 1px solid var(--line); border-left: 2px solid var(--ember);
+    padding: 10px 12px; margin: 8px 0 12px;
+    font-family: var(--font-display); font-size: 13px; line-height: 1.5;
+    color: var(--ink-0); letter-spacing: 0.3px; font-style: italic;
+  }
+
+  /* ============================================================
+     Status bar
+     ============================================================ */
+  #status {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
+    background: linear-gradient(180deg, #05050a 0%, #020205 100%);
+    border-top: 1px solid var(--line-2);
+    box-shadow: 0 -1px 0 rgba(217,119,6,0.08);
+    display: flex; align-items: center; padding: 0 14px;
+    font-size: 11px; color: var(--ink-2); gap: 16px; z-index: 100;
+    font-family: ui-monospace, monospace; letter-spacing: 0.5px;
+  }
+  #status .spacer { flex: 1; }
+  #status .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #16a34a; display: inline-block; margin-right: 5px;
+    box-shadow: 0 0 6px rgba(22,163,74,0.5);
+  }
+  #status .dot.dirty { background: var(--ember); box-shadow: 0 0 8px var(--ember-glow); }
+  #status .player-tag {
+    display: none;
+    font-family: var(--font-display); letter-spacing: 2px;
+    color: var(--ember-hi); font-size: 10px; text-transform: uppercase;
+  }
+
+  .legend { font-size: 11px; color: var(--ink-1); }
+  .legend-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .legend-swatch { width: 14px; height: 4px; border-radius: 1px; box-shadow: 0 0 6px currentColor; }
+
+  .hint {
+    position: fixed; bottom: 38px; left: 14px;
+    background: rgba(7,7,10,0.85);
+    border: 1px solid var(--line-2);
+    padding: 7px 11px; border-radius: 3px;
+    font-size: 11px; color: var(--ink-2);
+    pointer-events: none; max-width: 320px;
+    backdrop-filter: blur(4px);
+  }
+  .hint kbd {
+    background: var(--bg-3); padding: 1px 5px; border-radius: 2px;
+    font-size: 10px; color: var(--ink-0); border: 1px solid var(--line-2);
+    font-family: ui-monospace, monospace;
+  }
+
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    display: none; align-items: center; justify-content: center; z-index: 500;
+    backdrop-filter: blur(3px);
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border: 1px solid var(--line-2);
+    border-radius: 5px; padding: 20px;
+    width: 520px; max-width: 90vw;
+    box-shadow: 0 0 0 1px rgba(217,119,6,0.15), 0 20px 60px rgba(0,0,0,0.8);
+  }
+  .modal h3 {
+    margin-top: 0; font-family: var(--font-display);
+    letter-spacing: 2px; color: var(--ember-hi);
+  }
+
+  .connect-banner {
+    position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(180deg, var(--ember-hi), var(--ember));
+    color: #2a1a04; padding: 7px 18px; border-radius: 2px;
+    font-family: var(--font-display); font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    display: none; z-index: 400;
+    box-shadow: 0 4px 18px var(--ember-glow);
+  }
+  .connect-banner.on { display: block; }
+
+  /* ============================================================
+     Splash / title screen
+     ============================================================ */
+  #splash {
+    position: fixed; inset: 0; z-index: 1000;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(217,119,6,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 40%, #1a1320 0%, #05050a 70%);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 1; transition: opacity 0.6s ease;
+  }
+  #splash.fading { opacity: 0; pointer-events: none; }
+  #splash::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(139,92,246,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(217,119,6,0.08) 0%, transparent 45%);
+  }
+  .splash-card { position: relative; text-align: center; padding: 40px 60px; }
+  .splash-flourish {
+    font-family: var(--font-display); color: var(--ember);
+    font-size: 18px; letter-spacing: 12px; opacity: 0.75;
+    margin-bottom: 8px;
+  }
+  .splash-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--ember-hi);
+    text-shadow: 0 0 30px var(--ember-glow), 0 0 60px rgba(217,119,6,0.2);
+    margin: 0;
+  }
+  .splash-sub {
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--ink-1);
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+  .splash-tag {
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--ink-2);
+    margin-top: 28px;
+    font-style: italic;
+  }
+  .splash-cta {
+    margin-top: 40px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: 4px;
+    padding: 14px 36px;
+    background: transparent;
+    border: 1px solid var(--ember);
+    color: var(--ember-hi);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .splash-cta:hover {
+    background: rgba(217,119,6,0.12);
+    box-shadow: 0 0 0 1px var(--ember), 0 0 30px var(--ember-glow);
+    letter-spacing: 5px;
+  }
+  .splash-skip {
+    display: block; margin-top: 18px;
+    font-size: 11px; color: var(--ink-3); letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .splash-skip input { margin-right: 6px; vertical-align: middle; }
+
+  /* ============================================================
+     Perspective: Player mode
+     ============================================================ */
+  body[data-perspective="player"] #dd-add,
+  body[data-perspective="player"] #btn-connect,
+  body[data-perspective="player"] #btn-reset-layout,
+  body[data-perspective="player"] .commander-only,
+  body[data-perspective="player"] #stat-nodes,
+  body[data-perspective="player"] #stat-edges,
+  body[data-perspective="player"] #stat-zoom,
+  body[data-perspective="player"] #status > span:first-child {
+    display: none !important;
+  }
+  body[data-perspective="player"] #status .player-tag { display: inline; }
+  body[data-perspective="player"] .hint { display: none; }
+  body[data-perspective="player"] #sidebar { --sidebar-mode: 'player'; }
+
+  /* ============================================================
+     Toast
+     ============================================================ */
+  #toast {
+    position: fixed; bottom: 44px; right: 400px;
+    background: linear-gradient(180deg, var(--bg-3), var(--bg-2));
+    border: 1px solid var(--line-2);
+    padding: 9px 16px; border-radius: 3px;
+    font-size: 12px; color: var(--ink-0); z-index: 600;
+    opacity: 0; transition: opacity 0.2s;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.6), 0 0 0 1px rgba(217,119,6,0.08);
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body data-perspective="commander">
+
+<!-- ============================================================
+     Sigil defs (referenced by <use> inside each node)
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="sigil-commander" viewBox="0 0 24 24">
+      <path d="M4 10 L12 4 L20 10 L18 18 L6 18 Z" />
+      <circle cx="12" cy="11" r="1.5" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="sigil-lineage" viewBox="0 0 24 24">
+      <path d="M12 3 L12 21 M8 7 L16 7 M7 13 L17 13 M9 19 L15 19" />
+    </symbol>
+    <symbol id="sigil-hybrid" viewBox="0 0 24 24">
+      <circle cx="9" cy="12" r="5" />
+      <circle cx="15" cy="12" r="5" />
+    </symbol>
+    <symbol id="sigil-age" viewBox="0 0 24 24">
+      <path d="M6 3 L18 3 L18 9 L12 12 L18 15 L18 21 L6 21 L6 15 L12 12 L6 9 Z" />
+    </symbol>
+    <symbol id="sigil-fork" viewBox="0 0 24 24">
+      <path d="M12 4 L12 10 M12 10 L6 18 M12 10 L18 18" />
+      <circle cx="12" cy="4" r="1.5" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="sigil-mode" viewBox="0 0 24 24">
+      <path d="M4 4 L20 20 M20 4 L4 20" />
+    </symbol>
+    <symbol id="sigil-stage" viewBox="0 0 24 24">
+      <path d="M5 5 Q5 3 7 3 L17 3 Q19 3 19 5 L19 19 Q19 21 17 21 L7 21 Q5 21 5 19 Z" />
+      <path d="M8 8 L16 8 M8 12 L16 12 M8 16 L13 16" />
+    </symbol>
+  </defs>
+</svg>
+
+<div id="topbar">
+  <div class="title">Ash to Altar</div>
+
+  <div class="dropdown commander-only" id="dd-file">
+    <button onclick="toggleDropdown('dd-file')">File ▾</button>
+    <div class="dropdown-menu">
+      <button onclick="exportJSON()">Export concept.json</button>
+      <button onclick="document.getElementById('import-file').click()">Import concept.json…</button>
+      <button onclick="resetFromSeed()">Reset from seed</button>
+      <button onclick="copyToClipboard()">Copy JSON to clipboard</button>
+      <button onclick="showSplash(true)">Show title screen</button>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dd-add">
+    <button onclick="toggleDropdown('dd-add')">+ Add ▾</button>
+    <div class="dropdown-menu">
+      <button onclick="addNode('commander')">Commander</button>
+      <button onclick="addNode('lineage')">Lineage</button>
+      <button onclick="addNode('hybrid')">Hybrid</button>
+      <button onclick="addNode('age')">Age</button>
+      <button onclick="addNode('fork')">Fork</button>
+      <button onclick="addNode('mode')">Mode</button>
+      <button onclick="addNode('stage')">Stage</button>
+    </div>
+  </div>
+
+  <button onclick="toggleConnectMode()" id="btn-connect">Connect</button>
+  <button onclick="fitView()">Fit view</button>
+  <button onclick="resetLayout()" id="btn-reset-layout">Reset layout</button>
+
+  <div class="sep commander-only"></div>
+
+  <div class="filters commander-only">
+    <span>Show</span>
+    <label><input type="checkbox" data-filter="commander" checked> Cmdrs</label>
+    <label><input type="checkbox" data-filter="lineage" checked> Lineages</label>
+    <label><input type="checkbox" data-filter="hybrid" checked> Hybrids</label>
+    <label><input type="checkbox" data-filter="age" checked> Ages</label>
+    <label><input type="checkbox" data-filter="fork" checked> Forks</label>
+    <label><input type="checkbox" data-filter="mode" checked> Modes</label>
+    <label><input type="checkbox" data-filter="stage" checked> Stages</label>
+  </div>
+
+  <div class="banner-right">
+    <button id="perspective-toggle" onclick="togglePerspective()" title="Shift+P">
+      <span class="dot"></span><span id="perspective-label">Perspective: Commander</span>
+    </button>
+  </div>
+</div>
+
+<div class="connect-banner" id="connect-banner">Connect mode — click a node to start, then a node to finish. Esc to cancel.</div>
+
+<div id="canvas-wrap">
+  <div id="canvas-bg"></div>
+  <div id="world">
+    <svg id="edges-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="nodes-layer"></div>
+  </div>
+</div>
+
+<aside id="sidebar">
+  <h3 id="inspector-heading">Dossier</h3>
+  <div id="inspector">
+    <p class="empty">Select a node to view its dossier.</p>
+  </div>
+  <div class="commander-only">
+    <hr>
+    <h3>Commander's Log</h3>
+    <textarea id="session-notes" rows="4" oninput="updateNotes(this.value)" placeholder="Your running commentary — visible to Claude on export."></textarea>
+  </div>
+  <hr>
+  <h3>Legend</h3>
+  <div class="legend">
+    <div class="legend-row"><span class="legend-swatch" style="background:#8b5cf6;color:#8b5cf6"></span>Commander</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:#dc2626;color:#dc2626"></span>Lineage</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:#d97706;color:#d97706"></span>Hybrid</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:#3b82f6;color:#3b82f6"></span>Age</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:#0891b2;color:#0891b2"></span>Fork</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:#16a34a;color:#16a34a"></span>Mode</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:#78716c;color:#78716c"></span>Stage</div>
+  </div>
+  <div class="commander-only">
+    <hr>
+    <h3>Counts</h3>
+    <div id="counts" class="legend"></div>
+  </div>
+</aside>
+
+<div class="hint">
+  Drag nodes • Scroll to zoom • Space+drag or middle-click to pan • <kbd>Esc</kbd> deselect • <kbd>Shift+P</kbd> perspective
+</div>
+
+<div id="status">
+  <span><span class="dot" id="save-dot"></span><span id="save-status">Saved</span></span>
+  <span id="stat-nodes">0 nodes</span>
+  <span id="stat-edges">0 edges</span>
+  <span id="stat-selected"></span>
+  <span class="player-tag">◆ Player perspective — viewing only</span>
+  <span class="spacer"></span>
+  <span id="stat-zoom">100%</span>
+</div>
+
+<input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importJSON(event)">
+
+<div class="modal-backdrop" id="modal-confirm">
+  <div class="modal">
+    <h3 id="modal-title">Confirm</h3>
+    <p id="modal-body"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
+      <button onclick="closeModal()">Cancel</button>
+      <button class="danger" id="modal-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Splash / title screen
+     ============================================================ -->
+<div id="splash">
+  <div class="splash-card">
+    <div class="splash-flourish">◆  ◆  ◆</div>
+    <h1 class="splash-title">Ash to Altar</h1>
+    <div class="splash-sub" id="splash-sub">Commander Console</div>
+    <div class="splash-tag">The cascade is the product.</div>
+    <button class="splash-cta" id="splash-cta" onclick="enterRealm()">Take the Altar</button>
+    <label class="splash-skip"><input type="checkbox" id="splash-skip-cb"> Don't show again</label>
+  </div>
+</div>
+
+<script id="seed-data" type="application/json">
+{"meta":{"title":"Ash to Altar","workingTitle":true,"version":"0.1","sessionNotes":""},"counts":{},"nodes":[],"edges":[]}
+</script>
+
+<script>
+// ============================================================================
+// State
+// ============================================================================
+const TYPE_COLORS = { commander:"#8b5cf6", lineage:"#dc2626", hybrid:"#d97706", age:"#3b82f6", fork:"#0891b2", mode:"#16a34a", stage:"#78716c" };
+const TYPE_LABELS = { commander:"Commander", lineage:"Lineage", hybrid:"Hybrid", age:"Age", fork:"Fork", mode:"Mode", stage:"Stage" };
+const NODE_W = { commander:180, lineage:180, hybrid:180, age:180, fork:120, mode:180, stage:220 };
+const NODE_H_DEFAULT = 76;
+const FORK_H = 44;
+
+let state = { meta:{}, counts:{}, nodes:[], edges:[] };
+let view  = { zoom: 1, panX: 0, panY: 0 };
+let ui    = {
+  selectedId: null, dragging: null, dragStart: null,
+  connectFrom: null, connectMode: false,
+  dirty: false, isPanning: false, panStart: null,
+  filters: {commander:1,lineage:1,hybrid:1,age:1,fork:1,mode:1,stage:1},
+  perspective: localStorage.getItem("atoA_perspective") || "commander"
+};
+let SEED  = null;
+
+// ============================================================================
+// Boot
+// ============================================================================
+async function boot() {
+  applyPerspective();
+  if (localStorage.getItem("atoA_splashSeen") === "true") {
+    document.getElementById("splash").style.display = "none";
+  } else {
+    updateSplashForPerspective();
+  }
+
+  try {
+    const r = await fetch("concept.json", { cache: "no-store" });
+    if (r.ok) {
+      state = await r.json();
+      saveLocal();
+      toast("Loaded concept.json");
+    } else throw new Error("no fetch");
+  } catch (e) {
+    const local = localStorage.getItem("ata-concept");
+    if (local) {
+      try { state = JSON.parse(local); toast("Loaded from local storage"); }
+      catch { loadSeed(); }
+    } else {
+      loadSeed();
+    }
+  }
+  SEED = JSON.parse(JSON.stringify(state));
+  try {
+    const r2 = await fetch("concept.json", { cache: "no-store" });
+    if (r2.ok) SEED = await r2.json();
+  } catch {}
+  normalize();
+  render();
+  document.getElementById("session-notes").value = state.meta.sessionNotes || "";
+  setSaved();
+}
+
+function loadSeed() {
+  const raw = document.getElementById("seed-data").textContent;
+  try { state = JSON.parse(raw); } catch { state = { meta:{}, nodes:[], edges:[] }; }
+  toast("Using inline seed");
+}
+
+function normalize() {
+  if (!state.meta) state.meta = {};
+  if (!state.counts) state.counts = {};
+  if (!state.nodes) state.nodes = [];
+  if (!state.edges) state.edges = [];
+  state.nodes.forEach(n => {
+    if (!n.comments) n.comments = [];
+    if (typeof n.x !== "number") n.x = 100;
+    if (typeof n.y !== "number") n.y = 100;
+  });
+}
+
+// ============================================================================
+// Splash / perspective
+// ============================================================================
+function enterRealm() {
+  const skip = document.getElementById("splash-skip-cb").checked;
+  if (skip) localStorage.setItem("atoA_splashSeen", "true");
+  const s = document.getElementById("splash");
+  s.classList.add("fading");
+  setTimeout(() => { s.style.display = "none"; }, 650);
+}
+
+function showSplash(reset) {
+  if (reset) localStorage.removeItem("atoA_splashSeen");
+  const s = document.getElementById("splash");
+  s.style.display = "flex";
+  s.classList.remove("fading");
+  document.getElementById("splash-skip-cb").checked = false;
+  updateSplashForPerspective();
+}
+
+function updateSplashForPerspective() {
+  const sub = document.getElementById("splash-sub");
+  const cta = document.getElementById("splash-cta");
+  if (ui.perspective === "player") {
+    sub.textContent = "The World Awaits";
+    cta.textContent = "Enter the World";
+  } else {
+    sub.textContent = "Commander Console";
+    cta.textContent = "Take the Altar";
+  }
+}
+
+function togglePerspective() {
+  ui.perspective = ui.perspective === "commander" ? "player" : "commander";
+  localStorage.setItem("atoA_perspective", ui.perspective);
+  applyPerspective();
+  renderInspector();
+  renderNodes();
+  toast(ui.perspective === "player" ? "Player perspective — read only" : "Commander perspective restored");
+}
+
+function applyPerspective() {
+  document.body.dataset.perspective = ui.perspective;
+  const label = document.getElementById("perspective-label");
+  const heading = document.getElementById("inspector-heading");
+  if (label) label.textContent = ui.perspective === "player" ? "Perspective: Player" : "Perspective: Commander";
+  if (heading) heading.textContent = ui.perspective === "player" ? "Codex Entry" : "Dossier";
+  updateSplashForPerspective();
+}
+
+// ============================================================================
+// Persistence
+// ============================================================================
+function saveLocal() {
+  if (ui.perspective === "player") return; // player mode is read-only
+  try { localStorage.setItem("ata-concept", JSON.stringify(state)); } catch {}
+  setDirty();
+}
+function setDirty() {
+  ui.dirty = true;
+  document.getElementById("save-dot").classList.add("dirty");
+  document.getElementById("save-status").textContent = "Unsaved (in browser) — Export when ready";
+}
+function setSaved() {
+  ui.dirty = false;
+  document.getElementById("save-dot").classList.remove("dirty");
+  document.getElementById("save-status").textContent = "Saved (browser)";
+}
+
+function exportJSON() {
+  state.meta.lastExported = new Date().toISOString();
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "concept.json"; a.click();
+  URL.revokeObjectURL(url);
+  setSaved();
+  toast("Exported concept.json — drop it into admin/ to overwrite.");
+}
+
+function importJSON(ev) {
+  const f = ev.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const s = JSON.parse(r.result);
+      state = s; normalize(); saveLocal(); render();
+      document.getElementById("session-notes").value = state.meta.sessionNotes || "";
+      toast("Imported " + f.name);
+    } catch (e) { alert("Invalid JSON: " + e.message); }
+  };
+  r.readAsText(f);
+  ev.target.value = "";
+}
+
+function resetFromSeed() {
+  confirmModal("Reset from seed?", "Discard browser edits and restore from the concept.json on disk. Exported files are unaffected.", () => {
+    state = JSON.parse(JSON.stringify(SEED));
+    normalize(); saveLocal(); render();
+    document.getElementById("session-notes").value = state.meta.sessionNotes || "";
+    toast("Reset from seed.");
+  });
+}
+
+function copyToClipboard() {
+  const txt = JSON.stringify(state, null, 2);
+  navigator.clipboard.writeText(txt).then(() => toast("JSON copied")).catch(() => {
+    const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); toast("JSON copied (fallback)");
+  });
+}
+
+function updateNotes(v) { state.meta.sessionNotes = v; saveLocal(); }
+
+// ============================================================================
+// Rendering
+// ============================================================================
+function render() {
+  renderNodes();
+  renderEdges();
+  renderInspector();
+  renderCounts();
+  applyViewTransform();
+  document.getElementById("stat-nodes").textContent = state.nodes.length + " nodes";
+  document.getElementById("stat-edges").textContent = state.edges.length + " edges";
+}
+
+function renderNodes() {
+  const layer = document.getElementById("nodes-layer");
+  layer.innerHTML = "";
+  state.nodes.forEach(n => {
+    if (!ui.filters[n.type]) return;
+    const el = document.createElement("div");
+    el.className = "node " + n.type + (n.id === ui.selectedId ? " selected" : "");
+    el.style.left = n.x + "px";
+    el.style.top  = n.y + "px";
+    el.dataset.id = n.id;
+    el.innerHTML = `
+      <svg class="sigil"><use href="#sigil-${n.type}"/></svg>
+      <span class="type">${TYPE_LABELS[n.type] || n.type}</span>
+      <div class="name">${escapeHtml(n.name || "(untitled)")}</div>
+      ${nodeSubtitle(n) ? `<div class="sub">${escapeHtml(nodeSubtitle(n))}</div>` : ""}
+      <div class="badges">
+        ${n.comments && n.comments.length && ui.perspective === "commander" ? `<span class="badge" title="${n.comments.length} comment(s)">${n.comments.length} ✎</span>` : ""}
+        ${n.hasFork ? `<span class="badge" title="This age has a divergence fork">⑂</span>` : ""}
+      </div>
+    `;
+    el.addEventListener("pointerdown", onNodePointerDown);
+    el.addEventListener("click", onNodeClick);
+    layer.appendChild(el);
+  });
+}
+
+function nodeSubtitle(n) {
+  switch (n.type) {
+    case "commander": return n.fantasy || "";
+    case "lineage":   return n.role || "";
+    case "hybrid":    return (parentName(n.parentA) && parentName(n.parentB)) ? (parentName(n.parentA) + " + " + parentName(n.parentB)) : "";
+    case "age":       return "Tier " + (n.tier || "?");
+    case "mode":      return (n.launch ? "Launch" : "Post-launch") + (n.description ? " · " + n.description.slice(0, 50) : "");
+    case "stage":     return (n.status || "Stub") + (n.openQuestions ? " · " + n.openQuestions + " open Q" : "");
+    case "fork":      return n.parentAge ? ("Fork at " + (parentName(n.parentAge) || n.parentAge)) : "";
+  }
+  return "";
+}
+function parentName(id) { const p = state.nodes.find(x => x.id === id); return p ? p.name : ""; }
+
+function nodeSize(n) {
+  return { w: NODE_W[n.type] || 180, h: n.type === "fork" ? FORK_H : NODE_H_DEFAULT };
+}
+
+function renderEdges() {
+  const svg = document.getElementById("edges-svg");
+  const parts = [];
+  state.edges.forEach(e => {
+    const s = state.nodes.find(n => n.id === e.source);
+    const t = state.nodes.find(n => n.id === e.target);
+    if (!s || !t) return;
+    if (!ui.filters[s.type] || !ui.filters[t.type]) return;
+    const ss = nodeSize(s), ts = nodeSize(t);
+    const x1 = s.x + ss.w / 2, y1 = s.y + ss.h / 2;
+    const x2 = t.x + ts.w / 2, y2 = t.y + ts.h / 2;
+    const dx = x2 - x1, dy = y2 - y1;
+    const cx1 = x1 + dx * 0.25, cy1 = y1 + dy * 0.75;
+    const cx2 = x1 + dx * 0.75, cy2 = y1 + dy * 0.25;
+    const cls = "edge-" + e.type;
+    parts.push(`<path d="M${x1},${y1} C${cx1},${cy1} ${cx2},${cy2} ${x2},${y2}" class="${cls}"/>`);
+    if (e.label) {
+      parts.push(`<text x="${(x1+x2)/2}" y="${(y1+y2)/2 - 4}" class="label" text-anchor="middle">${escapeHtml(e.label)}</text>`);
+    }
+  });
+  svg.innerHTML = parts.join("");
+}
+
+function renderInspector() {
+  const root = document.getElementById("inspector");
+  if (!ui.selectedId) {
+    root.innerHTML = `<p class="empty">${ui.perspective === "player" ? "Select a node to read its codex entry." : "Click a node to inspect and edit."}</p>`;
+    document.getElementById("stat-selected").textContent = "";
+    return;
+  }
+  const n = state.nodes.find(x => x.id === ui.selectedId);
+  if (!n) { ui.selectedId = null; renderInspector(); return; }
+  document.getElementById("stat-selected").textContent = "Selected: " + n.name;
+
+  if (ui.perspective === "player") {
+    renderInspectorPlayer(root, n);
+  } else {
+    renderInspectorCommander(root, n);
+  }
+}
+
+function renderInspectorPlayer(root, n) {
+  const lore = n.backstory || n.role || n.description || n.storyline || "";
+  const bits = [];
+  bits.push(`<div class="selector-title">
+    <span class="type-chip" style="background:${TYPE_COLORS[n.type]};color:#fff">${TYPE_LABELS[n.type]}</span>
+  </div>`);
+  bits.push(`<div style="font-family:var(--font-display);font-size:20px;letter-spacing:1px;color:var(--ember-hi);margin-bottom:4px;">${escapeHtml(n.name || "(unnamed)")}</div>`);
+  if (nodeSubtitle(n)) bits.push(`<div class="meta-row" style="margin-bottom:10px;">${escapeHtml(nodeSubtitle(n))}</div>`);
+  if (lore) bits.push(`<div class="lore-blurb">${escapeHtml(lore)}</div>`);
+
+  if (n.type === "commander") {
+    if (n.passive)   bits.push(`<label>Passive</label><div class="read-field">${escapeHtml(n.passive)}</div>`);
+    if (n.signature) bits.push(`<label>Signature Ability</label><div class="read-field">${escapeHtml(n.signature)}</div>`);
+  } else if (n.type === "hybrid") {
+    const pa = parentName(n.parentA), pb = parentName(n.parentB);
+    if (pa && pb) bits.push(`<label>Forged from</label><div class="read-field">${escapeHtml(pa)} + ${escapeHtml(pb)}</div>`);
+  } else if (n.type === "age") {
+    if (n.tier) bits.push(`<label>Tier</label><div class="read-field">${escapeHtml(String(n.tier))}</div>`);
+  } else if (n.type === "mode") {
+    if (n.description && !lore) bits.push(`<div class="lore-blurb">${escapeHtml(n.description)}</div>`);
+  }
+  root.innerHTML = bits.join("");
+}
+
+function renderInspectorCommander(root, n) {
+  let fields = `<label>Name</label><input type="text" value="${escapeAttr(n.name||"")}" oninput="updateField('name', this.value)">`;
+
+  if (n.type === "commander") {
+    fields += `
+      <label>Fantasy / playstyle</label>
+      <input type="text" value="${escapeAttr(n.fantasy||"")}" oninput="updateField('fantasy', this.value)">
+      <label>Lineage tilt</label>
+      <select onchange="updateField('lineageTilt', this.value)">
+        <option value="">(none)</option>
+        ${lineageOptions(n.lineageTilt)}
+      </select>
+      <label>Passive buff</label>
+      <input type="text" value="${escapeAttr(n.passive||"")}" oninput="updateField('passive', this.value)">
+      <label>Signature ability</label>
+      <input type="text" value="${escapeAttr(n.signature||"")}" oninput="updateField('signature', this.value)">
+      <label>Backstory (short)</label>
+      <textarea oninput="updateField('backstory', this.value)">${escapeHtml(n.backstory||"")}</textarea>
+      <label>Campaign storyline</label>
+      <textarea rows="5" oninput="updateField('storyline', this.value)">${escapeHtml(n.storyline||"")}</textarea>
+    `;
+  } else if (n.type === "lineage") {
+    fields += `
+      <label>Role</label>
+      <textarea oninput="updateField('role', this.value)">${escapeHtml(n.role||"")}</textarea>
+      <label>Generates currency</label>
+      <select onchange="updateField('generatesCurrency', this.value)">
+        <option value="none" ${n.generatesCurrency==="none"?"selected":""}>none (pure consumer)</option>
+        <option value="gold" ${n.generatesCurrency==="gold"?"selected":""}>gold</option>
+        <option value="knowledge" ${n.generatesCurrency==="knowledge"?"selected":""}>knowledge</option>
+        <option value="influence" ${n.generatesCurrency==="influence"?"selected":""}>influence</option>
+      </select>
+    `;
+  } else if (n.type === "hybrid") {
+    fields += `
+      <label>Parent A</label>
+      <select onchange="updateField('parentA', this.value)">${lineageOptions(n.parentA)}</select>
+      <label>Parent B</label>
+      <select onchange="updateField('parentB', this.value)">${lineageOptions(n.parentB)}</select>
+      <label>Age unlocked</label>
+      <select onchange="updateField('ageUnlocked', this.value)">${ageOptions(n.ageUnlocked)}</select>
+    `;
+  } else if (n.type === "age") {
+    fields += `
+      <label>Tier (1–N)</label>
+      <input type="text" value="${escapeAttr(n.tier||"")}" oninput="updateField('tier', this.value)">
+      <label><input type="checkbox" ${n.hasFork?"checked":""} onchange="updateField('hasFork', this.checked)"> Has divergence fork</label>
+    `;
+  } else if (n.type === "fork") {
+    fields += `
+      <label>Parent age</label>
+      <select onchange="updateField('parentAge', this.value)">${ageOptions(n.parentAge)}</select>
+    `;
+  } else if (n.type === "mode") {
+    fields += `
+      <label>Description</label>
+      <textarea oninput="updateField('description', this.value)">${escapeHtml(n.description||"")}</textarea>
+      <label><input type="checkbox" ${n.launch?"checked":""} onchange="updateField('launch', this.checked)"> Launch mode</label>
+    `;
+  } else if (n.type === "stage") {
+    fields += `
+      <label>Status</label>
+      <select onchange="updateField('status', this.value)">
+        ${["Stub","Draft","In review","Locked"].map(s=>`<option ${n.status===s?"selected":""}>${s}</option>`).join("")}
+      </select>
+      <label>Open questions (count)</label>
+      <input type="text" value="${escapeAttr(n.openQuestions||0)}" oninput="updateField('openQuestions', parseInt(this.value)||0)">
+    `;
+  }
+
+  const actions = `
+    <div class="action-row">
+      <button onclick="duplicateNode()">Duplicate</button>
+      <button onclick="startConnectFrom('${n.id}')">Connect from</button>
+      <button class="danger" onclick="deleteSelected()">Delete</button>
+    </div>
+  `;
+
+  const comments = `
+    <hr>
+    <h3>Comments (${(n.comments||[]).length})</h3>
+    <div class="comments">
+      ${(n.comments||[]).map((c,i) => `
+        <div class="comment">
+          <div>${escapeHtml(c.text)}</div>
+          <div class="ts">${c.author||"you"} · ${c.ts||""} <button style="float:right;font-size:10px;padding:1px 5px" onclick="deleteComment(${i})">×</button></div>
+        </div>
+      `).join("") || '<p class="empty">No comments yet.</p>'}
+    </div>
+    <textarea id="new-comment" rows="2" placeholder="Add a comment…"></textarea>
+    <div class="action-row"><button class="primary" onclick="addComment()">Add comment</button></div>
+  `;
+
+  const edges = state.edges.filter(e => e.source === n.id || e.target === n.id);
+  const edgeList = edges.length ? `
+    <hr>
+    <h3>Edges (${edges.length})</h3>
+    ${edges.map(e => `<div class="meta-row">• ${e.type}: ${e.source === n.id ? "→" : "←"} ${escapeHtml(otherEnd(e, n.id))} <button style="font-size:10px;padding:0 5px" onclick="deleteEdge('${e.id}')">×</button></div>`).join("")}
+  ` : "";
+
+  root.innerHTML = `
+    <div class="selector-title">
+      <span class="type-chip" style="background:${TYPE_COLORS[n.type]};color:#fff">${TYPE_LABELS[n.type]}</span>
+      <span class="meta-row">id: ${n.id}</span>
+    </div>
+    ${fields}
+    ${actions}
+    ${edgeList}
+    ${comments}
+  `;
+}
+
+function otherEnd(e, id) { const other = e.source === id ? e.target : e.source; const n = state.nodes.find(x=>x.id===other); return n ? n.name : other; }
+
+function lineageOptions(sel) {
+  return '<option value="">(none)</option>' + state.nodes.filter(n => n.type === "lineage").map(n =>
+    `<option value="${n.id}" ${n.id===sel?"selected":""}>${escapeHtml(n.name)}</option>`
+  ).join("");
+}
+function ageOptions(sel) {
+  return '<option value="">(none)</option>' + state.nodes.filter(n => n.type === "age").map(n =>
+    `<option value="${n.id}" ${n.id===sel?"selected":""}>${escapeHtml(n.name)} (T${n.tier||"?"})</option>`
+  ).join("");
+}
+
+function renderCounts() {
+  const out = {};
+  state.nodes.forEach(n => { out[n.type] = (out[n.type]||0) + 1; });
+  document.getElementById("counts").innerHTML = Object.entries(out).map(([t,c]) =>
+    `<div class="legend-row"><span class="legend-swatch" style="background:${TYPE_COLORS[t]};color:${TYPE_COLORS[t]}"></span>${TYPE_LABELS[t]||t}: <b>${c}</b></div>`
+  ).join("");
+}
+
+// ============================================================================
+// Node interactions
+// ============================================================================
+function onNodePointerDown(ev) {
+  if (ev.button !== 0) return;
+  if (ui.perspective === "player") return; // no dragging in player mode
+  const id = this.dataset.id;
+  if (ui.connectMode) return;
+  ui.dragging = id;
+  const n = state.nodes.find(x => x.id === id);
+  ui.dragStart = { x: ev.clientX, y: ev.clientY, nx: n.x, ny: n.y };
+  this.classList.add("dragging");
+  this.setPointerCapture(ev.pointerId);
+  ev.stopPropagation();
+}
+
+function onNodePointerMove(ev) {
+  if (!ui.dragging) return;
+  const n = state.nodes.find(x => x.id === ui.dragging);
+  if (!n) return;
+  const dx = (ev.clientX - ui.dragStart.x) / view.zoom;
+  const dy = (ev.clientY - ui.dragStart.y) / view.zoom;
+  n.x = Math.round(ui.dragStart.nx + dx);
+  n.y = Math.round(ui.dragStart.ny + dy);
+  const el = document.querySelector(`.node[data-id="${ui.dragging}"]`);
+  if (el) { el.style.left = n.x + "px"; el.style.top = n.y + "px"; }
+  renderEdges();
+}
+
+function onNodePointerUp(ev) {
+  if (!ui.dragging) return;
+  const el = document.querySelector(`.node[data-id="${ui.dragging}"]`);
+  if (el) el.classList.remove("dragging");
+  ui.dragging = null;
+  ui.dragStart = null;
+  saveLocal();
+}
+
+function onNodeClick(ev) {
+  const id = this.dataset.id;
+  if (ui.connectMode && ui.perspective === "commander") {
+    if (!ui.connectFrom) {
+      ui.connectFrom = id;
+      toast("Source: " + (state.nodes.find(n=>n.id===id)||{}).name + ". Click target.");
+    } else if (ui.connectFrom !== id) {
+      addEdge(ui.connectFrom, id);
+      ui.connectFrom = null;
+      toggleConnectMode();
+    }
+    ev.stopPropagation();
+    return;
+  }
+  ui.selectedId = id;
+  renderNodes();
+  renderInspector();
+  ev.stopPropagation();
+}
+
+function updateField(key, val) {
+  if (ui.perspective === "player") return;
+  const n = state.nodes.find(x => x.id === ui.selectedId);
+  if (!n) return;
+  n[key] = val;
+  saveLocal();
+  renderNodes();
+  renderEdges();
+}
+
+function addNode(type) {
+  if (ui.perspective === "player") return;
+  closeAllDropdowns();
+  const id = type + "-" + Math.random().toString(36).slice(2,7);
+  const n = { id, type, name: "New " + TYPE_LABELS[type], x: 200 - view.panX, y: 200 - view.panY, comments: [] };
+  if (type === "commander") { n.fantasy = ""; n.lineageTilt = ""; n.passive = ""; n.signature = ""; n.backstory = ""; n.storyline = ""; }
+  if (type === "lineage")   { n.role = ""; n.generatesCurrency = "none"; }
+  if (type === "hybrid")    { n.parentA = ""; n.parentB = ""; n.ageUnlocked = ""; }
+  if (type === "age")       { n.tier = (state.nodes.filter(x=>x.type==="age").length + 1); n.hasFork = false; }
+  if (type === "fork")      { n.parentAge = ""; }
+  if (type === "mode")      { n.launch = true; n.description = ""; }
+  if (type === "stage")     { n.status = "Stub"; n.openQuestions = 0; }
+  state.nodes.push(n);
+  ui.selectedId = id;
+  saveLocal(); render();
+  toast("Added " + TYPE_LABELS[type]);
+}
+
+function duplicateNode() {
+  if (ui.perspective === "player") return;
+  const n = state.nodes.find(x => x.id === ui.selectedId);
+  if (!n) return;
+  const copy = JSON.parse(JSON.stringify(n));
+  copy.id = n.type + "-" + Math.random().toString(36).slice(2,7);
+  copy.name = n.name + " (copy)";
+  copy.x = n.x + 30; copy.y = n.y + 30;
+  state.nodes.push(copy);
+  ui.selectedId = copy.id;
+  saveLocal(); render();
+}
+
+function deleteSelected() {
+  if (ui.perspective === "player") return;
+  const n = state.nodes.find(x => x.id === ui.selectedId);
+  if (!n) return;
+  confirmModal("Delete node?", "Delete \"" + n.name + "\" and " + state.edges.filter(e=>e.source===n.id||e.target===n.id).length + " connected edge(s)?", () => {
+    state.edges = state.edges.filter(e => e.source !== n.id && e.target !== n.id);
+    state.nodes = state.nodes.filter(x => x.id !== n.id);
+    ui.selectedId = null;
+    saveLocal(); render();
+  });
+}
+
+function deleteEdge(id) {
+  if (ui.perspective === "player") return;
+  state.edges = state.edges.filter(e => e.id !== id);
+  saveLocal(); render();
+}
+
+function addEdge(source, target, type = "custom", label) {
+  if (ui.perspective === "player") return;
+  if (source === target) return;
+  const id = "e-" + Math.random().toString(36).slice(2,8);
+  state.edges.push({ id, source, target, type, label: label || "" });
+  saveLocal(); render();
+  toast("Connected.");
+}
+
+function addComment() {
+  if (ui.perspective === "player") return;
+  const ta = document.getElementById("new-comment");
+  const txt = (ta.value || "").trim();
+  if (!txt) return;
+  const n = state.nodes.find(x => x.id === ui.selectedId);
+  if (!n) return;
+  n.comments = n.comments || [];
+  n.comments.push({ text: txt, author: "you", ts: new Date().toISOString().slice(0,16).replace("T"," ") });
+  saveLocal(); renderInspector(); renderNodes();
+}
+function deleteComment(i) {
+  if (ui.perspective === "player") return;
+  const n = state.nodes.find(x => x.id === ui.selectedId);
+  if (!n || !n.comments) return;
+  n.comments.splice(i, 1);
+  saveLocal(); renderInspector(); renderNodes();
+}
+
+// ============================================================================
+// Connect mode
+// ============================================================================
+function toggleConnectMode() {
+  if (ui.perspective === "player") return;
+  ui.connectMode = !ui.connectMode;
+  ui.connectFrom = null;
+  document.getElementById("btn-connect").classList.toggle("primary", ui.connectMode);
+  document.getElementById("connect-banner").classList.toggle("on", ui.connectMode);
+}
+function startConnectFrom(id) {
+  if (ui.perspective === "player") return;
+  ui.connectMode = true;
+  ui.connectFrom = id;
+  document.getElementById("btn-connect").classList.add("primary");
+  document.getElementById("connect-banner").classList.add("on");
+  toast("Click a target node to finish the connection.");
+}
+
+// ============================================================================
+// Canvas pan/zoom
+// ============================================================================
+function applyViewTransform() {
+  const w = document.getElementById("world");
+  w.style.transform = `translate(${view.panX}px, ${view.panY}px) scale(${view.zoom})`;
+  document.getElementById("stat-zoom").textContent = Math.round(view.zoom * 100) + "%";
+}
+
+function onCanvasPointerDown(ev) {
+  if (ev.target.closest(".node")) return;
+  if (ev.button === 1 || ev.button === 0) {
+    if (ev.button === 0 && !ev.shiftKey && !spaceHeld) { ui.selectedId = null; renderNodes(); renderInspector(); return; }
+    ui.isPanning = true;
+    ui.panStart = { x: ev.clientX, y: ev.clientY, px: view.panX, py: view.panY };
+    document.getElementById("canvas-wrap").classList.add("panning");
+  }
+}
+function onCanvasPointerMove(ev) {
+  if (!ui.isPanning) return;
+  view.panX = ui.panStart.px + (ev.clientX - ui.panStart.x);
+  view.panY = ui.panStart.py + (ev.clientY - ui.panStart.y);
+  applyViewTransform();
+}
+function onCanvasPointerUp() {
+  ui.isPanning = false;
+  document.getElementById("canvas-wrap").classList.remove("panning");
+}
+
+function onWheel(ev) {
+  ev.preventDefault();
+  const rect = document.getElementById("canvas-wrap").getBoundingClientRect();
+  const mx = ev.clientX - rect.left;
+  const my = ev.clientY - rect.top;
+  const before = { x: (mx - view.panX) / view.zoom, y: (my - view.panY) / view.zoom };
+  const delta = ev.deltaY > 0 ? 0.9 : 1.1;
+  view.zoom = Math.max(0.25, Math.min(3, view.zoom * delta));
+  view.panX = mx - before.x * view.zoom;
+  view.panY = my - before.y * view.zoom;
+  applyViewTransform();
+}
+
+function fitView() {
+  if (!state.nodes.length) return;
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  state.nodes.forEach(n => { const s=nodeSize(n); minX=Math.min(minX,n.x); minY=Math.min(minY,n.y); maxX=Math.max(maxX,n.x+s.w); maxY=Math.max(maxY,n.y+s.h); });
+  const wrap = document.getElementById("canvas-wrap").getBoundingClientRect();
+  const pad = 60;
+  const zx = (wrap.width  - pad*2) / (maxX - minX);
+  const zy = (wrap.height - pad*2) / (maxY - minY);
+  view.zoom = Math.max(0.25, Math.min(1.5, Math.min(zx, zy)));
+  view.panX = pad - minX * view.zoom;
+  view.panY = pad - minY * view.zoom;
+  applyViewTransform();
+}
+
+function resetLayout() {
+  if (ui.perspective === "player") return;
+  confirmModal("Reset layout?", "Restore positions from the original seed (content stays, positions move).", () => {
+    const seedNodes = (SEED && SEED.nodes) || [];
+    state.nodes.forEach(n => {
+      const s = seedNodes.find(x => x.id === n.id);
+      if (s) { n.x = s.x; n.y = s.y; }
+    });
+    saveLocal(); render(); fitView();
+  });
+}
+
+// ============================================================================
+// Filters
+// ============================================================================
+document.querySelectorAll("#topbar .filters input[type=checkbox]").forEach(cb => {
+  cb.addEventListener("change", () => {
+    ui.filters[cb.dataset.filter] = cb.checked ? 1 : 0;
+    render();
+  });
+});
+
+// ============================================================================
+// Keyboard
+// ============================================================================
+let spaceHeld = false;
+window.addEventListener("keydown", ev => {
+  if (ev.target.matches("input, textarea, select")) return;
+  if (ev.shiftKey && (ev.key === "P" || ev.key === "p")) { ev.preventDefault(); togglePerspective(); return; }
+  if (ev.key === "Escape") {
+    if (ui.connectMode) { toggleConnectMode(); return; }
+    ui.selectedId = null; renderNodes(); renderInspector();
+  }
+  if (ev.key === " ") { spaceHeld = true; document.getElementById("canvas-wrap").style.cursor = "grab"; }
+  if (ev.key === "Delete" && ui.selectedId && ui.perspective === "commander") deleteSelected();
+});
+window.addEventListener("keyup", ev => {
+  if (ev.key === " ") { spaceHeld = false; }
+});
+
+// ============================================================================
+// Dropdowns
+// ============================================================================
+function toggleDropdown(id) {
+  document.querySelectorAll(".dropdown").forEach(d => { if (d.id !== id) d.classList.remove("open"); });
+  document.getElementById(id).classList.toggle("open");
+}
+function closeAllDropdowns() { document.querySelectorAll(".dropdown").forEach(d => d.classList.remove("open")); }
+document.addEventListener("click", ev => {
+  if (!ev.target.closest(".dropdown")) closeAllDropdowns();
+});
+
+// ============================================================================
+// Modal
+// ============================================================================
+function confirmModal(title, body, onOk) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-body").textContent = body;
+  document.getElementById("modal-confirm").classList.add("open");
+  const ok = document.getElementById("modal-ok");
+  const fresh = ok.cloneNode(true); ok.parentNode.replaceChild(fresh, ok);
+  fresh.addEventListener("click", () => { onOk && onOk(); closeModal(); });
+}
+function closeModal() { document.getElementById("modal-confirm").classList.remove("open"); }
+
+// ============================================================================
+// Toast
+// ============================================================================
+let toastTimer = null;
+function toast(msg) {
+  let el = document.getElementById("toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "toast";
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = "1";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.opacity = "0"; }, 2200);
+}
+
+// ============================================================================
+// Utils
+// ============================================================================
+function escapeHtml(s) { return String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function escapeAttr(s) { return escapeHtml(s); }
+
+// ============================================================================
+// Wire up canvas events
+// ============================================================================
+const wrap = document.getElementById("canvas-wrap");
+wrap.addEventListener("pointerdown", onCanvasPointerDown);
+window.addEventListener("pointermove", ev => { onNodePointerMove(ev); onCanvasPointerMove(ev); });
+window.addEventListener("pointerup",   ev => { onNodePointerUp(ev);   onCanvasPointerUp(ev); });
+wrap.addEventListener("wheel", onWheel, { passive: false });
+
+// Boot
+boot();
+</script>
+</body>
+</html>

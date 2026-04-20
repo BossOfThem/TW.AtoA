@@ -1,0 +1,15 @@
+{
+  "_comment": "Random spontaneity events per Phase 10.1 DNA pass (HoMM/AoE DNA — reward attention with small surprises). 8 micro-events [PROPOSAL]. Triggered at wave-start / age-gate / low-lives with 25% probability, no two in a row, seeded by match-start for co-op determinism. None are match-winning; both boons and minor downsides exist to keep balance neutral. Co-op broadcast via additive snapshot message {type:'event-roll', id}. Off-switch at profile.settings.gameplay.spontaneity. Port target: Godot 4 Resource array (res://data/events/*.tres).",
+  "version": 1,
+  "rollProbability": 0.25,
+  "events": [
+    { "id": "merchant-caravan", "trigger": "wave-start", "weight": 10, "copy": "A merchant caravan arrives — +50 gold.", "effect": { "type": "gold", "amount": 50 } },
+    { "id": "scout-report",     "trigger": "wave-start", "weight": 8,  "copy": "Scout's report extends the next-wave telegraph by 5 seconds.", "effect": { "type": "telegraph", "addSeconds": 5 } },
+    { "id": "forge-embers",     "trigger": "wave-start", "weight": 7,  "copy": "Forge embers crackle — one random tower gets a free upgrade.", "effect": { "type": "random-upgrade", "count": 1 } },
+    { "id": "veiled-stranger",  "trigger": "wave-start", "weight": 6,  "copy": "A veiled stranger reveals a hybrid adjacency hint.", "effect": { "type": "hint", "kind": "hybrid-adjacency" } },
+    { "id": "omen",             "trigger": "age-gate",   "weight": 7,  "copy": "An omen passes over the creeps — next wave has -10% HP.", "effect": { "type": "wave-hp-mult", "mult": 0.90, "waves": 1 } },
+    { "id": "quiet-wave",       "trigger": "wave-start", "weight": 5,  "copy": "The land is quiet — next wave has one fewer enemy.", "effect": { "type": "wave-count-delta", "delta": -1, "waves": 1 } },
+    { "id": "restless-land",    "trigger": "wave-start", "weight": 4,  "copy": "The land is restless — next wave moves 5% faster.", "effect": { "type": "wave-speed-mult", "mult": 1.05, "waves": 1 } },
+    { "id": "ancestors-gift",   "trigger": "low-lives",  "weight": 9,  "copy": "The ancestors send a gift — +20 Knowledge.", "effect": { "type": "knowledge", "amount": 20 } }
+  ]
+}

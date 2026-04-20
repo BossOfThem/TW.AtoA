@@ -1,0 +1,54 @@
+{
+  "_comment": "Map modifiers / biomes per Phase 10.1 concept-demo DNA pass (AoE DNA — age-as-civ-history flavor). Each biome applies a single passive modifier to a Skirmish match. Skirmish mode-select will render biome chips when this file is present. NOT active in Co-op Horde until PM approves (snapshot-schema additive requires host/guest agreement on biome ID). All numbers [PROPOSAL] until playtest ratifies. Port target: Godot 4 Resource array (res://data/mapmods/*.tres).",
+  "default": "neutral",
+  "biomes": {
+    "neutral": {
+      "id": "neutral",
+      "name": "Neutral",
+      "glyph": "◇",
+      "color": "#847a66",
+      "modifier": null,
+      "description": "No environmental tilt. Clean reference conditions."
+    },
+    "volcanic": {
+      "id": "volcanic",
+      "name": "Volcanic",
+      "glyph": "▲",
+      "color": "#d97706",
+      "modifier": { "target": "ember", "damageMult": 1.10 },
+      "description": "Ember-tilt ground. +10% damage to Ember-lineage towers."
+    },
+    "frostfall": {
+      "id": "frostfall",
+      "name": "Frostfall",
+      "glyph": "❋",
+      "color": "#0891b2",
+      "modifier": { "target": "enemy", "speedMult": 0.95 },
+      "description": "Permafrost. Enemies move 5% slower."
+    },
+    "verdant": {
+      "id": "verdant",
+      "name": "Verdant",
+      "glyph": "❦",
+      "color": "#16a34a",
+      "modifier": { "target": "economy", "goldTickMult": 1.08 },
+      "description": "Fertile ground. +8% passive gold income."
+    },
+    "coastal": {
+      "id": "coastal",
+      "name": "Coastal",
+      "glyph": "〜",
+      "color": "#60a5fa",
+      "modifier": { "target": "veil", "debuffDurMult": 1.15 },
+      "description": "Salt-laced winds. +15% Veil debuff duration."
+    },
+    "ruins": {
+      "id": "ruins",
+      "name": "Ruins",
+      "glyph": "⌂",
+      "color": "#7c3aed",
+      "modifier": { "target": "forge", "costMult": 0.90 },
+      "description": "Abandoned foundations. Forge-lineage towers cost 10% less."
+    }
+  }
+}

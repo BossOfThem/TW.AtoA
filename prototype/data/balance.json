@@ -1,0 +1,64 @@
+{
+  "_comment": "Derived from prototype/index.html BALANCE constant (Step 1 extraction 2026-04-19). Port target: Godot 4 Resource (res://data/balance.tres). Percent-per-wave values compound; age values are multiplicative per age.",
+  "wave": {
+    "HP_PER_WAVE":     1.70,
+    "COUNT_PER_WAVE":  1.55,
+    "SPEED_PER_WAVE":  1.12,
+    "REWARD_PER_WAVE": 0.80,
+    "GAP_PER_WAVE":    0.85
+  },
+  "age": {
+    "DAMAGE_PER_AGE":    1.60,
+    "CD_PER_AGE":        0.80,
+    "KNOWLEDGE_PER_AGE": 1.50
+  },
+  "economy": {
+    "GOLD_SURPLUS_TARGET": 1.25,
+    "STARTING_GOLD_MATCH": 80,
+    "STARTING_GOLD_TUTORIAL": 60,
+    "STARTING_LIVES_MATCH": 10,
+    "STARTING_LIVES_TUTORIAL": 3,
+    "AGE_UP_KNOWLEDGE_COST": 50
+  },
+  "base": {
+    "BASE_HP":     10,
+    "BASE_COUNT":  6,
+    "BASE_SPEED":  0.85,
+    "BASE_REWARD": 8,
+    "BASE_GAP":    40
+  },
+  "match": {
+    "waveCount": 3,
+    "waveCountFullConceptDemo": 11,
+    "_comment": "waveCount stays at 3 for the tutorial/skirmish quick match; waveCountFullConceptDemo=11 (one wave per age) is read by the Co-op Horde mode + Phase 10.2 11-age solo matches. Phase 10.1 lands the constant; Phase 10.2 wires consumers."
+  },
+  "coop": {
+    "shared": true,
+    "_comment": "Shared-economy Co-op Horde (plan 10.3). Both players draw from same gold/knowledge pool; towers tagged with ownerPeerId for visual differentiation."
+  },
+  "multiplayer": {
+    "tickRateHz": 10,
+    "snapshotPeriodMs": 100,
+    "reconnectTimeoutSec": 10,
+    "chatCharLimit": 100
+  },
+  "save": {
+    "autosavePeriodSec": 120,
+    "profileStorageKey": "atoA.profile.v1",
+    "_comment": "Honors CONCEPT §4.9 + decisions/2026-04-20-save-model.md mode-split. Autosave fires on a debounced 2-minute timer for Solo Campaign; Skirmish/Horde save only on end; Lane Wars does not save."
+  },
+  "progression": {
+    "maxCommanderLevel": 20,
+    "xpPerMatchWin": 40,
+    "xpPerMatchLoss": 12,
+    "_comment": "Decisions/2026-04-20-commander-identity-floor.md: 20-level ladder [PROPOSAL]. xpPer values [PROPOSAL] — tuned to ~1 level per 2-3 wins mid-progression."
+  },
+  "accessibility": {
+    "uiScaleMin": 0.75,
+    "uiScaleMax": 1.50,
+    "uiScaleDefault": 1.00,
+    "subtitlesDefault": true,
+    "reduceMotionDefault": false,
+    "colorblindDefault": false
+  }
+}

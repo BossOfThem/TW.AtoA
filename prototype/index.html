@@ -1,0 +1,3375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Ash to Altar — Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+  :root {
+    --bg-0: #0a0a0f; --bg-1: #0f0f16; --bg-2: #15131b; --bg-3: #1b1822;
+    --ink-0: #e8dfca; --ink-1: #c9bfae; --ink-2: #847a66; --ink-3: #4a4134;
+    --line: #2a251e; --line-2: #3a342b;
+    --ember: #d97706; --ember-hi: #fbbf24; --ember-glow: rgba(217,119,6,0.35);
+    --sinew: #dc2626; --forge: #b45309; --crown: #7c3aed; --veil: #0891b2;
+    --gold: #fbbf24; --knowledge: #60a5fa; --life: #f87171;
+    --font-display: "Cormorant Garamond", "Cinzel", "EB Garamond", "Times New Roman", serif;
+    --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --ui-scale: 1.0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--bg-0); color: var(--ink-0); font-family: var(--font-body); font-size: calc(14px * var(--ui-scale)); overflow: hidden; }
+  html.reduce-motion *, body.reduce-motion * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  h1 { font-family: var(--font-display); font-size: calc(62px * var(--ui-scale)); letter-spacing: 8px; color: var(--ember-hi); text-shadow: 0 0 30px var(--ember-glow); margin: 0 0 6px; }
+  h2 { font-family: var(--font-display); font-size: calc(32px * var(--ui-scale)); letter-spacing: 4px; color: var(--ember-hi); margin: 0 0 10px; }
+  .sub { font-family: var(--font-display); font-size: 16px; letter-spacing: 5px; color: var(--ink-1); text-transform: uppercase; margin-bottom: 30px; }
+  .tag { font-size: 13px; color: var(--ink-2); font-style: italic; margin-bottom: 22px; }
+  .flourish { color: var(--ember); margin-bottom: 22px; letter-spacing: 6px; }
+  .cta-row { display: flex; gap: 14px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+  button {
+    font-family: var(--font-display); font-size: 13px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--ink-0);
+    background: linear-gradient(180deg, var(--bg-3), var(--bg-2));
+    border: 1px solid var(--line-2); padding: 11px 22px; cursor: pointer;
+    border-radius: 2px; transition: all 0.18s;
+  }
+  button:hover:not(:disabled) { color: var(--ember-hi); border-color: var(--ember); box-shadow: 0 0 14px var(--ember-glow); }
+  button:focus-visible { outline: 2px solid var(--ember-hi); outline-offset: 2px; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.ghost { background: transparent; color: var(--ink-2); border-color: var(--line); }
+  button.ghost:hover:not(:disabled) { color: var(--ink-0); border-color: var(--line-2); box-shadow: none; }
+  button.primary { background: linear-gradient(180deg, var(--ember-hi), var(--ember)); color: #2a1a04; border-color: var(--ember); font-weight: 700; }
+  input[type=text], input[type=password] {
+    font-family: var(--font-body); font-size: 14px; color: var(--ink-0);
+    background: var(--bg-1); border: 1px solid var(--line-2); padding: 10px 14px;
+    border-radius: 2px; min-width: 240px;
+  }
+  input[type=text]:focus, input[type=password]:focus { outline: none; border-color: var(--ember); box-shadow: 0 0 10px var(--ember-glow); }
+  input[type=range] { width: 200px; }
+  label { font-family: var(--font-display); letter-spacing: 2px; font-size: 12px; color: var(--ink-1); text-transform: uppercase; }
+
+  #scope-banner { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--ember), var(--ember-hi)); color: #2a1a04; font-family: var(--font-display); letter-spacing: 4px; font-size: 10px; text-transform: uppercase; padding: 4px 12px; text-align: center; z-index: 2000; font-weight: 700; }
+  #scope-banner b { font-weight: 900; }
+
+  .scene { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 36px 24px 18px; position: relative; }
+  .scene.active { display: flex; }
+
+  /* ============================================================
+     Splash
+     ============================================================ */
+  #scene-splash { background: radial-gradient(ellipse at 50% 40%, #1a1325 0%, var(--bg-0) 70%); }
+  #scene-splash .splash-diamond { font-family: var(--font-display); font-size: 110px; color: var(--ember-hi); text-shadow: 0 0 40px var(--ember-glow); animation: diamondRise 2.4s cubic-bezier(.2,.9,.2,1) both; }
+  #scene-splash .splash-title { display:flex; gap: 10px; margin-top: 10px; }
+  #scene-splash .splash-title .glyph { font-family: var(--font-display); font-size: 48px; letter-spacing: 2px; color: var(--ember-hi); text-shadow: 0 0 20px var(--ember-glow); opacity: 0; transform: translateY(8px); animation: glyphIn 520ms cubic-bezier(.2,.9,.2,1) forwards; }
+  #scene-splash .splash-sub { font-family: var(--font-display); letter-spacing: 6px; font-size: 13px; color: var(--ink-2); margin-top: 14px; opacity: 0; animation: subIn 700ms 1.6s forwards; }
+  #scene-splash .splash-skip { position: absolute; bottom: 60px; color: var(--ink-2); font-size: 11px; letter-spacing: 3px; opacity: 0; animation: subIn 500ms 2.0s forwards; }
+  @keyframes diamondRise { 0% { opacity: 0; transform: translateY(20px) scale(0.88); text-shadow: 0 0 0 transparent; } 60% { opacity: 1; transform: translateY(0) scale(1.05); } 100% { opacity: 1; transform: translateY(0) scale(1); text-shadow: 0 0 40px var(--ember-glow); } }
+  @keyframes glyphIn { to { opacity: 1; transform: translateY(0); } }
+  @keyframes subIn { to { opacity: 1; } }
+  body.reduce-motion #scene-splash .splash-diamond,
+  body.reduce-motion #scene-splash .splash-title .glyph,
+  body.reduce-motion #scene-splash .splash-sub,
+  body.reduce-motion #scene-splash .splash-skip { animation: none; opacity: 1; transform: none; }
+
+  /* ============================================================
+     Login
+     ============================================================ */
+  #scene-login .login-box { background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember); padding: 32px 40px; border-radius: 2px; min-width: 380px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+  #scene-login .login-row { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; }
+  #scene-login .login-hint { font-size: 11px; color: var(--ink-2); letter-spacing: 1.5px; font-family: var(--font-display); }
+
+  /* ============================================================
+     Main Menu
+     ============================================================ */
+  #scene-menu .menu-title { font-family: var(--font-display); font-size: 72px; letter-spacing: 8px; color: var(--ember-hi); text-shadow: 0 0 30px var(--ember-glow); margin: 0 0 4px; }
+  #scene-menu .menu-greeting { font-family: var(--font-display); letter-spacing: 3px; color: var(--ink-1); margin-bottom: 8px; font-size: 14px; }
+  #scene-menu .menu-sub { font-family: var(--font-display); letter-spacing: 5px; font-size: 13px; color: var(--ink-2); text-transform: uppercase; margin-bottom: 36px; }
+  #scene-menu .menu-list { display: flex; flex-direction: column; gap: 10px; min-width: 280px; }
+  #scene-menu .menu-list button { padding: 14px 22px; font-size: 14px; letter-spacing: 4px; text-align: left; }
+  #scene-menu .menu-list button.continue-btn { border-color: var(--ember); color: var(--ember-hi); }
+  #scene-menu .menu-footer { position: absolute; bottom: 30px; left: 0; right: 0; display: flex; justify-content: center; gap: 14px; font-size: 11px; color: var(--ink-2); letter-spacing: 2px; }
+  #scene-menu .menu-footer a { color: var(--ink-2); cursor: pointer; text-decoration: underline; }
+
+  /* ============================================================
+     Mode select
+     ============================================================ */
+  #scene-mode-select .mode-grid { display: grid; grid-template-columns: repeat(2, 300px); gap: 18px; margin-top: 18px; }
+  .mode-card { background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember); padding: 20px 22px; cursor: pointer; border-radius: 2px; transition: all 0.18s; }
+  .mode-card:hover { border-color: var(--ember); box-shadow: 0 0 16px var(--ember-glow); }
+  .mode-card:focus-visible { outline: 2px solid var(--ember-hi); outline-offset: 3px; }
+  .mode-card h3 { font-family: var(--font-display); letter-spacing: 3px; color: var(--ember-hi); margin: 0 0 6px; font-size: 18px; }
+  .mode-card .mode-sub { font-size: 11px; letter-spacing: 2px; color: var(--ink-2); text-transform: uppercase; margin-bottom: 10px; font-family: var(--font-display); }
+  .mode-card .mode-body { font-size: 12px; color: var(--ink-1); line-height: 1.5; font-style: italic; }
+  .mode-card.disabled { opacity: 0.5; cursor: not-allowed; }
+  .mode-card .mode-tag { display: inline-block; margin-top: 8px; font-size: 9px; letter-spacing: 2px; color: var(--ember); text-transform: uppercase; font-family: var(--font-display); }
+
+  /* ============================================================
+     Co-op Lobby (stub — wired in Phase 10.3)
+     ============================================================ */
+  #scene-lobby-coop .lobby-box { background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember); padding: 28px 36px; border-radius: 2px; min-width: 440px; }
+  #scene-lobby-coop .lobby-box h2 { margin-bottom: 16px; }
+  #scene-lobby-coop .lobby-box .lobby-id { background: var(--bg-0); border: 1px solid var(--line); padding: 10px 14px; font-family: monospace; font-size: 13px; color: var(--ember-hi); letter-spacing: 1px; user-select: all; margin: 8px 0; border-radius: 2px; }
+  #scene-lobby-coop .lobby-box .divider { height: 1px; background: var(--line); margin: 20px 0; }
+
+  /* Chat panel for co-op match */
+  #chat-panel { position: absolute; right: 12px; bottom: 80px; width: 280px; max-height: 260px; background: rgba(10,10,16,0.92); border: 1px solid var(--line-2); border-left: 3px solid var(--crown); border-radius: 3px; display: none; flex-direction: column; z-index: 30; box-shadow: 0 6px 24px rgba(0,0,0,0.7); }
+  #chat-panel.on { display: flex; }
+  #chat-log { flex: 1; overflow-y: auto; padding: 8px 10px; font-size: 12px; line-height: 1.5; color: var(--ink-0); font-family: var(--font-body); max-height: 200px; }
+  #chat-log .chat-line { margin-bottom: 4px; }
+  #chat-log .chat-line .who { color: var(--ember-hi); font-weight: 600; margin-right: 6px; font-family: var(--font-display); letter-spacing: 1px; font-size: 11px; }
+  #chat-log .chat-sys { color: var(--ink-2); font-style: italic; font-size: 11px; }
+  #chat-form { display: flex; gap: 4px; padding: 6px; border-top: 1px solid var(--line); }
+  #chat-form input { flex: 1; min-width: 0; padding: 5px 8px; font-size: 12px; }
+  #chat-form button { padding: 5px 10px; font-size: 10px; letter-spacing: 1px; }
+  #net-status { position: absolute; top: 12px; right: 12px; background: rgba(10,10,16,0.9); border: 1px solid var(--line-2); padding: 5px 10px; font-family: var(--font-display); letter-spacing: 2px; font-size: 10px; color: var(--ink-2); text-transform: uppercase; border-radius: 2px; display: none; z-index: 30; }
+  #net-status.on { display: block; }
+  #net-status.connected { color: #16a34a; border-color: #16a34a; }
+  #net-status.degraded { color: var(--ember-hi); border-color: var(--ember); }
+  #net-status.lost { color: #ef4444; border-color: #ef4444; }
+
+  /* ============================================================
+     Profile Scene (Strand 2)
+     ============================================================ */
+  .profile-box { background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember); padding: 24px 32px; border-radius: 2px; min-width: 520px; max-width: 720px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+  .profile-header { font-family: var(--font-display); font-size: 18px; letter-spacing: 3px; color: var(--ember-hi); margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+  .profile-header .profile-sub { display: block; font-size: 11px; letter-spacing: 2px; color: var(--ink-2); margin-top: 4px; text-transform: uppercase; }
+  .profile-section { margin-bottom: 18px; }
+  .profile-section-title { font-family: var(--font-display); font-size: 11px; letter-spacing: 3px; color: var(--ink-2); text-transform: uppercase; margin-bottom: 10px; }
+  .profile-roster { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .profile-cmdr { border: 1px solid var(--line-2); padding: 10px; border-radius: 2px; text-align: center; background: var(--bg-0); }
+  .profile-cmdr.last { border-color: var(--ember); box-shadow: 0 0 10px var(--ember-glow); }
+  .profile-cmdr .p-cmdr-name { font-family: var(--font-display); font-size: 11px; letter-spacing: 2px; color: var(--ink-0); margin-bottom: 4px; }
+  .profile-cmdr .p-cmdr-tilt { font-size: 9px; color: var(--ink-2); font-style: italic; margin-bottom: 6px; letter-spacing: 1px; }
+  .profile-cmdr .p-cmdr-xp { height: 4px; background: var(--bg-1); border: 1px solid var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .profile-cmdr .p-cmdr-xp-fill { height: 100%; background: linear-gradient(90deg, var(--ember), var(--ember-hi)); }
+  .profile-cmdr .p-cmdr-level { font-size: 9px; color: var(--ink-2); letter-spacing: 1px; font-family: var(--font-display); text-transform: uppercase; }
+  .profile-cmdr .p-cmdr-unlocks { font-size: 9px; color: var(--ember); letter-spacing: 1px; font-family: var(--font-display); text-transform: uppercase; margin-top: 2px; }
+  .profile-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 12px; color: var(--ink-1); font-family: var(--font-body); }
+  .profile-settings b { font-family: var(--font-display); font-size: 10px; letter-spacing: 2px; color: var(--ink-2); text-transform: uppercase; }
+
+  /* ============================================================
+     Commander Pick
+     ============================================================ */
+  .pick-head { font-family: var(--font-display); font-size: 34px; letter-spacing: 5px; color: var(--ember-hi); text-align: center; margin-bottom: 24px; text-shadow: 0 0 20px var(--ember-glow); }
+  .cmdr-card {
+    background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember);
+    padding: 28px 36px; border-radius: 2px; min-width: 420px; max-width: 560px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+  .cmdr-portrait { width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; margin: 0 auto 12px; border: 2px solid currentColor; box-shadow: 0 0 20px currentColor; letter-spacing: 0; overflow: hidden; background: var(--bg-0); }
+  .cmdr-portrait svg { width: 100%; height: 100%; }
+  body.silhouette-test .cmdr-portrait, body.silhouette-test .p-cmdr-silhouette { filter: grayscale(1) brightness(0.9); }
+  body.silhouette-test .cmdr-name, body.silhouette-test .cmdr-epithet, body.silhouette-test .p-cmdr-name, body.silhouette-test .p-cmdr-tilt { visibility: hidden; }
+  .cmdr-xp-ladder { position: relative; height: 14px; margin: 4px 0 8px; }
+  .cmdr-xp-ladder progress { position: absolute; inset: 4px 0 4px 0; width: 100%; height: 6px; }
+  .cmdr-xp-ladder .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink-2); }
+  .cmdr-xp-ladder .tick.unlocked { background: var(--ember-hi); box-shadow: 0 0 4px var(--ember-hi); }
+  .cmdr-xp-ladder .tick-label { position: absolute; top: -14px; transform: translateX(-50%); font-family: var(--font-display); font-size: 9px; color: var(--ink-2); letter-spacing: 1px; }
+  .cmdr-portrait.sinew { background: var(--sinew); color: #fff; }
+  .cmdr-portrait.ember { background: var(--ember); color: #2a1a04; }
+  .cmdr-portrait.forge { background: var(--forge); color: #fff; }
+  .cmdr-portrait.crown { background: var(--crown); color: #fff; }
+  .cmdr-portrait.veil  { background: var(--veil);  color: #fff; }
+  .cmdr-name { font-family: var(--font-display); font-size: 26px; letter-spacing: 2px; color: var(--ember-hi); margin-bottom: 4px; text-align: center; }
+  .cmdr-epithet { font-family: var(--font-display); font-size: 12px; letter-spacing: 3px; color: var(--ink-2); text-transform: uppercase; margin-bottom: 18px; text-align: center; }
+  .cmdr-lore { font-family: var(--font-display); font-size: 14px; line-height: 1.55; color: var(--ink-0); font-style: italic; letter-spacing: 0.3px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin: 0 0 18px; }
+  .cmdr-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 16px; }
+  .cmdr-stat { font-size: 12px; color: var(--ink-1); }
+  .cmdr-stat b { font-family: var(--font-display); font-size: 10px; letter-spacing: 2px; color: var(--ink-2); display: block; text-transform: uppercase; margin-bottom: 2px; }
+  .cmdr-progress { margin: 14px 0 10px; }
+  .cmdr-progress-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-2); letter-spacing: 2px; font-family: var(--font-display); text-transform: uppercase; margin-bottom: 4px; }
+  .cmdr-progress progress { width: 100%; height: 6px; }
+  .cmdr-cosmetics { display: flex; gap: 6px; margin-top: 8px; }
+  .cmdr-cosmetic-slot { flex: 1; padding: 6px 8px; background: var(--bg-0); border: 1px dashed var(--line-2); border-radius: 2px; font-size: 9px; color: var(--ink-3); text-align: center; letter-spacing: 1px; font-family: var(--font-display); text-transform: uppercase; }
+  #scene-commander-pick .cta-row { margin-top: 22px; justify-content: flex-end; }
+  .cmdr-roster { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; justify-content: center; }
+  .cmdr-roster-chip {
+    font-family: var(--font-display); font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--ink-2);
+    background: var(--bg-1); border: 1px solid var(--line-2);
+    padding: 9px 16px; cursor: pointer; border-radius: 3px;
+    transition: color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .cmdr-roster-chip:hover { color: var(--ember-hi); border-color: var(--ember); }
+  .cmdr-roster-chip.selected { color: var(--ember-hi); border-color: var(--ember); background: rgba(217,119,6,0.08); box-shadow: 0 0 10px var(--ember-glow); }
+  .cmdr-roster-chip .chip-tilt { font-size: 9px; letter-spacing: 1.5px; color: var(--ink-2); text-transform: none; font-style: italic; }
+  .cmdr-roster-chip .chip-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .chip-dot.sinew { background: var(--sinew); } .chip-dot.ember { background: var(--ember); }
+  .chip-dot.forge { background: var(--forge); } .chip-dot.crown { background: var(--crown); }
+  .chip-dot.veil  { background: var(--veil);  }
+
+  /* ============================================================
+     Match HUD
+     ============================================================ */
+  .game-root { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 1140px; }
+  .hud {
+    display: flex; align-items: center; gap: 20px; padding: 12px 18px;
+    background: linear-gradient(180deg, #0a0a10, #05050a);
+    border: 1px solid var(--line-2); border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(217,119,6,0.12);
+    font-family: var(--font-display); letter-spacing: 2px; font-size: 12px;
+  }
+  .hud .hud-item { display: flex; align-items: center; gap: 7px; color: var(--ink-1); }
+  .hud .hud-item b { color: var(--ember-hi); font-size: 14px; letter-spacing: 1px; }
+  .hud .hud-item .icon { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px currentColor; }
+  .hud .gold { color: var(--gold); } .hud .knowledge { color: var(--knowledge); } .hud .life { color: var(--life); }
+  .hud .age-label { color: var(--ember); } .hud .wave-label { color: var(--ink-2); }
+  .hud .spacer { flex: 1; }
+  .hud .banner-title { color: var(--ember-hi); letter-spacing: 3px; font-weight: 700; }
+  .hud .hud-cmdr { display: flex; align-items: center; gap: 8px; padding-right: 10px; border-right: 1px solid var(--line-2); margin-right: 6px; }
+  .hud .hud-cmdr .silhouette { width: 28px; height: 28px; border-radius: 50%; font-family: var(--font-display); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 1px solid currentColor; box-shadow: 0 0 8px currentColor; }
+  .hud button.hud-btn { padding: 5px 11px; font-size: 10px; letter-spacing: 2px; }
+
+  .board-wrap { margin-top: 14px; position: relative; flex: 1; border: 1px solid var(--line-2); border-radius: 3px; background: radial-gradient(ellipse at 50% 50%, #121018 0%, var(--bg-0) 80%); overflow: hidden; }
+  #board { display: block; width: 100%; height: 100%; cursor: crosshair; }
+  #board.playing { cursor: default; }
+  .action-bar { margin-top: 12px; display: flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-1); border: 1px solid var(--line); border-radius: 3px; flex-wrap: wrap; }
+  .action-bar .label { font-family: var(--font-display); letter-spacing: 2px; font-size: 11px; color: var(--ink-2); text-transform: uppercase; margin-right: 6px; }
+  .action-bar .tower-btn { padding: 7px 12px; font-size: 11px; letter-spacing: 1.5px; border: 1px solid var(--line-2); color: var(--ink-1); background: var(--bg-2); display: flex; align-items: center; gap: 6px; }
+  .action-bar .tower-btn:hover:not(:disabled) { border-color: var(--ember); color: var(--ember-hi); }
+  .action-bar .tower-btn.selected { border-color: var(--ember); color: var(--ember-hi); background: rgba(217,119,6,0.08); box-shadow: 0 0 10px var(--ember-glow); }
+  .action-bar .tower-btn .cost { color: var(--gold); margin-left: 6px; }
+  .action-bar .tower-btn .glyph { width: 10px; height: 10px; border-radius: 2px; display: inline-block; border: 1px solid rgba(255,255,255,0.3); }
+  .action-bar .glyph.sinew { background: var(--sinew); } .action-bar .glyph.ember { background: var(--ember); }
+  .action-bar .glyph.forge { background: var(--forge); } .action-bar .glyph.crown { background: var(--crown); }
+  .action-bar .glyph.veil  { background: var(--veil);  } .action-bar .glyph.hybrid { background: linear-gradient(135deg, var(--sinew), var(--ember)); }
+  .action-bar .spacer { flex: 1; }
+  .action-bar .wave-indicator { font-family: var(--font-display); font-size: 11px; letter-spacing: 2px; color: var(--ember); text-transform: uppercase; padding: 0 10px; }
+  .action-bar .wave-indicator.active { color: var(--life); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* ============================================================
+     Pause overlay
+     ============================================================ */
+  #pause-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,10,0.85); backdrop-filter: blur(6px); z-index: 1800; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  #pause-overlay.on { display: flex; }
+  #pause-overlay h2 { font-size: 44px; letter-spacing: 10px; }
+  #pause-overlay .pause-menu { display: flex; flex-direction: column; gap: 10px; min-width: 280px; margin-top: 14px; }
+
+  /* ============================================================
+     Options
+     ============================================================ */
+  #scene-options .opts-box { background: var(--bg-1); border: 1px solid var(--line-2); padding: 0; border-radius: 2px; width: 640px; max-width: 90vw; display: flex; flex-direction: column; }
+  .opts-tabs { display: flex; border-bottom: 1px solid var(--line-2); }
+  .opts-tab { flex: 1; padding: 12px 10px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--ink-2); font-family: var(--font-display); letter-spacing: 3px; font-size: 11px; text-transform: uppercase; cursor: pointer; }
+  .opts-tab.active { color: var(--ember-hi); border-bottom-color: var(--ember); }
+  .opts-tab:hover:not(.active) { color: var(--ink-0); }
+  .opts-panel { padding: 24px 28px; display: none; min-height: 240px; }
+  .opts-panel.active { display: block; }
+  .opts-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .opts-row:last-child { border-bottom: 0; }
+  .opts-row .opts-label { font-family: var(--font-display); letter-spacing: 2px; font-size: 12px; color: var(--ink-1); text-transform: uppercase; }
+  .opts-row .opts-control { display: flex; align-items: center; gap: 10px; }
+  .opts-row .opts-value { font-family: monospace; color: var(--ember-hi); font-size: 12px; min-width: 40px; text-align: right; }
+  .opts-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px; border-top: 1px solid var(--line-2); }
+
+  /* ============================================================
+     Tutorial / End / Toast
+     ============================================================ */
+  #narrator { position: absolute; left: 24px; right: 24px; bottom: 20px; background: linear-gradient(180deg, rgba(14,14,18,0.95), rgba(7,7,10,0.95)); border: 1px solid var(--line-2); border-left: 3px solid var(--ember); padding: 14px 18px; border-radius: 2px; font-family: var(--font-display); font-size: 14px; line-height: 1.4; color: var(--ink-0); letter-spacing: 0.3px; box-shadow: 0 6px 24px rgba(0,0,0,0.8), 0 0 18px var(--ember-glow); backdrop-filter: blur(3px); z-index: 20; }
+  #narrator .narr-step { font-family: var(--font-display); font-size: 10px; letter-spacing: 3px; color: var(--ember); text-transform: uppercase; margin-bottom: 6px; }
+  #narrator .narr-body { font-style: italic; }
+  #narrator .narr-cta { margin-top: 10px; display: flex; gap: 8px; }
+  #narrator .narr-cta button { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+
+  #scene-end .end-title { font-family: var(--font-display); font-size: 56px; letter-spacing: 6px; color: var(--ember-hi); text-shadow: 0 0 30px var(--ember-glow); margin: 0 0 10px; }
+  #scene-end .end-title.defeat { color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.4); }
+  #scene-end .end-sub { font-family: var(--font-display); letter-spacing: 4px; color: var(--ink-1); text-transform: uppercase; font-size: 14px; margin-bottom: 32px; }
+  #scene-end .end-stats { background: var(--bg-1); border: 1px solid var(--line); border-left: 2px solid var(--ember); padding: 20px 28px; border-radius: 2px; min-width: 420px; }
+
+  /* ============================================================
+     Hover tip, right-click menu, reference panel (interaction layer)
+     ============================================================ */
+  #hover-tip { position: fixed; z-index: 200; pointer-events: none; background: linear-gradient(180deg, rgba(14,14,18,0.97), rgba(7,7,10,0.97)); border: 1px solid var(--line-2); border-left: 3px solid var(--ember); padding: 10px 14px; min-width: 200px; max-width: 300px; font-family: system-ui, sans-serif; font-size: 12px; line-height: 1.5; color: var(--ink-0); box-shadow: 0 6px 24px rgba(0,0,0,0.8), 0 0 14px var(--ember-glow); backdrop-filter: blur(3px); border-radius: 2px; opacity: 0; transition: opacity 0.12s; }
+  #hover-tip.show { opacity: 1; }
+  #hover-tip .tip-title { font-family: var(--font-display); letter-spacing: 2px; font-size: 11px; text-transform: uppercase; color: var(--ember-hi); margin-bottom: 6px; }
+  #hover-tip .tip-sub { font-family: var(--font-display); letter-spacing: 1px; font-size: 10px; color: var(--ink-2); text-transform: uppercase; margin-top: -4px; margin-bottom: 6px; }
+  #hover-tip .tip-row { display: flex; justify-content: space-between; gap: 14px; font-family: monospace; font-size: 11px; }
+  #hover-tip .tip-row .tip-k { color: var(--ink-2); }
+  #hover-tip .tip-row .tip-v { color: var(--ink-0); }
+  #hover-tip .tip-role { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); font-style: italic; color: var(--ink-1); font-size: 11px; }
+  #hover-tip .tip-hint { margin-top: 6px; color: var(--ember); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; font-family: var(--font-display); }
+  #hover-tip .tip-hk { display: inline-block; border: 1px solid var(--line-2); padding: 1px 5px; border-radius: 2px; font-size: 10px; color: var(--ember-hi); margin-left: 6px; }
+
+  #ctx-menu { position: fixed; z-index: 210; background: linear-gradient(180deg, rgba(18,18,22,0.98), rgba(9,9,12,0.98)); border: 1px solid var(--line-2); border-top: 2px solid var(--ember); min-width: 180px; box-shadow: 0 8px 28px rgba(0,0,0,0.85); border-radius: 2px; padding: 6px 0; display: none; }
+  #ctx-menu.show { display: block; }
+  #ctx-menu .ctx-title { padding: 6px 14px; font-family: var(--font-display); letter-spacing: 2px; font-size: 10px; color: var(--ember-hi); text-transform: uppercase; border-bottom: 1px solid var(--line); }
+  #ctx-menu .ctx-sub { padding: 2px 14px 6px; font-family: monospace; font-size: 10px; color: var(--ink-2); border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+  #ctx-menu button.ctx-item { display: block; width: 100%; text-align: left; background: transparent; border: 0; color: var(--ink-0); padding: 8px 14px; font-family: var(--font-display); letter-spacing: 1.5px; font-size: 11px; text-transform: uppercase; cursor: pointer; box-shadow: none; }
+  #ctx-menu button.ctx-item:hover:not(:disabled) { background: rgba(217,119,6,0.12); color: var(--ember-hi); }
+  #ctx-menu button.ctx-item:disabled { color: var(--ink-3); cursor: not-allowed; opacity: 0.5; }
+  #ctx-menu button.ctx-item .ctx-cost { float: right; color: var(--gold); font-family: monospace; }
+
+  #reference-panel { position: fixed; inset: 0; z-index: 180; background: rgba(5,5,8,0.82); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  #reference-panel.show { display: flex; }
+  #reference-panel .ref-box { background: var(--bg-1); border: 1px solid var(--line-2); border-top: 2px solid var(--ember); padding: 24px 28px; width: 760px; max-width: 94vw; max-height: 88vh; overflow: auto; border-radius: 2px; box-shadow: 0 12px 36px rgba(0,0,0,0.9); }
+  #reference-panel h3 { font-family: var(--font-display); letter-spacing: 4px; color: var(--ember-hi); margin: 0 0 6px; font-size: 16px; text-transform: uppercase; }
+  #reference-panel .ref-sub { font-family: var(--font-display); letter-spacing: 2px; color: var(--ink-2); font-size: 11px; margin-bottom: 18px; text-transform: uppercase; }
+  #reference-panel table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; }
+  #reference-panel th { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line-2); color: var(--ember-hi); font-family: var(--font-display); letter-spacing: 1.5px; font-size: 10px; text-transform: uppercase; }
+  #reference-panel td { padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--ink-0); }
+  #reference-panel tr.current-age td { background: rgba(217,119,6,0.08); }
+  #reference-panel .ref-lineage { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
+  #reference-panel .ref-footer { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; }
+  #reference-panel .ref-footer .ref-key { font-family: monospace; color: var(--ink-2); font-size: 11px; }
+
+  /* Tower upgrade level dots (drawn on canvas but we also ghost-highlight the action-bar) */
+  .action-bar .tower-btn .lvl { display: inline-block; margin-left: 6px; color: var(--ember-hi); font-family: monospace; font-size: 10px; }
+  #scene-end .end-stats .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; color: var(--ink-1); border-bottom: 1px solid var(--line); }
+  #scene-end .end-stats .row:last-child { border-bottom: 0; }
+  #scene-end .end-stats .row b { color: var(--ember-hi); font-family: var(--font-display); letter-spacing: 1px; }
+  #scene-end .cta-row { margin-top: 30px; }
+
+  #toast { position: fixed; top: 50px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, var(--bg-3), var(--bg-2)); border: 1px solid var(--line-2); border-left: 3px solid var(--ember); padding: 10px 20px; border-radius: 2px; font-family: var(--font-display); letter-spacing: 2px; font-size: 12px; color: var(--ink-0); z-index: 1500; box-shadow: 0 6px 24px rgba(0,0,0,0.7); opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+  #toast.on { opacity: 1; transform: translateX(-50%) translateY(6px); }
+
+  /* Subtitle caption (Voice ducking / subtitles-on-captions a11y) */
+  #caption { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(5,5,10,0.85); border: 1px solid var(--line-2); padding: 8px 18px; border-radius: 3px; font-family: var(--font-display); letter-spacing: 2px; font-size: 13px; color: var(--ink-0); z-index: 1600; opacity: 0; transition: opacity 0.2s; pointer-events: none; max-width: 70vw; text-align: center; }
+  #caption.on { opacity: 1; }
+  #caption .cap-prefix { color: var(--ember-hi); font-weight: 700; margin-right: 8px; }
+
+  /* Insight layer — combat feed, next-wave telegraph
+     Decision: decisions/2026-04-20-visuals-insight-pass.md */
+  #combat-feed { position: absolute; top: 12px; right: 12px; width: 220px; display: flex; flex-direction: column; gap: 4px; pointer-events: none; z-index: 20; font-family: var(--font-display); letter-spacing: 1px; font-size: 11px; }
+  #combat-feed .row { background: rgba(5,5,10,0.7); border-left: 2px solid var(--ember); padding: 4px 8px; color: var(--ink-0); border-radius: 2px; opacity: 0; transform: translateX(8px); transition: opacity 0.25s, transform 0.25s; }
+  #combat-feed .row.on { opacity: 1; transform: translateX(0); }
+  #combat-feed .row.leak { border-left-color: #dc2626; color: #fecaca; font-weight: 700; }
+  #combat-feed .row.kill { border-left-color: #16a34a; color: #bbf7d0; }
+  #combat-feed .row.hybrid { border-left-color: #a855f7; color: #e9d5ff; font-weight: 700; }
+  #combat-feed .row.upgrade { border-left-color: #fbbf24; color: #fde68a; }
+  #combat-feed .row.wave { border-left-color: var(--ember-hi); color: var(--ink-0); font-weight: 700; }
+  body.reduce-motion #combat-feed .row { transition: none; }
+
+  /* Age banner (Strand 8) */
+  #age-banner { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, rgba(217,119,6,0.1), rgba(10,10,16,0.94)); border-top: 2px solid var(--ember); border-bottom: 2px solid var(--ember); padding: 18px 36px; font-family: var(--font-display); letter-spacing: 4px; color: var(--ember-hi); text-align: center; display: none; z-index: 50; max-width: 640px; opacity: 0; transition: opacity 0.4s; }
+  #age-banner.on { display: block; opacity: 1; animation: ageBannerIn 2.5s cubic-bezier(.2,.9,.2,1) both; }
+  #age-banner .ab-name { font-size: 22px; letter-spacing: 6px; color: var(--ember-hi); text-shadow: 0 0 12px var(--ember-glow); margin-bottom: 4px; }
+  #age-banner .ab-era { font-size: 12px; letter-spacing: 3px; color: var(--ink-1); text-transform: uppercase; margin-bottom: 8px; }
+  #age-banner .ab-lore { font-size: 12px; color: var(--ink-0); font-style: italic; letter-spacing: 0.5px; line-height: 1.5; max-width: 540px; margin: 0 auto; }
+  #age-banner .ab-motif { font-size: 10px; color: var(--ink-2); letter-spacing: 2px; margin-top: 6px; }
+  @keyframes ageBannerIn { 0% { opacity: 0; transform: translateX(-50%) translateY(-8px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; } }
+  body.reduce-motion #age-banner.on { animation: none; opacity: 1; }
+
+  /* First-run prompts (Strand 5) */
+  #first-run-toast { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); background: rgba(10,10,16,0.96); border: 1px solid var(--ember); border-left: 3px solid var(--ember-hi); border-radius: 3px; padding: 10px 16px; font-family: var(--font-display); letter-spacing: 1px; font-size: 12px; color: var(--ink-0); box-shadow: 0 8px 30px rgba(0,0,0,0.8); z-index: 40; max-width: 480px; display: none; }
+  #first-run-toast.on { display: block; }
+  #first-run-toast .fr-msg { margin-bottom: 6px; }
+  #first-run-toast .fr-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  #first-run-toast button { padding: 5px 12px; font-size: 10px; letter-spacing: 1.5px; }
+  body.reduce-motion #first-run-toast { transition: none; }
+  #next-wave-strip { position: absolute; left: 50%; transform: translateX(-50%); bottom: 12px; display: flex; gap: 6px; padding: 6px 10px; background: rgba(5,5,10,0.78); border: 1px solid var(--line-2); border-radius: 2px; font-family: var(--font-display); letter-spacing: 1px; font-size: 10px; color: var(--ink-0); pointer-events: none; z-index: 15; opacity: 0; transition: opacity 0.2s; }
+  #next-wave-strip.on { opacity: 1; }
+  #next-wave-strip .tw-label { color: var(--ember-hi); padding-right: 4px; border-right: 1px solid var(--line-2); margin-right: 4px; }
+  #next-wave-strip .tw-chip { display: flex; align-items: center; gap: 3px; padding: 2px 4px; background: rgba(20,20,30,0.6); border-radius: 2px; }
+  #next-wave-strip .tw-chip canvas { image-rendering: pixelated; }
+  #next-wave-strip .tw-chip b { color: var(--ember-hi); }
+</style>
+</head>
+<body>
+
+<div id="scope-banner"><b>Design prototype</b> — throwaway. Not the game engine. Port findings, not code.</div>
+
+<!-- ============================================================
+     Scene: Splash
+     ============================================================ -->
+<div class="scene active" id="scene-splash">
+  <div class="splash-diamond">◆</div>
+  <div class="splash-title" id="splash-title-row"></div>
+  <div class="splash-sub">— THE CASCADE IS THE PRODUCT —</div>
+  <div class="splash-skip">[Click or press any key to skip]</div>
+</div>
+
+<!-- ============================================================
+     Scene: Login
+     ============================================================ -->
+<div class="scene" id="scene-login">
+  <h1 id="login-heading">Ash to Altar</h1>
+  <div class="sub" id="login-subheading">Identify yourself, Commander</div>
+  <div class="login-box">
+    <div class="login-row">
+      <label for="login-username" id="login-label">Commander name</label>
+      <input type="text" id="login-username" placeholder="e.g. Ashara" maxlength="24" autocomplete="off" />
+      <div class="login-hint" id="login-hint">Local profile only. Stored in your browser. No server.</div>
+    </div>
+    <div class="cta-row" style="justify-content:space-between; margin-top:8px;">
+      <button class="ghost" id="login-clear" type="button">Logout / clear</button>
+      <button id="login-go" type="button">Enter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Main Menu
+     ============================================================ -->
+<div class="scene" id="scene-menu">
+  <div class="menu-title">Ash to Altar</div>
+  <div class="menu-greeting" id="menu-greeting">Welcome, Commander.</div>
+  <div class="menu-sub" id="menu-sub">— The cascade is the product —</div>
+  <div class="menu-last" id="menu-last" style="display:none; font-family: var(--font-display); letter-spacing:2px; color: var(--ink-2); font-size: 12px; margin-bottom: 14px;"></div>
+  <div class="menu-list">
+    <button class="continue-btn primary" id="menu-continue" style="display:none;" onclick="menuContinue()">Continue</button>
+    <button id="menu-new" onclick="menuNewGame()">New game</button>
+    <button id="menu-play" onclick="menuPlay()">Play</button>
+    <button onclick="goto('commander-pick')">Commander</button>
+    <button id="menu-profile-btn" onclick="goto('profile')">Profile</button>
+    <button onclick="openOptions('menu')">Options</button>
+    <button class="ghost" onclick="doLogout()">Logout</button>
+  </div>
+  <div class="menu-footer">
+    <span id="menu-user-label">— signed in as: —</span>
+    <a onclick="confirmQuit()">Quit</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Profile (STRAND 2)
+     ============================================================ -->
+<div class="scene" id="scene-profile">
+  <div class="pick-head">Your Profile</div>
+  <div class="profile-box">
+    <div class="profile-header" id="profile-header"></div>
+    <div class="profile-section">
+      <div class="profile-section-title">Commander roster</div>
+      <div class="profile-roster" id="profile-roster"></div>
+    </div>
+    <div class="profile-section">
+      <div class="profile-section-title">Settings summary</div>
+      <div class="profile-settings" id="profile-settings"></div>
+    </div>
+    <div class="cta-row" style="margin-top: 20px;">
+      <button class="ghost" onclick="goto('menu')">Back</button>
+      <button class="ghost" onclick="confirmLogout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Mode Select
+     ============================================================ -->
+<div class="scene" id="scene-mode-select">
+  <div class="pick-head">Choose Your Engagement</div>
+  <div class="mode-grid">
+    <div class="mode-card" tabindex="0" onclick="startMode('skirmish')" onkeydown="if(event.key==='Enter')startMode('skirmish')">
+      <h3>Solo Skirmish</h3>
+      <div class="mode-sub">Single player · 3 waves</div>
+      <div class="mode-body">A quick test of the loop. Three waves, three ages. The original prototype scope.</div>
+      <div class="mode-tag">Available</div>
+    </div>
+    <div class="mode-card" tabindex="0" onclick="startMode('tutorial')" onkeydown="if(event.key==='Enter')startMode('tutorial')">
+      <h3>Tutorial</h3>
+      <div class="mode-sub">Five steps · narrated</div>
+      <div class="mode-body">Learn to build, defend, hybridize, and age-up. Skippable. Returns you to menu.</div>
+      <div class="mode-tag">Available</div>
+    </div>
+    <div class="mode-card" tabindex="0" onclick="startMode('horde')" onkeydown="if(event.key==='Enter')startMode('horde')">
+      <h3>Co-op Horde</h3>
+      <div class="mode-sub">Two players · 11 waves</div>
+      <div class="mode-body">One wave per age. Shared economy. Host or join via invite link. WebRTC peer-to-peer.</div>
+      <div class="mode-tag">Phase 10.3 — lobby opens, match not yet wired</div>
+    </div>
+    <div class="mode-card disabled" tabindex="0" aria-disabled="true">
+      <h3>Solo Campaign</h3>
+      <div class="mode-sub">11 waves · autosave</div>
+      <div class="mode-body">Full 11-age arc solo. Autosave every 2 min. Not yet wired.</div>
+      <div class="mode-tag">Phase 10.2 — stub</div>
+    </div>
+  </div>
+  <div class="cta-row">
+    <button class="ghost" onclick="goto('menu')">Back</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Co-op Lobby (Phase 10.3 — stub)
+     ============================================================ -->
+<div class="scene" id="scene-lobby-coop">
+  <h2>Co-op Horde Lobby</h2>
+  <div class="lobby-box">
+    <div style="font-family:var(--font-display); letter-spacing:2px; font-size:12px; color:var(--ink-2); text-transform:uppercase; margin-bottom:8px;">Host</div>
+    <div>Generate an invite link for your friend.</div>
+    <div class="cta-row" style="margin-top:10px; justify-content:flex-start;">
+      <button onclick="coopHost()">Host match</button>
+    </div>
+    <div class="lobby-id" id="lobby-host-id" style="display:none;">— waiting for PeerJS —</div>
+    <div class="divider"></div>
+    <div style="font-family:var(--font-display); letter-spacing:2px; font-size:12px; color:var(--ink-2); text-transform:uppercase; margin-bottom:8px;">Join</div>
+    <div>Paste the invite code your friend shared.</div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <input type="text" id="lobby-join-code" placeholder="Invite code" />
+      <button onclick="coopJoin()">Join</button>
+    </div>
+    <div id="lobby-status" style="margin-top:14px; font-size:12px; color:var(--ink-2); font-style:italic;">PeerJS integration lands in Phase 10.3.</div>
+  </div>
+  <div class="cta-row">
+    <button class="ghost" onclick="goto('mode-select')">Back</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Commander Pick
+     ============================================================ -->
+<div class="scene" id="scene-commander-pick">
+  <div class="pick-head">Choose Your Commander</div>
+  <div class="cmdr-roster" id="cmdr-roster"></div>
+  <div class="cmdr-card">
+    <div class="cmdr-portrait" id="cmdr-portrait">A</div>
+    <div class="cmdr-name" id="cmdr-name">Commander A</div>
+    <div class="cmdr-epithet" id="cmdr-epithet">Sinew-tilted · Frontline Specialist</div>
+    <div class="cmdr-lore" id="cmdr-lore">—</div>
+    <div class="cmdr-stats">
+      <div class="cmdr-stat"><b>Lineage tilt</b><span id="cmdr-stat-tilt">—</span></div>
+      <div class="cmdr-stat"><b>Generates</b><span id="cmdr-stat-generates">—</span></div>
+      <div class="cmdr-stat"><b>Passive</b><span id="cmdr-stat-passive">—</span></div>
+      <div class="cmdr-stat"><b>Signature</b><span id="cmdr-stat-signature">—</span></div>
+    </div>
+    <div class="cmdr-progress">
+      <div class="cmdr-progress-label"><span>Level <b id="cmdr-level">1</b> / 20</span><span id="cmdr-xp-label">0 / 100 XP</span></div>
+      <div class="cmdr-xp-ladder" id="cmdr-xp-ladder">
+        <progress id="cmdr-xp-bar" value="0" max="100"></progress>
+        <div class="tick-label" style="left:25%;">L5</div>
+        <div class="tick-label" style="left:50%;">L10</div>
+        <div class="tick-label" style="left:75%;">L15</div>
+        <div class="tick" id="cmdr-tick-5" style="left:25%;"></div>
+        <div class="tick" id="cmdr-tick-10" style="left:50%;"></div>
+        <div class="tick" id="cmdr-tick-15" style="left:75%;"></div>
+      </div>
+      <div class="cmdr-cosmetics">
+        <div class="cmdr-cosmetic-slot" id="cmdr-slot-skin">Skin — locked at L5</div>
+        <div class="cmdr-cosmetic-slot" id="cmdr-slot-frame">Frame — locked at L10</div>
+        <div class="cmdr-cosmetic-slot" id="cmdr-slot-tint">Map tint — locked at L15</div>
+      </div>
+      <div id="cmdr-caption-preview" style="margin-top:10px; font-family:var(--font-display); letter-spacing:1px; font-size:11px; color:var(--ink-2); font-style:italic; min-height:14px;"></div>
+    </div>
+    <div class="cta-row">
+      <button class="ghost" onclick="goto('menu')">Back to menu</button>
+      <button onclick="selectCommander()">Take the field</button>
+    </div>
+  </div>
+</div>
+
+<!-- Back-compat alias: old code referenced #scene-pick -->
+<div class="scene" id="scene-pick" style="display:none;"></div>
+
+<!-- ============================================================
+     Scene: Tutorial
+     ============================================================ -->
+<div class="scene" id="scene-tutorial">
+  <div class="game-root">
+    <div class="hud">
+      <div class="hud-item banner-title">Tutorial</div>
+      <div class="hud-item gold"><span class="icon" style="background:var(--gold)"></span>Gold <b id="t-gold">0</b></div>
+      <div class="hud-item knowledge"><span class="icon" style="background:var(--knowledge)"></span>Knowledge <b id="t-knowledge">0</b></div>
+      <div class="hud-item age-label">Age <b id="t-age">Primal</b></div>
+      <div class="hud-item life"><span class="icon" style="background:var(--life)"></span>Lives <b id="t-lives">3</b></div>
+      <div class="spacer"></div>
+      <div class="hud-item wave-label">Step <b id="t-step">1 / 5</b></div>
+      <button class="hud-btn ghost" onclick="skipTutorial()">Skip</button>
+    </div>
+    <div class="board-wrap">
+      <canvas id="board-tutorial"></canvas>
+      <div id="narrator">
+        <div class="narr-step" id="t-narr-step">Step 1</div>
+        <div class="narr-body" id="t-narr-body">Welcome, Commander. The creeps are coming. Click a glowing cell beside the path to place an Ember tower.</div>
+        <div class="narr-cta" id="t-narr-cta"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Match
+     ============================================================ -->
+<div class="scene" id="scene-match">
+  <div class="game-root">
+    <div class="hud">
+      <div class="hud-cmdr" id="m-cmdr"><div class="silhouette" id="m-silhouette">A</div><span id="m-cmdr-name">Commander A</span></div>
+      <div class="hud-item banner-title" id="m-mode-label">Skirmish</div>
+      <div class="hud-item gold"><span class="icon" style="background:var(--gold)"></span>Gold <b id="m-gold">0</b></div>
+      <div class="hud-item knowledge"><span class="icon" style="background:var(--knowledge)"></span>Knowledge <b id="m-knowledge">0</b></div>
+      <div class="hud-item age-label">Age <b id="m-age">Primal</b></div>
+      <div class="hud-item life"><span class="icon" style="background:var(--life)"></span>Lives <b id="m-lives">10</b></div>
+      <div class="spacer"></div>
+      <div class="hud-item wave-label">Wave <b id="m-wave">0 / 3</b></div>
+      <button class="hud-btn ghost" onclick="togglePause()" title="Pause (Esc)">⏸ Pause</button>
+    </div>
+    <div class="board-wrap">
+      <canvas id="board-match"></canvas>
+      <div id="combat-feed"></div>
+      <div id="next-wave-strip"></div>
+      <div id="net-status">Offline</div>
+      <div id="age-banner"></div>
+      <div id="event-banner" style="position:absolute; top:140px; left:50%; transform:translateX(-50%); background:rgba(10,10,16,0.94); border-left:3px solid var(--crown); padding:8px 18px; font-family:var(--font-display); letter-spacing:2px; font-size:12px; color:var(--ink-0); display:none; z-index:49;"></div>
+      <div id="chat-panel">
+        <div id="chat-log"></div>
+        <form id="chat-form" onsubmit="event.preventDefault(); sendChat();">
+          <input type="text" id="chat-input" maxlength="100" placeholder="Say something (Enter)…" autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <div class="action-bar" id="action-bar">
+      <span class="label">Build</span>
+      <button class="tower-btn" data-tower="sinew" onclick="selectTower('sinew')"><span class="glyph sinew"></span>Sinew <span class="cost">40g</span></button>
+      <button class="tower-btn" data-tower="ember" onclick="selectTower('ember')"><span class="glyph ember"></span>Ember <span class="cost">30g</span></button>
+      <button class="tower-btn" data-tower="forge" onclick="selectTower('forge')"><span class="glyph forge"></span>Forge <span class="cost">50g</span></button>
+      <button class="tower-btn" data-tower="crown" onclick="selectTower('crown')"><span class="glyph crown"></span>Crown <span class="cost">45g</span></button>
+      <button class="tower-btn" data-tower="veil" onclick="selectTower('veil')"><span class="glyph veil"></span>Veil <span class="cost">35g</span></button>
+      <button class="tower-btn" id="btn-tower-hybrid" data-tower="hybrid" onclick="selectTower('hybrid')" disabled><span class="glyph hybrid"></span><span id="btn-tower-hybrid-label">Hybrid</span> <span class="cost">80g</span></button>
+      <span class="spacer"></span>
+      <span class="wave-indicator" id="wave-indicator">Ready</span>
+      <button class="tower-btn" id="btn-age-up" onclick="ageUp()" disabled>Age up <span class="cost">50 know</span></button>
+      <button class="ghost" id="btn-info" onclick="openReference()" title="Tier reference (I)">Info</button>
+      <button class="primary" id="btn-wave" onclick="startWave()">Begin Wave 1</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: End
+     ============================================================ -->
+<div class="scene" id="scene-end">
+  <h2 class="end-title" id="end-title">Victory</h2>
+  <div class="end-sub" id="end-sub">The altar stands</div>
+  <div class="end-stats" id="end-stats"></div>
+  <div class="cta-row">
+    <button onclick="restart()">Play again</button>
+    <button class="ghost" onclick="goto('menu')">Back to menu</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     Scene: Options
+     ============================================================ -->
+<div class="scene" id="scene-options">
+  <h2>Options</h2>
+  <div class="opts-box">
+    <div class="opts-tabs" role="tablist">
+      <button class="opts-tab active" data-tab="audio" onclick="selectOptsTab('audio')">Audio</button>
+      <button class="opts-tab" data-tab="input" onclick="selectOptsTab('input')">Input</button>
+      <button class="opts-tab" data-tab="video" onclick="selectOptsTab('video')">Video</button>
+      <button class="opts-tab" data-tab="a11y"  onclick="selectOptsTab('a11y')">Accessibility</button>
+      <button class="opts-tab" data-tab="gameplay" onclick="selectOptsTab('gameplay')">Gameplay</button>
+    </div>
+    <div class="opts-panel active" data-panel="audio">
+      <div class="opts-row"><span class="opts-label">Master</span><div class="opts-control"><input type="range" min="0" max="100" value="80" data-opt="vol.master"/><span class="opts-value" data-for="vol.master">80</span><button class="ghost" onclick="playTestTone('master')" style="font-size:9px; padding:4px 8px;">Test</button></div></div>
+      <div class="opts-row"><span class="opts-label">Music</span><div class="opts-control"><input type="range" min="0" max="100" value="70" data-opt="vol.music"/><span class="opts-value" data-for="vol.music">70</span></div></div>
+      <div class="opts-row"><span class="opts-label">SFX</span><div class="opts-control"><input type="range" min="0" max="100" value="80" data-opt="vol.sfx"/><span class="opts-value" data-for="vol.sfx">80</span></div></div>
+      <div class="opts-row"><span class="opts-label">UI</span><div class="opts-control"><input type="range" min="0" max="100" value="70" data-opt="vol.ui"/><span class="opts-value" data-for="vol.ui">70</span><button class="ghost" onclick="playTestTone('ui')" style="font-size:9px; padding:4px 8px;">Test</button></div></div>
+      <div class="opts-row"><span class="opts-label">Voice</span><div class="opts-control"><input type="range" min="0" max="100" value="90" data-opt="vol.voice"/><span class="opts-value" data-for="vol.voice">90</span></div></div>
+      <div class="opts-row"><span class="opts-label" title="Ducking threshold (dB)">Ducking threshold</span><div class="opts-control"><input type="range" min="-40" max="0" value="-18" data-opt="audio.duckThresh"/><span class="opts-value" data-for="audio.duckThresh">-18</span> dB</div></div>
+      <div class="opts-row"><span class="opts-label" title="Ducking ratio">Ducking ratio</span><div class="opts-control"><input type="range" min="1" max="10" value="4" data-opt="audio.duckRatio"/><span class="opts-value" data-for="audio.duckRatio">4</span>:1</div></div>
+      <div class="opts-row"><span class="opts-label" title="Release ms">Ducking release</span><div class="opts-control"><input type="range" min="50" max="1000" step="25" value="250" data-opt="audio.duckRel"/><span class="opts-value" data-for="audio.duckRel">250</span> ms</div></div>
+      <div class="opts-row"><span class="opts-label">Focus-loss (solo)</span><div class="opts-control"><select data-opt="audio.focusSolo"><option value="mute">Mute</option><option value="keep">Keep</option></select></div></div>
+      <div class="opts-row"><span class="opts-label">Focus-loss (PvP)</span><div class="opts-control"><select data-opt="audio.focusPvp"><option value="keep">Keep</option><option value="mute">Mute</option></select></div></div>
+    </div>
+    <div class="opts-panel" data-panel="input">
+      <div class="opts-row"><span class="opts-label">Pause</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="pause">Esc</span><button class="ghost" onclick="beginRebind('pause', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Send wave</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="send-wave">Space</span><button class="ghost" onclick="beginRebind('send-wave', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Age up</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="age-up">KeyA</span><button class="ghost" onclick="beginRebind('age-up', this)">Rebind…</button><select data-opt="input.ageUpMode" style="margin-left:6px;"><option value="toggle">Toggle</option><option value="hold">Hold</option></select></div></div>
+      <div class="opts-row"><span class="opts-label">Info (reference)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="info">KeyI</span><button class="ghost" onclick="beginRebind('info', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Upgrade tower</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="upgrade">KeyU</span><button class="ghost" onclick="beginRebind('upgrade', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Sell tower</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="sell">KeyX</span><button class="ghost" onclick="beginRebind('sell', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower 1 (Sinew)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t1">Digit1</span><button class="ghost" onclick="beginRebind('t1', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower 2 (Ember)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t2">Digit2</span><button class="ghost" onclick="beginRebind('t2', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower 3 (Forge)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t3">Digit3</span><button class="ghost" onclick="beginRebind('t3', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower 4 (Crown)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t4">Digit4</span><button class="ghost" onclick="beginRebind('t4', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower 5 (Veil)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t5">Digit5</span><button class="ghost" onclick="beginRebind('t5', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Hybrid (6)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t6">Digit6</span><button class="ghost" onclick="beginRebind('t6', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Commander Q (signature)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="cmdrSig">KeyQ</span><button class="ghost" onclick="beginRebind('cmdrSig', this)">Rebind…</button></div></div>
+    </div>
+    <div class="opts-panel" data-panel="video">
+      <div class="opts-row"><span class="opts-label">Fullscreen</span><div class="opts-control"><button class="ghost" onclick="toggleFullscreen()">Toggle</button></div></div>
+      <div class="opts-row"><span class="opts-label">UI scale</span><div class="opts-control"><input type="range" min="75" max="150" step="5" value="100" data-opt="ui.scale"/><span class="opts-value" data-for="ui.scale">100</span>%</div></div>
+      <div class="opts-row"><span class="opts-label">Subtitle scale</span><div class="opts-control"><input type="range" min="75" max="200" step="5" value="100" data-opt="video.subScale"/><span class="opts-value" data-for="video.subScale">100</span>%</div></div>
+      <div class="opts-row"><span class="opts-label">Subtitle speaker labels</span><div class="opts-control"><input type="checkbox" data-opt="video.subSpeakers" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Reduce motion (mirror)</span><div class="opts-control"><input type="checkbox" data-opt="a11y.reduceMotion"/></div></div>
+    </div>
+    <div class="opts-panel" data-panel="a11y">
+      <div class="opts-row"><span class="opts-label">Colorblind glyphs</span><div class="opts-control"><input type="checkbox" data-opt="a11y.colorblind"/></div></div>
+      <div class="opts-row"><span class="opts-label">Reduce motion</span><div class="opts-control"><input type="checkbox" data-opt="a11y.reduceMotion"/></div></div>
+      <div class="opts-row"><span class="opts-label">Reduce flash (WCAG 2.3.1)</span><div class="opts-control"><input type="checkbox" data-opt="a11y.reduceFlash"/></div></div>
+      <div class="opts-row"><span class="opts-label">Reduce effects</span><div class="opts-control"><input type="checkbox" data-opt="a11y.reduceEffects"/></div></div>
+      <div class="opts-row"><span class="opts-label">Subtitles</span><div class="opts-control"><input type="checkbox" data-opt="a11y.subtitles" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Subtitle density</span><div class="opts-control"><select data-opt="a11y.subDensity"><option value="off">Off</option><option value="crits">Crits only</option><option value="all" selected>All</option></select></div></div>
+      <div class="opts-row"><span class="opts-label">a11y statement</span><div class="opts-control"><a href="README.md#accessibility" target="_blank" style="color:var(--ember-hi); font-size:11px; letter-spacing:2px;">Open README §Accessibility</a></div></div>
+    </div>
+    <div class="opts-panel" data-panel="gameplay">
+      <div class="opts-row"><span class="opts-label">Threat bar</span><div class="opts-control"><input type="checkbox" data-opt="gp.threatBar" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Damage-number density</span><div class="opts-control"><select data-opt="gp.dmgDensity"><option value="off">Off</option><option value="crits">Crits only</option><option value="all" selected>All</option></select></div></div>
+      <div class="opts-row"><span class="opts-label">Combat feed</span><div class="opts-control"><input type="checkbox" data-opt="gp.combatFeed" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Ghost placement preview</span><div class="opts-control"><input type="checkbox" data-opt="gp.ghostPreview" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Hybrid adjacency hint</span><div class="opts-control"><input type="checkbox" data-opt="gp.hybridHint" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Auto age-up</span><div class="opts-control"><input type="checkbox" data-opt="gp.autoAgeUp"/></div></div>
+      <div class="opts-row"><span class="opts-label">Spontaneity events</span><div class="opts-control"><input type="checkbox" data-opt="gp.spontaneity" checked/></div></div>
+      <div class="opts-row"><span class="opts-label">Auto-send-wave cooldown</span><div class="opts-control"><input type="range" min="0" max="15" value="0" data-opt="gp.autowaveCd"/><span class="opts-value" data-for="gp.autowaveCd">0</span>s</div></div>
+      <div class="opts-row"><span class="opts-label">Tutorial on new mode</span><div class="opts-control"><input type="checkbox" data-opt="gp.tutorialOnNew" checked/></div></div>
+    </div>
+    <div class="opts-footer">
+      <button class="ghost" onclick="closeOptions()">Cancel</button>
+      <button onclick="saveOptsAndClose()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pause overlay (not a scene — overlays match) -->
+<div id="pause-overlay">
+  <h2>Paused</h2>
+  <div class="pause-menu">
+    <button onclick="togglePause()">Resume</button>
+    <button onclick="openOptions('pause')">Options</button>
+    <button onclick="restartCurrentMatch()">Restart</button>
+    <button class="ghost" onclick="saveAndExit()">Save &amp; Exit</button>
+    <button class="ghost" onclick="quitToMenu()">Quit to menu</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="first-run-toast"><div class="fr-msg" id="fr-msg">—</div><div class="fr-actions"><button class="ghost" onclick="dismissFirstRun(false)">Got it</button><button onclick="dismissFirstRun(true)">Don't show again</button></div></div>
+
+<!-- Interaction layer: hover tooltip, right-click menu, reference panel -->
+<div id="hover-tip" role="tooltip" aria-hidden="true"></div>
+<div id="ctx-menu" role="menu"></div>
+<div id="reference-panel" role="dialog" aria-label="Tier reference">
+  <div class="ref-box">
+    <h3 id="ref-title">Tier reference</h3>
+    <div class="ref-sub" id="ref-sub">Current age highlighted. All numbers [PROPOSAL].</div>
+    <div id="ref-content"></div>
+    <div class="ref-footer">
+      <span class="ref-key">ESC or I to close</span>
+      <button onclick="closeReference()">Close</button>
+    </div>
+  </div>
+</div>
+<div id="caption"></div>
+
+<script>
+// ============================================================================
+// Profile module — localStorage-backed, per CONCEPT §4.9 mode-split save model
+// ============================================================================
+const PROFILE_KEY = "atoA.profile.v1";
+const Profile = {
+  data: null,
+  load() {
+    try {
+      const raw = localStorage.getItem(PROFILE_KEY);
+      if (raw) this.data = JSON.parse(raw);
+    } catch (e) { console.warn("[Profile] parse failed", e); this.data = null; }
+    return this.data;
+  },
+  save() {
+    if (!this.data) return;
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(this.data)); }
+    catch (e) { console.warn("[Profile] save failed", e); }
+  },
+  login(username) {
+    const existing = this.load();
+    if (existing && existing.username === username) { this.data = existing; return this.data; }
+    this.data = {
+      username,
+      createdAt: Date.now(),
+      commanderId: "commander-a",
+      unlocks: ["commander-a","commander-b","commander-c","commander-d","commander-e"],
+      settings: {
+        "vol.master": 80, "vol.music": 70, "vol.sfx": 80, "vol.ui": 70, "vol.voice": 90,
+        "audio.duckThresh": -18, "audio.duckRatio": 4, "audio.duckRel": 250,
+        "audio.focusSolo": "mute", "audio.focusPvp": "keep",
+        "ui.scale": 100, "video.subScale": 100, "video.subSpeakers": true,
+        "a11y.colorblind": false, "a11y.reduceMotion": false, "a11y.reduceFlash": false, "a11y.reduceEffects": false,
+        "a11y.subtitles": true, "a11y.subDensity": "all", "a11y.capDensity": 2,
+        "gp.threatBar": true, "gp.dmgDensity": "all", "gp.combatFeed": true, "gp.ghostPreview": true,
+        "gp.hybridHint": true, "gp.autoAgeUp": false, "gp.spontaneity": true,
+        "gp.autowaveCd": 0, "gp.tutorialOnNew": true,
+        "input.ageUpMode": "toggle",
+        "input.binds": {
+          "pause": "Escape", "send-wave": "Space", "age-up": "KeyA", "info": "KeyI",
+          "upgrade": "KeyU", "sell": "KeyX", "cmdrSig": "KeyQ",
+          "t1": "Digit1", "t2": "Digit2", "t3": "Digit3", "t4": "Digit4", "t5": "Digit5", "t6": "Digit6"
+        },
+        "firstRun": { "rightClick": false, "iKey": false, "hover": false }
+      },
+      commanderProgress: {
+        "commander-a": { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 },
+        "commander-b": { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 },
+        "commander-c": { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 },
+        "commander-d": { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 },
+        "commander-e": { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 }
+      },
+      lastMode: null,
+      saves: {}
+    };
+    this.save();
+    return this.data;
+  },
+  logout() { this.data = null; try { localStorage.removeItem(PROFILE_KEY); } catch(e) {} },
+  currentUser() { return this.data ? this.data.username : null; },
+  hasSave(mode) { return !!(this.data && this.data.saves && this.data.saves[mode]); },
+  writeMatchSave(mode, payload) {
+    if (!this.data) return;
+    // Per save-model.md: only campaign autosaves; skirmish/horde/laneWars never persist mid-match
+    const allowed = (mode === "campaign");
+    this.data.lastMode = mode;
+    if (!allowed) { this.save(); return; }
+    this.data.saves = this.data.saves || {};
+    this.data.saves[mode] = { savedAt: Date.now(), payload };
+    this.save();
+  },
+  readMatchSave(mode) { return this.data && this.data.saves ? this.data.saves[mode] : null; },
+  updateSetting(key, value) {
+    if (!this.data) return;
+    this.data.settings[key] = value;
+    this.save();
+  },
+  setting(key, fallback) {
+    if (!this.data || !this.data.settings) return fallback;
+    return this.data.settings[key] !== undefined ? this.data.settings[key] : fallback;
+  }
+};
+
+// ============================================================================
+// Scene routing
+// ============================================================================
+const SCENE_IDS = ["splash","login","menu","profile","mode-select","lobby-coop","commander-pick","tutorial","match","end","options"];
+let previousScene = null;
+let currentScene = "splash";
+
+function goto(scene) {
+  if (scene === "pick") scene = "commander-pick"; // back-compat
+  previousScene = currentScene;
+  currentScene = scene;
+  document.querySelectorAll(".scene").forEach(s => s.classList.remove("active"));
+  const el = document.getElementById("scene-" + scene);
+  if (el) el.classList.add("active");
+  if (scene === "tutorial")   initTutorial();
+  if (scene === "match")      initMatch();
+  if (scene === "end")        renderEnd();
+  if (scene === "menu")       refreshMenu();
+  if (scene === "profile")    renderProfileScene();
+  if (scene === "login")      applyLoginCopy();
+  if (scene === "commander-pick") { renderCommanderRoster(); applyCommanderCard(); }
+  if (scene === "options")    syncOptsUI();
+  if (scene === "splash")     Profile.clickCount = 0;
+}
+
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("on");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove("on"), 1800);
+}
+
+function caption(prefix, text) {
+  if (!Profile.setting("a11y.subtitles", true)) return;
+  const el = document.getElementById("caption");
+  el.innerHTML = '<span class="cap-prefix">' + prefix + '</span>' + text;
+  el.classList.add("on");
+  clearTimeout(caption._t);
+  caption._t = setTimeout(() => el.classList.remove("on"), 2600);
+}
+
+// ============================================================================
+// Splash handling
+// ============================================================================
+function dismissSplash() {
+  if (currentScene !== "splash") return;
+  const u = Profile.currentUser();
+  goto(u ? "menu" : "login");
+}
+document.addEventListener("keydown", (e) => {
+  if (currentScene === "splash") { dismissSplash(); return; }
+  // Strand 7: Q fires commander signature; C toggles commander-move mode (mouse then click to relocate)
+  if (currentScene === "match" && game && !game.paused) {
+    if (e.code === "KeyQ") { fireCommanderSignature(); e.preventDefault(); return; }
+    if (e.code === "KeyC") { game.commanderMoveMode = !game.commanderMoveMode; toast(game.commanderMoveMode ? "Commander move: click a build cell." : "Commander move cancelled."); e.preventDefault(); return; }
+  }
+  if (e.key === "Escape") {
+    if (currentScene === "match") { togglePause(); e.preventDefault(); }
+    else if (currentScene === "options") { closeOptions(); e.preventDefault(); }
+    else if (currentScene === "mode-select" || currentScene === "commander-pick") { goto("menu"); }
+  }
+});
+document.getElementById("scene-splash").addEventListener("click", dismissSplash);
+function buildSplashGlyphs() {
+  const row = document.getElementById("splash-title-row");
+  if (!row) return;
+  const title = "ASH TO ALTAR";
+  row.innerHTML = "";
+  const reduce = Profile.setting("a11y.reduceMotion", false);
+  for (let i = 0; i < title.length; i++) {
+    const ch = title[i];
+    const span = document.createElement("span");
+    span.className = "glyph";
+    span.textContent = ch === " " ? "\u00A0" : ch;
+    if (!reduce) span.style.animationDelay = (200 + i * 90) + "ms";
+    row.appendChild(span);
+  }
+}
+buildSplashGlyphs();
+setTimeout(() => {
+  if (currentScene === "splash") dismissSplash();
+}, Profile.setting("a11y.reduceMotion", false) ? 300 : 3000);
+
+// ============================================================================
+// Login handling
+// ============================================================================
+function applyLoginCopy() {
+  const existing = Profile.load();
+  const heading = document.getElementById("login-heading");
+  const sub = document.getElementById("login-subheading");
+  const label = document.getElementById("login-label");
+  const hint = document.getElementById("login-hint");
+  const input = document.getElementById("login-username");
+  if (!heading) return;
+  if (existing && existing.username) {
+    heading.textContent = "Welcome back";
+    sub.textContent = existing.username;
+    label.textContent = "Press Enter to continue";
+    hint.textContent = "Local profile loaded. Change name = logout + re-enter.";
+    input.value = existing.username;
+    setTimeout(() => input.focus(), 30);
+  } else {
+    heading.textContent = "Ash to Altar";
+    sub.textContent = "Name your Commander";
+    label.textContent = "Commander name";
+    hint.textContent = "Local profile only. Stored in your browser. No server.";
+    input.value = "";
+    setTimeout(() => input.focus(), 30);
+  }
+}
+function doLogin() {
+  const input = document.getElementById("login-username");
+  const name = (input.value || "").trim();
+  if (!name) { toast("Enter a name."); input.focus(); return; }
+  Profile.login(name);
+  applyUISettings();
+  toast("Welcome, " + name + ".");
+  goto("menu");
+}
+function doLogout() {
+  Profile.logout();
+  toast("Signed out.");
+  goto("login");
+  document.getElementById("login-username").value = "";
+}
+function confirmLogout() {
+  if (confirm("Logout? Your profile will be cleared from this browser (settings, XP, saves).")) doLogout();
+}
+document.getElementById("login-go").addEventListener("click", doLogin);
+document.getElementById("login-clear").addEventListener("click", doLogout);
+document.getElementById("login-username").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") doLogin();
+});
+
+// ============================================================================
+// Main menu
+// ============================================================================
+function refreshMenu() {
+  const u = Profile.currentUser();
+  const data = Profile.data;
+  const isReturning = !!(data && data.lastMode);
+  document.getElementById("menu-greeting").textContent = u ? ("Welcome back, " + u + ".") : "Welcome, Commander.";
+  document.getElementById("menu-user-label").textContent = u ? ("— signed in as: " + u + " —") : "— not signed in —";
+  const cont = document.getElementById("menu-continue");
+  const newBtn = document.getElementById("menu-new");
+  const playBtn = document.getElementById("menu-play");
+  const last = document.getElementById("menu-last");
+  const hasSave = Profile.hasSave("campaign") || Profile.hasSave("skirmish");
+  if (isReturning) {
+    if (newBtn) newBtn.style.display = "none";
+    if (playBtn) playBtn.style.display = "";
+    if (cont) cont.style.display = hasSave ? "" : "none";
+    if (last) {
+      const cid = (data && data.commanderId) || "commander-a";
+      const lineage = ({"commander-a":"Sinew","commander-b":"Ember","commander-c":"Forge","commander-d":"Crown","commander-e":"Veil"})[cid] || "—";
+      last.textContent = "Last played: " + lineage + " · " + (data.lastMode || "—");
+      last.style.display = "";
+    }
+  } else {
+    if (newBtn) newBtn.style.display = "";
+    if (playBtn) playBtn.style.display = "none";
+    if (cont) cont.style.display = "none";
+    if (last) last.style.display = "none";
+  }
+}
+function menuContinue() {
+  const last = Profile.data && Profile.data.lastMode;
+  if (last && Profile.hasSave(last)) startMode(last);
+  else if (last) startMode(last);
+  else toast("No save found.");
+}
+function menuNewGame() { goto("commander-pick"); }
+function menuPlay() { goto("mode-select"); }
+
+// ============================================================================
+// Profile scene (Strand 2)
+// ============================================================================
+Profile.clickCount = 0;
+function renderProfileScene() {
+  const data = Profile.data;
+  const header = document.getElementById("profile-header");
+  const roster = document.getElementById("profile-roster");
+  const settings = document.getElementById("profile-settings");
+  if (!header || !data) return;
+  header.innerHTML = '<div>' + (data.username || "Commander") +
+    '</div><span class="profile-sub">Joined ' + new Date(data.createdAt || Date.now()).toLocaleDateString() +
+    ' · Last mode: ' + (data.lastMode || "—") + '</span>';
+  const defs = [
+    {id:"commander-a", name:"Warmother", tilt:"Sinew"},
+    {id:"commander-b", name:"Scholar-Architect", tilt:"Ember"},
+    {id:"commander-c", name:"Quartermaster", tilt:"Forge"},
+    {id:"commander-d", name:"Conductor", tilt:"Crown"},
+    {id:"commander-e", name:"Archivist", tilt:"Veil"}
+  ];
+  const prog = data.commanderProgress || {};
+  roster.innerHTML = defs.map(d => {
+    const p = prog[d.id] || { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 };
+    const pct = Math.min(100, Math.round(100 * (p.xp || 0) / (p.xpToNext || 100)));
+    const isLast = (data.commanderId === d.id);
+    return '<div class="profile-cmdr' + (isLast ? ' last' : '') + '">' +
+      '<div class="p-cmdr-name">' + d.name + '</div>' +
+      '<div class="p-cmdr-tilt">' + d.tilt + '</div>' +
+      '<div class="p-cmdr-xp"><div class="p-cmdr-xp-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="p-cmdr-level">L' + (p.level || 1) + ' / 20</div>' +
+      '<div class="p-cmdr-unlocks">' + (p.unlockedCosmetics || 0) + ' / 3 cosmetics</div>' +
+      '</div>';
+  }).join("");
+  const s = data.settings || {};
+  settings.innerHTML =
+    '<div><b>Master vol</b> ' + (s["vol.master"] ?? 80) + '</div>' +
+    '<div><b>UI scale</b> ' + (s["ui.scale"] ?? 100) + '%</div>' +
+    '<div><b>Reduce motion</b> ' + (s["a11y.reduceMotion"] ? "on" : "off") + '</div>' +
+    '<div><b>Colorblind</b> ' + (s["a11y.colorblind"] ? "on" : "off") + '</div>' +
+    '<div><b>Subtitles</b> ' + (s["a11y.subtitles"] !== false ? "on" : "off") + '</div>' +
+    '<div><b>Tutorial on new</b> ' + (s["gp.tutorialOnNew"] !== false ? "on" : "off") + '</div>';
+}
+
+// Click-budget instrumentation — count primary nav clicks splash→match entry
+document.addEventListener("click", (e) => {
+  const t = e.target;
+  if (!t || t.tagName !== "BUTTON") return;
+  if (currentScene === "match" || currentScene === "tutorial" || currentScene === "options") return;
+  Profile.clickCount = (Profile.clickCount || 0) + 1;
+}, true);
+function confirmQuit() {
+  if (confirm("Quit Ash to Altar? Your profile stays saved.")) window.close();
+}
+
+// ============================================================================
+// Mode select
+// ============================================================================
+function startMode(mode) {
+  if (mode === "tutorial")  { currentMatchMode = "tutorial"; goto("tutorial"); return; }
+  if (mode === "skirmish")  { currentMatchMode = "skirmish"; BALANCE.MATCH_WAVES = 3; rebuildDerived(); goto("match"); return; }
+  if (mode === "horde")     { currentMatchMode = "horde"; goto("lobby-coop"); return; }
+  if (mode === "campaign")  { currentMatchMode = "campaign"; BALANCE.MATCH_WAVES = 11; rebuildDerived(); goto("match"); return; }
+}
+let currentMatchMode = "skirmish";
+
+// ============================================================================
+// Net module — PeerJS handshake + host-authoritative state sync (Phase 10.3)
+// ============================================================================
+const Net = {
+  peer: null,
+  conn: null,
+  role: null,         // "host" | "guest" | null
+  connected: false,
+  remoteName: null,
+  pendingIntents: [], // guest → host input intents awaiting delivery
+  lastSnapshotMs: 0,
+  snapshotTimer: null,
+  disconnectStart: 0,
+  reset() {
+    if (this.snapshotTimer) { clearInterval(this.snapshotTimer); this.snapshotTimer = null; }
+    try { if (this.conn) this.conn.close(); } catch(e) {}
+    try { if (this.peer) this.peer.destroy(); } catch(e) {}
+    this.peer = null; this.conn = null; this.role = null; this.connected = false;
+    this.remoteName = null; this.pendingIntents = []; this.disconnectStart = 0;
+    updateNetStatus("Offline", "");
+  },
+  host() {
+    if (typeof Peer === "undefined") { toast("PeerJS not loaded — check network."); return; }
+    this.reset();
+    this.role = "host";
+    this.peer = new Peer();
+    const status = document.getElementById("lobby-status");
+    const idBox = document.getElementById("lobby-host-id");
+    status.textContent = "Contacting PeerJS broker…";
+    this.peer.on("open", (id) => {
+      idBox.style.display = "";
+      const link = window.location.origin + window.location.pathname + "?join=" + id;
+      idBox.innerHTML = "<b>Invite code:</b> " + id + "<br><b>Link:</b> " + link;
+      status.textContent = "Waiting for friend to join…";
+    });
+    this.peer.on("connection", (conn) => { this._bindConn(conn); });
+    this.peer.on("error", (err) => {
+      console.warn("[Net] peer error", err);
+      status.textContent = "PeerJS broker error: " + (err.type || err.message || "unknown") + ". Try again in 5 min or self-host.";
+    });
+  },
+  join(code) {
+    if (typeof Peer === "undefined") { toast("PeerJS not loaded — check network."); return; }
+    this.reset();
+    this.role = "guest";
+    this.peer = new Peer();
+    const status = document.getElementById("lobby-status");
+    status.textContent = "Contacting PeerJS broker…";
+    this.peer.on("open", () => {
+      status.textContent = "Dialing " + code + "…";
+      const conn = this.peer.connect(code, { reliable: true });
+      this._bindConn(conn);
+    });
+    this.peer.on("error", (err) => {
+      console.warn("[Net] peer error", err);
+      status.textContent = "PeerJS broker error: " + (err.type || err.message || "unknown") + ".";
+    });
+  },
+  _bindConn(conn) {
+    this.conn = conn;
+    const status = document.getElementById("lobby-status");
+    conn.on("open", () => {
+      this.connected = true;
+      this.disconnectStart = 0;
+      const name = Profile.currentUser() || "Commander";
+      conn.send({ type: "hello", name });
+      if (status) status.textContent = "Connected. Starting Co-op Horde…";
+      updateNetStatus("Connected", "connected");
+      // Host kicks off the match after a brief delay so both sides see the transition
+      setTimeout(() => {
+        currentMatchMode = "horde";
+        BALANCE.MATCH_WAVES = BALANCE.WAVES_FULL || 11;
+        rebuildDerived();
+        goto("match");
+        if (this.role === "host") this._startSnapshotLoop();
+      }, 600);
+    });
+    conn.on("data", (msg) => this._onMessage(msg));
+    conn.on("close", () => this._onClose());
+    conn.on("error", (err) => { console.warn("[Net] conn error", err); this._onClose(); });
+  },
+  _onClose() {
+    if (!this.connected) return;
+    this.connected = false;
+    this.disconnectStart = Date.now();
+    updateNetStatus("Friend disconnected — 10s reconnect window…", "lost");
+    chatSystem("Friend disconnected. Waiting 10s…");
+    setTimeout(() => {
+      if (!this.connected) {
+        chatSystem("Reconnect window expired. Match aborting.");
+        toast("Co-op match aborted — friend did not reconnect.");
+        quitToMenu();
+        this.reset();
+      }
+    }, 10000);
+  },
+  _onMessage(msg) {
+    if (!msg || !msg.type) return;
+    if (msg.type === "hello") {
+      this.remoteName = msg.name;
+      chatSystem("Connected to " + msg.name + ".");
+      return;
+    }
+    if (msg.type === "chat") {
+      appendChat(msg.who || this.remoteName || "friend", msg.text);
+      return;
+    }
+    if (this.role === "host") {
+      // Guest input intents
+      if (msg.type === "intent") this.pendingIntents.push(msg.intent);
+    } else if (this.role === "guest") {
+      if (msg.type === "snapshot") applyGuestSnapshot(msg.payload);
+      if (msg.type === "event-roll") {
+        const ev = EVENTS && EVENTS.events && EVENTS.events.find(e => e.id === msg.id);
+        if (ev) showEventBanner(ev.copy);
+      }
+      if (msg.type === "pause-vote") {
+        const ov = document.getElementById("pause-overlay");
+        if (ov) ov.classList.toggle("on", !!msg.paused);
+        if (game) game.paused = !!msg.paused;
+      }
+      if (msg.type === "commander-move" && game && game.commander) {
+        game.commander.x = msg.x; game.commander.y = msg.y;
+      }
+      if (msg.type === "commander-sig" && game && game.commander) {
+        game.commander.cd = 60*60; game.commander.sigActiveTtl = 8*60;
+      }
+      if (msg.type === "match-end") {
+        game = game || {};
+        game.ended = msg.result;
+        goto("end");
+      }
+    }
+  },
+  _startSnapshotLoop() {
+    if (this.snapshotTimer) clearInterval(this.snapshotTimer);
+    this.snapshotTimer = setInterval(() => {
+      if (!this.connected || !this.conn || !game || game.mode !== "match") return;
+      try {
+        this.conn.send({ type: "snapshot", payload: buildSnapshot() });
+      } catch(e) { console.warn("[Net] snapshot send failed", e); }
+    }, 100);
+  },
+  sendIntent(intent) {
+    if (!this.connected || !this.conn || this.role !== "guest") return;
+    try { this.conn.send({ type: "intent", intent }); } catch(e) {}
+  },
+  sendChat(text) {
+    if (!this.connected || !this.conn) return;
+    try { this.conn.send({ type: "chat", who: Profile.currentUser() || "me", text }); } catch(e) {}
+  },
+  broadcastMatchEnd(result) {
+    if (!this.connected || !this.conn || this.role !== "host") return;
+    try { this.conn.send({ type: "match-end", result }); } catch(e) {}
+  }
+};
+
+function updateNetStatus(text, cls) {
+  const el = document.getElementById("net-status");
+  if (!el) return;
+  el.textContent = text;
+  el.className = cls ? cls : "";
+  el.classList.toggle("on", !!text && text !== "Offline");
+}
+
+function coopHost() { Net.host(); }
+function coopJoin() {
+  const code = document.getElementById("lobby-join-code").value.trim();
+  if (!code) { toast("Paste an invite code."); return; }
+  Net.join(code);
+}
+
+// ---- Snapshot shape (host → guest, 10Hz) ----
+function buildSnapshot() {
+  if (!game) return null;
+  return {
+    wave: game.wave, totalWaves: game.totalWaves, waveActive: game.waveActive,
+    gold: game.gold, knowledge: game.knowledge, ageIdx: game.ageIdx, lives: game.lives,
+    totalKills: game.totalKills,
+    towers: game.towers.map(t => ({ x: t.x, y: t.y, type: t.type, owner: t.owner || "host", level: t.level || 1, invested: t.invested || TOWER_STATS[t.type].cost })),
+    enemies: game.enemies.map(e => ({
+      x: e.x, y: e.y, hp: e.hp, maxHp: e.maxHp, dist: e.dist,
+      kind: e.kind, color: e.color, accent: e.accent, label: e.label, ageIdx: e.ageIdx,
+      statuses: e.statuses ? e.statuses.map(s => ({ kind: s.kind, ttl: s.ttl })) : []
+    })),
+    shots: game.shots.slice(0, 40).map(s => ({ x1: s.x1, y1: s.y1, x2: s.x2, y2: s.y2, color: s.color, accent: s.accent, lineage: s.lineage, life: s.life })),
+    commander: game.commander ? { x: game.commander.x, y: game.commander.y, lineage: game.commander.lineage, cd: game.commander.cd, sigActiveTtl: game.commander.sigActiveTtl, auraCells: game.commander.auraCells } : null
+  };
+}
+function applyGuestSnapshot(snap) {
+  if (!game || !snap) return;
+  game.wave = snap.wave; game.totalWaves = snap.totalWaves; game.waveActive = snap.waveActive;
+  game.gold = snap.gold; game.knowledge = snap.knowledge; game.ageIdx = snap.ageIdx; game.lives = snap.lives;
+  game.totalKills = snap.totalKills;
+  game.towers = snap.towers; game.enemies = snap.enemies; game.shots = snap.shots;
+  // Additive: apply commander field if host sent one (ignored silently if missing — preserves back-compat).
+  if (snap.commander && game.commander) {
+    game.commander.x = snap.commander.x; game.commander.y = snap.commander.y;
+    game.commander.lineage = snap.commander.lineage;
+    game.commander.cd = snap.commander.cd; game.commander.sigActiveTtl = snap.commander.sigActiveTtl;
+    if (snap.commander.auraCells) game.commander.auraCells = snap.commander.auraCells;
+  }
+  // Reconcile guest-side cell occupancy from authoritative tower positions.
+  if (game.cells) {
+    for (const c of game.cells) c.occupied = false;
+    for (const t of game.towers) {
+      const cell = game.cells.find(c => t.x >= c.x && t.x < c.x + c.w && t.y >= c.y && t.y < c.y + c.h);
+      if (cell) cell.occupied = true;
+    }
+  }
+  // Skip one render frame to avoid first-snapshot tower-position flash.
+  game.snapshotPending = true;
+  updateHUD();
+}
+
+// ---- Chat ----
+function appendChat(who, text) {
+  const log = document.getElementById("chat-log");
+  if (!log) return;
+  const line = document.createElement("div");
+  line.className = "chat-line";
+  line.innerHTML = '<span class="who">' + escapeHtml(who) + '</span>' + escapeHtml(text);
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+function chatSystem(text) {
+  const log = document.getElementById("chat-log");
+  if (!log) return;
+  const line = document.createElement("div");
+  line.className = "chat-line chat-sys";
+  line.textContent = "— " + text + " —";
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+function sendChat() {
+  const input = document.getElementById("chat-input");
+  const text = (input.value || "").trim().slice(0, 100);
+  if (!text) return;
+  appendChat(Profile.currentUser() || "me", text);
+  Net.sendChat(text);
+  input.value = "";
+}
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+
+// ============================================================================
+// Game balance + data
+// ============================================================================
+let BALANCE = {
+  HP_PER_WAVE: 1.70, COUNT_PER_WAVE: 1.55, SPEED_PER_WAVE: 1.12, REWARD_PER_WAVE: 0.80, GAP_PER_WAVE: 0.85,
+  DAMAGE_PER_AGE: 1.60, CD_PER_AGE: 0.80, KNOWLEDGE_PER_AGE: 1.50,
+  GOLD_SURPLUS_TARGET: 1.25,
+  BASE_HP: 10, BASE_COUNT: 6, BASE_SPEED: 0.85, BASE_REWARD: 8, BASE_GAP: 40,
+  STARTING_GOLD_MATCH: 80, STARTING_GOLD_TUTORIAL: 60,
+  STARTING_LIVES_MATCH: 10, STARTING_LIVES_TUTORIAL: 3,
+  AGE_UP_KNOWLEDGE_COST: 50, MATCH_WAVES: 3,
+  TOWERS: {
+    sinew:  { cost: 40, range: 110, baseDamage: 5, baseCd: 40 },
+    ember:  { cost: 30, range: 135, baseDamage: 3, baseCd: 48, baseKnowledge: 1 },
+    forge:  { cost: 50, range: 0,   baseDamage: 0, baseCd: 60 },
+    crown:  { cost: 45, range: 150, baseDamage: 0, baseCd: 30 },
+    veil:   { cost: 35, range: 130, baseDamage: 1, baseCd: 25 },
+    hybrid: { cost: 80, range: 120, baseDamage: 10, baseCd: 30 }
+  },
+  TOWER_META: {
+    sinew:  { label: "Sinew",  color: "#dc2626" },
+    ember:  { label: "Ember",  color: "#d97706" },
+    forge:  { label: "Forge",  color: "#b45309" },
+    crown:  { label: "Crown",  color: "#7c3aed" },
+    veil:   { label: "Veil",   color: "#0891b2" },
+    hybrid: { label: "Hybrid", color: "#fbbf24" }
+  }
+};
+
+let AGES = ["Primal", "Mudbrick", "Iron", "Spires", "Alchemical", "Steamheart", "Atomic", "Signal", "Synthetic", "Stellar", "Ascendant"];
+let MAPMODS = null, EVENTS = null;
+let AGES_DATA = null;
+let COMMANDERS = null;
+let ENEMIES = null;
+let HYBRIDS = null;
+let DATA_SOURCE = "inline";
+
+async function loadData() {
+  try {
+    const [bal, tow, cmd, ages, ene, mmRes, evRes] = await Promise.all([
+      fetch("data/balance.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
+      fetch("data/towers.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
+      fetch("data/commanders.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
+      fetch("data/ages.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
+      fetch("data/enemies.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
+      fetch("data/mapmods.json").then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch("data/events.json").then(r => r.ok ? r.json() : null).catch(() => null)
+    ]);
+    MAPMODS = mmRes;
+    EVENTS = evRes;
+    BALANCE = {
+      ...bal.wave, ...bal.age, ...bal.economy, ...bal.base,
+      MATCH_WAVES: bal.match.waveCount,
+      WAVES_FULL: bal.match.waveCountFullConceptDemo || 11,
+      TOWERS: {}, TOWER_META: {}
+    };
+    for (const [k, v] of Object.entries(tow.towers)) {
+      BALANCE.TOWERS[k] = {
+        cost: v.cost, range: v.range, baseDamage: v.baseDamage, baseCd: v.baseCd,
+        ...(v.baseKnowledge != null ? { baseKnowledge: v.baseKnowledge } : {}),
+        ...(v.generatesGold != null ? { generatesGold: v.generatesGold } : {}),
+        ...(v.auraBuff != null ? { auraBuff: v.auraBuff } : {}),
+        ...(v.slowPct != null ? { slowPct: v.slowPct } : {})
+      };
+      BALANCE.TOWER_META[k] = { label: v.label, color: v.color, lineage: v.lineage };
+    }
+    HYBRIDS = tow.hybrids || null;
+    // Register default hybrid shortcut (sinew_ember → "hybrid") for legacy placement
+    if (HYBRIDS && HYBRIDS.sinew_ember) {
+      const h = HYBRIDS.sinew_ember;
+      BALANCE.TOWERS.hybrid = { cost: h.cost, range: h.range, baseDamage: h.baseDamage, baseCd: h.baseCd };
+      BALANCE.TOWER_META.hybrid = { label: h.label, color: h.color, lineage: "hybrid" };
+    }
+    AGES_DATA = ages.ages;
+    AGES = AGES_DATA.map(a => a.name);
+    COMMANDERS = cmd;
+    ENEMIES = ene.enemies;
+    DATA_SOURCE = "json";
+    console.log("[atoA] data loaded from prototype/data/*.json");
+  } catch (e) {
+    console.warn("[atoA] data load failed (" + e + "); using inline defaults. This is expected under file:// on some browsers.");
+  }
+  renderCommanderRoster();
+  applyCommanderCard();
+}
+
+// ============================================================================
+// Commander UI
+// ============================================================================
+// Canvas-style SVG silhouettes per lineage — single color fill, accent rim
+const LINEAGE_COLORS = { sinew: "#dc2626", ember: "#d97706", forge: "#b45309", crown: "#7c3aed", veil: "#0891b2" };
+function silhouetteSVG(lineage, size) {
+  size = size || 96;
+  const c = LINEAGE_COLORS[lineage] || "#d97706";
+  // 5 body silhouettes via composed SVG paths (simple primitives, silhouette-readable in grayscale)
+  const bodies = {
+    sinew:  '<path d="M50 18 L56 14 L62 20 L58 30 L70 46 L68 62 L60 60 L58 82 L42 82 L40 60 L32 62 L30 46 L42 30 L38 20 L44 14 Z" />' +
+            '<rect x="48" y="28" width="4" height="50" fill="#3a342b"/>',
+    ember:  '<path d="M50 12 Q34 14 30 38 Q26 60 40 70 L44 84 L56 84 L60 70 Q74 60 70 38 Q66 14 50 12 Z" />' +
+            '<circle cx="50" cy="42" r="8" fill="#fff" opacity="0.25"/>',
+    forge:  '<rect x="28" y="50" width="44" height="30" rx="3" />' +
+            '<path d="M32 50 L40 28 L60 28 L68 50 Z" />' +
+            '<rect x="46" y="54" width="8" height="22" fill="#2a1a04"/>',
+    crown:  '<path d="M50 14 L42 22 L50 30 L58 22 Z" />' +
+            '<rect x="47" y="28" width="6" height="50" />' +
+            '<path d="M30 40 L70 40 L62 60 L50 56 L38 60 Z" />',
+    veil:   '<ellipse cx="50" cy="30" rx="16" ry="12" />' +
+            '<path d="M34 32 Q20 50 30 82 L70 82 Q80 50 66 32 Z" />' +
+            '<rect x="48" y="36" width="4" height="12" fill="#fff" opacity="0.18"/>'
+  };
+  const body = bodies[lineage] || bodies.ember;
+  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+    '<circle cx="50" cy="50" r="48" fill="' + c + '" opacity="0.12"/>' +
+    '<g fill="' + c + '" stroke="' + c + '" stroke-width="1.2">' + body + '</g>' +
+    '<circle cx="50" cy="50" r="47" fill="none" stroke="' + c + '" stroke-width="1.5" opacity="0.8"/>' +
+    '</svg>';
+}
+
+function renderCommanderRoster() {
+  const host = document.getElementById("cmdr-roster");
+  if (!host || !COMMANDERS) return;
+  host.innerHTML = "";
+  const entries = Object.entries(COMMANDERS.roster).filter(([, v]) => v.playable);
+  if (entries.length <= 1) { host.style.display = "none"; return; }
+  host.style.display = "";
+  for (const [id, c] of entries) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "cmdr-roster-chip" + (id === COMMANDERS.active ? " selected" : "");
+    chip.dataset.cmdrId = id;
+    chip.innerHTML = '<span class="p-cmdr-silhouette" style="width:36px;height:36px;display:inline-block;">' +
+      silhouetteSVG(c.lineageTilt, 36) + '</span>' +
+      '<span>' + c.name + '</span><span class="chip-tilt">' + (c.epithet || "") + '</span>';
+    chip.addEventListener("click", () => selectCommanderId(id));
+    host.appendChild(chip);
+  }
+}
+function selectCommanderId(id) {
+  if (!COMMANDERS || !COMMANDERS.roster[id]) return;
+  COMMANDERS.active = id;
+  if (Profile.data) { Profile.data.commanderId = id; Profile.save(); }
+  applyCommanderCard();
+  document.querySelectorAll("#cmdr-roster .cmdr-roster-chip").forEach(ch =>
+    ch.classList.toggle("selected", ch.dataset.cmdrId === id));
+}
+function applyCommanderCard() {
+  if (!COMMANDERS) return;
+  const c = COMMANDERS.roster[COMMANDERS.active];
+  if (!c) return;
+  const portrait = document.getElementById("cmdr-portrait");
+  if (portrait) {
+    portrait.className = "cmdr-portrait " + c.lineageTilt;
+    portrait.innerHTML = silhouetteSVG(c.lineageTilt, 96);
+    portrait.style.color = LINEAGE_COLORS[c.lineageTilt] || "#d97706";
+    portrait.onclick = () => previewCommanderVO(c);
+    portrait.style.cursor = "pointer";
+    portrait.title = "Click to preview commander voice line";
+  }
+  const set = (id, text) => { const el = document.getElementById(id); if (el && text != null) el.textContent = text; };
+  set("cmdr-name", c.name);
+  set("cmdr-epithet", c.epithet);
+  set("cmdr-lore", c.lore);
+  if (c.stats) {
+    set("cmdr-stat-tilt", c.stats.lineageTilt);
+    set("cmdr-stat-generates", c.stats.generates);
+    set("cmdr-stat-passive", c.stats.passive);
+    set("cmdr-stat-signature", c.stats.signature);
+  }
+  // Prefer profile-side progress if available, falls back to JSON
+  const prog = (Profile.data && Profile.data.commanderProgress && Profile.data.commanderProgress[COMMANDERS.active])
+    || c.progression || { level: 1, xp: 0, xpToNext: 100 };
+  set("cmdr-level", prog.level || 1);
+  const xp = prog.xp || 0, xpMax = prog.xpToNext || 100;
+  set("cmdr-xp-label", xp + " / " + xpMax + " XP");
+  const bar = document.getElementById("cmdr-xp-bar");
+  if (bar) { bar.value = xp; bar.max = xpMax; }
+  // Tick unlock state per L5/L10/L15
+  const lvl = prog.level || 1;
+  ["5","10","15"].forEach(n => {
+    const tick = document.getElementById("cmdr-tick-" + n);
+    if (tick) tick.classList.toggle("unlocked", lvl >= parseInt(n, 10));
+  });
+  const slotSkin = document.getElementById("cmdr-slot-skin");
+  const slotFrame = document.getElementById("cmdr-slot-frame");
+  const slotTint = document.getElementById("cmdr-slot-tint");
+  if (slotSkin) slotSkin.textContent = lvl >= 5 ? "Skin — unlocked" : "Skin — locked at L5";
+  if (slotFrame) slotFrame.textContent = lvl >= 10 ? "Frame — unlocked" : "Frame — locked at L10";
+  if (slotTint) slotTint.textContent = lvl >= 15 ? "Map tint — unlocked" : "Map tint — locked at L15";
+  const cap = document.getElementById("cmdr-caption-preview"); if (cap) cap.textContent = "";
+}
+function previewCommanderVO(c) {
+  const lines = (c.vo && c.vo.pick) || [];
+  if (!lines.length) return;
+  const line = lines[Math.floor(Math.random() * lines.length)];
+  const cap = document.getElementById("cmdr-caption-preview");
+  if (cap) cap.textContent = line;
+  caption("[Voice] ", line);
+}
+// Silhouette-test toggle (URL ?silhouette-test=1 or Shift+S)
+function applySilhouetteTest() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("silhouette-test") === "1") document.body.classList.add("silhouette-test");
+}
+document.addEventListener("keydown", (e) => {
+  if (e.shiftKey && e.code === "KeyS" && (currentScene === "commander-pick" || currentScene === "profile")) {
+    document.body.classList.toggle("silhouette-test");
+    toast(document.body.classList.contains("silhouette-test") ? "Silhouette-test ON (grayscale)." : "Silhouette-test OFF.");
+  }
+});
+
+// Derive tower stats from base * age multiplier
+function deriveTowerStats() {
+  const out = {};
+  const meta = BALANCE.TOWER_META;
+  for (const [k, v] of Object.entries(BALANCE.TOWERS)) {
+    const ageCount = AGES.length;
+    const damage = [], cd = [], knowledge = [];
+    for (let a = 0; a < ageCount; a++) {
+      damage.push(Math.round(v.baseDamage * Math.pow(BALANCE.DAMAGE_PER_AGE, a)));
+      cd.push(Math.round(v.baseCd * Math.pow(BALANCE.CD_PER_AGE, a)));
+      if (v.baseKnowledge != null) knowledge.push(Math.round(v.baseKnowledge * Math.pow(BALANCE.KNOWLEDGE_PER_AGE, a)));
+    }
+    out[k] = { ...meta[k], cost: v.cost, range: v.range, damage, cd };
+    if (knowledge.length) out[k].knowledge = knowledge;
+  }
+  return out;
+}
+let TOWER_STATS = deriveTowerStats();
+
+function deriveWaveDefs(waves = 3) {
+  const out = [];
+  for (let w = 0; w < waves; w++) {
+    out.push({
+      count:  Math.round(BALANCE.BASE_COUNT  * Math.pow(BALANCE.COUNT_PER_WAVE,  w)),
+      hp:     Math.round(BALANCE.BASE_HP     * Math.pow(BALANCE.HP_PER_WAVE,     w)),
+      speed:  +(BALANCE.BASE_SPEED  * Math.pow(BALANCE.SPEED_PER_WAVE,  w)).toFixed(2),
+      reward: Math.max(3, Math.round(BALANCE.BASE_REWARD * Math.pow(BALANCE.REWARD_PER_WAVE, w))),
+      gap:    Math.max(16, Math.round(BALANCE.BASE_GAP   * Math.pow(BALANCE.GAP_PER_WAVE,    w)))
+    });
+  }
+  return out;
+}
+let WAVE_DEFS = deriveWaveDefs(3);
+
+function rebuildDerived() {
+  TOWER_STATS = deriveTowerStats();
+  WAVE_DEFS = deriveWaveDefs(BALANCE.MATCH_WAVES || 3);
+}
+
+function logBalanceCurve() {
+  const cheapest = Math.min(...Object.values(BALANCE.TOWERS).filter(t => t.cost > 0).map(t => t.cost));
+  const rows = [["Wave", "Count", "HP/ea", "TotalHP", "Reward/ea", "WaveGold", "Surplus≥"]];
+  let cumulative = 80;
+  cumulative -= BALANCE.TOWERS.sinew.cost + BALANCE.TOWERS.ember.cost;
+  for (let i = 0; i < WAVE_DEFS.length; i++) {
+    const w = WAVE_DEFS[i];
+    const waveGold = w.count * w.reward;
+    cumulative += waveGold;
+    rows.push([i+1, w.count, w.hp, w.count*w.hp, w.reward, waveGold, Math.round(cheapest * BALANCE.GOLD_SURPLUS_TARGET)]);
+    if (i < WAVE_DEFS.length - 1) cumulative -= cheapest;
+  }
+  console.table(rows);
+}
+
+let game = null;
+
+function selectCommander() {
+  if (Profile.data && COMMANDERS) { Profile.data.commanderId = COMMANDERS.active; Profile.save(); }
+  goto("menu");
+  toast("Commander set. Play → Solo Skirmish to begin.");
+}
+
+// ============================================================================
+// Board setup
+// ============================================================================
+function setupBoard(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const wrap = canvas.parentElement;
+  const rect = wrap.getBoundingClientRect();
+  canvas.width = rect.width; canvas.height = rect.height;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+  const path = [
+    { x: 0, y: H * 0.25 }, { x: W * 0.30, y: H * 0.25 },
+    { x: W * 0.30, y: H * 0.70 }, { x: W * 0.65, y: H * 0.70 },
+    { x: W * 0.65, y: H * 0.30 }, { x: W, y: H * 0.30 }
+  ];
+  const cells = [];
+  const cellSize = 46;
+  for (let gy = 30; gy < H - 30; gy += cellSize + 10) {
+    for (let gx = 30; gx < W - 30; gx += cellSize + 10) {
+      const dist = distToPath({ x: gx + cellSize/2, y: gy + cellSize/2 }, path);
+      if (dist > 26 && dist < 70) cells.push({ x: gx, y: gy, w: cellSize, h: cellSize, occupied: false });
+    }
+  }
+  return { canvas, ctx, W, H, path, cells, cellSize };
+}
+function distToPath(p, path) {
+  let best = Infinity;
+  for (let i = 0; i < path.length - 1; i++) {
+    const d = distToSegment(p, path[i], path[i+1]);
+    if (d < best) best = d;
+  }
+  return best;
+}
+function distToSegment(p, a, b) {
+  const dx = b.x - a.x, dy = b.y - a.y;
+  const len2 = dx*dx + dy*dy;
+  if (len2 === 0) return Math.hypot(p.x - a.x, p.y - a.y);
+  let t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / len2;
+  t = Math.max(0, Math.min(1, t));
+  const px = a.x + t*dx, py = a.y + t*dy;
+  return Math.hypot(p.x - px, p.y - py);
+}
+function pathPoint(path, dist) {
+  let remaining = dist;
+  for (let i = 0; i < path.length - 1; i++) {
+    const dx = path[i+1].x - path[i].x, dy = path[i+1].y - path[i].y;
+    const segLen = Math.hypot(dx, dy);
+    if (remaining <= segLen) { const t = remaining / segLen; return { x: path[i].x + dx*t, y: path[i].y + dy*t, done: false }; }
+    remaining -= segLen;
+  }
+  return { x: path[path.length-1].x, y: path[path.length-1].y, done: true };
+}
+function pathLength(path) { let l = 0; for (let i = 0; i < path.length - 1; i++) l += Math.hypot(path[i+1].x-path[i].x, path[i+1].y-path[i].y); return l; }
+
+// ============================================================================
+// Game init
+// ============================================================================
+function initMatch() {
+  rebuildDerived();
+  const waves = BALANCE.MATCH_WAVES || 3;
+  const b = setupBoard("board-match");
+  const isCoop = currentMatchMode === "horde" && Net.connected;
+  const isGuest = isCoop && Net.role === "guest";
+  game = {
+    ...b, mode: "match", matchMode: currentMatchMode, hudPrefix: "m-",
+    towers: [], enemies: [], shots: [],
+    flashes: [], damageNumbers: [], feed: [],
+    wave: 0, waveActive: false, spawn: null,
+    gold: BALANCE.STARTING_GOLD_MATCH, knowledge: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_MATCH,
+    selectedTower: "sinew", playing: true, paused: false, totalKills: 0, totalGold: 0,
+    pathLen: pathLength(b.path), totalWaves: waves,
+    isCoop, isGuest,
+    matchStartMs: Date.now(), _eventLastId: null, pendingWaveMods: null,
+    commander: null, commanderMoveMode: false
+  };
+  // Commander avatar (Strand 7 — on-field hero). Seeds at a grass cell nearest home.
+  if (COMMANDERS) {
+    const c = COMMANDERS.roster[COMMANDERS.active];
+    const home = b.path[0];
+    let best = null, bestD = Infinity;
+    for (const cell of b.cells) {
+      const cx = cell.x + cell.w/2, cy = cell.y + cell.h/2;
+      const d = Math.hypot(cx - home.x, cy - home.y);
+      if (d < bestD) { bestD = d; best = cell; }
+    }
+    if (best) {
+      game.commander = {
+        x: best.x + best.w/2, y: best.y + best.h/2,
+        cell: best,
+        lineage: c ? c.lineageTilt : "sinew",
+        name: c ? c.name : "Commander",
+        signatureName: (c && c.stats && c.stats.signature) ? c.stats.signature.split(":")[0] : "Rally",
+        cd: 0, sigActiveTtl: 0, movedThisWave: false,
+        auraCells: 2
+      };
+    }
+  }
+  // Co-op UI
+  const chat = document.getElementById("chat-panel");
+  if (chat) chat.classList.toggle("on", isCoop);
+  if (isCoop) {
+    updateNetStatus(Net.role === "host" ? "Host · 10Hz" : "Guest · syncing", "connected");
+    chatSystem("Co-op match begins. " + (Net.role === "host" ? "You are the host." : "You are the guest (host is authoritative)."));
+  } else {
+    updateNetStatus("", "");
+  }
+  const modeLabel = document.getElementById("m-mode-label");
+  if (modeLabel) modeLabel.textContent = currentMatchMode === "horde" ? "Co-op Horde" : currentMatchMode === "campaign" ? "Campaign" : "Skirmish";
+  // Commander silhouette in HUD
+  if (COMMANDERS) {
+    const c = COMMANDERS.roster[COMMANDERS.active];
+    const sil = document.getElementById("m-silhouette");
+    const nm = document.getElementById("m-cmdr-name");
+    if (sil && c) { sil.textContent = c.name.replace(/[^A-Z]/g, "").slice(-1) || c.name[0].toUpperCase(); sil.style.color = getLineageCss(c.lineageTilt); }
+    if (nm && c) nm.textContent = c.name;
+  }
+  updateHUD();
+  bindCanvas();
+  selectTower("sinew");
+  logBalanceCurve();
+  requestAnimationFrame(gameLoop);
+  if (COMMANDERS) {
+    const c = COMMANDERS.roster[COMMANDERS.active];
+    if (c && c.vo && c.vo.pick && c.vo.pick.length) caption("[VO]", c.vo.pick[0].replace(/^\[VO\]\s*/, ""));
+  }
+}
+function getLineageCss(tilt) {
+  return { sinew: "#dc2626", ember: "#d97706", forge: "#b45309", crown: "#7c3aed", veil: "#0891b2" }[tilt] || "#d97706";
+}
+
+function initTutorial() {
+  rebuildDerived();
+  const b = setupBoard("board-tutorial");
+  game = {
+    ...b, mode: "tutorial", hudPrefix: "t-",
+    towers: [], enemies: [], shots: [],
+    flashes: [], damageNumbers: [], feed: [],
+    wave: 0, waveActive: false, spawn: null,
+    gold: BALANCE.STARTING_GOLD_TUTORIAL, knowledge: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_TUTORIAL,
+    selectedTower: "ember", playing: true, totalKills: 0,
+    pathLen: pathLength(b.path), tutorialStep: 1
+  };
+  updateHUD(); bindCanvas(); setTutorialStep(1);
+  requestAnimationFrame(gameLoop);
+}
+function skipTutorial() { if (game) game.playing = false; goto("menu"); toast("Tutorial skipped."); }
+
+function bindCanvas() {
+  const c = game.canvas;
+  c.onclick = null;
+  c.addEventListener("click", onBoardClick);
+  c.addEventListener("mousemove", onBoardMove);
+  c.addEventListener("mouseleave", onBoardLeave);
+  c.addEventListener("contextmenu", onBoardContext);
+}
+
+// ============================================================================
+// HUD
+// ============================================================================
+function updateHUD() {
+  const p = game.hudPrefix;
+  const $ = id => document.getElementById(p + id);
+  if ($("gold")) $("gold").textContent = Math.floor(game.gold);
+  if ($("knowledge")) $("knowledge").textContent = Math.floor(game.knowledge);
+  if ($("age")) $("age").textContent = AGES[game.ageIdx];
+  if ($("lives")) $("lives").textContent = game.lives;
+  if (p === "m-") {
+    const total = game.totalWaves || 3;
+    $("wave").textContent = game.wave + " / " + total;
+    const btnWave = document.getElementById("btn-wave");
+    const ind = document.getElementById("wave-indicator");
+    btnWave.disabled = game.waveActive || game.wave >= total || game.paused;
+    btnWave.textContent = game.wave === 0 ? "Begin Wave 1" : (game.wave < total ? "Begin Wave " + (game.wave + 1) : "All waves sent");
+    if (ind) {
+      if (game.waveActive) { ind.textContent = "Wave " + game.wave + " in progress"; ind.classList.add("active"); }
+      else if (game.wave >= total) { ind.textContent = "All waves complete"; ind.classList.remove("active"); }
+      else { ind.textContent = "Ready — next: Wave " + (game.wave + 1); ind.classList.remove("active"); }
+    }
+    document.getElementById("btn-age-up").disabled = game.knowledge < 50 || game.ageIdx >= AGES.length - 1 || game.waveActive || game.paused;
+    const hybridReady = game.towers.some(t => t.type === "sinew") && game.towers.some(t => t.type === "ember");
+    document.getElementById("btn-tower-hybrid").disabled = !hybridReady;
+    if (hybridReady) document.getElementById("btn-tower-hybrid").title = "Sinew + Ember adjacency detected";
+    if (hybridReady && !game._hybridAnnounced) { game._hybridAnnounced = true; if (typeof emitFeed === "function") emitFeed("hybrid", "Hybrid unlocked: Tank Corps"); }
+    const lbl = document.getElementById("btn-tower-hybrid-label");
+    if (lbl) lbl.textContent = (HYBRIDS && HYBRIDS.sinew_ember) ? HYBRIDS.sinew_ember.label : "Tank Corps";
+  }
+  if (p === "t-" && $("step")) $("step").textContent = game.tutorialStep + " / 5";
+}
+
+// ============================================================================
+// Tower placement
+// ============================================================================
+function selectTower(type) {
+  if (!game) return;
+  if (game.paused) return;
+  if (game.mode === "tutorial" && type !== "ember" && game.tutorialStep < 5) return;
+  game.selectedTower = type;
+  document.querySelectorAll(".tower-btn[data-tower]").forEach(b => {
+    b.classList.toggle("selected", b.dataset.tower === type);
+  });
+}
+function onBoardClick(ev) {
+  if (game.paused) return;
+  const rect = game.canvas.getBoundingClientRect();
+  const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+  // Strand 7: Shift+click or commanderMoveMode relocates commander avatar (1 move per wave cap)
+  if (game.commander && (ev.shiftKey || game.commanderMoveMode)) {
+    moveCommanderTo(mx, my);
+    game.commanderMoveMode = false;
+    return;
+  }
+  if (game.isGuest) {
+    // Guest sends intent with canvas-space click; host resolves to cell
+    Net.sendIntent({ type: "place", x: mx, y: my, tower: game.selectedTower });
+    toast("Placement sent to host…");
+    return;
+  }
+  const cell = game.cells.find(c => !c.occupied && mx >= c.x && mx < c.x + c.w && my >= c.y && my < c.y + c.h);
+  if (!cell) { toast("Place only on glowing cells."); return; }
+  placeTower(cell, game.selectedTower);
+}
+
+// Host-side: drain guest intents each tick
+function processRemoteIntents() {
+  if (!game || !game.isCoop || Net.role !== "host") return;
+  while (Net.pendingIntents.length) {
+    const intent = Net.pendingIntents.shift();
+    if (intent.type === "place") {
+      const cell = game.cells.find(c => !c.occupied && intent.x >= c.x && intent.x < c.x + c.w && intent.y >= c.y && intent.y < c.y + c.h);
+      if (cell) placeTower(cell, intent.tower, "guest");
+    } else if (intent.type === "send-wave") {
+      startWave();
+    } else if (intent.type === "age-up") {
+      ageUp();
+    }
+  }
+}
+// First-run prompt (Strand 5)
+let _firstRunCurrent = null;
+function showFirstRun(key, msg) {
+  if (game && game.mode === "tutorial") return;
+  const fr = Profile.setting("firstRun", {}) || {};
+  if (fr[key]) return;
+  const host = document.getElementById("first-run-toast");
+  const m = document.getElementById("fr-msg");
+  if (!host || !m) return;
+  m.textContent = msg;
+  host.classList.add("on");
+  _firstRunCurrent = key;
+  clearTimeout(showFirstRun._t);
+  showFirstRun._t = setTimeout(() => dismissFirstRun(false), 8000);
+}
+function dismissFirstRun(permanent) {
+  const host = document.getElementById("first-run-toast");
+  if (host) host.classList.remove("on");
+  if (permanent && _firstRunCurrent) {
+    const fr = Object.assign({}, Profile.setting("firstRun", {}) || {});
+    fr[_firstRunCurrent] = true;
+    Profile.updateSetting("firstRun", fr);
+  }
+  _firstRunCurrent = null;
+}
+
+function placeTower(cell, type, owner) {
+  const stat = TOWER_STATS[type];
+  if (!stat) return;
+  if (game.gold < stat.cost) { toast("Not enough gold."); return; }
+  if (type === "hybrid") {
+    const near = (t) => Math.hypot((cell.x+cell.w/2)-t.x, (cell.y+cell.h/2)-t.y) < 110;
+    const hasS = game.towers.some(t => t.type === "sinew" && near(t));
+    const hasE = game.towers.some(t => t.type === "ember" && near(t));
+    if (!(hasS && hasE)) { toast("Needs Sinew and Ember nearby."); return; }
+  }
+  game.gold -= stat.cost;
+  cell.occupied = true;
+  game.towers.push({ x: cell.x + cell.w/2, y: cell.y + cell.h/2, type, cd: 0, cell, owner: owner || (game.isCoop ? "host" : null), level: 1, invested: stat.cost });
+  updateHUD();
+  if (game.mode === "tutorial") advanceTutorialOnEvent("placed", type);
+  // First-run prompts on first tower placement in a non-tutorial match
+  if (game.towers.length === 1 && game.mode !== "tutorial") {
+    showFirstRun("rightClick", "Right-click a placed tower for Sell / Upgrade options.");
+    setTimeout(() => showFirstRun("iKey", "Press I anytime for the tier reference panel."), 8500);
+  }
+}
+
+// ============================================================================
+// Effective tower stats (level-scaled) — prototype [PROPOSAL] numbers per
+// decisions/2026-04-20-prototype-interaction-layer.md
+// ============================================================================
+function effectiveTowerStats(t) {
+  const stat = TOWER_STATS[t.type];
+  if (!stat) return null;
+  const lvl = t.level || 1;
+  let dmgMul = Math.pow(1.50, lvl - 1);
+  let rngMul = Math.pow(1.08, lvl - 1);
+  let cdMul  = Math.pow(0.90, lvl - 1);
+  const age = game.ageIdx;
+  // Strand 7: Commander aura bonus — applies passive to towers within aura radius.
+  const aura = commanderAuraEffectOn(t);
+  if (aura.damage) dmgMul *= aura.damage;
+  if (aura.cd) cdMul *= aura.cd;
+  if (aura.range) rngMul *= aura.range;
+  const dmg = stat.damage && stat.damage[age] != null ? Math.round(stat.damage[age] * dmgMul) : 0;
+  const cd  = stat.cd && stat.cd[age] != null ? Math.max(6, Math.round(stat.cd[age] * cdMul)) : 30;
+  const range = Math.round(stat.range * rngMul);
+  const kn  = stat.knowledge && stat.knowledge[age] != null ? Math.round(stat.knowledge[age] * dmgMul) : 0;
+  return { ...stat, damage: dmg, cd, range, knowledge: kn, level: lvl, auraBuffed: aura.active };
+}
+
+// Strand 7: Commander aura effect on a given tower. Lineage-flavored.
+function commanderAuraEffectOn(t) {
+  const out = { damage: 1, cd: 1, range: 1, active: false };
+  const cmdr = game && game.commander;
+  if (!cmdr) return out;
+  const cellSize = game.cellSize || 46;
+  const auraRadius = (cmdr.auraCells || 2) * (cellSize + 10);
+  const d = Math.hypot(t.x - cmdr.x, t.y - cmdr.y);
+  if (d > auraRadius) return out;
+  out.active = true;
+  const sigOn = (cmdr.sigActiveTtl || 0) > 0;
+  // Base passive (always while in aura):
+  switch (cmdr.lineage) {
+    case "sinew": out.damage *= 1.15; break;
+    case "ember": out.cd *= 0.90; break;         // +~10% fire rate
+    case "forge": out.damage *= 1.10; break;     // economy lineage — modest tower boost
+    case "crown": out.range *= 1.15; break;
+    case "veil":  out.damage *= 1.08; break;
+  }
+  // Signature active: boost to all aura-covered towers.
+  if (sigOn) {
+    out.damage *= 1.20;
+    out.cd *= 0.85;
+  }
+  return out;
+}
+
+function moveCommanderTo(mx, my) {
+  const cmdr = game.commander;
+  if (!cmdr) return;
+  if (cmdr.movedThisWave) { toast("Commander already moved this wave."); return; }
+  // Allow move to grass cells only (not occupied, inside the placeable band).
+  const cell = game.cells.find(c => !c.occupied && mx >= c.x && mx < c.x + c.w && my >= c.y && my < c.y + c.h);
+  if (!cell) { toast("Commander moves only to empty build cells."); return; }
+  cmdr.x = cell.x + cell.w/2;
+  cmdr.y = cell.y + cell.h/2;
+  cmdr.cell = cell;
+  cmdr.movedThisWave = true;
+  emitFeed && emitFeed("commander", (cmdr.name || "Commander") + " repositions.");
+  // Additive co-op broadcast
+  try { if (game.isCoop && Net.role === "host" && Net.conn) Net.conn.send({ type: "commander-move", x: cmdr.x, y: cmdr.y }); } catch(e) {}
+}
+
+function fireCommanderSignature() {
+  const cmdr = game && game.commander;
+  if (!cmdr) return;
+  if (cmdr.cd > 0) { toast("Signature cooling: " + Math.ceil(cmdr.cd/60) + "s"); return; }
+  cmdr.cd = 60 * 60;         // 60 seconds (ticks @ 60fps)
+  cmdr.sigActiveTtl = 8 * 60; // 8 seconds
+  emitFeed && emitFeed("commander", (cmdr.signatureName || "Signature") + " — aura towers empowered 8s.");
+  try { if (game.isCoop && Net.role === "host" && Net.conn) Net.conn.send({ type: "commander-sig" }); } catch(e) {}
+}
+
+function upgradeCost(t) {
+  const stat = TOWER_STATS[t.type];
+  if (!stat) return Infinity;
+  return Math.ceil(stat.cost * 0.75 * (t.level || 1));
+}
+
+function sellRefund(t) {
+  return Math.floor((t.invested || TOWER_STATS[t.type].cost) * 0.60);
+}
+
+function upgradeTower(t) {
+  if (!t || !game || game.paused) return;
+  if ((t.level || 1) >= 3) { toast("Max level."); return; }
+  const cost = upgradeCost(t);
+  if (game.gold < cost) { toast("Not enough gold to upgrade."); return; }
+  game.gold -= cost;
+  t.level = (t.level || 1) + 1;
+  t.invested = (t.invested || TOWER_STATS[t.type].cost) + cost;
+  toast(`${TOWER_STATS[t.type].label} → L${t.level}`);
+  if (typeof emitFeed === "function") emitFeed("upgrade", `${TOWER_STATS[t.type].label} → L${t.level} forged`);
+  updateHUD();
+  hideCtxMenu();
+  if (hoverState.tower === t) showTowerTip(t, hoverState.canvasX, hoverState.canvasY);
+}
+
+function sellTower(t) {
+  if (!t || !game || game.paused) return;
+  if (t.owner === "guest" && Net.role !== "host") { toast("Guest cannot sell host towers."); return; }
+  const refund = sellRefund(t);
+  game.gold += refund;
+  if (t.cell) t.cell.occupied = false;
+  game.towers = game.towers.filter(x => x !== t);
+  toast(`Sold ${TOWER_STATS[t.type].label} — refund ${refund}g`);
+  updateHUD();
+  hideCtxMenu();
+  hideTip();
+}
+
+// ============================================================================
+// Tutorial script
+// ============================================================================
+const TUT = {
+  1: { step: "Step 1 — Build",   body: "Click a glowing cell beside the path to place your Ember tower. Ember towers are weak alone but generate Knowledge, which unlocks Ages.", cta: null },
+  2: { step: "Step 2 — Defend",  body: "Good. A small wave is coming. Watch your Ember tower strike. Each kill earns gold and knowledge.", cta: "Send wave" },
+  3: { step: "Step 3 — Hybrid",  body: "In a full match, placing a Sinew tower next to your Ember would unlock the Tank Corps hybrid — a cross-lineage unit. For now, behold.", cta: "Show me" },
+  4: { step: "Step 4 — Age up",  body: "Spend Knowledge to advance to the next Age. Every tower gets stronger. This is the cascade.", cta: "Advance" },
+  5: { step: "Step 5 — The real fight", body: "You've seen the loop: build → defend → evolve. Now take a full match. Three waves. No guardrails.", cta: "Solo Skirmish" }
+};
+function setTutorialStep(n) {
+  game.tutorialStep = n;
+  const t = TUT[n];
+  document.getElementById("t-narr-step").textContent = t.step;
+  document.getElementById("t-narr-body").textContent = t.body;
+  const cta = document.getElementById("t-narr-cta");
+  cta.innerHTML = "";
+  if (t.cta) {
+    const btn = document.createElement("button");
+    btn.textContent = t.cta;
+    btn.onclick = () => tutorialCTA(n);
+    cta.appendChild(btn);
+  }
+  updateHUD();
+}
+function advanceTutorialOnEvent(ev, data) {
+  if (ev === "placed" && game.tutorialStep === 1 && data === "ember") setTutorialStep(2);
+  else if (ev === "killed-all" && game.tutorialStep === 2) setTutorialStep(3);
+  else if (ev === "aged" && game.tutorialStep === 4) setTutorialStep(5);
+}
+function tutorialCTA(n) {
+  if (n === 2) {
+    game.waveActive = true; game.wave = 1;
+    game.spawn = { count: 3, remaining: 3, cd: 0, gap: 50, hp: 10, speed: 0.9, reward: 6 };
+  } else if (n === 3) {
+    toast("Imagine: Sinew + Ember → Tank Corps");
+    setTimeout(() => setTutorialStep(4), 1600);
+    game.knowledge = Math.max(game.knowledge, 50);
+    updateHUD();
+  } else if (n === 4) {
+    if (game.knowledge >= 50) { game.knowledge -= 50; game.ageIdx = Math.min(game.ageIdx + 1, AGES.length - 1); updateHUD(); advanceTutorialOnEvent("aged"); }
+  } else if (n === 5) {
+    currentMatchMode = "skirmish"; BALANCE.MATCH_WAVES = 3; rebuildDerived();
+    goto("match");
+  }
+}
+
+// ============================================================================
+// Waves + age up
+// ============================================================================
+function startWave() {
+  if (game && game.isGuest) { Net.sendIntent({ type: "send-wave" }); toast("Wave request sent to host."); return; }
+  const total = game.totalWaves || 3;
+  if (game.waveActive || game.wave >= total || game.paused) return;
+  game.wave++;
+  const def = WAVE_DEFS[game.wave - 1];
+  game.spawn = { count: def.count, remaining: def.count, cd: 0, gap: def.gap, hp: def.hp, speed: def.speed, reward: def.reward };
+  // Strand 7: reset commander's per-wave move quota
+  if (game.commander) game.commander.movedThisWave = false;
+  // Apply pending event modifiers to this wave
+  if (game.pendingWaveMods) {
+    const pm = game.pendingWaveMods;
+    if (pm.hpMult) game.spawn.hp = Math.round(game.spawn.hp * pm.hpMult);
+    if (pm.speedMult) game.spawn.speed = game.spawn.speed * pm.speedMult;
+    if (pm.countDelta) { game.spawn.count = Math.max(1, game.spawn.count + pm.countDelta); game.spawn.remaining = game.spawn.count; }
+    game.pendingWaveMods = null;
+  }
+  game.waveActive = true;
+  updateHUD();
+  toast("Wave " + game.wave + " begins.");
+  rollSpontaneityEvent("wave-start");
+  // Auto-age-up gameplay option
+  if (Profile.setting("gp.autoAgeUp", false) && game.knowledge >= 50 && game.ageIdx < AGES.length - 1) {
+    setTimeout(() => { if (!game.waveActive) ageUp(); }, 400);
+  }
+}
+// ---- Spontaneity events (Strand 9) ----
+function rollSpontaneityEvent(trigger) {
+  if (!Profile.setting("gp.spontaneity", true)) return;
+  if (!EVENTS || !EVENTS.events) return;
+  if (!game._eventLastId) game._eventLastId = null;
+  const pool = EVENTS.events.filter(e => e.trigger === trigger && e.id !== game._eventLastId);
+  if (!pool.length) return;
+  // Seeded RNG per match-start for co-op determinism
+  if (!game._eventRng) {
+    let seed = (game.matchStartMs || Date.now()) >>> 0;
+    game._eventRng = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return (seed & 0xffffffff) / 0x100000000; };
+  }
+  const roll = game._eventRng();
+  const pct = EVENTS.rollProbability || 0.25;
+  if (roll >= pct) return;
+  const totalW = pool.reduce((a, e) => a + (e.weight || 1), 0);
+  let r = game._eventRng() * totalW;
+  let chosen = pool[0];
+  for (const e of pool) { r -= (e.weight || 1); if (r <= 0) { chosen = e; break; } }
+  applySpontaneityEvent(chosen);
+  game._eventLastId = chosen.id;
+  // Co-op additive broadcast
+  if (Net && Net.connected && Net.role === "host") { try { Net.conn.send({ type: "event-roll", id: chosen.id }); } catch(e) {} }
+}
+function applySpontaneityEvent(ev) {
+  const e = ev.effect || {};
+  if (e.type === "gold") game.gold += e.amount || 0;
+  else if (e.type === "knowledge") game.knowledge += e.amount || 0;
+  else if (e.type === "wave-hp-mult") game.pendingWaveMods = Object.assign(game.pendingWaveMods || {}, { hpMult: e.mult });
+  else if (e.type === "wave-speed-mult") game.pendingWaveMods = Object.assign(game.pendingWaveMods || {}, { speedMult: e.mult });
+  else if (e.type === "wave-count-delta") game.pendingWaveMods = Object.assign(game.pendingWaveMods || {}, { countDelta: e.delta });
+  else if (e.type === "random-upgrade" && game.towers && game.towers.length) {
+    const t = game.towers[Math.floor(Math.random() * game.towers.length)];
+    if (t) { t.level = Math.min((t.level || 1) + 1, 3); }
+  }
+  showEventBanner(ev.copy);
+  if (typeof pushCombatFeed === "function") pushCombatFeed("event", "◆ " + ev.copy);
+  updateHUD();
+}
+function showEventBanner(msg) {
+  const host = document.getElementById("event-banner");
+  if (!host) return;
+  host.textContent = "◆ " + msg;
+  host.style.display = "block";
+  clearTimeout(showEventBanner._t);
+  showEventBanner._t = setTimeout(() => host.style.display = "none", 3000);
+}
+function ageUp() {
+  if (game && game.isGuest) { Net.sendIntent({ type: "age-up" }); return; }
+  if (game.knowledge < 50 || game.ageIdx >= AGES.length - 1 || game.waveActive) return;
+  game.knowledge -= 50;
+  game.ageIdx++;
+  updateHUD();
+  toast("Age advanced: " + AGES[game.ageIdx]);
+  showAgeBanner(game.ageIdx);
+  rollSpontaneityEvent("age-gate");
+  // Age-gate autosave (Campaign only) per save-model.md:28
+  if ((game.matchMode === "campaign") && typeof buildSnapshot === "function") {
+    try { Profile.writeMatchSave("campaign", buildSnapshot()); } catch(e) {}
+  }
+}
+function showAgeBanner(idx) {
+  const arr = (typeof AGES_DATA !== "undefined" && AGES_DATA) ? AGES_DATA : null;
+  const age = arr && arr[idx];
+  const host = document.getElementById("age-banner");
+  if (!host) return;
+  const reduce = Profile.setting("a11y.reduceMotion", false);
+  const eraDesc = (age && age.eraDescriptor) || "A new age";
+  const lore = (age && age.lore) || "";
+  const name = (age && age.name) || (AGES[idx] || "");
+  const motif = (age && age.signatureMotif) ? ' · <em>' + age.signatureMotif + '</em>' : '';
+  host.innerHTML = '<div class="ab-name">Entering the ' + name + '</div>' +
+    '<div class="ab-era">' + eraDesc + '</div>' +
+    (lore ? '<div class="ab-lore">' + lore + '</div>' : '') +
+    (motif ? '<div class="ab-motif">' + motif + '</div>' : '');
+  host.classList.add("on");
+  clearTimeout(showAgeBanner._t);
+  showAgeBanner._t = setTimeout(() => host.classList.remove("on"), reduce ? 400 : 2500);
+}
+
+// ============================================================================
+// Pause
+// ============================================================================
+function togglePause() {
+  if (!game || game.mode !== "match") return;
+  const mode = game.matchMode || currentMatchMode || "skirmish";
+  const ov = document.getElementById("pause-overlay");
+  // Lane Wars: read-only overlay, state keeps running
+  if (mode === "laneWars" || mode === "lane-wars") {
+    const isOn = ov.classList.toggle("on");
+    ov.setAttribute("data-readonly", isOn ? "1" : "0");
+    toast(isOn ? "Lane Wars — overlay open (state keeps running)." : "Overlay closed.");
+    return;
+  }
+  // Co-op Horde: host-authoritative pause vote
+  if (mode === "horde") {
+    if (Net && Net.connected) {
+      if (Net.role === "host") {
+        game.paused = !game.paused;
+        ov.classList.toggle("on", game.paused);
+        try { Net.conn.send({ type: "pause-vote", by: Profile.currentUser() || "host", paused: game.paused }); } catch(e) {}
+        chatSystem(game.paused ? "Host paused match." : "Host resumed match.");
+        if (game.paused) {
+          clearTimeout(togglePause._voteTimer);
+          togglePause._voteTimer = setTimeout(() => {
+            if (game && game.paused) { game.paused = false; ov.classList.remove("on"); chatSystem("Pause timed out — resuming."); }
+          }, 10000);
+        }
+      } else {
+        try { Net.conn.send({ type: "pause-vote", by: Profile.currentUser() || "guest", request: true }); } catch(e) {}
+        toast("Pause requested — awaiting host.");
+      }
+      updateHUD();
+      return;
+    }
+    // offline horde fallback: hard pause
+    game.paused = !game.paused;
+    ov.classList.toggle("on", game.paused);
+    updateHUD();
+    return;
+  }
+  // Campaign + Skirmish + Tutorial: hard pause
+  game.paused = !game.paused;
+  ov.classList.toggle("on", game.paused);
+  // Campaign pause overlay shows Save-and-Exit; Skirmish hides it
+  const saveBtn = ov.querySelector('button.ghost[onclick="saveAndExit()"]');
+  if (saveBtn) saveBtn.style.display = (mode === "campaign") ? "" : "none";
+  const restartBtn = ov.querySelector('button[onclick="restartCurrentMatch()"]');
+  if (restartBtn) restartBtn.style.display = (mode === "skirmish") ? "none" : "";
+  updateHUD();
+}
+function restartCurrentMatch() {
+  if (!game) return;
+  game.paused = false;
+  document.getElementById("pause-overlay").classList.remove("on");
+  initMatch();
+}
+function saveAndExit() {
+  if (!game) return;
+  const mode = game.matchMode || "skirmish";
+  if (mode === "campaign" || mode === "skirmish") {
+    Profile.writeMatchSave(mode, {
+      wave: game.wave, ageIdx: game.ageIdx, gold: game.gold, knowledge: game.knowledge, lives: game.lives,
+      towers: game.towers.map(t => ({ x: t.x, y: t.y, type: t.type })), totalWaves: game.totalWaves
+    });
+    toast("Saved.");
+  } else {
+    toast("Co-op Horde does not autosave (§4.9).");
+  }
+  quitToMenu();
+}
+function quitToMenu() {
+  if (game) game.playing = false;
+  document.getElementById("pause-overlay").classList.remove("on");
+  if (game) game.paused = false;
+  goto("menu");
+}
+
+// ============================================================================
+// Game loop
+// ============================================================================
+function gameLoop() {
+  if (!game || !game.playing) return;
+  if (game.snapshotPending) { game.snapshotPending = false; requestAnimationFrame(gameLoop); return; }
+  if (!game.paused) { tick(); draw(); }
+  requestAnimationFrame(gameLoop);
+}
+function tick() {
+  // Guest runs no local simulation — state comes from host snapshots.
+  if (game.isGuest) return;
+  processRemoteIntents();
+  if (game.spawn && game.spawn.remaining > 0) {
+    game.spawn.cd--;
+    if (game.spawn.cd <= 0) {
+      const arch = archetypeFor(game.ageIdx);
+      game.enemies.push({
+        dist: 0, hp: game.spawn.hp, maxHp: game.spawn.hp, speed: game.spawn.speed, reward: game.spawn.reward,
+        kind: arch.kind, color: arch.color, accent: arch.accent, label: arch.label, glyph: arch.glyph,
+        ageIdx: game.ageIdx, statuses: []
+      });
+      game.spawn.remaining--;
+      game.spawn.cd = game.spawn.gap;
+    }
+  }
+  for (const e of game.enemies) {
+    // Apply slow status (reduces effective speed by 30% while active)
+    let speed = e.speed;
+    if (e.statuses && e.statuses.some(s => s.kind === "slow")) speed *= 0.7;
+    e.dist += speed;
+    const pp = pathPoint(game.path, e.dist);
+    e.x = pp.x; e.y = pp.y;
+    if (pp.done) e.reached = true;
+    // Tick statuses
+    if (e.statuses && e.statuses.length) {
+      for (const s of e.statuses) s.ttl--;
+      // Burn DoT — 0.2 HP per tick while burning
+      if (e.statuses.some(s => s.kind === "burn")) e.hp -= 0.2;
+      e.statuses = e.statuses.filter(s => s.ttl > 0);
+    }
+  }
+  const reached = game.enemies.filter(e => e.reached);
+  for (const e of reached) { game.lives--; emitFeed("leak", (e.label || "Enemy") + " leaked! −1 life"); }
+  game.enemies = game.enemies.filter(e => !e.reached && e.hp > 0);
+
+  for (const t of game.towers) {
+    t.cd--;
+    if (t.cd > 0) continue;
+    const eff = effectiveTowerStats(t);
+    if (!eff || eff.range === 0) continue;
+    let target = null, bestD = Infinity;
+    for (const e of game.enemies) {
+      const d = Math.hypot(e.x - t.x, e.y - t.y);
+      if (d < eff.range && d < bestD) { bestD = d; target = e; }
+    }
+    if (target) {
+      const base = TOWER_STATS[t.type] ? TOWER_STATS[t.type].damage : eff.damage;
+      const dmg = eff.damage;
+      target.hp -= dmg;
+      const lineage = lineageOf(t.type);
+      const meta = BALANCE.TOWER_META && BALANCE.TOWER_META[t.type];
+      game.shots.push({
+        x1: t.x, y1: t.y, x2: target.x, y2: target.y,
+        color: eff.color, accent: (meta && meta.accent) || eff.color,
+        lineage, life: 8
+      });
+      emitMuzzleFlash(t.x, t.y, eff.color);
+      // Damage number — colored by magnitude vs. base
+      let numColor = "#ffffff";
+      if (dmg >= base * 2) numColor = "#fbbf24";
+      else if (dmg <= base * 0.5) numColor = "#9ca3af";
+      emitDamageNumber(target.x, target.y - 20, Math.round(dmg).toString(), numColor);
+      // Apply status effects by lineage
+      if (lineage === "veil" || t.type === "veil") {
+        if (!target.statuses.some(s => s.kind === "slow")) target.statuses.push({ kind: "slow", ttl: 60 });
+        else target.statuses.find(s => s.kind === "slow").ttl = 60;
+      } else if (lineage === "ember" || t.type === "ember") {
+        if (!target.statuses.some(s => s.kind === "burn")) target.statuses.push({ kind: "burn", ttl: 45 });
+        else target.statuses.find(s => s.kind === "burn").ttl = 45;
+      } else if (lineage === "forge" || t.type === "forge") {
+        if (!target.statuses.some(s => s.kind === "marked")) target.statuses.push({ kind: "marked", ttl: 90 });
+      }
+      t.cd = eff.cd;
+      if (target.hp <= 0) {
+        game.gold += target.reward;
+        if (game.mode === "match") game.totalGold = (game.totalGold || 0) + target.reward;
+        game.totalKills++;
+        if (t.type === "ember") game.knowledge += eff.knowledge || 1;
+        emitFeed("kill", (target.label || "Enemy") + " felled · +" + target.reward + "g");
+      }
+    }
+  }
+  for (const s of game.shots) s.life--;
+  game.shots = game.shots.filter(s => s.life > 0);
+  // Strand 7: commander timers + knock-back safety (non-destructible)
+  if (game.commander) {
+    const cmdr = game.commander;
+    if (cmdr.cd > 0) cmdr.cd--;
+    if (cmdr.sigActiveTtl > 0) cmdr.sigActiveTtl--;
+    // Knock-back if an enemy overlaps the commander
+    for (const e of game.enemies) {
+      if (Math.hypot(e.x - cmdr.x, e.y - cmdr.y) < 18) {
+        const home = game.path[0];
+        const dx = home.x - cmdr.x, dy = home.y - cmdr.y;
+        const len = Math.hypot(dx, dy) || 1;
+        cmdr.x += (dx/len) * 30;
+        cmdr.y += (dy/len) * 30;
+        break;
+      }
+    }
+  }
+  // Insight-layer ticks
+  if (game.flashes) { for (const f of game.flashes) f.life--; game.flashes = game.flashes.filter(f => f.life > 0); }
+  if (game.damageNumbers) {
+    for (const d of game.damageNumbers) { d.y += d.vy; d.life--; }
+    game.damageNumbers = game.damageNumbers.filter(d => d.life > 0);
+  }
+
+  if (game.waveActive && game.spawn && game.spawn.remaining === 0 && game.enemies.length === 0) {
+    game.waveActive = false;
+    emitFeed("wave", "Wave " + game.wave + " cleared");
+    if (game.mode === "tutorial") advanceTutorialOnEvent("killed-all");
+    else {
+      const total = game.totalWaves || 3;
+      if (game.wave >= total && game.lives > 0) endMatch(true);
+    }
+  }
+  if (game.lives <= 0 && game.mode === "match") endMatch(false);
+  if (game.lives <= 0 && game.mode === "tutorial") { toast("Your altar fell — tutorial reset"); initTutorial(); }
+  updateHUD();
+  renderNextWaveTelegraph();
+}
+// ============================================================================
+// Visuals + insight — renderers, archetype resolver, emitters
+// Decision: decisions/2026-04-20-visuals-insight-pass.md
+// ============================================================================
+const AGE_IDS = ["primal","mudbrick","iron","spires","alchemical","steamheart","atomic","signal","synthetic","stellar","ascendant"];
+// Inline enemies fallback (mirrors prototype/data/enemies.json) — 11 archetypes keyed by age id.
+const ENEMIES_INLINE = {
+  primal:     { label:"Pelt-Runner",    kind:"swarmer",  color:"#8b4513", accent:"#d4a373", glyph:"hide" },
+  mudbrick:   { label:"Clay-Soldier",   kind:"infantry", color:"#a0522d", accent:"#d4a373", glyph:"brick" },
+  iron:       { label:"Hoplite",        kind:"infantry", color:"#6b7280", accent:"#9ca3af", glyph:"spear" },
+  spires:     { label:"Mail-Knight",    kind:"heavy",    color:"#4b5563", accent:"#94a3b8", glyph:"helm" },
+  alchemical: { label:"Musketeer",      kind:"ranged",   color:"#7c2d12", accent:"#ea580c", glyph:"flintlock" },
+  steamheart: { label:"Armored-Line",   kind:"heavy",    color:"#44403c", accent:"#f59e0b", glyph:"cog" },
+  atomic:     { label:"Hazmat-Squad",   kind:"elite",    color:"#064e3b", accent:"#10b981", glyph:"trefoil" },
+  signal:     { label:"Drone-Swarm",    kind:"swarmer",  color:"#1e3a8a", accent:"#60a5fa", glyph:"antenna" },
+  synthetic:  { label:"Vat-Myrmidon",   kind:"elite",    color:"#831843", accent:"#ec4899", glyph:"helix" },
+  stellar:    { label:"Orbital-Drop",   kind:"boss",     color:"#3730a3", accent:"#a5b4fc", glyph:"capsule" },
+  ascendant:  { label:"Light-Mote",     kind:"boss",     color:"#4c1d95", accent:"#f0abfc", glyph:"mote" }
+};
+function ageKey(idx) { return AGE_IDS[Math.min(Math.max(idx|0, 0), AGE_IDS.length - 1)]; }
+function archetypeFor(ageIdx) {
+  const key = ageKey(ageIdx);
+  return (ENEMIES && ENEMIES[key]) || ENEMIES_INLINE[key] || ENEMIES_INLINE.primal;
+}
+function lineageOf(type) {
+  const meta = BALANCE.TOWER_META && BALANCE.TOWER_META[type];
+  return (meta && meta.lineage) || type;
+}
+// Map glyph names (from JSON) to unicode chars. Keep sparse; fall back to first letter.
+const GLYPH_UNICODE = {
+  fang:"⌦", tusk:"◤", claw:"✦", hide:"❖", brick:"▦", spear:"↑", helm:"⚙",
+  flintlock:"✹", cog:"⚙", trefoil:"☢", antenna:"◊", helix:"⌬", capsule:"◉", mote:"✦",
+  shield:"⛨", torch:"✸", anvil:"▲", crown:"♛", eye:"◎", wisp:"⁂"
+};
+function glyphChar(g) { return GLYPH_UNICODE[g] || (g && g[0] ? g[0].toUpperCase() : "◆"); }
+
+// Silhouette renderer — 6 archetype primitives, tinted by (color, accent).
+function renderSilhouette(ctx, kind, x, y, scale, color, accent) {
+  const s = scale || 1;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.strokeStyle = accent || "rgba(255,255,255,0.4)";
+  ctx.lineWidth = 1;
+  ctx.fillStyle = color || "#6b4a1c";
+  switch (kind) {
+    case "swarmer": {
+      // Three overlapping triangles
+      for (const off of [[-4,0],[0,-1],[4,0]]) {
+        ctx.beginPath();
+        ctx.moveTo(off[0]*s, (-6)*s);
+        ctx.lineTo((off[0]-3)*s, (4+off[1])*s);
+        ctx.lineTo((off[0]+3)*s, (4+off[1])*s);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+      break;
+    }
+    case "infantry": {
+      // Body + head + shoulder hex
+      ctx.beginPath(); ctx.rect(-4*s, -3*s, 8*s, 9*s); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -6*s, 3*s, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-6*s,-2*s); ctx.lineTo(-3*s,-4*s); ctx.lineTo(3*s,-4*s); ctx.lineTo(6*s,-2*s); ctx.stroke();
+      break;
+    }
+    case "heavy": {
+      // Broad hexagon + armor notches + stub legs
+      const r = 8*s;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = Math.PI/3 * i - Math.PI/2;
+        const px = Math.cos(a)*r, py = Math.sin(a)*r;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = accent;
+      ctx.fillRect(-5*s, -9*s, 3*s, 2*s); ctx.fillRect(2*s, -9*s, 3*s, 2*s);
+      ctx.fillStyle = color;
+      ctx.fillRect(-5*s, 7*s, 3*s, 3*s); ctx.fillRect(2*s, 7*s, 3*s, 3*s);
+      break;
+    }
+    case "ranged": {
+      // Slim trapezoid + extended arm
+      ctx.beginPath();
+      ctx.moveTo(-3*s, -6*s); ctx.lineTo(3*s, -6*s); ctx.lineTo(5*s, 7*s); ctx.lineTo(-5*s, 7*s);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = accent;
+      ctx.fillRect(4*s, -2*s, 8*s, 2*s); // rifle/arm
+      ctx.beginPath(); ctx.arc(0, -8*s, 2.5*s, 0, Math.PI*2); ctx.fill();
+      break;
+    }
+    case "elite": {
+      // Taller infantry + crown notch + shoulder spikes
+      ctx.beginPath(); ctx.rect(-4*s, -4*s, 8*s, 10*s); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -7*s, 3*s, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = accent;
+      ctx.beginPath(); ctx.moveTo(-3*s,-10*s); ctx.lineTo(-1*s,-13*s); ctx.lineTo(1*s,-10*s); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(-1*s,-12*s); ctx.lineTo(1*s,-14*s); ctx.lineTo(3*s,-12*s); ctx.closePath(); ctx.fill();
+      ctx.fillRect(-7*s,-3*s,2*s,4*s); ctx.fillRect(5*s,-3*s,2*s,4*s);
+      break;
+    }
+    case "boss": {
+      // Layered 3-tier: base hex + middle crown + top spire
+      const r = 10*s;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = Math.PI/3 * i - Math.PI/2;
+        const px = Math.cos(a)*r, py = Math.sin(a)*r + 2*s;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.moveTo(-7*s,-4*s); ctx.lineTo(-4*s,-8*s); ctx.lineTo(-1*s,-4*s);
+      ctx.lineTo(1*s,-4*s); ctx.lineTo(4*s,-8*s); ctx.lineTo(7*s,-4*s);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, -14*s); ctx.lineTo(-2*s,-7*s); ctx.lineTo(2*s,-7*s);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      break;
+    }
+    default: {
+      ctx.beginPath(); ctx.arc(0, 0, 7*s, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// Tower body — hex + glyph + level-crown.
+function renderTowerHex(ctx, t, eff, isHovered) {
+  const x = t.x, y = t.y;
+  const r = 13;
+  ctx.save();
+  ctx.shadowColor = eff.color;
+  ctx.shadowBlur = isHovered ? 18 : 10;
+  ctx.fillStyle = eff.color;
+  ctx.strokeStyle = eff.accent || "#0a0a10";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let i = 0; i < 6; i++) {
+    const a = Math.PI/3 * i - Math.PI/6;
+    const px = x + Math.cos(a)*r, py = y + Math.sin(a)*r;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.closePath(); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.stroke();
+  if (t.owner === "guest") {
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.2; ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = Math.PI/3 * i - Math.PI/6;
+      const px = x + Math.cos(a)*(r+2), py = y + Math.sin(a)*(r+2);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
+  }
+  // Glyph center
+  const meta = BALANCE.TOWER_META && BALANCE.TOWER_META[t.type];
+  const glyph = meta && meta.glyph;
+  ctx.fillStyle = eff.accent || "#fff";
+  ctx.font = "bold 13px 'Cinzel', serif";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(glyphChar(glyph || t.type), x, y + 1);
+  // Colorblind letter overlay — small, top-right of hex
+  if (Profile.setting("a11y.colorblind", false)) {
+    ctx.fillStyle = "#fff"; ctx.font = "bold 8px sans-serif";
+    ctx.fillText(t.type[0].toUpperCase(), x + 9, y - 8);
+  }
+  // Level-crown — chevrons above
+  const lvl = t.level || 1;
+  if (lvl > 1) {
+    ctx.strokeStyle = "#fbbf24"; ctx.lineWidth = 1.3;
+    for (let i = 1; i < lvl; i++) {
+      const cy = y - r - 2 - (i-1) * 4;
+      ctx.beginPath();
+      ctx.moveTo(x - 4, cy); ctx.lineTo(x, cy - 3); ctx.lineTo(x + 4, cy);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// Per-lineage projectile shapes.
+function renderProjectile(ctx, s) {
+  const life = s.life / 8;
+  ctx.save();
+  ctx.globalAlpha = Math.min(1, Math.max(0.15, life));
+  const dx = s.x2 - s.x1, dy = s.y2 - s.y1;
+  const ang = Math.atan2(dy, dx);
+  const len = Math.hypot(dx, dy);
+  switch (s.lineage) {
+    case "sinew": {
+      // Red dart — elongated triangle at tip
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+      ctx.fillStyle = s.color;
+      ctx.translate(s.x2, s.y2); ctx.rotate(ang);
+      ctx.beginPath();
+      ctx.moveTo(0, 0); ctx.lineTo(-6, -2); ctx.lineTo(-6, 2); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case "ember": {
+      // Orange spark + trail dots
+      ctx.strokeStyle = s.color; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+      ctx.fillStyle = s.color;
+      for (let i = 0; i < 3; i++) {
+        const t = 0.25 + i * 0.25;
+        const tx = s.x1 + dx * t, ty = s.y1 + dy * t;
+        ctx.globalAlpha = Math.min(1, life) * (0.3 + i * 0.2);
+        ctx.beginPath(); ctx.arc(tx, ty, 1.8, 0, Math.PI*2); ctx.fill();
+      }
+      ctx.globalAlpha = Math.min(1, life);
+      ctx.beginPath(); ctx.arc(s.x2, s.y2, 2.4, 0, Math.PI*2); ctx.fill();
+      break;
+    }
+    case "forge": {
+      // Grey hex-bolt
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+      ctx.fillStyle = s.color;
+      ctx.translate(s.x2, s.y2); ctx.rotate(ang + performance.now() / 120);
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = Math.PI/3 * i;
+        const px = Math.cos(a)*3, py = Math.sin(a)*3;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath(); ctx.fill();
+      break;
+    }
+    case "crown": {
+      // Purple chevron pair
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2;
+      ctx.translate(s.x1, s.y1); ctx.rotate(ang);
+      for (let i = 0; i < 2; i++) {
+        const off = i * (len * 0.45);
+        ctx.beginPath();
+        ctx.moveTo(off, -3); ctx.lineTo(off + 5, 0); ctx.lineTo(off, 3);
+        ctx.stroke();
+      }
+      break;
+    }
+    case "veil": {
+      // Cyan wisp — wavy bezier
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2;
+      const mx = (s.x1 + s.x2) / 2, my = (s.y1 + s.y2) / 2;
+      const perpX = -dy / Math.max(1, len) * 4, perpY = dx / Math.max(1, len) * 4;
+      ctx.beginPath();
+      ctx.moveTo(s.x1, s.y1);
+      ctx.quadraticCurveTo(mx + perpX, my + perpY, s.x2, s.y2);
+      ctx.stroke();
+      break;
+    }
+    case "hybrid": {
+      // Two-color split
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo((s.x1+s.x2)/2, (s.y1+s.y2)/2); ctx.stroke();
+      ctx.strokeStyle = s.accent || "#fbbf24"; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo((s.x1+s.x2)/2, (s.y1+s.y2)/2); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+      break;
+    }
+    default: {
+      ctx.strokeStyle = hexA(s.color, life); ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// Muzzle-flash sprites.
+function renderFlashes(ctx) {
+  if (!game.flashes) return;
+  for (const f of game.flashes) {
+    const t = f.life / 3;
+    const r = 6 * (1 + (1 - t) * 0.8);
+    const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, r);
+    grad.addColorStop(0, hexA(f.color, 0.9 * t));
+    grad.addColorStop(1, hexA(f.color, 0));
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(f.x, f.y, r, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+// Status-icon glyphs over HP bar.
+function renderStatusIcons(ctx, e) {
+  if (!e.statuses || !e.statuses.length) return;
+  const slots = e.statuses.slice(0, 4);
+  for (let i = 0; i < slots.length; i++) {
+    const s = slots[i];
+    const sx = e.x - 12 + i * 7, sy = e.y - 23;
+    ctx.save();
+    ctx.translate(sx, sy);
+    switch (s.kind) {
+      case "slow":  ctx.strokeStyle = "#60a5fa"; ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let k = 0; k < 3; k++) { ctx.moveTo(0, -2.5); ctx.lineTo(0, 2.5); ctx.rotate(Math.PI/3); }
+        ctx.stroke(); break;
+      case "burn":  ctx.fillStyle = "#ef4444";
+        ctx.beginPath(); ctx.moveTo(0,-3); ctx.quadraticCurveTo(2,-1,1,2); ctx.quadraticCurveTo(0,3,-1,2); ctx.quadraticCurveTo(-2,-1,0,-3); ctx.fill(); break;
+      case "armor": ctx.strokeStyle = "#9ca3af"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0,-3); ctx.lineTo(2.5,-1); ctx.lineTo(2.5,2); ctx.lineTo(0,3); ctx.lineTo(-2.5,2); ctx.lineTo(-2.5,-1); ctx.closePath(); ctx.stroke(); break;
+      case "shield":ctx.fillStyle = "rgba(148,163,184,0.7)";
+        ctx.beginPath(); ctx.moveTo(0,-3); ctx.lineTo(2.5,-1); ctx.lineTo(2.5,2); ctx.lineTo(0,3); ctx.lineTo(-2.5,2); ctx.lineTo(-2.5,-1); ctx.closePath(); ctx.fill(); break;
+      case "marked":ctx.strokeStyle = "#fbbf24"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(0,0,2.5,0,Math.PI*2); ctx.moveTo(-3,0); ctx.lineTo(3,0); ctx.moveTo(0,-3); ctx.lineTo(0,3); ctx.stroke(); break;
+    }
+    ctx.restore();
+  }
+}
+
+// Damage-number sprites.
+function renderDamageNumbers(ctx) {
+  if (!game.damageNumbers) return;
+  for (const d of game.damageNumbers) {
+    const t = d.life / 30;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, t);
+    ctx.fillStyle = d.color;
+    ctx.font = "bold 11px 'Cinzel', serif";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(d.text, d.x, d.y);
+    ctx.restore();
+  }
+}
+
+// Emitters ------------------------------------------------------------------
+function emitDamageNumber(x, y, text, color) {
+  if (!game.damageNumbers) game.damageNumbers = [];
+  game.damageNumbers.push({ x, y, text, color, life: 30, vy: -0.5 });
+}
+function emitMuzzleFlash(x, y, color) {
+  if (!game.flashes) game.flashes = [];
+  game.flashes.push({ x, y, color, life: 3 });
+}
+function emitFeed(kind, text) {
+  if (!game.feed) game.feed = [];
+  game.feed.push({ kind, text, life: kind === "leak" || kind === "hybrid" ? 360 : 240 });
+  if (game.feed.length > 8) game.feed.shift();
+  renderCombatFeedDOM();
+}
+function renderCombatFeedDOM() {
+  const host = document.getElementById("combat-feed");
+  if (!host) return;
+  host.innerHTML = "";
+  const rows = game.feed.slice(-6);
+  for (const r of rows) {
+    const el = document.createElement("div");
+    el.className = "row " + r.kind;
+    el.textContent = r.text;
+    host.appendChild(el);
+    requestAnimationFrame(() => el.classList.add("on"));
+  }
+}
+
+// Next-wave telegraph strip.
+function renderNextWaveTelegraph() {
+  const host = document.getElementById("next-wave-strip");
+  if (!host) return;
+  if (!game || game.waveActive || game.mode !== "match") { host.classList.remove("on"); return; }
+  const total = game.totalWaves || 3;
+  if (game.wave >= total) { host.classList.remove("on"); return; }
+  const nextIdx = game.wave; // 0-based index of upcoming wave
+  const def = WAVE_DEFS[nextIdx];
+  if (!def) { host.classList.remove("on"); return; }
+  // Derive archetype for the current age (waves pull from current age arc).
+  const arch = archetypeFor(game.ageIdx);
+  host.innerHTML =
+    '<span class="tw-label">NEXT · W' + (nextIdx + 1) + '</span>' +
+    '<span class="tw-chip" id="nwt-chip">' +
+      '<canvas width="20" height="20" id="nwt-canvas"></canvas>' +
+      '<span>' + arch.label + '</span>' +
+      '<b>×' + def.count + '</b>' +
+    '</span>' +
+    '<span class="tw-chip"><span>HP</span><b>' + def.hp + '</b></span>' +
+    '<span class="tw-chip"><span>SPD</span><b>' + def.speed.toFixed(2) + '</b></span>';
+  const cv = document.getElementById("nwt-canvas");
+  if (cv) {
+    const c = cv.getContext("2d");
+    c.clearRect(0, 0, 20, 20);
+    renderSilhouette(c, arch.kind, 10, 12, 0.6, arch.color, arch.accent);
+  }
+  host.classList.add("on");
+}
+
+// ============================================================================
+// Main draw
+// ============================================================================
+function draw() {
+  const ctx = game.ctx, W = game.W, H = game.H;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "rgba(201,191,174,0.04)";
+  for (let x = 20; x < W; x += 40) for (let y = 20; y < H; y += 40) ctx.fillRect(x, y, 1, 1);
+  ctx.strokeStyle = "rgba(217,119,6,0.25)"; ctx.lineWidth = 36; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(game.path[0].x, game.path[0].y);
+  for (let i = 1; i < game.path.length; i++) ctx.lineTo(game.path[i].x, game.path[i].y);
+  ctx.stroke();
+  ctx.strokeStyle = "rgba(217,119,6,0.7)"; ctx.lineWidth = 2; ctx.setLineDash([4, 6]); ctx.stroke(); ctx.setLineDash([]);
+  for (const c of game.cells) {
+    if (c.occupied) continue;
+    ctx.strokeStyle = "rgba(201,191,174,0.15)"; ctx.lineWidth = 1;
+    ctx.strokeRect(c.x + 0.5, c.y + 0.5, c.w, c.h);
+    if (game.mode === "tutorial" && game.tutorialStep === 1) {
+      ctx.fillStyle = "rgba(217,119,6,0.08)"; ctx.fillRect(c.x, c.y, c.w, c.h);
+    }
+  }
+  // Tower rings + bodies
+  for (const t of game.towers) {
+    const eff = effectiveTowerStats(t) || TOWER_STATS[t.type];
+    const isHovered = hoverState.tower === t;
+    ctx.save();
+    if (eff.range > 0 && isHovered) {
+      const pulse = 0.5 + 0.3 * Math.sin(performance.now() / 260);
+      ctx.strokeStyle = hexA(eff.color, pulse); ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.arc(t.x, t.y, eff.range, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]);
+      const g2 = ctx.createRadialGradient(t.x, t.y, 2, t.x, t.y, eff.range);
+      g2.addColorStop(0, hexA(eff.color, 0.18)); g2.addColorStop(1, hexA(eff.color, 0));
+      ctx.fillStyle = g2; ctx.beginPath(); ctx.arc(t.x, t.y, eff.range, 0, Math.PI * 2); ctx.fill();
+    } else if (eff.range > 0) {
+      const g = ctx.createRadialGradient(t.x, t.y, 2, t.x, t.y, eff.range);
+      g.addColorStop(0, hexA(eff.color, 0.12)); g.addColorStop(1, hexA(eff.color, 0));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(t.x, t.y, eff.range, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+    renderTowerHex(ctx, t, eff, isHovered);
+  }
+  // Ghost-placement preview
+  if (game.selectedTower && !game.isGuest && hoverState.cell && !hoverState.cell.occupied) {
+    const cell = hoverState.cell;
+    const gx = cell.x + cell.w / 2, gy = cell.y + cell.h / 2;
+    const stat = TOWER_STATS[game.selectedTower];
+    if (stat) {
+      const afford = game.gold >= stat.cost;
+      const ringColor = afford ? hexA(stat.color, 0.9) : "#ef4444";
+      ctx.save();
+      if (stat.range > 0) {
+        ctx.strokeStyle = ringColor; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.arc(gx, gy, stat.range, 0, Math.PI * 2); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      ctx.globalAlpha = 0.55;
+      const r = 13;
+      ctx.fillStyle = stat.color;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = Math.PI/3 * i - Math.PI/6;
+        const px = gx + Math.cos(a)*r, py = gy + Math.sin(a)*r;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = afford ? "rgba(255,255,255,0.6)" : "#ef4444";
+      ctx.lineWidth = 1.5; ctx.setLineDash([2, 3]);
+      ctx.strokeRect(cell.x + 0.5, cell.y + 0.5, cell.w, cell.h);
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+  }
+  // Strand 7: Commander avatar + aura (drawn before enemies so enemies render on top).
+  if (game.commander) {
+    const cmdr = game.commander;
+    const cellSize = game.cellSize || 46;
+    const auraR = (cmdr.auraCells || 2) * (cellSize + 10);
+    const lineColor = getLineageCss(cmdr.lineage);
+    const sigOn = (cmdr.sigActiveTtl || 0) > 0;
+    ctx.save();
+    // Aura faint fill
+    const gA = ctx.createRadialGradient(cmdr.x, cmdr.y, 4, cmdr.x, cmdr.y, auraR);
+    gA.addColorStop(0, hexA(lineColor, sigOn ? 0.22 : 0.10));
+    gA.addColorStop(1, hexA(lineColor, 0));
+    ctx.fillStyle = gA;
+    ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, auraR, 0, Math.PI*2); ctx.fill();
+    // Aura dashed ring
+    ctx.strokeStyle = hexA(lineColor, sigOn ? 0.9 : 0.55);
+    ctx.lineWidth = sigOn ? 2 : 1.2;
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, auraR, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+    // Tint the cells in aura that host a tower
+    for (const t of game.towers) {
+      if (Math.hypot(t.x - cmdr.x, t.y - cmdr.y) <= auraR && t.cell) {
+        ctx.fillStyle = hexA(lineColor, sigOn ? 0.16 : 0.08);
+        ctx.fillRect(t.cell.x, t.cell.y, t.cell.w, t.cell.h);
+      }
+    }
+    // Body silhouette — scaled 1.4x. Use existing silhouette primitives keyed loosely to lineage.
+    const kind = cmdr.lineage === "sinew" ? "heavy"
+              : cmdr.lineage === "ember"  ? "ranged"
+              : cmdr.lineage === "forge"  ? "infantry"
+              : cmdr.lineage === "crown"  ? "elite"
+              : "swarmer";
+    renderSilhouette(ctx, kind, cmdr.x, cmdr.y, 1.4, lineColor, "#f4e8c8");
+    // Commander laurel ring
+    ctx.strokeStyle = "#f4e8c8"; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, 22, 0, Math.PI*2); ctx.stroke();
+    // Cooldown arc (top-anchored, sweeps as CD depletes)
+    if (cmdr.cd > 0) {
+      const frac = cmdr.cd / (60 * 60);
+      ctx.strokeStyle = hexA(lineColor, 0.85); ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(cmdr.x, cmdr.y, 26, -Math.PI/2, -Math.PI/2 + Math.PI*2*frac);
+      ctx.stroke();
+    } else {
+      // Q-ready pip
+      ctx.fillStyle = "#f4e8c8";
+      ctx.beginPath(); ctx.arc(cmdr.x + 20, cmdr.y - 20, 3, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+  // Enemies
+  const pathLen = game.pathLen || 1;
+  const showThreat = Profile.setting("insight.threatBar", true);
+  for (const e of game.enemies) {
+    const kind = e.kind || archetypeFor(e.ageIdx != null ? e.ageIdx : game.ageIdx).kind;
+    const color = e.color || archetypeFor(e.ageIdx != null ? e.ageIdx : game.ageIdx).color;
+    const accent = e.accent || archetypeFor(e.ageIdx != null ? e.ageIdx : game.ageIdx).accent;
+    const scale = kind === "boss" ? 1.3 : kind === "heavy" ? 1.1 : kind === "swarmer" ? 0.75 : 0.95;
+    renderSilhouette(ctx, kind, e.x, e.y, scale, color, accent);
+    // HP bar
+    const pct = Math.max(0, e.hp / Math.max(1, e.maxHp));
+    ctx.fillStyle = "rgba(0,0,0,0.6)"; ctx.fillRect(e.x - 12, e.y - 16, 24, 3);
+    ctx.fillStyle = pct > 0.5 ? "#16a34a" : pct > 0.25 ? "#eab308" : "#dc2626";
+    ctx.fillRect(e.x - 12, e.y - 16, 24 * pct, 3);
+    // Threat bar (time-to-leak)
+    if (showThreat) {
+      const remain = Math.max(0, 1 - (e.dist || 0) / pathLen);
+      const imminent = remain < 0.15;
+      const pulse = imminent ? (0.55 + 0.45 * Math.sin(performance.now() / 140)) : 1;
+      ctx.fillStyle = "rgba(0,0,0,0.5)"; ctx.fillRect(e.x - 12, e.y - 12, 24, 2);
+      const c = remain > 0.5 ? "rgba(22,163,74,0.85)" : remain > 0.25 ? "rgba(234,179,8,0.9)" : `rgba(220,38,38,${pulse})`;
+      ctx.fillStyle = c; ctx.fillRect(e.x - 12, e.y - 12, 24 * (1 - remain), 2);
+    }
+    renderStatusIcons(ctx, e);
+  }
+  // Shots + muzzle flashes + damage numbers
+  for (const s of game.shots) renderProjectile(ctx, s);
+  renderFlashes(ctx);
+  renderDamageNumbers(ctx);
+}
+function hexA(hex, a) {
+  const h = hex.replace("#", "");
+  const r = parseInt(h.slice(0,2), 16), g = parseInt(h.slice(2,4), 16), b = parseInt(h.slice(4,6), 16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ============================================================================
+// Interaction layer — hover tooltips, ghost preview, right-click menu, ref panel
+// Decision: decisions/2026-04-20-prototype-interaction-layer.md
+// ============================================================================
+const hoverState = { cell: null, tower: null, enemy: null, canvasX: 0, canvasY: 0 };
+
+function towerAt(mx, my) {
+  if (!game) return null;
+  for (const t of game.towers) {
+    if (Math.hypot(mx - t.x, my - t.y) <= 14) return t;
+  }
+  return null;
+}
+function enemyAt(mx, my) {
+  if (!game) return null;
+  for (const e of game.enemies) {
+    if (Math.hypot(mx - e.x, my - e.y) <= 11) return e;
+  }
+  return null;
+}
+function cellAt(mx, my) {
+  if (!game || !game.cells) return null;
+  return game.cells.find(c => mx >= c.x && mx < c.x + c.w && my >= c.y && my < c.y + c.h) || null;
+}
+
+function onBoardMove(ev) {
+  if (!game) return;
+  const rect = game.canvas.getBoundingClientRect();
+  const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+  hoverState.canvasX = mx; hoverState.canvasY = my;
+  const t = towerAt(mx, my);
+  const e = !t ? enemyAt(mx, my) : null;
+  const c = (!t && !e) ? cellAt(mx, my) : null;
+  hoverState.tower = t; hoverState.enemy = e; hoverState.cell = c;
+  if (t) showTowerTip(t, ev.clientX, ev.clientY);
+  else if (e) showEnemyTip(e, ev.clientX, ev.clientY);
+  else if (game.selectedTower && c && !c.occupied) showPlacementTip(game.selectedTower, ev.clientX, ev.clientY);
+  else hideTip();
+}
+function onBoardLeave() {
+  hoverState.cell = null; hoverState.tower = null; hoverState.enemy = null;
+  hideTip();
+}
+function onBoardContext(ev) {
+  ev.preventDefault();
+  if (!game || game.paused) return;
+  const rect = game.canvas.getBoundingClientRect();
+  const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+  const t = towerAt(mx, my);
+  if (!t) { hideCtxMenu(); return; }
+  if (game.isGuest) { toast("Only host can sell/upgrade in co-op."); return; }
+  showCtxMenu(t, ev.clientX, ev.clientY);
+}
+
+function showTip(html, clientX, clientY) {
+  const tip = document.getElementById("hover-tip");
+  if (!tip) return;
+  tip.innerHTML = html;
+  tip.style.left = "0px"; tip.style.top = "0px";
+  tip.classList.add("show");
+  tip.setAttribute("aria-hidden", "false");
+  // Measure then clamp to viewport
+  const r = tip.getBoundingClientRect();
+  const pad = 12;
+  let x = clientX + 16, y = clientY + 16;
+  if (x + r.width + pad > window.innerWidth) x = clientX - r.width - 16;
+  if (y + r.height + pad > window.innerHeight) y = clientY - r.height - 16;
+  tip.style.left = Math.max(pad, x) + "px";
+  tip.style.top = Math.max(pad, y) + "px";
+}
+function hideTip() {
+  const tip = document.getElementById("hover-tip");
+  if (!tip) return;
+  tip.classList.remove("show");
+  tip.setAttribute("aria-hidden", "true");
+}
+
+function lineageRole(type) {
+  return ({
+    sinew: "Front line. High HP, low range. Takes and deals hits.",
+    ember: "Tech accelerator. Generates Knowledge on kill — spend it on Age-Up.",
+    forge: "Economy. Generates gold passively (not wired in prototype).",
+    crown: "Aura multiplier. Boosts adjacent towers (not wired in prototype).",
+    veil:  "Wild card. Debuff / terrain / reality-bend role.",
+    hybrid: "Sinew × Ember fusion. Tank Corps — high damage, mid range."
+  })[type] || "";
+}
+
+function towerTipHTML(t) {
+  const eff = effectiveTowerStats(t);
+  const meta = TOWER_STATS[t.type];
+  const up = upgradeCost(t);
+  const refund = sellRefund(t);
+  const ageName = AGES[game.ageIdx] || "—";
+  const dots = "●".repeat(t.level || 1) + "○".repeat(3 - (t.level || 1));
+  return `
+    <div class="tip-title">${meta.label} <span class="tip-hk">L${t.level || 1} ${dots}</span></div>
+    <div class="tip-sub">${ageName} age · owner: ${t.owner || "you"}</div>
+    <div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">${eff.damage}</span></div>
+    <div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">${eff.cd}</span></div>
+    <div class="tip-row"><span class="tip-k">Range</span><span class="tip-v">${eff.range}</span></div>
+    ${eff.knowledge ? `<div class="tip-row"><span class="tip-k">Knowledge/kill</span><span class="tip-v">${eff.knowledge}</span></div>` : ""}
+    <div class="tip-role">${lineageRole(t.type)}</div>
+    <div class="tip-hint">Right-click: ${(t.level||1) < 3 ? `upgrade ${up}g` : "max"} · sell ${refund}g</div>
+  `;
+}
+function enemyTipHTML(e) {
+  const pct = Math.round((e.hp / e.maxHp) * 100);
+  return `
+    <div class="tip-title">Enemy</div>
+    <div class="tip-row"><span class="tip-k">HP</span><span class="tip-v">${Math.ceil(e.hp)} / ${e.maxHp} (${pct}%)</span></div>
+    <div class="tip-row"><span class="tip-k">Speed</span><span class="tip-v">${e.speed.toFixed(2)}</span></div>
+    <div class="tip-row"><span class="tip-k">Reward</span><span class="tip-v">${e.reward}g</span></div>
+  `;
+}
+function placementTipHTML(type) {
+  const stat = TOWER_STATS[type];
+  if (!stat) return "";
+  const age = game.ageIdx;
+  const dmg = stat.damage && stat.damage[age] != null ? stat.damage[age] : 0;
+  const cd  = stat.cd && stat.cd[age] != null ? stat.cd[age] : 30;
+  const afford = game.gold >= stat.cost;
+  const extra = type === "hybrid" ? '<div class="tip-hint">Needs Sinew + Ember within 110px</div>' : "";
+  return `
+    <div class="tip-title">${stat.label} <span class="tip-hk">click to place</span></div>
+    <div class="tip-sub">${AGES[age]} · L1</div>
+    <div class="tip-row"><span class="tip-k">Cost</span><span class="tip-v" style="color:${afford?'var(--gold)':'#ef4444'}">${stat.cost}g</span></div>
+    <div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">${dmg}</span></div>
+    <div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">${cd}</span></div>
+    <div class="tip-row"><span class="tip-k">Range</span><span class="tip-v">${stat.range}</span></div>
+    <div class="tip-role">${lineageRole(type)}</div>
+    ${extra}
+  `;
+}
+function showTowerTip(t, cx, cy) { showTip(towerTipHTML(t), cx, cy); }
+function showEnemyTip(e, cx, cy) { showTip(enemyTipHTML(e), cx, cy); }
+function showPlacementTip(type, cx, cy) { showTip(placementTipHTML(type), cx, cy); }
+
+// ---- Context menu ----
+function showCtxMenu(t, cx, cy) {
+  const m = document.getElementById("ctx-menu");
+  if (!m) return;
+  const eff = effectiveTowerStats(t);
+  const atMax = (t.level || 1) >= 3;
+  const up = upgradeCost(t); const refund = sellRefund(t);
+  const canUp = !atMax && game.gold >= up;
+  m.innerHTML = `
+    <div class="ctx-title">${TOWER_STATS[t.type].label} · L${t.level || 1}</div>
+    <div class="ctx-sub">DMG ${eff.damage} · CD ${eff.cd} · RNG ${eff.range}</div>
+    <button class="ctx-item" id="ctx-upgrade" ${canUp ? "" : "disabled"}>Upgrade <span class="ctx-cost">${atMax ? "MAX" : up + "g"}</span></button>
+    <button class="ctx-item" id="ctx-sell">Sell <span class="ctx-cost">+${refund}g</span></button>
+    <button class="ctx-item" onclick="hideCtxMenu()">Close</button>
+  `;
+  m.classList.add("show");
+  m.style.left = "0px"; m.style.top = "0px";
+  const r = m.getBoundingClientRect();
+  let x = cx, y = cy;
+  if (x + r.width + 8 > window.innerWidth) x = window.innerWidth - r.width - 8;
+  if (y + r.height + 8 > window.innerHeight) y = window.innerHeight - r.height - 8;
+  m.style.left = x + "px"; m.style.top = y + "px";
+  document.getElementById("ctx-upgrade").onclick = () => upgradeTower(t);
+  document.getElementById("ctx-sell").onclick = () => sellTower(t);
+}
+function hideCtxMenu() {
+  const m = document.getElementById("ctx-menu");
+  if (m) m.classList.remove("show");
+}
+document.addEventListener("click", (ev) => {
+  const m = document.getElementById("ctx-menu");
+  if (m && m.classList.contains("show") && !m.contains(ev.target)) hideCtxMenu();
+});
+
+// ---- Reference panel (I key) ----
+function openReference() {
+  const panel = document.getElementById("reference-panel");
+  const content = document.getElementById("ref-content");
+  if (!panel || !content || !game) return;
+  const age = game.ageIdx;
+  const ageName = AGES[age] || "—";
+  document.getElementById("ref-sub").textContent = `Current age: ${ageName} (${age + 1}/${AGES.length}). Numbers are age-scaled [PROPOSAL].`;
+  const types = ["sinew", "ember", "forge", "crown", "veil", "hybrid"];
+  let rows = "";
+  for (const ty of types) {
+    const stat = TOWER_STATS[ty]; if (!stat) continue;
+    const dmg = stat.damage && stat.damage[age] != null ? stat.damage[age] : 0;
+    const cd = stat.cd && stat.cd[age] != null ? stat.cd[age] : 30;
+    rows += `<tr><td><span class="ref-lineage" style="background:${stat.color}"></span>${stat.label}</td><td>${stat.cost}g</td><td>${dmg}</td><td>${cd}</td><td>${stat.range}</td><td>${lineageRole(ty)}</td></tr>`;
+  }
+  let ageRows = "";
+  for (let i = 0; i < AGES.length; i++) {
+    const cls = i === age ? ' class="current-age"' : "";
+    const dmgMul = Math.pow(BALANCE.DAMAGE_PER_AGE, i).toFixed(2);
+    const cdMul = Math.pow(BALANCE.CD_PER_AGE, i).toFixed(2);
+    ageRows += `<tr${cls}><td>${i + 1}</td><td>${AGES[i]}</td><td>×${dmgMul}</td><td>×${cdMul}</td></tr>`;
+  }
+  content.innerHTML = `
+    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:0 0 8px;">Towers @ ${ageName}</h3>
+    <table>
+      <thead><tr><th>Lineage</th><th>Cost</th><th>DMG</th><th>CD</th><th>Range</th><th>Role</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:18px 0 8px;">Age ladder</h3>
+    <table>
+      <thead><tr><th>#</th><th>Age</th><th>DMG mult</th><th>CD mult</th></tr></thead>
+      <tbody>${ageRows}</tbody>
+    </table>
+    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:18px 0 8px;">Upgrade [PROPOSAL]</h3>
+    <div style="font-family:monospace;font-size:11px;color:var(--ink-1);line-height:1.7;">
+      L1 → L2: damage ×1.50, range ×1.08, cooldown ×0.90. Cost = ceil(base × 0.75 × 1).<br>
+      L2 → L3: same curve. Cost = ceil(base × 0.75 × 2).<br>
+      Sell refund: 60% of cumulative invested.
+    </div>
+  `;
+  panel.classList.add("show");
+}
+function closeReference() {
+  const panel = document.getElementById("reference-panel");
+  if (panel) panel.classList.remove("show");
+}
+
+// ---- Button tooltips (action bar + age-up + hybrid) ----
+function bindActionBarTooltips() {
+  document.querySelectorAll(".action-bar .tower-btn[data-tower]").forEach(btn => {
+    btn.addEventListener("mouseenter", () => {
+      if (currentScene === "match") showFirstRun("hover", "Hover anything for tooltips — range rings, cost, tier.");
+    }, { once: true });
+    const type = btn.dataset.tower;
+    btn.addEventListener("mouseenter", (ev) => {
+      if (!game) return;
+      const r = btn.getBoundingClientRect();
+      if (type === "hybrid") {
+        const ready = !btn.disabled;
+        const note = ready ? "Ready — Sinew + Ember detected." : "Needs Sinew + Ember within 110px of placement cell.";
+        const stat = TOWER_STATS.hybrid;
+        showTip(`<div class="tip-title">${HYBRIDS && HYBRIDS.sinew_ember ? HYBRIDS.sinew_ember.label : "Tank Corps"} <span class="tip-hk">6</span></div><div class="tip-sub">Hybrid · Sinew × Ember</div><div class="tip-row"><span class="tip-k">Cost</span><span class="tip-v">${stat.cost}g</span></div><div class="tip-role">${lineageRole("hybrid")}</div><div class="tip-hint">${note}</div>`, r.left + r.width/2, r.top);
+      } else {
+        showPlacementTip(type, r.left + r.width/2, r.top);
+      }
+    });
+    btn.addEventListener("mouseleave", hideTip);
+  });
+  const ageBtn = document.getElementById("btn-age-up");
+  if (ageBtn) {
+    ageBtn.addEventListener("mouseenter", () => {
+      if (!game) return;
+      const next = game.ageIdx + 1;
+      const r = ageBtn.getBoundingClientRect();
+      const canAge = next < AGES.length;
+      const nextName = canAge ? AGES[next] : "—";
+      const kn = BALANCE.AGE_UP_KNOWLEDGE_COST || 50;
+      const dmgBump = Math.round((BALANCE.DAMAGE_PER_AGE - 1) * 100);
+      const cdBump = Math.round((1 - BALANCE.CD_PER_AGE) * 100);
+      showTip(`<div class="tip-title">Age-Up <span class="tip-hk">A</span></div><div class="tip-sub">${AGES[game.ageIdx]} → ${nextName}</div><div class="tip-row"><span class="tip-k">Cost</span><span class="tip-v">${kn} knowledge</span></div><div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">+${dmgBump}% all towers</span></div><div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">-${cdBump}% all towers</span></div><div class="tip-hint">${canAge ? "Promotes every placed tower." : "Already at final age."}</div>`, r.left + r.width/2, r.top);
+    });
+    ageBtn.addEventListener("mouseleave", hideTip);
+  }
+  const waveBtn = document.getElementById("btn-wave");
+  if (waveBtn) {
+    waveBtn.addEventListener("mouseenter", () => {
+      if (!game) return;
+      const r = waveBtn.getBoundingClientRect();
+      showTip(`<div class="tip-title">Send Wave <span class="tip-hk">Space</span></div><div class="tip-sub">Wave ${game.wave + 1} of ${game.totalWaves || 3}</div><div class="tip-hint">Cannot age-up while a wave is active.</div>`, r.left + r.width/2, r.top);
+    });
+    waveBtn.addEventListener("mouseleave", hideTip);
+  }
+}
+
+// ============================================================================
+// End
+// ============================================================================
+function endMatch(won) {
+  game.playing = false;
+  game.ended = { won, kills: game.totalKills, gold: game.totalGold || 0, lives: game.lives, age: AGES[game.ageIdx], towers: game.towers.length, waves: game.wave, totalWaves: game.totalWaves || 3 };
+  if (game.isCoop && Net.role === "host") Net.broadcastMatchEnd(game.ended);
+  // Award XP to active commander (display-only progression)
+  if (COMMANDERS && Profile.data) {
+    const c = COMMANDERS.roster[COMMANDERS.active];
+    if (c && c.progression) {
+      c.progression.xp += won ? 40 : 12;
+      while (c.progression.xp >= c.progression.xpToNext && c.progression.level < c.progression.maxLevel) {
+        c.progression.xp -= c.progression.xpToNext; c.progression.level++;
+        toast("Commander level up → " + c.progression.level);
+      }
+    }
+  }
+  if (COMMANDERS) {
+    const c = COMMANDERS.roster[COMMANDERS.active];
+    if (c && c.vo) {
+      const pool = won ? c.vo.victory : c.vo.defeat;
+      if (pool && pool.length) caption("[VO]", pool[0].replace(/^\[VO\]\s*/, ""));
+    }
+  }
+  goto("end");
+}
+function renderEnd() {
+  const e = game.ended || { won: false, kills: 0, gold: 0, lives: 0, age: "Primal", towers: 0, waves: 0, totalWaves: 3 };
+  const t = document.getElementById("end-title");
+  t.textContent = e.won ? "Victory" : "Defeat";
+  t.classList.toggle("defeat", !e.won);
+  document.getElementById("end-sub").textContent = e.won ? "The altar stands" : "The altar fell to ash";
+  document.getElementById("end-stats").innerHTML = `
+    <div class="row"><span>Waves survived</span><b>${e.won ? e.totalWaves : Math.max(0, e.waves - 1)}</b></div>
+    <div class="row"><span>Creeps slain</span><b>${e.kills}</b></div>
+    <div class="row"><span>Gold earned</span><b>${e.gold}</b></div>
+    <div class="row"><span>Highest Age</span><b>${e.age}</b></div>
+    <div class="row"><span>Towers built</span><b>${e.towers}</b></div>
+    <div class="row"><span>Lives remaining</span><b>${e.lives}</b></div>
+  `;
+}
+function restart() { initMatch(); goto("match"); }
+
+// ============================================================================
+// Options
+// ============================================================================
+let optsOrigin = "menu";
+function openOptions(origin) { optsOrigin = origin || "menu"; goto("options"); }
+function closeOptions() { if (optsOrigin === "pause") { goto("match"); } else { goto("menu"); } }
+function selectOptsTab(tab) {
+  document.querySelectorAll(".opts-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.querySelectorAll(".opts-panel").forEach(p => p.classList.toggle("active", p.dataset.panel === tab));
+}
+function syncOptsUI() {
+  document.querySelectorAll("[data-opt]").forEach(el => {
+    const key = el.dataset.opt;
+    const v = Profile.setting(key, el.type === "checkbox" ? el.checked : el.value);
+    if (el.type === "checkbox") el.checked = !!v;
+    else if (el.tagName === "SELECT") el.value = (v != null ? v : el.value);
+    else el.value = v;
+    const tag = document.querySelector('[data-for="' + key + '"]');
+    if (tag) tag.textContent = el.value;
+  });
+  // Reflect current key-bind labels
+  const binds = Profile.setting("input.binds", {}) || {};
+  document.querySelectorAll(".bind-display").forEach(el => {
+    const action = el.dataset.bindFor;
+    if (binds[action]) el.textContent = prettyKey(binds[action]);
+  });
+}
+function saveOptsAndClose() {
+  document.querySelectorAll("[data-opt]").forEach(el => {
+    const key = el.dataset.opt;
+    const v = el.type === "checkbox" ? el.checked : (el.type === "range" ? Number(el.value) : el.value);
+    Profile.updateSetting(key, v);
+  });
+  applyUISettings();
+  toast("Settings saved.");
+  closeOptions();
+}
+function prettyKey(code) {
+  if (!code) return "—";
+  if (code === "Escape") return "Esc";
+  if (code === "Space") return "Space";
+  if (code.startsWith("Key")) return code.slice(3);
+  if (code.startsWith("Digit")) return code.slice(5);
+  if (code.startsWith("Arrow")) return code.slice(5);
+  return code;
+}
+function beginRebind(action, btn) {
+  btn.textContent = "Press key…";
+  btn.disabled = true;
+  const onKey = (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const code = e.code;
+    if (code === "Escape") { btn.textContent = "Rebind…"; btn.disabled = false; document.removeEventListener("keydown", onKey, true); return; }
+    const binds = Object.assign({}, Profile.setting("input.binds", {}));
+    binds[action] = code;
+    Profile.updateSetting("input.binds", binds);
+    const disp = document.querySelector('.bind-display[data-bind-for="' + action + '"]');
+    if (disp) disp.textContent = prettyKey(code);
+    btn.textContent = "Rebind…";
+    btn.disabled = false;
+    document.removeEventListener("keydown", onKey, true);
+    toast("Bound " + action + " → " + prettyKey(code));
+  };
+  document.addEventListener("keydown", onKey, true);
+}
+// Minimal WebAudio for Master + UI bus test tones (per audio-architecture.md)
+let _audioCtx = null;
+function ensureAudioCtx() {
+  if (!_audioCtx) { try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { _audioCtx = null; } }
+  return _audioCtx;
+}
+function playTestTone(bus) {
+  const ctx = ensureAudioCtx(); if (!ctx) { toast("AudioContext unavailable."); return; }
+  const master = (Profile.setting("vol.master", 80) / 100);
+  const busVol = (Profile.setting(bus === "ui" ? "vol.ui" : "vol.master", 80) / 100);
+  const v = Math.max(0.0001, master * busVol);
+  const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.frequency.value = bus === "ui" ? 880 : 440;
+  g.gain.value = 0; o.connect(g); g.connect(ctx.destination);
+  o.start();
+  g.gain.linearRampToValueAtTime(v * 0.3, ctx.currentTime + 0.02);
+  g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.22);
+  setTimeout(() => { try { o.stop(); } catch(e) {} }, 260);
+}
+function toggleFullscreen() {
+  const d = document;
+  const el = d.documentElement;
+  try {
+    if (!d.fullscreenElement) { (el.requestFullscreen || el.webkitRequestFullscreen).call(el); }
+    else { (d.exitFullscreen || d.webkitExitFullscreen).call(d); }
+  } catch(e) { toast("Fullscreen unavailable in this context."); }
+}
+function remapStub(action) { beginRebind(action, event.target); }
+
+// Live-preview values while dragging
+document.addEventListener("input", (e) => {
+  const el = e.target;
+  if (!el.matches("[data-opt]")) return;
+  const tag = document.querySelector('[data-for="' + el.dataset.opt + '"]');
+  if (tag) tag.textContent = el.value;
+});
+
+function applyUISettings() {
+  const scale = Profile.setting("ui.scale", 100) / 100;
+  document.documentElement.style.setProperty("--ui-scale", scale);
+  const subScale = Profile.setting("video.subScale", 100) / 100;
+  document.documentElement.style.setProperty("--sub-scale", subScale);
+  document.body.classList.toggle("reduce-motion", !!Profile.setting("a11y.reduceMotion", false));
+  document.body.classList.toggle("reduce-flash", !!Profile.setting("a11y.reduceFlash", false));
+  document.body.classList.toggle("reduce-effects", !!Profile.setting("a11y.reduceEffects", false));
+  document.body.classList.toggle("colorblind", !!Profile.setting("a11y.colorblind", false));
+  // Gameplay UI toggles: threat-bar, combat-feed visibility
+  const tb = document.getElementById("threat-bar"); if (tb) tb.style.display = Profile.setting("gp.threatBar", true) ? "" : "none";
+  const cf = document.getElementById("combat-feed"); if (cf) cf.style.display = Profile.setting("gp.combatFeed", true) ? "" : "none";
+}
+
+// ============================================================================
+// Keyboard shortcuts
+// ============================================================================
+document.addEventListener("keydown", (e) => {
+  const panel = document.getElementById("reference-panel");
+  const refOpen = panel && panel.classList.contains("show");
+  if (refOpen && (e.key === "Escape" || e.key === "i" || e.key === "I")) { e.preventDefault(); closeReference(); return; }
+  if (e.key === "Escape") { hideCtxMenu(); hideTip(); }
+  if (currentScene !== "match" || !game || game.paused) return;
+  if (e.key === " ") { e.preventDefault(); startWave(); }
+  else if (e.key.toLowerCase() === "a") ageUp();
+  else if (e.key === "1") selectTower("sinew");
+  else if (e.key === "2") selectTower("ember");
+  else if (e.key === "3") selectTower("forge");
+  else if (e.key === "4") selectTower("crown");
+  else if (e.key === "5") selectTower("veil");
+  else if (e.key === "6") selectTower("hybrid");
+  else if (e.key.toLowerCase() === "i") { e.preventDefault(); openReference(); }
+  else if (e.key.toLowerCase() === "u" && hoverState.tower) upgradeTower(hoverState.tower);
+  else if (e.key.toLowerCase() === "x" && hoverState.tower) sellTower(hoverState.tower);
+});
+
+// ============================================================================
+// Boot
+// ============================================================================
+Profile.load();
+applyUISettings();
+applySilhouetteTest();
+const u = Profile.currentUser();
+if (u) document.getElementById("login-username").value = u;
+loadData();
+bindActionBarTooltips();
+
+// Auto-join flow: ?join=<peerID> in URL kicks the guest into lobby → auto-dial after login
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const joinCode = params.get("join");
+  if (!joinCode) return;
+  // Wait until splash dismissed + login resolved, then dial
+  const tryDial = () => {
+    if (currentScene === "splash" || currentScene === "login") { setTimeout(tryDial, 400); return; }
+    goto("lobby-coop");
+    document.getElementById("lobby-join-code").value = joinCode;
+    toast("Auto-joining host…");
+    setTimeout(() => Net.join(joinCode), 400);
+  };
+  setTimeout(tryDial, 600);
+})();
+</script>
+</body>
+</html>
