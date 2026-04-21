@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-20
+**Last reviewed:** 2026-04-21
 ---
 
 # Phase 5 — Implementation planning
@@ -11,18 +11,20 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-4.md](phase-4.md). Next: 
 
 ## 5.1 MVP slice
 
-The smallest playable thing that answers: *"Does the commander + ages + lineage combination produce a game that a Tower Wars fan wants to keep playing?"*
+The smallest playable thing that answers: *"Does the commander + tier + lineage combination produce a game that a Tower Wars fan wants to keep playing?"*
 
-- **Two commanders** (one Sinew-leaning, one Ember-leaning).
-- **Two lineages fully built** (Sinew and Ember). No Forge, Crown, or Veil yet.
-- **Five ages** (Primal → Mudbrick → Iron → Spires → Alchemical). Five ages is the minimum depth that lets the age-persistence feeling emerge. Three ages (as in earlier TTA MVP spec) is too short.
-- **One hybrid** (Sinew + Ember → Tank Corps).
+Under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md), **the MVP and the launch roster converge** — 3 is already the lean-launch floor per `concept/phase-3.md §3.2`, so MVP is the full roster, not a strict subset. Prior MVP spec (2 commanders / 2 lineages / 5 ages / 1 hybrid) is superseded by this decision.
+
+- **Three commanders** (A / B / C — Ash-leaning / Nature-leaning / Prayer-leaning per §3.2). Full launch roster.
+- **Three lineages fully built** (Ash, Nature, Prayer) — full lineage surface.
+- **Three tiers** (Dust → Form → Apotheosis) under the Ash→Altar dungeon-cosmology arc per §3.5. Three tiers is the committed depth *and* the minimum depth for tier-persistence to emerge — the prior "five-age minimum" concern dissolves because three tiers is the ratified shape.
+- **Two hybrids** — one Ash×Nature, one Ash×Prayer (per §4.3). Nature×Prayer does not hybridize.
 - **One mode**: Solo vs AI on one map.
-- **Basic UI**: unit picker, health bar, economy display, age gate.
-- **No divergence forks yet.**
+- **Basic UI**: unit picker, health bar, economy display, tier gate.
+- **No divergence forks at MVP.** Fork pool is rescoped OPEN per §4.2 under the 2-tier-transition model; ratification can add the Dust→Form fork to MVP if it lands before MVP lock.
 - **No meta progression** (no commander XP, no backpack, no battle pass).
 - **No multiplayer yet.**
-- **MVP commanders honor the §4.1 identity floor.** Both MVP commanders ship with the full [PROPOSAL] floor (portrait + variant, silhouette + variant, 12 voice lines, signature, passive, tilt, 20-level ladder, 3 cosmetic slot types with 1 default item each). Without the floor, the identity-promise validation (see Phase 6) is unfalsifiable.
+- **MVP commanders honor the §4.1 identity floor.** All three MVP commanders ship with the full [PROPOSAL] floor (portrait + variant, silhouette + variant, 12 voice lines, signature, passive, tilt, 20-level ladder, 3 cosmetic slot types with 1 default item each). Without the floor, the identity-promise validation (see Phase 6) is unfalsifiable.
 
 If the MVP is fun, the vision works. If it is not fun, no amount of content added on top will save it.
 
@@ -46,7 +48,9 @@ Each phase has its own validation gate. See Phase 6.
 Three candidates:
 - **Stylized vector / painted flat** — Kingdom Rush reference.
 - **Isometric diorama** — Bloons TD 6 reference.
-- **Silhouette-forward mythic** — cheapest, most distinctive. *Leading choice.*
+- **Silhouette-forward mythic** — cheapest, most distinctive. *Leading choice — now **load-bearing** under the dungeon-cosmology aesthetic locked 2026-04-21.*
+
+Per the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md), the PM locked the world aesthetic as *"dungeon-like and mysterious"* and the match arc as a 3-tier Ash→Altar descent (§3.5). That upstream frame is incompatible with bright stylized-vector or chipper isometric-diorama directions — silhouette-forward mythic is no longer merely leading, it is the only candidate consistent with Phase 1/3. Reverting to either alternative now requires a Phase 1/3 reopen, not a Phase 5 adjustment.
 
 Silhouette-forward mythic requires strong art direction to avoid feeling underbuilt. Contract an art director *before* vertical slice work begins, not during.
 
