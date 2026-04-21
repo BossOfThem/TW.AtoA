@@ -1,6 +1,6 @@
 # Ash to Altar (working title) — TW-Commanders
 
-Tower wars game with persistent Commander identity, age-based tower evolution within each match, and cross-lineage hybrid units. Two-dev project, AI-assisted workflow, concept phase.
+Tower wars game with persistent Commander identity, a compressed **Ash→Altar cosmological arc** across 3 tiers per match, 3 lineages (Ash-enabler hybrids), and a dungeon-like mythic aesthetic. Two-dev project, AI-assisted workflow, concept phase.
 
 **Repo:** https://github.com/BossOfThem/TW.AtoA
 
