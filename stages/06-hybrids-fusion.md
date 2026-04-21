@@ -6,7 +6,21 @@
 **Downstream impact:** [Stage 07 — match end](07-match-end.md) (hybrid usage affects stats/XP), [Stage 08 — meta progression](08-meta-progression.md) (per-commander hybrid knowledge, if gating is chosen)
 **Open questions:** See below. **Contains an OPEN BLOCKER.**
 **Research backing:** [01-genre-pulse.md](../research/01-genre-pulse.md) (discovery mechanic precedent), [03-commander-archetypes.md](../research/03-commander-archetypes.md) (if gated-per-commander is chosen)
-**Last reviewed:** 2026-04-19
+**Last reviewed:** 2026-04-21
+
+---
+
+## Amendment 2026-04-21 (stub-level)
+
+Upstream Phase 4 §4.3 locked a **hybrid model: Ash is the hybrid-enabler** per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility Hard). Under the new shape:
+- **Two hybrid families at launch:** Ash × Nature and Ash × Prayer. **Nature × Prayer does NOT hybridize** — structural, not a balance number.
+- Prior "adjacent-lineage common / opposite-lineage rare" framing is **obsolete** (pre-supposes a 5-lineage wheel). Under 3 lineages, all hybrids are "Ash + X"; the common/rare axis collapses.
+- Hybrid table target **20–30 entries is superseded** — under 2 families × 3 tiers, target is **4–8 hybrid units** at launch.
+- **OPEN BLOCKER** (discovery mechanic) **survives but is reframed**: with only 2 families the wiki-breaks-discovery problem is smaller (2 entries, not 5+), but not closed. Three candidates (accept-rote / randomize / gate) remain viable.
+- Open question "hybrid table completeness at launch — all 20–30 or starter 10" **closed** — target is 4–8 at launch.
+- Open question "do hybrids evolve through ages" rephrases to **do hybrids evolve through tiers** (Dust / Form / Apotheosis).
+
+Remaining content below is preserved for traceability; dedicated Stage-06 rewrite happens when this stage is next opened in a Phase-C pass (this session's scope is stub-level only per plan A7).
 
 ---
 
