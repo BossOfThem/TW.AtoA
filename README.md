@@ -43,7 +43,7 @@ Other root docs at a glance:
 
 **2. Names are placeholder.** Nothing is final unless marked `[LOCKED]`. Only the *naming conventions* in `CONCEPT.md §5.4` are locked, not specific names.
 
-**3. Tier numbers are placeholder.** 5 lineages, 11 ages, 4 forks — scaffolding, not spec. Count may shift.
+**3. Structural counts are a lean-launch floor.** **3 lineages** (Ash / Nature / Prayer), **3 tiers** (Dust / Form / Apotheosis) under an **Ash→Altar dungeon-cosmology arc**, **3 launch commanders**, **2 hybrid families** (Ash×Nature, Ash×Prayer — Nature×Prayer does NOT hybridize). Ratified 2026-04-21 (Reversibility Hard) — see [concept tightening decision](decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). The 3/3/3 shape is a lean-launch *floor*, not an expansion ceiling. Lineage + tier names are prose placeholders pending a deferred naming pass — `concept/phase-5.md §5.4 [LOCKED]` is untouched.
 
 ## Non-negotiables (hard inputs to every decision)
 
