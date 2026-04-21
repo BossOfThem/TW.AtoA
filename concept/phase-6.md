@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-20
+**Last reviewed:** 2026-04-21
 ---
 
 # Phase 6 — Validation
@@ -11,17 +11,17 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-5.md](phase-5.md). Next: 
 
 ## 6.1 Primary question for the MVP
 
-Does the commander + ages + lineage combination produce moment-to-moment fun, AND does the age-persistence feeling emerge by age 4 or 5?
+Does the commander + tier + lineage combination produce moment-to-moment fun, AND does the tier-persistence feeling emerge by the end of Form (tier 2) at the latest?
 
 If yes, the vision is viable. If no, the vision is wrong and Phase 1 must be reopened.
 
-Five ages in the MVP is deliberate: three ages is too short for age-persistence to emerge, and eleven ages is too much content for an MVP. Five is the minimum that validates the core mechanic honestly.
+Three tiers in the MVP is deliberate under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md): the full Ash→Altar arc (Dust → Form → Apotheosis) is the ratified shape, so MVP validates the full arc rather than a truncated slice. Prior "five ages is the minimum" framing is superseded — under the 3-tier arc, the validation bar is tier-persistence emerging by end of Form, not a linear-age count.
 
 ## 6.2 Secondary questions (in order)
 
 - Do new players understand commanders and lineages within their first match?
 - Do players re-pick the same commander on match 2 or try another? (Indicates whether commander identity is sticky or shallow.)
-- Does the age-persistence callback feel earned by age 5?
+- Does the tier-persistence callback feel earned by the end of Form (tier 2)?
 - Is match length right, too long, or too short?
 - Which lineage gets picked least, and is that a bug or a feature?
 - Does solo TD hold attention without multiplayer? (Critical — solo must carry the game independently.)
@@ -30,15 +30,16 @@ Five ages in the MVP is deliberate: three ages is too short for age-persistence 
 ## 6.3 Playtesting approach
 
 - **Internal playtesting** with the two-person dev team through MVP completion.
-- **Closed alpha** with 5–10 external playtesters (TD/TW fans) for the first post-MVP expansion (all five lineages, 8 ages, one PvP mode).
+- **Closed alpha** with 5–10 external playtesters (TD/TW fans) for the first post-MVP expansion (full 3/3/3 roster already in MVP per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md); closed-alpha milestone adds one PvP mode + both hybrid families Ash×Nature and Ash×Prayer live).
 - **Open alpha** after multiplayer is stable and all commanders exist, to catch late-game balance and cold-start matchmaking issues.
 
 ## 6.4 Success metrics per build phase
 
-- **MVP:** 70%+ of playtesters say they would play a second match. 50%+ report the age-persistence feeling. Median session length ≥ 15 minutes. **Commander re-pick on match 2 ≥ 40%** (measures whether the §4.1 identity floor produces stickiness; promoted from §6.2 secondary via [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md)).
-- **Post-five-lineages:** No lineage picked less than 10% of the time across tracked runs.
+Under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md), MVP converges with the full 3/3/3 launch roster — the prior "Post-five-lineages" and "Post-eleven-ages" milestones are obsolete (MVP already has all 3 lineages and all 3 tiers). Remaining milestones:
+
+- **MVP:** 70%+ of playtesters say they would play a second match. 50%+ report the **tier-persistence** feeling by end of Form. Median session length ≥ 15 minutes. No lineage picked less than 20% of the time across tracked runs (tighter than the prior 10% under a 5-lineage shape — with only 3 lineages, a lineage at <20% pick rate is a real design failure). **Commander re-pick on match 2 ≥ 40%** (measures whether the §4.1 identity floor produces stickiness; promoted from §6.2 secondary via [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md) — rebased by 2026-04-21).
+- **Post-hybrid-families:** both Ash×Nature and Ash×Prayer families discoverable in ≥ 60% of tracked runs by match 3.
 - **Post-multiplayer:** Median ranked match finds opponent in <60 seconds during active hours. <5% disconnect rate.
-- **Post-eleven-ages:** Median player reaches age 9+ within three matches.
 - **Alpha:** Average session length ≥ 30 minutes. Day-2 return rate ≥ 40%.
 
 ## 6.5 Exit condition for Phase 6
