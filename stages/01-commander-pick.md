@@ -4,7 +4,7 @@
 **Phase in CONCEPT cascade:** 3 (Design) / 4 (Specification — per-commander spec)
 **Upstream deps:** [Stage 00 — session start](00-session-start.md), [CONCEPT §3.2 Commander system](../CONCEPT.md), [CONCEPT §3.3 Lineages](../CONCEPT.md), [CONCEPT §4.1 Commander mechanical spec](../CONCEPT.md), [CONCEPT §5.1 MVP scope](../CONCEPT.md), [CONCEPT §6.4 Validation](../CONCEPT.md), [research/03 — commander archetypes](../research/03-commander-archetypes.md), [decisions/2026-04-20-commander-identity-floor.md](../decisions/2026-04-20-commander-identity-floor.md), [decisions/2026-04-20-first-run-flow.md](../decisions/2026-04-20-first-run-flow.md), [CLAUDE.md "Commander = user"](../CLAUDE.md)
 **Downstream impact:** [Stage 02 — mode select](02-mode-select.md), [Stage 08 — meta progression](08-meta-progression.md), and every stage that surfaces commander identity.
-**Last reviewed:** 2026-04-20
+**Last reviewed:** 2026-04-21
 
 ---
 
@@ -25,6 +25,14 @@ Stage 01 covers:
 Stage 01 does **not** cover: the lineage system itself (CONCEPT §3.3), the kit economy that lineages gate (CONCEPT §4.3), or meta progression after level 1 (Stage 08). It *points to* all three and hands you off cleanly.
 
 ## 2. Upstream constraints
+
+**Amendment 2026-04-21 (stub-level):** Upstream Phase 3 collapsed from 5 lineages + 5-slot roster + 11 ages to **3 lineages (Ash / Nature / Prayer)** + **3 launch commanders** + **3 tiers (Dust / Form / Apotheosis under Ash→Altar dungeon cosmology)** per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility Hard). Under the new shape:
+- The gallery roster at launch is **3** (not 5–8). MVP roster is also 3 — MVP and launch converge.
+- Lineage tilt targets are **Ash / Nature / Prayer** (not Sinew/Ember/Forge/Crown/Veil). Lineage names remain prose placeholders; `concept/phase-5.md §5.4 [LOCKED]` untouched.
+- §3.2 "Layout options" at a 3-card roster degenerate to "three cards side by side" — grid-vs-carousel-vs-list decision remains deferred but the comparison cost drops.
+- Research/03 5-slot [PROPOSAL] roster size is now **superseded by the lean-launch 3** until a future expansion pass.
+
+The bullets below are preserved as-is for traceability; individual 5-lineage / 2-MVP / 5-slot references are **obsolete by the amendment above** and will be rewritten when Stage 01 is next opened in a dedicated pass (this session's scope is stub-level only per plan A7).
 
 Every commitment in this stage inherits from one of the following. Stage 01 does not amend any of them.
 
