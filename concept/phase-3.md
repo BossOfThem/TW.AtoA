@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-20
+**Last reviewed:** 2026-04-21
 ---
 
 # Phase 3 — Design
@@ -32,41 +32,39 @@ A **Commander** is the player's persistent identity in the game world. At first 
 
 - A distinctive visual identity (portrait, silhouette, color accent, voice).
 - A thematic backstory, usable as solo campaign framing.
-- A **lineage affinity** — a +X% tilt toward one of the core lineages. Not a cage; player can still build other lineages heavily.
+- A **lineage affinity** — a +X% tilt toward one of the three lineages. Not a cage; player can still build other lineages heavily.
 - A **passive buff** — small mechanical bonus that persists across matches.
 - A **signature ability** — unlocks at a commander level threshold. Deployable as a Hero Unit on the battle map in supported modes.
 - A **progression track** — XP, levels, unlocked cosmetics, voice lines, portrait frames.
 
-Commanders level up through play. Towers in a match start at age 1 (Primal) and progress through ages during that match. Commander progression is match-to-match meta. Age progression is within-match tactical. These are two distinct progression systems operating at different timescales.
+Commanders level up through play. Towers in a match start at tier 1 (Dust) and progress through tiers during that match. Commander progression is match-to-match meta. Tier progression is within-match tactical. These are two distinct progression systems operating at different timescales.
 
-**Identity floor per commander** — see [§4.1](phase-4.md#41-commander-mechanical-spec-identity-floor-proposal-per-commander-writeup-open) for the minimum-shape spec (portrait + silhouette variants, voice lines, signature, passive, tilt, progression ladder, cosmetic slots). Entry: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md). Numerical floors are [PROPOSAL]; shape is committed.
+**Identity floor per commander** — see [§4.1](phase-4.md#41-commander-mechanical-spec-identity-floor-proposal-per-commander-writeup-open) for the minimum-shape spec (portrait + silhouette variants, voice lines, signature, passive, tilt, progression ladder, cosmetic slots). Entry: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md) (rebased by [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) — floor shape survives; roster scope narrows 5→3). Numerical floors are [PROPOSAL]; shape is committed.
 
-**Starter commander roster (placeholder names, all subject to revision):**
-- Commander A — Sinew-leaning frontline specialist
-- Commander B — Ember-leaning tech specialist
-- Commander C — Forge-leaning economy specialist
-- Commander D — Crown-leaning aura specialist
-- Commander E — Veil-leaning trickster
+**Starter commander roster (placeholder names, all subject to revision — lineage labels `Ash / Nature / Prayer` are prose shorthand pending a deferred naming pass; `concept/phase-5.md §5.4 [LOCKED]` is untouched):**
+- Commander A — Ash-leaning (transformation / recycling specialist; enables hybrid paths)
+- Commander B — Nature-leaning (growth / scaling specialist)
+- Commander C — Prayer-leaning (aura / order specialist)
 
-Launch roster size: TBD. Leading options are 3 (lean launch), 5 (one per lineage), or 8 (Legion TD 2 parity). Decision deferred to Phase 5.
+**Launch roster size: 3.** The MVP (`concept/phase-5.md §5.1`) and the launch roster converge under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). 3 is a lean-launch floor, not an expansion ceiling; post-launch roster growth is explicitly not cascade-blocked.
 
-**"Tilt, not cage" principle:** a Sinew-leaning Commander can still build Ember-heavy mid-game. They just don't get the Sinew affinity bonus. This preserves player agency.
+**"Tilt, not cage" principle:** an Ash-leaning Commander can still build Nature-heavy mid-game. They just don't get the Ash affinity bonus. This preserves player agency.
 
-## 3.3 The five lineages (mechanical identity within a match)
+## 3.3 The three lineages (mechanical identity within a match)
 
 *→ active drill-down: [stage 04 — in-match core](../stages/04-in-match-core.md).*
 
-Each lineage fills a mechanical role that the other four cannot fill. Lineages are the *unit categories* within a match, independent of Commander choice.
+Each lineage fills a mechanical role the other two cannot. Lineages are the *unit categories* within a match, independent of Commander choice. Names `Ash / Nature / Prayer` are prose placeholders pending a deferred naming pass; `concept/phase-5.md §5.4 [LOCKED]` is untouched.
 
-- **Sinew** — the front line. High HP, high damage, low range. Takes hits, deals hits. Includes mobile melee units that can push lanes.
-- **Ember** — the tech accelerator. Weak alone. Unlocks techs that buff the whole board. Tower-based but outputs are board-wide buffs, not direct damage.
-- **Forge** — the economy. Generates gold, produces buffs, feeds adjacent towers.
-- **Crown** — the multiplier. Aura towers. Do not kill enemies; make other towers kill them harder.
-- **Veil** — the wild card. Time, terrain, debuff, reality-bend. Weird by design. Includes most of the "special effect" category units.
+- **Ash** — the transformation lineage. Thrives on loss: towers salvage fallen units, recycle gold on destruction, and feed adjacent structures. The **hybrid-enabler** — every hybrid family in the game requires Ash as one parent.
+- **Nature** — the growth lineage. Organic systems: scaling HP, regeneration, spreading effects across adjacent cells. Rewards economy tempo and long-lane defense.
+- **Prayer** — the order lineage. Auras and aligned ranks: buffs the rest of the player's board rather than killing hard alone. Rewards disciplined placement.
+
+**Hybridization rule** (detail in [§4.3](phase-4.md#43-hybrid-combinations-the-signature-mechanic)): **Ash × Nature** and **Ash × Prayer** produce hybrid towers. **Nature × Prayer does NOT hybridize** — the Ash-enabler constraint is structural, not a balance number.
 
 A player who ignores any one lineage will struggle. A player who specializes narrowly will excel in that narrow domain and fail broadly. The game is built to reward balanced lineage use, not maxed lineage use.
 
-**Open issue:** Veil's "weird by design" role has a known failure mode of being "the one nobody picks." Specification must resolve this in Phase 4.
+**Open issue:** under a three-lineage roster, role differentiation must survive a small surface. Prayer cannot drift into "less-good Nature"; Ash must feel essential without becoming mandatory. Specification resolves this in Phase 4 (`§4.2` divergence, `§4.3` hybrid-discovery, `§4.4` combat roles).
 
 ## 3.4 Unit categories (cross-cutting, not lineage-exclusive)
 
@@ -78,27 +76,23 @@ Units come in three categories:
 
 The Commander, when deployed via signature ability, acts as a Hero Unit — a special high-value mobile unit with abilities. Only one Commander Hero per player on the map at a time.
 
-## 3.5 The eleven ages (in-match tower evolution tiers)
+## 3.5 The three tiers (in-match tower evolution arc)
 
-*→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md). Backing research: [theme & era](../research/02-theme-era.md) — era-spine decision pending.*
+*→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md). Backing research: [theme & era](../research/02-theme-era.md).*
 
-The structural backbone. Each age re-skins every lineage's towers and units. The count (eleven) is conceptual and may change. Names are placeholder.
+The structural backbone is a compressed three-tier arc under a **dungeon-cosmology** aesthetic — *mysterious, descending, unexplained* (PM-locked frame 2026-04-21). Each tier re-skins every lineage's towers and units. Tier names are placeholder pending naming pass.
 
-1. Primal
-2. Mudbrick
-3. Iron
-4. Spires
-5. Alchemical
-6. Steamheart
-7. Atomic
-8. Signal
-9. Synthetic
-10. Stellar
-11. Ascendant
+1. **Dust** — the opening. Ash-strewn, brittle, primal. Towers read as scavenged and provisional.
+2. **Form** — the middle. Pattern emerges from debris; lineage identity solidifies into coherent silhouettes.
+3. **Apotheosis** — the altar. Transcendence. Towers become mythic approaching the arc's terminus.
 
-Not every match reaches all eleven ages. Match length and mode determine max age reached. Solo TD missions may cap at age 6–8. Ranked lane wars may cap at age 9–10. Special endgame modes unlock ages 10–11. This is a design lever, not a bug.
+This replaces the prior 11-age civilizational scaffolding per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). The arc is **not a timeline**; it is a cosmological descent from Ash to Altar. Per-tier biome / enemy / mapmod variety (what used to live per-age) compresses into in-tier rotation pools; the [2026-04-20 age-history flavor + mapmods](../decisions/2026-04-20-age-history-flavor-mapmods.md) decision is rebased on that basis (logic survives; data collapses 11→3).
 
-Early ages are short and brutal. Late ages are longer and more strategic. Total playtime stays within mode target.
+Not every match reaches all three tiers. Match length and mode determine max tier reached. Short solo missions may cap at Form; full Campaign and competitive modes reach Apotheosis. This is a design lever, not a bug.
+
+Early tiers are short and brittle. Late tiers are longer and more strategic. Total playtime stays within mode target.
+
+**Tier-level mechanical identity** (what *feels* different between Dust, Form, and Apotheosis beyond cosmetic re-skin) is owed to Phase 4 (§4.2 divergence) and Phase 5 (§5.1 MVP, §5.3 art direction) under the silhouette-forward mythic frame.
 
 ## 3.6 Game modes (launch roster)
 
@@ -165,6 +159,6 @@ Tutorial style: **contextual + interactive + skippable**, not pop-up-based. Per-
 
 ## 3.8 Exit condition for Phase 3
 
-The shape of the game can be drawn on a whiteboard in five minutes: commanders, five lineages, eleven ages, three unit categories, five launch modes, four meta systems. Nothing in Phase 4 introduces a new system that contradicts Phase 3.
+The shape of the game can be drawn on a whiteboard in five minutes: **3 commanders, 3 lineages (Ash / Nature / Prayer), 3 tiers (Dust / Form / Apotheosis) under an Ash→Altar dungeon-cosmology arc, 3 unit categories, 5 launch modes, 4 meta systems, and 2 hybrid families (Ash×Nature, Ash×Prayer — Nature×Prayer does not hybridize)**. Nothing in Phase 4 introduces a new system that contradicts Phase 3.
 
 → **Hand off to [Phase 4](phase-4.md).**
