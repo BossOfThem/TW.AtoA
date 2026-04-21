@@ -2,7 +2,7 @@
 
 > **Navigation note (added 2026-04-19, restructured 2026-04-20):** This doc is now a thin **hub**. Each Phase's full content lives under [concept/](concept/) as `phase-N.md`. Detailed per-stage drill-downs live under [stages/](stages/); deep-dive market research under [research/](research/); dated decisions under [decisions/](decisions/). Start at [CASCADE.md](CASCADE.md) for the full map.
 
-**Working title only.** A tower wars game where every match is a compressed arc of civilizational evolution, fought between Commanders who each embody a distinct lineage path — and whose starting choice at minute 1 still matters when the final-age forms enter the field at minute 20.
+**Working title only.** A tower wars game where every match is a compressed cosmological arc — **Ash to Altar** — fought between Commanders who each embody a distinct lineage path, and whose starting choice at minute 1 still matters when the final-tier forms enter the field at minute 20.
 
 This document is structured as a **waterfall cascade**: seven sequential phases, each with an explicit exit condition that hands off to the next. You do not skip ahead. A phase does not begin until the one above it is signed off. The point of the cascade is that Phase 7 decisions are constrained by Phase 1 decisions, and you can trace every late choice back to an early one.
 
@@ -26,7 +26,7 @@ Open only the phase you need. Each file is self-contained with its own §-sectio
 |-------|------|------------------|
 | 1 — Discovery | [concept/phase-1.md](concept/phase-1.md) | Vision, target player, three-part promise, success criteria. |
 | 2 — Analysis | [concept/phase-2.md](concept/phase-2.md) | Competitive landscape, constraints, risks, §2.4a accessibility floor [LOCKED]. |
-| 3 — Design | [concept/phase-3.md](concept/phase-3.md) | Match loop, Commander system, 5 lineages, 11 ages, modes, meta systems, audio, first-run. |
+| 3 — Design | [concept/phase-3.md](concept/phase-3.md) | Match loop, Commander system, 3 lineages (Ash/Nature/Prayer), 3 tiers (Dust/Form/Apotheosis) under Ash→Altar dungeon cosmology, 3 launch commanders, modes, meta systems, audio, first-run. |
 | 4 — Specification | [concept/phase-4.md](concept/phase-4.md) | Commander identity floor, divergence, hybrids (open blocker), mobile units, economy, enemies, save. |
 | 5 — Implementation planning | [concept/phase-5.md](concept/phase-5.md) | MVP slice, build order, art direction, **§5.4 naming conventions [LOCKED]**, engine. |
 | 6 — Validation | [concept/phase-6.md](concept/phase-6.md) | MVP primary question, success metrics per build phase, playtesting. |
@@ -62,4 +62,4 @@ Full list in [phase-7.md#74-notes-to-future-self](concept/phase-7.md#74-notes-to
 
 ---
 
-*Document version: 0.6 — 2026-04-20 (hub split). Restructured from single 627-line file to hub + 7 phase children under [concept/](concept/). Decision entry: [2026-04-20 doc-cascade split](decisions/2026-04-20-doc-cascade-split.md). Prior versions: v0.5 (save-model absorb), v0.4 (batch-amendment). No concept constraints changed in this pass — content is split, not edited. Numerical floors in phase-4.md §4.1 and phase-3.md §3.11 remain [PROPOSAL]; §5.4 naming conventions and §2.4a accessibility floor remain [LOCKED]. Reopen any phase with discipline, not convenience.*
+*Document version: 0.7 — 2026-04-21 concept tightening. Hub vision line + Phase 3 index row amended to reflect the 3/3/3 shape (3 lineages Ash/Nature/Prayer, 3 tiers Dust/Form/Apotheosis under Ash→Altar dungeon cosmology, 3 launch commanders, Ash-enabler hybrid model). Decision entry: [2026-04-21 concept tightening](decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility Hard). Names (Ash/Nature/Prayer, Dust/Form/Apotheosis) are prose placeholders — §5.4 [LOCKED] UNTOUCHED per PM-locked naming-pass deferral. Prior: v0.6 (hub split), v0.5 (save-model absorb), v0.4 (batch-amendment). Numerical floors in phase-4.md §4.1 and phase-3.md §3.11 remain [PROPOSAL]; §5.4 naming conventions and §2.4a accessibility floor remain [LOCKED]. 3 is a lean-launch floor, not an expansion ceiling. Reopen any phase with discipline, not convenience.*
