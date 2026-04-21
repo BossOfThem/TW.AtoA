@@ -18,6 +18,8 @@
 
 Remaining rows (11): SETTINGS-03, PAUSE-02, ONBOARD-02, ONBOARD-03, A11Y-05, AUDIO-02, CMDR-03, FLOW-03 (account-system half only), META-01, META-02, META-03.
 
+**2026-04-21 shape-audit (post concept-tightening).** The [2026-04-21 concept tightening](decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) collapsed upstream counts from 5 lineages / 11 ages / 5-commander roster to a 3/3/3 lean-launch shape. Audit result for the 11 remaining rows: **none reference the collapsed counts and none require retirement**. All eleven are shape-independent (settings / pause / onboarding / accessibility / audio focus-loss / cosmetic slot types / account model / localization / platform cert / telemetry). CMDR-03 has a minor implicit arithmetic drift — prior "Launch floor = 1 per slot per commander" multiplied to 5×3 = 15 cosmetic items; under 3×3 it is 9. That is a number change, not a shape change, and does not merit a row retirement. The 11 remaining rows stay as active gaps pending PM ratification.
+
 > This doc is a holding area. Each row below either (a) migrates into `CONCEPT.md` via a per-gap decision entry when the PM ratifies a resolution, or (b) is explicitly deferred post-launch. Do not treat row text as spec. Rows cite 2024–2026 sources; URLs are in §Sources.
 
 ---
@@ -267,4 +269,4 @@ First-run flow:
 
 ---
 
-*Document version: 0.3 — 2026-04-20 (second migration pass). SAVE-01 + SAVE-02 bundled and ratified via [2026-04-20 save model](decisions/2026-04-20-save-model.md); FLOW-03 local-profile half committed, account-system half remains Post-launch-ok. 16 of 26 rows migrated; 11 remain (2 Blocks-launch, 3 Blocks-MVP, 6 Post-launch-ok).*
+*Document version: 0.4 — 2026-04-21 shape-audit pass. [2026-04-21 concept tightening](decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) collapsed upstream to a 3/3/3 lean-launch shape; audit of the 11 remaining rows confirms none reference 5-lineage / 11-age / 5-commander counts and none require retirement. Active gap count unchanged at 11. CMDR-03 has implicit arithmetic drift (1 cosmetic item × 3 slots × 3 commanders = 9, down from 15) — number change, not shape change. Prior: v0.3 — 2026-04-20 (SAVE-01 + SAVE-02 ratified); 16 of 26 rows migrated; 11 remain (2 Blocks-launch, 3 Blocks-MVP, 6 Post-launch-ok).*
