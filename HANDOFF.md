@@ -91,90 +91,24 @@ A concept-tightening pivot was scoped in plan mode. PM answered four framing que
 
 ## Next-session prompt (copy-paste after `/clear` or fresh cloud session)
 
+Step sequence + per-step specs now live canonically in [`PROGRESS.md`](PROGRESS.md) §Step A. This prompt only routes the session there — no duplicated list.
+
 ```
-Resuming Ash to Altar concept pivot. Branch: claude/bootstrap-ata-setup-B2cJv
-(already on origin — checkout pulls the same baseline as main at a6c6114).
+Resuming Ash to Altar concept pivot. Branch: claude/bootstrap-ata-setup-B2cJv.
 
 Bootstrap per CLAUDE.md (README.md -> CLAUDE.md -> CASCADE.md -> HANDOFF.md
--> PROGRESS.md -> CONCEPT.md). Then state-aloud, then wait for "go" before
-the first write.
+-> PROGRESS.md -> CONCEPT.md). State aloud, then wait for "go".
 
-CADENCE: ONE FILE PER TURN. Prior session hit repeated stream idle timeouts
-on long turns. Announce the file you are about to write, write it, stop.
-One tool call per turn where possible. No piggybacked reads.
+CADENCE: ONE FILE PER TURN. Announce the file, write it, stop. Retry on
+timeout (writes idempotent). Split Edit in half if same file times out twice.
 
-PIVOT — LOCKED (4 PM-answered questions, do NOT re-ask):
-1. 3 lineages: Ash / Nature / Prayer. Names DEFERRED (prose shorthand only).
-   concept/phase-5.md §5.4 naming conventions [LOCKED] stays UNTOUCHED.
-2. 3 tiers replace 11 civilization-ages. Dungeon cosmology arc.
-   Placeholder tier names: Dust / Form / Apotheosis.
-3. Hybrid model: Ash as hybrid-enabler. Ash x Nature and Ash x Prayer
-   hybridize; Nature x Prayer does NOT hybridize. Two hybrid families.
-4. Timing: docs first -> prototype reshape (separate pass) -> Step 5 playtest.
-   THIS SESSION = docs only.
+Pivot context (4 locked PM answers + aesthetic lock + do-not-touch list):
+HANDOFF.md §Pivot and §Do NOT touch.
 
-World aesthetic also locked: "dungeon-like and mysterious" (PM). Reinforces
-Phase 5 §5.3 silhouette-forward mythic art direction as load-bearing.
+Step sequence + one-line specs: PROGRESS.md §Step A.
+Execute the first unchecked row; stop after each for PM verify + tick.
 
-STEP A PLAN (12 sub-steps, one file per turn):
-  A1.  Write decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md
-       using decisions/TEMPLATE.md format. Reversibility: Hard.
-       3x debug loop inline (real loops, not perfunctory). Cite the 4 locked
-       PM answers above verbatim. Flag the 3 partial-rebase decisions (commander-
-       identity-floor / age-history-flavor-mapmods / commander-pick-identity-upgrade)
-       under Follow-ups — do NOT mark them Superseded, mark them "rebased."
-  A2.  Edit concept/phase-1.md §1.1 — swap "civilizational evolution" framing for
-       Ash->Altar cosmological arc. Preserve §1.2, §1.3, §1.4, §1.5 intact.
-       Bump Last-reviewed date.
-  A3.  Edit concept/phase-3.md §3.2 (5 commanders -> 3 commanders; roster size
-       lean-launch 3), §3.3 (rename section "Five lineages" -> "Three lineages";
-       write Ash / Nature / Prayer mechanical roles per the locked model),
-       §3.5 (rename section "Eleven ages" -> "Three tiers"; dungeon cosmology
-       with Dust / Form / Apotheosis placeholder names), §3.8 exit condition
-       (restate the new whiteboard-in-5-minutes shape).
-  A4.  Edit concept/phase-4.md §4.1 (identity-floor scope narrows 5->3
-       commanders; floor shape unchanged), §4.2 (divergence fork pool rescoped
-       or marked OPEN under new tier frame), §4.3 (hybrid model = Ash-enabler;
-       supersede starter hybrid table to Ash x Nature and Ash x Prayer
-       families; blocker #1 hybrid-discovery survives), §4.6 (economy with
-       3 lineages — re-check currency pillar mapping; Sinew/Ember/Crown
-       currency mapping is now Ash/Nature/Prayer-based; flag open if ambiguous).
-  A5.  Edit concept/phase-5.md §5.1 (MVP scales from 2/2 to 3/3/3 — the
-       playable slice is now full roster since 3 is already lean), §5.3
-       (reinforce silhouette-forward mythic as load-bearing under dungeon
-       aesthetic). §5.4 UNTOUCHED.
-  A6.  Edit CONCEPT.md hub phase-index table (Phase 3 summary "3 lineages,
-       3 tiers, 3 commanders") AND README.md critical context #3 counts
-       (5/11 -> 3/3) — one file per turn, so two turns.
-  A7.  Stub-amend stages/01-commander-pick.md §2 upstream-constraints (note
-       roster is now 3), stages/05-age-evolution.md §2 (note tiers are 3 and
-       dungeon cosmology), stages/06-hybrids-fusion.md §2 (note Ash-enabler
-       model) — three turns.
-  A8.  Read CONCEPT-GAPS.md remaining 11 rows; if any reference 5/11 counts
-       mark obsolete or retire. One file per turn.
-  A9.  Edit CASCADE.md: bump pointer to 2026-04-21 concept pivot; add
-       decisions-table row for 2026-04-21-concept-tightening-3x3x3-dungeon-
-       cosmology; doc version v0.13 -> v0.14.
-  A10. Append PROGRESS.md session log entry for 2026-04-21 docs-only pivot.
-  A11. Run: python tools/cascade-lint.py. Expect clean. If not clean, fix
-       the one file causing the break and re-run.
-  A12. git add -A (after reviewing staged list) ; git commit with
-       descriptive message ; git push -u origin claude/bootstrap-ata-setup-B2cJv.
-       Do NOT open a PR (user has not asked). Do NOT include the Claude
-       session-url trailer unless explicitly requested.
-
-DO NOT TOUCH THIS PASS:
-- Any prototype/ file (Step B).
-- tools/cascade-lint.py logic (current prototype still passes).
-- admin/concept.json (PM's structured surface; regenerate later).
-- concept/phase-5.md §5.4 naming conventions [LOCKED].
-
-If a stream timeout hits mid-turn, retry the same file — writes are
-idempotent. If the same file times out twice, split the edit into two
-smaller Edits.
-
-At end of Step A, do NOT start Step B. Instead, ask PM to review the
-landed docs and ratify. Step B (prototype reshape) is its own pass.
+After A12, stop. Do NOT start Step B. Ask PM to ratify.
 ```
 
 ---

@@ -34,6 +34,32 @@ Each step follows the fixed loop: **propose → PM "go" → produce → verify �
   - [x] **10.4** — Polish + verification (2026-04-20). `tools/cascade-lint.py` extended with `check_prototype_data()` validating JSON schemas for balance/ages/towers/commanders/enemies + 11-age cardinality check + all-playable-commander check. Lint runs clean. `prototype/README.md` rewritten with v2 changelog entry, concept-demo scene table, Login/Logout instructions, and step-by-step Co-op Horde instructions (host invite code + `?join=` URL auto-dial). Keyboard navigation live (Esc pauses match / closes options / returns to menu; Space/A/1–5 shortcuts in match). Tutorial Skip button returns to menu. All changes respect CLAUDE.md "port findings, not code" discipline via PORT-NOTES continuity.
 - [x] **Step 9** — cascade lint + fresh HANDOFF landed (2026-04-20). [`tools/cascade-lint.py`](tools/cascade-lint.py) checks CASCADE links / stage+research Status+Last-reviewed headers / decision Reversibility / decisions-table row-count parity / PROGRESS first-unchecked. Runs clean; reports `next-open-step: Step 2` (telemetry, default-skipped). HANDOFF.md rewritten with second-override TL;DR + state snapshot + open blockers + next-session checklist including `python tools/cascade-lint.py` run-first step.
 
+## Step A — Concept pivot docs (2026-04-21, docs-only pass)
+
+Locked per 2026-04-21 PM-answered pivot: **3 lineages** (Ash / Nature / Prayer — prose shorthand only, §5.4 UNTOUCHED); **3 tiers** (Dust / Form / Apotheosis placeholder, dungeon-cosmology arc replaces 11 civ-ages); **Ash-enabler hybrid model** (Ash×Nature + Ash×Prayer hybridize; Nature×Prayer does NOT); **docs first** then prototype reshape then playtest. Full pivot context: [`HANDOFF.md`](HANDOFF.md) §Pivot.
+
+**Cadence:** one file per turn. Announce → write → verify → tick. Retry on timeout (writes idempotent); split Edit in half if same file times out twice.
+
+**Do NOT touch this pass:** any `prototype/` file (Step B), `tools/cascade-lint.py` logic, `admin/concept.json`, `concept/phase-5.md` §5.4 [LOCKED].
+
+- [ ] **A1** — Write `decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md` (new) using `decisions/TEMPLATE.md`. Reversibility: **Hard**. 3x debug loop inline (real loops). Cite the 4 PM answers verbatim. Flag 3 prior decisions (`commander-identity-floor` / `age-history-flavor-mapmods` / `commander-pick-identity-upgrade`) under Follow-ups as **rebased** — not Superseded.
+- [ ] **A2** — Edit `concept/phase-1.md` §1.1: swap "civilizational evolution" framing for Ash→Altar cosmological arc. Preserve §1.2–§1.5 intact. Bump Last-reviewed.
+- [ ] **A3** — Edit `concept/phase-3.md` §3.2 (5→3 commanders; roster size lean-launch 3), §3.3 (rename "Five lineages"→"Three lineages"; Ash / Nature / Prayer mechanical roles per locked model), §3.5 (rename "Eleven ages"→"Three tiers"; dungeon cosmology w/ Dust / Form / Apotheosis placeholder), §3.8 exit condition (restate whiteboard-in-5-minutes shape).
+- [ ] **A4** — Edit `concept/phase-4.md` §4.1 (identity-floor scope narrows 5→3 commanders; floor shape unchanged), §4.2 (divergence fork pool rescoped or OPEN under new tier frame), §4.3 (hybrid = Ash-enabler; starter hybrid table → Ash×Nature + Ash×Prayer families; blocker #1 hybrid-discovery survives), §4.6 (economy re-check currency pillar mapping — was Sinew/Ember/Crown; now Ash/Nature/Prayer-based; flag open if ambiguous).
+- [ ] **A5** — Edit `concept/phase-5.md` §5.1 (MVP scales 2/2 → 3/3/3 — playable slice is full roster since 3 is already lean), §5.3 (reinforce silhouette-forward mythic as load-bearing under dungeon aesthetic). **§5.4 UNTOUCHED.**
+- [ ] **A6a** — Edit `CONCEPT.md` hub: phase-index Phase 3 summary "3 lineages, 3 tiers, 3 commanders". Bump doc version.
+- [ ] **A6b** — Edit `README.md` critical context #3 counts: 5/11 → 3/3.
+- [ ] **A7a** — Edit `stages/01-commander-pick.md` §2 upstream-constraints: note roster is now 3.
+- [ ] **A7b** — Edit `stages/05-age-evolution.md` §2: note tiers are 3 and dungeon cosmology.
+- [ ] **A7c** — Edit `stages/06-hybrids-fusion.md` §2: note Ash-enabler model.
+- [ ] **A8** — Review `CONCEPT-GAPS.md` remaining 11 rows; mark obsolete / retire any referencing 5/11 counts.
+- [ ] **A9** — Edit `CASCADE.md`: bump pointer to 2026-04-21 concept pivot; add decisions-table row for A1 entry; doc version v0.13 → v0.14.
+- [ ] **A10** — Append `PROGRESS.md` session-log entry for 2026-04-21 docs-only pivot.
+- [ ] **A11** — Run `python tools/cascade-lint.py`. Expect clean. If not, fix the one file causing the break and re-run.
+- [ ] **A12** — `git add -A` (review staged list first); commit with descriptive message; `git push -u origin claude/bootstrap-ata-setup-B2cJv`. Do NOT open PR. Do NOT include Claude session-url trailer.
+
+**Gate after A12:** stop. Ask PM to ratify landed docs. Step B (prototype reshape) is its own pass.
+
 ## Debts carried
 
 - **Playtest findings — all three filed 2026-04-20 as dated `decisions/` entries (see below):**
