@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-20
+**Last reviewed:** 2026-04-21
 ---
 
 # Phase 4 — Specification
@@ -11,9 +11,9 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-3.md](phase-3.md). Next: 
 
 ## 4.1 Commander mechanical spec (identity floor [PROPOSAL], per-commander writeup OPEN)
 
-*Decision entry: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md). Reversibility: Medium (numbers revisable; floor-existence is Phase 4 commitment).*
+*Decision entry: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md) (rebased by [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) — floor shape survives unchanged; roster scope narrows 5→3 per `concept/phase-3.md §3.2`). Reversibility: Medium (numbers revisable; floor-existence is Phase 4 commitment).*
 
-Each launch commander ships with a minimum identity floor (numbers [PROPOSAL], shape committed):
+Each of the **3 launch commanders** (Commander A / B / C — Ash / Nature / Prayer-leaning per §3.2) ships with a minimum identity floor (numbers [PROPOSAL], shape committed):
 
 | Component | [PROPOSAL] floor |
 |-----------|------------------|
@@ -36,42 +36,41 @@ Each Commander also gets a one-page mechanical writeup before Phase 4 exits, cov
 
 ## 4.2 Divergence system
 
-*→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md).*
+*→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md). **Rescoped OPEN** under the 3-tier Ash→Altar arc per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md).*
 
-At specific ages, the player picks a fork that re-skins every lineage's expression for that age and all future ages of the match. The fork does not change the lineage's mechanical role — it changes how that role is expressed visually and subtly mechanically (damage types, tempo, etc.).
+At tier transitions, the player picks a fork that re-skins every lineage's expression for that tier and all future tiers of the match. The fork does not change the lineage's mechanical role — it changes how that role is expressed visually and subtly mechanically (damage types, tempo, etc.).
 
-Placeholder fork pool:
-- **Steamheart fork (age 6):** Steam / Electric / Æther
-- **Atomic fork (age 7):** Nuclear / Biotech / Chemical
-- **Synthetic fork (age 9):** Cybernetic / Organic / Mystic
-- **Stellar fork (age 10):** Colonist / Warborn / Transcendent
+Under the 3-tier arc there are at most **2 tier-transition forks** per match (Dust→Form, Form→Apotheosis); prior 4-fork × 3-option (81-path) variety math no longer applies. New fork pool and per-fork-option themes are **OPEN** — they must:
+- Sit inside the dungeon-cosmology aesthetic (`concept/phase-5.md §5.3`).
+- Express the Ash→Altar arc rather than a technology timeline.
+- Preserve enough combinatorial variety that two matches on the same commander feel different.
 
-Run variety: 3 × 3 × 3 × 3 = 81 possible fork paths per match when all forks apply. Each produces a visibly and mechanically distinct late game.
+**Placeholder shape (not ratified):**
+- **Dust → Form fork:** 3 options, themes OPEN (candidates: salvage-lean / bloom-lean / rite-lean as tier-coloration).
+- **Form → Apotheosis fork:** 3 options, themes OPEN (candidates: ascension / descent / threshold).
+
+Run variety ceiling under 2×3=6 paths is narrow; heirloom / commander-affinity / mapmod layering may reopen breadth. Full fork design is a Phase 4/5 deliverable under the new tier frame.
 
 ## 4.3 Hybrid system
 
-*→ active drill-down: [stage 06 — hybrids & fusion](../stages/06-hybrids-fusion.md). **Contains OPEN BLOCKER** (discovery mechanic).*
+*→ active drill-down: [stage 06 — hybrids & fusion](../stages/06-hybrids-fusion.md). **Contains OPEN BLOCKER** (discovery mechanic — reframed, not closed, by Ash-enabler model).*
 
-When two lineages are placed adjacent on the board and held adjacent for a threshold duration, a hybrid evolution unlocks in the tech tree. The player can then build the hybrid unit.
+**Hybrid model — Ash-enabler (locked 2026-04-21).** Hybrids flow through Ash as a structural spine, not a power axis. Two hybrid families exist at launch:
 
-Adjacent-lineage hybrids are common. Opposite-lineage hybrids are rare and high-payoff.
+- **Ash × Nature** — salvage + growth hybrids (decay-fed regeneration, scavenged bloom).
+- **Ash × Prayer** — salvage + order hybrids (reliquary-aura towers, consecrated ruins).
+- **Nature × Prayer does NOT hybridize.** This is structural per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md); a pure-order / pure-growth pairing expresses its interaction through stacking lineage buffs, not a new tower class.
 
-Starter hybrid table (placeholder names, not final):
+When Ash is placed adjacent to Nature or Prayer and held adjacent for a threshold duration, a hybrid evolution unlocks in the tech tree. The player can then build the hybrid unit.
 
-| Pair | Age unlocked | Hybrid (placeholder) |
-|------|--------------|----------------------|
-| Sinew + Ember | Steamheart | Tank Corps |
-| Forge + Crown | Iron | The Tribute Hall |
-| Ember + Veil | Synthetic | Mindshards |
-| Crown + Sinew | Spires | Holy Order |
-| Forge + Veil | Mudbrick | Rune-Smiths |
+**Legibility payoff of Ash-enabler:** every hybrid reads as "Ash + X," so the rule is whiteboard-explainable and the hybrid family count is bounded (2 at launch) — no combinatorial explosion across lineage pairs. This replaces the prior 5-pair starter table (Sinew+Ember / Forge+Crown / Ember+Veil / Crown+Sinew / Forge+Veil), which is **superseded by this decision**.
 
-Target count: 20–30 hybrids across all age × pair combinations. Full table is a Phase 4 deliverable.
+Target count: 4–8 hybrid units across the 2 families × 3 tiers, with placeholder table deferred to Phase 5 under the new naming convention.
 
-**OPEN BLOCKER — hybrid discovery mechanic:** Unlock via adjacency creates rote placement once players learn the pairings. Wikis will publish the full table week 1, and the "discovery" feeling breaks. Resolution options:
+**OPEN BLOCKER — hybrid discovery mechanic (reframed under Ash-enabler):** Unlock via adjacency still creates rote placement once players learn pairings. With only 2 families the wiki-breaks-discovery problem is smaller (2 entries, not 5+), but the blocker is not closed. Resolution options remain:
 1. Accept it. Discovery is a first-run experience; rote placement is fine for veterans.
 2. Add randomness. Hybrids have a probabilistic unlock on adjacency, with heirloom/meta boosts.
-3. Gate knowledge. Hybrid knowledge is per-commander or per-account, unlocked through play. Wikis help advanced players but entry-level players still discover.
+3. Gate knowledge. Hybrid knowledge is per-commander or per-account, unlocked through play.
 
 Decision required before Phase 5 begins.
 
@@ -100,19 +99,24 @@ Each special effect has a cooldown, a cost, and a visible indicator on the map. 
 
 ## 4.6 Economy specification
 
-*→ active drill-down: [stage 03 — match setup](../stages/03-match-setup.md), [stage 04 — in-match core](../stages/04-in-match-core.md).*
+*→ active drill-down: [stage 03 — match setup](../stages/03-match-setup.md), [stage 04 — in-match core](../stages/04-in-match-core.md). **Currency mapping rescoped OPEN** under 3-lineage shape per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md).*
 
-Three in-match currencies, one per primary lineage pillar:
-- **Gold** — generated by Forge towers and wave kills. Spent on tower placement and tower upgrades.
-- **Knowledge** — generated by Ember towers. Spent on tech unlocks that buff the board.
-- **Influence** — generated by Crown towers. Spent on aura upgrades and fork choices.
+Prior three-currency mapping (Gold / Knowledge / Influence from Forge / Ember / Crown, with Sinew + Veil as pure consumers) no longer applies — the lineages that backed those pillars don't exist in the 3-lineage shape. Under Ash / Nature / Prayer, the "every build must touch an economy lineage" invariant is auto-satisfied (only 3 lineages exist; any build touches at least one), so the prior *structural enforcement* of economy breadth is replaced by the lineage count itself.
 
-Sinew and Veil do not generate primary currency. They spend the other three. This is intentional: every build must touch at least one economy lineage.
+**Placeholder mapping [PROPOSAL] — flagged OPEN for Phase 4 resolution:**
+- **Gold** — generated by Nature towers (growth / economy pillar) and wave kills. Spent on tower placement and tower upgrades.
+- **Faith** — generated by Prayer towers (aura / order pillar). Spent on aura upgrades and fork choices.
+- **Cinders** — generated by Ash towers and tower losses / recycles. Spent on hybrid crafting and salvage-line upgrades. The salvage-loop is a load-bearing identity piece: Ash is the only lineage that converts *losing* towers into currency.
 
-**Multiplayer-only fourth currency:**
+**Multiplayer-only fourth currency (unchanged from prior spec):**
 - **Mythium** (placeholder) — time-based income from workers (Legion TD 2 pattern). Spent on sending creeps/mercenaries to opponent lanes.
 
-Sinew and Veil are pure consumers. Forge/Ember/Crown are producers. The bookkeeping is standard; the balance work is extensive.
+**OPEN under new shape:**
+- Whether all three lineages produce currency (breadth-by-default) or whether one lineage is a pure consumer (breadth-by-constraint). Prior design used a producer/consumer split for deliberate tension; with a 3-lineage roster, making any one lineage pure-consumer risks making it skip-able.
+- Currency names (Gold / Faith / Cinders) are placeholders, not §5.4-ratified.
+- Hybrid-crafting cost model (does Cinders gate hybrid unlock, or just accelerate?) — depends on §4.3 blocker #1 resolution.
+
+Bookkeeping is standard; balance work is extensive and deferred to Phase 5 under the new shape.
 
 ## 4.7 Enemy system (PvE modes)
 
