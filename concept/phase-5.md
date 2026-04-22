@@ -30,16 +30,17 @@ If the MVP is fun, the vision works. If it is not fun, no amount of content adde
 
 ## 5.2 Build phases after MVP
 
-1. Add remaining three lineages (Forge, Crown, Veil) — completing the five.
-2. Add ages 6–8 (Steamheart → Signal) and the first divergence fork (Steamheart fork).
+Under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md), MVP converges with the full 3/3/3 launch roster (§5.1). Prior build-phases list assumed 5 lineages + 11 ages + 4 forks as post-MVP expansion; that assumption is obsolete. New sequence:
+
+1. Add both **hybrid families** fully (Ash × Nature and Ash × Prayer per §4.3) — MVP ships one hybrid each; this phase completes the 4–8 hybrid unit target.
+2. Add **Divergence Forks** at the two tier transitions (Dust→Form, Form→Apotheosis per §4.2) — themes OPEN.
 3. Add multiplayer netcode + Lane Wars 1v1 mode.
 4. Add Co-op Horde mode.
 5. Add Commander meta progression (XP, levels, unlocks).
-6. Add Solo Campaign for launch commanders.
-7. Add ages 9–11 and remaining forks.
-8. Add Backpack + Battle Pass + Cosmetic Store.
-9. Add Lane Wars 2v2.
-10. Polish pass: art, sound, UX, onboarding, accessibility.
+6. Add Solo Campaign for the 3 launch commanders.
+7. Add Backpack + Battle Pass + Cosmetic Store.
+8. Add Lane Wars 2v2.
+9. Polish pass: art, sound, UX, onboarding, accessibility.
 
 Each phase has its own validation gate. See Phase 6.
 
