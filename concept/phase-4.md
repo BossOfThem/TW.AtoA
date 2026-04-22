@@ -93,7 +93,7 @@ Commander Hero Units (signature ability deployments) have richer control — dir
 Special effect units are limited in placement count per match to avoid spam. Examples:
 - Timed zones (debuff aura for 20 seconds).
 - Consumables (one-shot damage bursts, healing pulses).
-- Terrain modifiers (Veil: create a tar pit, destroy it next age).
+- Terrain modifiers (e.g., a tar pit or consecrated ground that expires at the next tier gate — per-lineage allocation is Phase 5 spec).
 
 Each special effect has a cooldown, a cost, and a visible indicator on the map. Specification per-item is a Phase 5 task; Phase 4 locks the *framework* only.
 
