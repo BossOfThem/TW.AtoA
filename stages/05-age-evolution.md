@@ -2,7 +2,7 @@
 
 **Status:** Stub
 **Phase in CONCEPT cascade:** 3 (Design) / 4 (Specification — divergence system)
-**Upstream deps:** [Stage 04 — in-match core](04-in-match-core.md), [CONCEPT §3.5 eleven ages](../CONCEPT.md), [CONCEPT §4.2 Divergence system](../CONCEPT.md)
+**Upstream deps:** [Stage 04 — in-match core](04-in-match-core.md), [CONCEPT §3.5 three tiers (Dust/Form/Apotheosis)](../CONCEPT.md), [CONCEPT §4.2 Divergence system](../CONCEPT.md)
 **Downstream impact:** [Stage 06 — hybrids & fusion](06-hybrids-fusion.md), [Stage 07 — match end](07-match-end.md)
 **Open questions:** See below.
 **Research backing:** [02-theme-era.md](../research/02-theme-era.md) — the era spine decision fully lands here.
