@@ -5,6 +5,8 @@
 **Reversibility:** Medium
 **Affects:** `prototype/index.html` (#age-banner DOM + CSS, `showAgeBanner`, `ageUp` autosave hook, `AGES_DATA` read), `prototype/data/mapmods.json` **(new)**, `profile.settings.gp.autoAgeUp`
 
+> **Rebase banner — added 2026-04-22.** This decision is **rebased (not superseded)** under the [2026-04-21 concept tightening (3/3/3 + dungeon cosmology + Ash-enabler hybrids)](2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility **Hard**). Rebase delta: the underlying data shape collapses **11 ages → 3 tiers** (Dust / Form / Apotheosis prose placeholders under the Ash→Altar dungeon-cosmology arc); transition terminology moves from **"age-gate" → "tier-gate"**; the banner fires on **2 tier-transitions per match** (Dust→Form, Form→Apotheosis) rather than 10 age transitions; "27.5s of banner time across a full Campaign" recomputes to **~5s (2×2.5s)** — the Loop-1 critique about banner-time volume is mooted, the Loop-2 response holds unchanged. The **banner mechanic, reduce-motion 400ms fade, Campaign autosave on transition, and `mapmods.json` data shape all survive intact**; `gp.autoAgeUp` renames on future-pass to `gp.autoTierUp` (not done here — prototype-reshape Step B handles the data + identifier cascade). `ages.json` → `tiers.json` is a Step B data migration. Banner is bookkeeping; the Accepted status stands.
+
 ---
 
 ## Decision
