@@ -120,13 +120,16 @@ Bookkeeping is standard; balance work is extensive and deferred to Phase 5 under
 
 ## 4.7 Enemy system (PvE modes)
 
-Two directions:
-- **A — Parallel evolution.** Enemies march through the ages alongside the player. Stone beasts → bronze raiders → iron barbarians → etc.
-- **B — The Left Behind.** Enemies are what humanity abandoned at each age. Beasts we displaced. Plagues we outgrew. Gods we stopped believing in. Machines we discarded. Finally: past versions of ourselves.
+**Rescoped OPEN** under the 3-tier dungeon-cosmology arc per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) — prior civilization-timeline framings ("parallel evolution through the ages" / "humanity-abandoned-at-each-age") do not fit the Ash→Altar aesthetic and are superseded.
 
-**Leading direction: hybrid — B-dominant with A as wave-variety baseline.** Regular waves use Direction A patterns (parallel evolution, easier to art and balance). Age bosses and special waves use Direction B (thematically rich, marketing-heavy). This gets you the trailer moments without tripling the art burden.
+Two direction sketches under the new shape (themes OPEN):
 
-Decision required before Phase 5 begins.
+- **A — Tier-local archetypes.** Each tier (Dust / Form / Apotheosis) has its own enemy family native to that tier's aesthetic. Easier to art and balance; weaker thematic payoff.
+- **B — The descent's residue.** Enemies are what the descent disturbs — things sealed in Ash, dormant under Nature, forbidden by Prayer. Each tier exhumes older, deeper entities. Thematically richer; higher art burden; consistent with the dungeon-cosmology frame.
+
+**Leading direction (placeholder, not ratified): hybrid — B-dominant for tier bosses and special waves; A for regular wave variety.** Same trade as before: trailer moments without tripling the art burden.
+
+Full enemy roster and per-tier archetype list deferred to Phase 5 under the §5.3 silhouette-forward mythic aesthetic. Decision required before Phase 5 begins.
 
 ## 4.9 Save model
 
