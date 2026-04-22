@@ -13,16 +13,16 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-2.md](phase-2.md). Next: 
 
 *→ active drill-down: [stage 03 — match setup](../stages/03-match-setup.md), [stage 04 — in-match core](../stages/04-in-match-core.md), [stage 05 — age evolution](../stages/05-age-evolution.md).*
 
-A match proceeds through multiple **ages** in sequence. In PvE modes, ages advance on a wave timer or wave count. In PvP modes, ages advance on a match timer or triggered event.
+A match proceeds through **3 tiers** (Dust → Form → Apotheosis) in sequence per §3.5. In PvE modes, tiers advance on a wave timer or wave count. In PvP modes, tiers advance on a match timer or triggered event.
 
-Between ages, an **Age Gate** pauses play and offers:
-- Automatic advancement of existing towers to the next age's form.
-- A **Divergence Fork** at certain gates, presenting 2–3 path choices that re-skin future ages.
-- A marketplace of new towers/units unlocked by the advancing age.
+Between tiers, a **Tier Gate** pauses play and offers:
+- Automatic advancement of existing towers to the next tier's form.
+- A **Divergence Fork** at tier transitions (rescoped OPEN per §4.2 — at most 2 forks under the 3-tier arc), presenting 2–3 path choices that re-skin future tiers.
+- A marketplace of new towers/units unlocked by the advancing tier.
 
-Combat within an age uses standard tower wars mechanics: towers defend your lane, units attack enemy lanes (in PvP), economy drives everything.
+Combat within a tier uses standard tower wars mechanics: towers defend your lane, units attack enemy lanes (in PvP), economy drives everything.
 
-What makes this game different is what happens *between* ages, and the fact that your starting Commander choice persists as a visible identity through the entire arc.
+What makes this game different is what happens *between* tiers, and the fact that your starting Commander choice persists as a visible identity through the entire Ash→Altar arc.
 
 ## 3.2 The Commander system (central feature)
 
@@ -71,8 +71,8 @@ A player who ignores any one lineage will struggle. A player who specializes nar
 Units come in three categories:
 
 - **Towers** — static placements. Attack within their range. Most tower-wars units are towers. Evolve through the ages.
-- **Mobile units** — active units placed on the board that move along paths or patrol routes. Include melee front-liners (Sinew), skirmishers, and hero-class units. Can be directed with waypoint-style commands, not full RTS micro.
-- **Special effect units** — timed abilities, temporary zones, consumables, debuff fields. Predominantly Veil lineage. Limited in placement count per match to avoid spam.
+- **Mobile units** — active units placed on the board that move along paths or patrol routes. Include melee front-liners, skirmishers, and hero-class units. Can be directed with waypoint-style commands, not full RTS micro.
+- **Special effect units** — timed abilities, temporary zones, consumables, debuff fields. Cross-lineage under the 3-lineage shape (per-lineage allocation is Phase 4 spec); limited in placement count per match to avoid spam.
 
 The Commander, when deployed via signature ability, acts as a Hero Unit — a special high-value mobile unit with abilities. Only one Commander Hero per player on the map at a time.
 
@@ -98,7 +98,7 @@ Early tiers are short and brittle. Late tiers are longer and more strategic. Tot
 
 *→ active drill-down: [stage 02 — mode select](../stages/02-mode-select.md). Backing research: [genre pulse](../research/01-genre-pulse.md).*
 
-1. **Solo Campaign** — story missions tied to each Commander. Progresses through ages. Introduces mechanics gradually. Non-negotiable at launch. This is how the solo promise is kept.
+1. **Solo Campaign** — story missions tied to each Commander. Progresses through tiers (Dust → Form → Apotheosis). Introduces mechanics gradually. Non-negotiable at launch. This is how the solo promise is kept.
 2. **Solo vs AI (Skirmish)** — pick map, difficulty, lineage restrictions. Quick game against AI.
 3. **Co-op Horde** — 2–4 players defend shared lanes against escalating waves. User-hosted or matchmade.
 4. **Lane Wars 1v1** — classic competitive tower wars PvP.
