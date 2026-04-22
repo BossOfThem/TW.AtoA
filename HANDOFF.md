@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-21 (concept-pivot Step A docs-only pass LANDED; 13 commits; one file per turn; `cascade-lint` clean; no PR opened)
+**Last session:** 2026-04-21 (concept-pivot Step A docs-only pass + residual-drift cleanup LANDED; 21 commits total; one file per turn; `cascade-lint` clean throughout; no PR opened)
 **Hand-off by:** Claude (Opus 4.7, 1M context)
 **Hand-off to:** next Claude Code session (post `/clear` or cloud-session reset)
 
@@ -59,10 +59,12 @@ Head at handoff: **`2fc56ba`** on `claude/bootstrap-ata-setup-aOpao` (pushed). `
 
 ### Docs state
 - `CONCEPT.md` v0.7 (hub). Phase 3 index row + vision line reflect 3/3/3.
-- `concept/phase-1.md` §1.1 reframed (Last-reviewed 2026-04-21). §1.3 still says "through the ages" — residual drift.
-- `concept/phase-3.md` §3.2/§3.3/§3.5/§3.8 rewritten. §3.1/§3.6 still use "ages" terminology — residual drift.
-- `concept/phase-4.md` §4.1/§4.2/§4.3/§4.6 rewritten. Divergence + currency flagged OPEN.
-- `concept/phase-5.md` §5.1/§5.3 rewritten. **§5.4 [LOCKED] UNTOUCHED.** §5.2 build phases still reference Forge/Crown/Veil + ages 6-11 — residual drift.
+- `concept/phase-1.md` §1.1 + §1.3 rewritten (Last-reviewed 2026-04-21).
+- `concept/phase-3.md` §3.1/§3.2/§3.3/§3.4/§3.5/§3.6/§3.8 rewritten.
+- `concept/phase-4.md` §4.1/§4.2/§4.3/§4.5/§4.6/§4.7 rewritten. Divergence + currency + enemy-direction flagged OPEN.
+- `concept/phase-5.md` §5.1/§5.2/§5.3 rewritten. **§5.4 [LOCKED] UNTOUCHED.**
+- `concept/phase-6.md` §6.1/§6.2/§6.3/§6.4 rewritten (tier-persistence + MVP=full roster + Post-hybrid-families milestone).
+- `concept/phase-7.md` §7.1/§7.3/§7.4 rewritten (roster closed, retired questions cited, tier-persistence).
 - `stages/01,05,06` stub-amended; full rewrites deferred.
 - `CONCEPT-GAPS.md` v0.4 — 11 rows remaining, all shape-independent.
 - `CASCADE.md` v0.14 — pointer on 2026-04-21 concept tightening.
@@ -85,12 +87,16 @@ Head at handoff: **`2fc56ba`** on `claude/bootstrap-ata-setup-aOpao` (pushed). `
 - Freeze date: **2026-05-15**.
 
 ### New from this session
-- **Residual terminology drift** (flagged but out of scope per strict plan — A2–A5 only touched specified sections):
-  - `concept/phase-1.md §1.3` — "through the ages" phrasing in the core-promise bullet.
-  - `concept/phase-3.md §3.1` — "ages" terminology throughout the match-loop description.
-  - `concept/phase-3.md §3.6` — minor "ages" reference in mode descriptions.
-  - `concept/phase-5.md §5.2` — "Build phases after MVP" list references Forge/Crown/Veil lineages and ages 6-8 / 9-11 / forks — entirely obsolete; needs wholesale rewrite.
-  - None violate cascade discipline. Each gets cleaned when the owning section next opens for design work.
+- **Residual terminology drift — RESOLVED 2026-04-21 in a post-Step-A cleanup pass** (8 commits, one file per turn):
+  - `concept/phase-6.md` §6.1/§6.2/§6.3/§6.4 — tier-persistence replaces age-persistence; Post-5-lineages + Post-11-ages milestones retired (MVP=full roster); new Post-hybrid-families milestone. (commit `9ffcc90`)
+  - `concept/phase-7.md` §7.1/§7.3/§7.4 — roster question closed at 3; Veil/Crown questions retired; Ascendant age-11 → Apotheosis tier-3; five→three lineages; age-persistence → tier-persistence. (`41dfd8f`)
+  - `concept/phase-3.md` §3.1/§3.4/§3.6 — ages → tiers; Age Gate → Tier Gate; Sinew/Veil lineage references removed. (`baffc67`)
+  - `concept/phase-4.md` §4.5 — Veil tar-pit example genericized. (`fe71792`)
+  - `concept/phase-5.md` §5.2 — build phases rewritten for 3/3/3 shape (Forge/Crown/Veil + ages 6-11 obsolete assumptions removed). (`61532eb`)
+  - `concept/phase-1.md` §1.3 — "Age persistence" → "Tier persistence." (`104da80`)
+  - `stages/05-age-evolution.md` upstream-deps link text — "eleven ages" → "three tiers." (`8078c2f`)
+  - `concept/phase-4.md` §4.7 — enemy direction rescoped OPEN under dungeon cosmology; civilizational-timeline framings superseded. (`c165716`)
+- **Post-cleanup verification:** re-ran stale-lineage + ages/counts terminology sweeps. All remaining hits are intentional (§5.4 [LOCKED] pattern examples, amendment notes, historical rebase-context, retirement citations, or preserved-for-traceability stage-level body content). `cascade-lint` clean.
 - **Three 2026-04-20 decisions are rebased** (NOT marked Superseded) — the rebase notes live inside `decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md §Follow-ups` and inline at each amended CONCEPT section. Existing decision files themselves were not edited to add rebase banners; a future pass can add those banners if PM prefers.
 - **Naming pass is still deferred.** `concept/phase-5.md §5.4 [LOCKED]` examples remain Sinew/Ember/Forge/Crown/Veil; prose shorthand is Ash/Nature/Prayer/Dust/Form/Apotheosis. A future decision either reopens §5.4 (admit multi-syllable nouns) or picks §5.4-compliant single-syllable placeholders.
 - **§4.3 hybrid-discovery blocker #1 remains open** — reframed under Ash-enabler, not closed.
