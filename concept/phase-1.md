@@ -13,7 +13,7 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior phase: — (root). Next: [phase-2
 
 A tower wars game where every match plays as a compressed cosmological arc — **Ash to Altar**. Players command one of three lineages through three tiers of a mysterious, dungeon-like descent, defending their lane and pressuring opponents' lanes. The tower you place in minute 1 still matters in minute 20 — it has transmuted past recognition but carries your early choice forward. The Commander you chose at login is a living identity across every match you play, with their own story, unlocks, and hero-mode signature ability.
 
-*Framing note (2026-04-21):* this phase's vision was tightened from "civilizational evolution through 11 ages" to the 3-tier Ash→Altar arc under a dungeon-cosmology frame per [`decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md`](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). Lineage and tier names (Ash / Nature / Prayer; Dust / Form / Apotheosis) are prose placeholders — `concept/phase-5.md §5.4 [LOCKED]` is untouched. A residual "through the ages" phrasing in §1.3 will be reconciled when that section is next opened (not this pass).
+*Framing note (2026-04-21):* this phase's vision was tightened from "civilizational evolution through 11 ages" to the 3-tier Ash→Altar arc under a dungeon-cosmology frame per [`decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md`](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). Lineage and tier names (Ash / Nature / Prayer; Dust / Form / Apotheosis) are prose placeholders — `concept/phase-5.md §5.4 [LOCKED]` is untouched.
 
 ## 1.2 Target player
 
@@ -24,7 +24,7 @@ A strategy-game player who has finished *Kingdom Rush*, *Bloons TD 6*, and/or *L
 Three things, in order of importance:
 
 1. **Commander identity.** The Commander you choose is yours. Across every match, your Commander's story, unlocks, and progression are visible and meaningful. You are not a generic avatar — you are a specific character with specific powers.
-2. **Age persistence in-match.** The lineage you favor in minute 1 still feels like the same lineage in minute 20 — even though every tower name, model, and mechanic has evolved through the ages during the match.
+2. **Tier persistence in-match.** The lineage you favor in minute 1 still feels like the same lineage in minute 20 — even though every tower name, model, and mechanic has transmuted across the 3-tier Ash→Altar arc during the match.
 3. **Multiple ways to play.** Solo vs AI, co-op horde, competitive lane wars, and commander-driven campaign — all built on one shared engine. No mode feels like an afterthought.
 
 ## 1.4 Success criteria for the vision
