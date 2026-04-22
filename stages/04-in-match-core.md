@@ -6,7 +6,20 @@
 **Downstream impact:** [Stage 05 — age evolution](05-age-evolution.md), [Stage 06 — hybrids & fusion](06-hybrids-fusion.md)
 **Open questions:** See below.
 **Research backing:** [01-genre-pulse.md](../research/01-genre-pulse.md)
-**Last reviewed:** 2026-04-19
+**Last reviewed:** 2026-04-22
+
+---
+
+## Amendment 2026-04-22 (stub-level, deferred from plan A7)
+
+Stage 04 was not in A7's scope (01 / 05 / 06) during the 2026-04-21 concept-tightening cascade and retained pre-pivot framings. Under [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility Hard), the following body references are now **obsolete**:
+
+- Scope bullet "gameplay within a single age" — should read *within a single tier* (Dust / Form / Apotheosis) per [phase-3 §3.5](../concept/phase-3.md#35-the-three-tiers-in-match-tower-evolution-arc).
+- Scope bullet "gold income, knowledge income, influence income" — the three-currency mapping backed by Forge / Ember / Crown no longer applies; under the 3-lineage shape currency mapping is rescoped OPEN at [phase-4 §4.6](../concept/phase-4.md#46-economy-specification) with a Gold / Faith / Cinders [PROPOSAL].
+- Open question "parallel evolution vs 'the Left Behind' vs hybrid" — both civilizational-timeline framings are superseded by the new Tier-local / Descent's-residue direction sketches at [phase-4 §4.7](../concept/phase-4.md#47-enemy-system-pve-modes) (rescoped OPEN under dungeon cosmology).
+- Verification goal "age 1 alone... first Age Gate" — should read *Dust tier alone... first Tier Gate*.
+
+Remaining content below is preserved for traceability; a dedicated Stage-04 rewrite happens when this stage is next opened in a Phase-C pass. Names Dust / Form / Apotheosis are prose placeholders — `concept/phase-5.md §5.4 [LOCKED]` is untouched.
 
 ---
 
