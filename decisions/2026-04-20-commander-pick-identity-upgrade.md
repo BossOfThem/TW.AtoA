@@ -5,6 +5,8 @@
 **Reversibility:** Easy
 **Affects:** `prototype/index.html` (portrait 490–494, XP ladder 502–513, roster 1333+, `applyCommanderCard` 1358+, new `silhouetteSVG`/`previewCommanderVO`/`applySilhouetteTest`)
 
+> **Rebase banner — added 2026-04-22.** This decision is **rebased (not superseded)** under the [2026-04-21 concept tightening (3/3/3 + dungeon cosmology + Ash-enabler hybrids)](2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility **Hard**). Rebase delta: the silhouette set **collapses 5 → 3** to match the new 3-launch-commander / 3-lineage roster (Ash / Nature / Prayer prose placeholders); the Sinew-pike / Ember-hooded / Forge-anvil / Crown-banner / Veil-masked archetypes become **3 silhouettes under the new lineages**, specific poses TBD under the deferred naming pass and Step B prototype-reshape scope. The **silhouette-test harness (`?silhouette-test=1` + Shift+S grayscale toggle), XP ladder (20 levels [PROPOSAL]), cosmetic tick marks at L5/L10/L15, Voice-bus caption-preview, and pose-differentiation grayscale discipline all survive intact**. The research §6.1 no-go archetype list (gritty-male-soldier / chosen-one-orphan / scruffy-scoundrel) still applies to the 3 chosen poses. SVG path migration 5→3 is a Step B prototype-reshape data edit, not a concept change. Banner is bookkeeping; the Accepted status stands.
+
 ---
 
 ## Decision
