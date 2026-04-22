@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-20
+**Last reviewed:** 2026-04-22
 ---
 
 # Phase 2 — Analysis
@@ -30,8 +30,8 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-1.md](phase-1.md). Next: 
 
 ## 2.3 Known risks
 
-- **Content explosion.** Commanders × lineages × ages × forks × hybrids = combinatorial content. Must be scoped aggressively. Data-driven pipeline is non-negotiable.
-- **Lineage balance.** Five lineages must feel mechanically distinct, not just cosmetically. If two converge on the same playstyle, the system fails. Multi-way balance is notoriously hard.
+- **Content explosion.** Commanders × lineages × tiers × forks × hybrids = combinatorial content under the 3/3/3 launch shape per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md); post-launch expansion re-opens the cross-product. Must be scoped aggressively. Data-driven pipeline is non-negotiable.
+- **Lineage balance.** Three lineages must feel mechanically distinct, not just cosmetically (amended 2026-04-22 from "five" to follow the 2026-04-21 concept tightening). Under a 3-lineage shape any convergence is more catastrophic than under a 5-lineage scaffold — the risk tightens, it does not relax. Role-differentiation is tracked as an open question at [phase-7 §7.1 #9](phase-7.md#71-open-questions-resolution-targets-noted). Multi-way balance is notoriously hard.
 - **Onboarding cliff.** Commander + ages + lineages + economy + send/defend + modes is a lot for a first-time player. Tutorial design is a real UX risk and gets its own Phase 5 attention.
 - **Multiplayer cold-start.** If ranked lobbies don't fill, competitive play dies. Solo mode must carry the game independently. See §2.4.
 - **Live-service ops commitment.** Battle pass + store + seasonal content requires ongoing team capacity. A two-dev team cannot run AAA-scale live ops. Content cadence must be realistic.
