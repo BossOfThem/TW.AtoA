@@ -18,6 +18,22 @@ Step A of the concept pivot shipped. The 3/3/3 + dungeon-cosmology + Ash-enabler
 
 ---
 
+## 2026-04-22 addendum
+
+Option 1 (review-only) executed on the 2026-04-21 Step A + cleanup landing. Drift found and resolved in two surgical turns, plus pointer bookkeeping:
+
+- `concept/phase-2.md §2.3` — risks rewritten from 5-lineage/ages scaffold to 3-lineage/tiers shape. Commit `5c8aaa6`.
+- `stages/04-in-match-core.md` — gained an A7-style amendment banner (deferred from 2026-04-21 plan A7 scope). Commit `f99fd14`.
+- `CASCADE.md` — current work pointer appended with a 2026-04-22 follow-up drift-sweep line. Commit `cd5af55`.
+
+HEAD at addendum close: **`cd5af55`**. Branch in use: `claude/resume-ash-to-altar-GGsgg` (session-branch per sandbox harness). **All three commits fast-forwarded to `origin/main`** per PM directive "commit all current work to the main." Standing rule for this session: after each per-turn commit, push to both the session branch and `main`.
+
+`cascade-lint` clean throughout. No upstream decision filed — all three edits are downstream cascade from the already-ratified [2026-04-21 concept tightening](decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md).
+
+Next open: Step B (prototype reshape) — still pending a plan draft before execution.
+
+---
+
 ## Step A commits landed (reference)
 
 | Step | SHA | Artifact |
