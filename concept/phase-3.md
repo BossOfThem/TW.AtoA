@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-21
+**Last reviewed:** 2026-04-26
 ---
 
 # Phase 3 — Design
@@ -8,6 +8,12 @@
 *The shape of the game. High-level, not detailed.*
 
 Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-2.md](phase-2.md). Next: [phase-4.md](phase-4.md).
+
+---
+
+**Amendment banner — 2026-04-26 real-cultures frame cascade (partial).** The 2026-04-25 ratification ([`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md), Reversibility Hard) replaced the "3 lineages (Ash / Nature / Prayer) × 3 tiers (Dust / Form / Apotheosis) under dungeon-cosmology arc" frame with **3 real-world civilizations (Greek / Aztec / Norse) × 4-tier-then-fusion ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero → Fusion to God)**. This turn rewrites **§3.2 (Commander system)** and **§3.3 (lineages → civilizations)** to the new frame. **§3.1 (core match loop — Tier Gate wording), §3.5 (three tiers — Dust/Form/Apotheosis), and §3.8 (exit condition — 3-lineage whiteboard shape)** retain their prior frame for traceability and will be rewritten in follow-on turns under the same cascade queue (2026-04-25 ratification Follow-up #1). The debuff/magic mechanics surface referenced throughout is implemented by the 2026-04-26 attack-type mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md)).
+
+---
 
 ## 3.1 Core match loop (shared across all modes)
 
@@ -28,43 +34,74 @@ What makes this game different is what happens *between* tiers, and the fact tha
 
 *→ active drill-down: [stage 01 — commander pick](../stages/01-commander-pick.md), [stage 08 — meta progression](../stages/08-meta-progression.md). Backing research: [commander archetypes](../research/03-commander-archetypes.md).*
 
-A **Commander** is the player's persistent identity in the game world. At first login, the player chooses a Commander from a starter roster. Each Commander has:
+A **Commander** is the player's persistent identity in the game world. At first login, the player chooses a Commander from the launch roster — one legendary historical leader per launch civilization. Each Commander has:
 
-- A distinctive visual identity (portrait, silhouette, color accent, voice).
-- A thematic backstory, usable as solo campaign framing.
-- A **lineage affinity** — a +X% tilt toward one of the three lineages. Not a cage; player can still build other lineages heavily.
-- A **passive buff** — small mechanical bonus that persists across matches.
-- A **signature ability** — unlocks at a commander level threshold. Deployable as a Hero Unit on the battle map in supported modes.
+- A distinctive visual identity (portrait, silhouette, color accent, voice) grounded in their historical culture.
+- A thematic backstory drawn from history + native myth, usable as solo campaign framing.
+- A **civilization affinity** — each Commander is tied to one of the three launch civilizations (Greek / Aztec / Norse) and has natural access to that civilization's full tower roster, unit roster, and Demigod/God fusion ladder. Cross-civilization tower access is parked as a future "Foresight-coin" mechanic.
+- A **3-ability kit**: one passive + one short-CD active + one long-CD active. All nine ability names locked 2026-04-25 under "high-school recognizable" naming discipline (see table below).
 - A **progression track** — XP, levels, unlocked cosmetics, voice lines, portrait frames.
 
-Commanders level up through play. Towers in a match start at tier 1 (Dust) and progress through tiers during that match. Commander progression is match-to-match meta. Tier progression is within-match tactical. These are two distinct progression systems operating at different timescales.
+Commanders level up through play. Towers in a match start at T1 swarm and progress through the tier ladder (T1 → T2 → T3 → T4 Demigod/Hero, then optionally Fusion to a named God) during that match. Commander progression is match-to-match meta. Tier progression is within-match tactical. These are two distinct progression systems operating at different timescales.
 
-**Identity floor per commander** — see [§4.1](phase-4.md#41-commander-mechanical-spec-identity-floor-proposal-per-commander-writeup-open) for the minimum-shape spec (portrait + silhouette variants, voice lines, signature, passive, tilt, progression ladder, cosmetic slots). Entry: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md) (rebased by [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) — floor shape survives; roster scope narrows 5→3). Numerical floors are [PROPOSAL]; shape is committed.
+**Identity floor per commander** — see [§4.1](phase-4.md#41-commander-mechanical-spec-identity-floor-proposal-per-commander-writeup-open) for the minimum-shape spec (portrait + silhouette variants, voice lines, signature, passive, tilt, progression ladder, cosmetic slots). Entry: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md) (rebased by [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) — **now Superseded by 2026-04-24 reopen**; re-rebase to [2026-04-25 real-cultures ratification](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) is tracked as 2026-04-25 Follow-up #10). Floor shape (portrait + silhouette + voice + passive + signature + progression + cosmetic slots) survives the reframing unchanged. Numerical floors are [PROPOSAL]; shape is committed.
 
-**Starter commander roster (placeholder names, all subject to revision — lineage labels `Ash / Nature / Prayer` are prose shorthand pending a deferred naming pass; `concept/phase-5.md §5.4 [LOCKED]` is untouched):**
-- Commander A — Ash-leaning (transformation / recycling specialist; enables hybrid paths)
-- Commander B — Nature-leaning (growth / scaling specialist)
-- Commander C — Prayer-leaning (aura / order specialist)
+**Launch commander roster (locked 2026-04-25):**
 
-**Launch roster size: 3.** The MVP (`concept/phase-5.md §5.1`) and the launch roster converge under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). 3 is a lean-launch floor, not an expansion ceiling; post-launch roster growth is explicitly not cascade-blocked.
+| Civ | Launch commander | Passive | Short-CD active | Long-CD active |
+|-----|------------------|---------|-----------------|----------------|
+| Greek | **Leonidas** | Spartan Training | This Is Sparta! | The Last Stand |
+| Aztec | **Montezuma II** | Blood Tribute | Sun Offering | The Great Sacrifice |
+| Norse | **Ragnar Lothbrok** | Sons of Ragnar | Berserk | The Great Heathen Army |
 
-**"Tilt, not cage" principle:** an Ash-leaning Commander can still build Nature-heavy mid-game. They just don't get the Ash affinity bonus. This preserves player agency.
+All nine ability names pass the "high-school recognizable" heuristic. Rejected in-session as too niche: Agoge, Molon Labe, Hot Gates. All numbers and full ability specs are [PROPOSAL] pending balance pass.
 
-## 3.3 The three lineages (mechanical identity within a match)
+**Launch roster size: 3** (one per launch civilization). One additional commander per civilization planned for first post-launch patch (TBD — parked as 2026-04-25 Follow-up #6, requires PM direction). 3 is a lean-launch floor, not an expansion ceiling.
+
+**"Civ affinity, not cage" principle:** a Greek commander plays Greek towers; cross-civilization borrowing is parked. This is a stronger cage than the prior "lineage tilt" frame — a civilization is a coherent thematic unit, not a mechanical tilt. Multi-civ play arrives via patch-1 commanders and the future Foresight-coin mechanic, not in-match mixing for the launch commanders.
+
+## 3.3 The three civilizations (mechanical identity within a match)
 
 *→ active drill-down: [stage 04 — in-match core](../stages/04-in-match-core.md).*
 
-Each lineage fills a mechanical role the other two cannot. Lineages are the *unit categories* within a match, independent of Commander choice. Names `Ash / Nature / Prayer` are prose placeholders pending a deferred naming pass; `concept/phase-5.md §5.4 [LOCKED]` is untouched.
+Each launch civilization has a coherent mechanical identity drawn from its native myth and history. Civilizations are the top-level *roster unit* — each civ owns 6 T1-T3 towers, 5 unit classes, 6 T4 Demigods/Heroes, and 3 Gods reachable via Fusion. Names locked 2026-04-25.
 
-- **Ash** — the transformation lineage. Thrives on loss: towers salvage fallen units, recycle gold on destruction, and feed adjacent structures. The **hybrid-enabler** — every hybrid family in the game requires Ash as one parent.
-- **Nature** — the growth lineage. Organic systems: scaling HP, regeneration, spreading effects across adjacent cells. Rewards economy tempo and long-lane defense.
-- **Prayer** — the order lineage. Auras and aligned ranks: buffs the rest of the player's board rather than killing hard alone. Rewards disciplined placement.
+### Greek
 
-**Hybridization rule** (detail in [§4.3](phase-4.md#43-hybrid-combinations-the-signature-mechanic)): **Ash × Nature** and **Ash × Prayer** produce hybrid towers. **Nature × Prayer does NOT hybridize** — the Ash-enabler constraint is structural, not a balance number.
+- **Signature flavor:** Spartan discipline, phalanx, defensive anchor. Divine-heavy endgame via temple-and-oracle pantheon.
+- **T1-T3 towers (6):** Phalanx, Acropolis, Oracle, Colossus, Trireme Dock, Parthenon.
+- **Units (5):** Hoplite, Peltast, Hippeis, Toxotes, Krypteia.
+- **T4 Demigods & Heroes (6):** Achilles, Theseus, Perseus, Hercules, Odysseus, Jason.
+- **Gods (3, via locked Fusion recipes):** Zeus (Hercules + Jason), Athena (Theseus + Perseus), Poseidon (Achilles + Odysseus).
+- **Attack-type coverage:** Piercing, Crushing, Arcane, Fire, Divine. No Slashing or Poison at tower-tier. (Per [2026-04-26 attack-type mapping](../decisions/2026-04-26-attack-type-mapping.md).)
 
-A player who ignores any one lineage will struggle. A player who specializes narrowly will excel in that narrow domain and fail broadly. The game is built to reward balanced lineage use, not maxed lineage use.
+### Aztec
 
-**Open issue:** under a three-lineage roster, role differentiation must survive a small surface. Prayer cannot drift into "less-good Nature"; Ash must feel essential without becoming mandatory. Specification resolves this in Phase 4 (`§4.2` divergence, `§4.3` hybrid-discovery, `§4.4` combat roles).
+- **Signature flavor:** Priest-warrior king, blood sacrifice, ritual. Poison and Fire native, Arcane via feathered-serpent wisdom.
+- **T1-T3 towers (6):** Pyramid, Temple of the Sun, Jaguar Warrior Hall, Eagle Warrior Hall, Sacrificial Altar, Feathered Serpent Temple.
+- **Units (5):** Macehualli, Jaguar Warrior, Eagle Warrior, Atlatl Thrower, Aztec Priest.
+- **T4 Demigods & Heroes (6):** High Priest-King, Nanahuatzin, Jaguar Champion, Eagle Champion, Blood Priest, Serpent-Priest.
+- **Gods (3):** Quetzalcoatl (Serpent-Priest + High Priest-King), Huitzilopochtli (Nanahuatzin + Jaguar Champion), Tezcatlipoca (Blood Priest + Eagle Champion).
+- **Attack-type coverage:** Divine, Fire, Slashing, Piercing, Poison, Arcane. No Crushing at tower-tier.
+
+### Norse
+
+- **Signature flavor:** Raider-chieftain, sons-of-Ragnar, berserker fury. Slashing-heavy with rune-magic endgame and forge-fire.
+- **T1-T3 towers (6):** Longhouse, Mead Hall, Rune Stone, Longship Dock, Berserker Lodge, Forge.
+- **Units (5):** Viking Raider, Shieldmaiden, Huscarl, Berserker, Skald.
+- **T4 Demigods & Heroes (6):** Björn Ironside, Beowulf, Harald Bluetooth, Leif Erikson, Lagertha, Sigurd.
+- **Gods (3):** Odin (Harald Bluetooth + Leif Erikson), Thor (Björn Ironside + Beowulf), Tyr (Lagertha + Sigurd).
+- **Attack-type coverage:** Slashing, Crushing, Arcane, Piercing, Fire. No Poison or Divine at tower-tier.
+
+### Cross-civ coverage and the Fusion endgame
+
+No civilization covers all 7 attack types unaided — Greek lacks Slashing/Poison, Aztec lacks Crushing, Norse lacks Poison/Divine. This is a feature: multi-civ play (via patch-1 commanders and the future Foresight-coin mechanic) fills the holes. At launch, each civilization is a coherent thematic unit with clear type-identity gaps that tell the player what to counter-pick.
+
+**Fusion rule** (detail in [§4.3](phase-4.md#43-hybrid-combinations-the-signature-mechanic)): within a civilization, two specific T4 Demigods combine via a **locked recipe** into one named God. Each civilization has exactly 3 Gods and 3 recipes. Gods are the **only 2-type damage sources** in the game, inheriting both source Demigods' primary attack types. Fusion consumes the source Demigods into a single board slot and requires a **Divinity** currency spend (2 to unlock Fusion menu + 1 per fusion — see §4.x economy when specced). Across a 30-round match with a 6-Divinity cap, players realistically reach 2-3 fusions.
+
+A player who ignores their civilization's T4/God ladder will miss the endgame identity of their civ. A player who fuses early and greedily will run out of Divinity for late-game flex. The game is built to reward **civ-appropriate escalation through the tier ladder**, not early-rush or late-cram.
+
+**Open issue:** cross-civilization borrowing is parked as the future "Foresight-coin" mechanic. At launch, a Commander is locked into their civ's roster. Patch-1 adds one commander per civ (TBD). Specification of Foresight-coin economy + access rules deferred to post-launch (2026-04-25 Follow-up #7).
 
 ## 3.4 Unit categories (cross-cutting, not lineage-exclusive)
 
