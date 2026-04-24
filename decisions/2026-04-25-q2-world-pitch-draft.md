@@ -1,7 +1,7 @@
 # Decision — Q2 World Pitch (draft, synthetic mythic-history braid)
 
 **Date:** 2026-04-25
-**Status:** Proposed — **DRAFT FOR PM REACTION, NOT A RATIFICATION.** This is Q2 of the Socratic discovery sequence (Q2–Q10) opened by [`2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md`](2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md). A single candidate world-statement is offered here for PM to iterate on, shred, or redirect. Q3 (Actors) is downstream and not touched.
+**Status:** **Superseded by [2026-04-25 Q2 real-cultures ratified](2026-04-25-q2-real-cultures-direction-ratified.md)** (same session, later). PM rejected the synthetic-braid frame as too abstract and redirected to real-world cultures + native myth (Greek / Aztec / Norse). This draft remains in-tree as a superseded-record for traceability. Original status: Proposed — DRAFT FOR PM REACTION, NOT A RATIFICATION. This was Q2 of the Socratic discovery sequence (Q2–Q10) opened by [`2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md`](2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md).
 **Reversibility:** n/a while Proposed. If later Accepted and ratified at Q10 as the world frame, Reversibility would be **Hard** (rewrites vision, theme, flavor, enemy frame, lineage framing).
 **Affects (if ratified):** `concept/phase-1.md §1.1` (vision/arc); `concept/phase-3.md §3.2/§3.3` (lineage framing); `concept/phase-4.md §4.1/§4.3/§4.7` (commander role, hybrid topology, enemies); `CONCEPT.md` hub; `README.md` description line; downstream stages + research rows keyed off theme.
 
