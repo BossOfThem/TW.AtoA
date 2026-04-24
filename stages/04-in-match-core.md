@@ -6,11 +6,25 @@
 **Downstream impact:** [Stage 05 — age evolution](05-age-evolution.md), [Stage 06 — hybrids & fusion](06-hybrids-fusion.md)
 **Open questions:** See below.
 **Research backing:** [01-genre-pulse.md](../research/01-genre-pulse.md)
-**Last reviewed:** 2026-04-22
+**Last reviewed:** 2026-04-26
 
 ---
 
-## Amendment 2026-04-22 (stub-level, deferred from plan A7)
+## Amendment 2026-04-26 (stub-level — real-cultures frame cascade)
+
+Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility **Hard**), [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md) (Reversibility Medium), and [`decisions/2026-04-26-phase-1-exit-one-pager.md`](../decisions/2026-04-26-phase-1-exit-one-pager.md) — the 3-lineage + 3-tier (Dust/Form/Apotheosis) framings from the 2026-04-22 amendment below are **superseded** by the **4-tier ladder + Fusion endgame** (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero → Fusion → God) and the **3-civilization** (Greek/Aztec/Norse) content skeleton. Under the new shape:
+
+- Scope bullet "gameplay within a single age / tier" should read **within a single tier of the 4-tier ladder**. Match is 30 waves, mini-boss at 5/15/25, main-boss at 10/20/30.
+- Economy mapping is **Tribute (primary) + Divinity (6-cap mythic token)** per [`concept/phase-4.md §4.6`](../concept/phase-4.md) — Gold/Faith/Cinders [PROPOSAL] is superseded. Tribute is earned from kills + passive trickle and spent on units/towers/merges; Divinity is earned 1 per boss round, capped at 6, and spent only on Fusion (2 to unlock civ-wide Fusion menu + 1 per fusion execution).
+- Damage resolution now reads through the **7-type × 5-armor RPS matrix** per the attack-type decision — towers have a single primary attack type, Gods are the only 2-type damage sources (inherit both source Demigod types). Per-type light status procs apply (Fire=burn, Poison=stacking DoT, Piercing=armor-shred, Slashing=bleed, Crushing=stagger, Arcane=slow/debuff, Divine=consecrate).
+- Enemy ontology is still OPEN (2026-04-25 Follow-up #9) under the real-cultures frame; myth-creature PvE bosses parked (Follow-up #3). PvP regular waves use a shared cross-cultural pool with civ-matched bosses at 5/10/15/20/25/30 per [`concept/phase-4.md §4.7`](../concept/phase-4.md).
+- Verification "first Tier Gate" framing now maps to **T1→T2, T2→T3, T3→T4**, plus the **Fusion event** (trailer beat, not a gate). Civilization-persistence feeling by end of T3 is the core MVP bar per [`concept/phase-6.md §6.4`](../concept/phase-6.md).
+
+Body below is preserved for traceability; dedicated Stage-04 rewrite deferred to a future reopen. §5.4 naming conventions **[LOCKED]** untouched. §2.4a accessibility floor **[LOCKED]** untouched.
+
+---
+
+## Amendment 2026-04-22 (stub-level, deferred from plan A7) — SUPERSEDED BY 2026-04-26
 
 Stage 04 was not in A7's scope (01 / 05 / 06) during the 2026-04-21 concept-tightening cascade and retained pre-pivot framings. Under [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md) (Reversibility Hard), the following body references are now **obsolete**:
 
