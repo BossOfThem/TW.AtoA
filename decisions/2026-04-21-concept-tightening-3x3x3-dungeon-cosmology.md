@@ -1,7 +1,7 @@
 # Decision — Concept tightening: 3/3/3 shape + dungeon cosmology + Ash-enabler hybrids
 
 **Date:** 2026-04-21
-**Status:** Accepted
+**Status:** Superseded by [`2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md`](2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md) (2026-04-24 — Phase 1 reopen; 3/3/3 shape, dungeon cosmology, and Ash-enabler topology all reopened; Step A cascade §-edits preserved in-tree as superseded-record, not force-reverted)
 **Reversibility:** Hard
 **Affects:** `CONCEPT.md` hub phase-index; `concept/phase-1.md` §1.1; `concept/phase-3.md` §3.2, §3.3, §3.5, §3.8; `concept/phase-4.md` §4.1, §4.2, §4.3, §4.6; `concept/phase-5.md` §5.1, §5.3 (§5.4 [LOCKED] UNTOUCHED); `stages/01-commander-pick.md` §2; `stages/05-age-evolution.md` §2; `stages/06-hybrids-fusion.md` §2; `README.md` critical-context #3; `CONCEPT-GAPS.md` migration tracker; `CASCADE.md` pointer + decisions table; `PROGRESS.md` session log. Rebases (does NOT supersede): `decisions/2026-04-20-commander-identity-floor.md`, `decisions/2026-04-20-age-history-flavor-mapmods.md`, `decisions/2026-04-20-commander-pick-identity-upgrade.md`.
 
