@@ -1,7 +1,7 @@
 # Decision — Step B: Prototype Reshape Plan (3/3/3 cascade into prototype)
 
 **Date:** 2026-04-22
-**Status:** Proposed
+**Status:** Superseded by [`2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md`](2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md) (2026-04-24 — Phase 1 reopen voids the 3/3/3 shape this plan migrates toward; 18 sub-steps unreachable; any prototype reshape is downstream of Phase 1 exit under the new direction)
 **Reversibility:** Medium
 **Affects:** `prototype/data/*.json` (all 7 files), `tools/cascade-lint.py`, `prototype/index.html`, `prototype/COVERAGE.md`, `prototype/PORT-NOTES.md`, `prototype/README.md`, `prototype/CLICK-BUDGET.md`
 
