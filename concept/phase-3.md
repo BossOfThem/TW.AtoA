@@ -11,7 +11,7 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-2.md](phase-2.md). Next: 
 
 ---
 
-**Amendment banner — 2026-04-26 real-cultures frame cascade (partial).** The 2026-04-25 ratification ([`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md), Reversibility Hard) replaced the "3 lineages (Ash / Nature / Prayer) × 3 tiers (Dust / Form / Apotheosis) under dungeon-cosmology arc" frame with **3 real-world civilizations (Greek / Aztec / Norse) × 4-tier-then-fusion ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero → Fusion to God)**. This turn rewrites **§3.2 (Commander system)** and **§3.3 (lineages → civilizations)** to the new frame. **§3.1 (core match loop — Tier Gate wording), §3.5 (three tiers — Dust/Form/Apotheosis), and §3.8 (exit condition — 3-lineage whiteboard shape)** retain their prior frame for traceability and will be rewritten in follow-on turns under the same cascade queue (2026-04-25 ratification Follow-up #1). The debuff/magic mechanics surface referenced throughout is implemented by the 2026-04-26 attack-type mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md)).
+**Amendment banner — 2026-04-26 real-cultures frame cascade (§3.1 / §3.5 / §3.8 follow-on turn).** The 2026-04-25 ratification ([`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md), Reversibility Hard) replaced the "3 lineages (Ash / Nature / Prayer) × 3 tiers (Dust / Form / Apotheosis) under dungeon-cosmology arc" frame with **3 real-world civilizations (Greek / Aztec / Norse) × 4-tier-then-fusion ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero → Fusion to God)**. Prior cascade turn rewrote §3.2 + §3.3. This turn rewrites **§3.1 (core match loop), §3.5 (tier arc), and §3.8 (exit condition)** to the new frame. Residual "lineage"/"Dust-Form-Apotheosis" traces in §3.4 and §3.6 are narrowed in-line. The debuff/magic mechanics surface referenced throughout is implemented by the 2026-04-26 attack-type mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md)).
 
 ---
 
@@ -19,16 +19,18 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-2.md](phase-2.md). Next: 
 
 *→ active drill-down: [stage 03 — match setup](../stages/03-match-setup.md), [stage 04 — in-match core](../stages/04-in-match-core.md), [stage 05 — age evolution](../stages/05-age-evolution.md).*
 
-A match proceeds through **3 tiers** (Dust → Form → Apotheosis) in sequence per §3.5. In PvE modes, tiers advance on a wave timer or wave count. In PvP modes, tiers advance on a match timer or triggered event.
+A match proceeds through the **4-tier tower ladder** (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero) with an optional **Fusion endgame** (two T4 Demigods merge into a locked named God of the civilization's pantheon) per §3.5. Matches run on a **30-round cap**, with mini-bosses at rounds 5/15/25 and main bosses at rounds 10/20/30 per the 2026-04-25 ratification's locked pacing.
 
 Between tiers, a **Tier Gate** pauses play and offers:
-- Automatic advancement of existing towers to the next tier's form.
-- A **Divergence Fork** at tier transitions (rescoped OPEN per §4.2 — at most 2 forks under the 3-tier arc), presenting 2–3 path choices that re-skin future tiers.
+- Automatic advancement of existing towers to the next tier's form (T1 → T2 → T3 → T4 Demigod/Hero).
+- A **Divergence Fork** at tier transitions (rescoped OPEN per §4.2 — at most 2 forks across the T1→T4 arc), presenting 2–3 path choices that re-skin future tiers.
 - A marketplace of new towers/units unlocked by the advancing tier.
 
-Combat within a tier uses standard tower wars mechanics: towers defend your lane, units attack enemy lanes (in PvP), economy drives everything.
+Combat within a tier uses standard tower wars mechanics: towers defend your lane, units attack enemy lanes (in PvP), economy drives everything. The **two-currency economy** (Tribute primary + Divinity mythic token, 6-cap/match) is specced in §4.x. Combat resolution runs through the **7-attack-type × 5-armor-tag RPS matrix + status procs** per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md).
 
-What makes this game different is what happens *between* tiers, and the fact that your starting Commander choice persists as a visible identity through the entire Ash→Altar arc.
+The **Fusion endgame** sits outside the tier-gate sequence: once a player has two compatible T4 Demigods on the board and 2+ Divinity banked, the Fusion menu unlocks (2 Divinity to open + 1 per fusion). Fusion consumes both source Demigods into one God slot. A 30-round match with a 6-Divinity cap realistically yields 2–3 fusions — Gods are intentional rare events, not a routine late-game spam.
+
+What makes this game different is what happens *between* tiers, the Fusion-to-God endgame, and the fact that your starting Commander choice persists as a visible identity through the entire mortal-to-mythic arc.
 
 ## 3.2 The Commander system (central feature)
 
@@ -109,34 +111,36 @@ Units come in three categories:
 
 - **Towers** — static placements. Attack within their range. Most tower-wars units are towers. Evolve through the ages.
 - **Mobile units** — active units placed on the board that move along paths or patrol routes. Include melee front-liners, skirmishers, and hero-class units. Can be directed with waypoint-style commands, not full RTS micro.
-- **Special effect units** — timed abilities, temporary zones, consumables, debuff fields. Cross-lineage under the 3-lineage shape (per-lineage allocation is Phase 4 spec); limited in placement count per match to avoid spam.
+- **Special effect units** — timed abilities, temporary zones, consumables, debuff fields. Cross-civilization (not civ-exclusive under the real-cultures frame); per-civ allocation is Phase 4 spec. Limited in placement count per match to avoid spam. Status-effect proc attachment (Burn splash, Bleed DoT, Toxin stacks, Hex, Smite, Armor-shred, Stagger) is driven by the source tower's attack type per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md).
 
 The Commander, when deployed via signature ability, acts as a Hero Unit — a special high-value mobile unit with abilities. Only one Commander Hero per player on the map at a time.
 
-## 3.5 The three tiers (in-match tower evolution arc)
+## 3.5 The four-tier ladder + Fusion endgame (in-match tower evolution arc)
 
 *→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md). Backing research: [theme & era](../research/02-theme-era.md).*
 
-The structural backbone is a compressed three-tier arc under a **dungeon-cosmology** aesthetic — *mysterious, descending, unexplained* (PM-locked frame 2026-04-21). Each tier re-skins every lineage's towers and units. Tier names are placeholder pending naming pass.
+The structural backbone is a **4-tier tower ladder** with an optional **Fusion endgame**, compressing the mortal-to-mythic arc inside a single 30-round match. Each tier re-skins a civilization's towers; the heuristic is **"mundane outside, myth inside"** — T1-T3 read as culturally-recognizable real-world buildings (phalanx, pyramid, longhouse), T4 surfaces named Demigods/Heroes from native myth and history, Fusion produces named Gods of the civilization's pantheon.
 
-1. **Dust** — the opening. Ash-strewn, brittle, primal. Towers read as scavenged and provisional.
-2. **Form** — the middle. Pattern emerges from debris; lineage identity solidifies into coherent silhouettes.
-3. **Apotheosis** — the altar. Transcendence. Towers become mythic approaching the arc's terminus.
+1. **T1 — swarm.** Provisional openers. Many placements, low individual threat, civilization-legible at silhouette (shield-walls, stepped platforms, gabled halls).
+2. **T2 — mainline.** The workhorse tier. Consolidated culture-specific forms; civilization identity fully readable.
+3. **T3 — elite.** Signature tower-tier pieces. The roster's distinctive counters and specialists; late-mortal ceiling.
+4. **T4 — Demigod / Hero.** Named mythic/historical individuals (Achilles, Nanahuatzin, Björn Ironside). Mortal-peak characters with proper-noun identity. Each civ has 6 T4s.
+5. **Fusion — God.** Two specific T4 Demigods merge via a **locked recipe** into one named God (Zeus, Quetzalcoatl, Odin, etc.). Each civ has exactly 3 Gods. Gods are the **only 2-type damage sources** in the game, inheriting both source Demigods' primary attack types. Fusion gated by the **Divinity** currency (2 to unlock Fusion menu + 1 per fusion) — see §4.x.
 
-This replaces the prior 11-age civilizational scaffolding per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). The arc is **not a timeline**; it is a cosmological descent from Ash to Altar. Per-tier biome / enemy / mapmod variety (what used to live per-age) compresses into in-tier rotation pools; the [2026-04-20 age-history flavor + mapmods](../decisions/2026-04-20-age-history-flavor-mapmods.md) decision is rebased on that basis (logic survives; data collapses 11→3).
+This replaces the prior 3-tier Dust / Form / Apotheosis "dungeon-cosmology" arc and the preceding 11-age civilizational scaffolding, per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (superseding the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md)). The arc is **not a timeline**; it is a compressed mortal-to-mythic escalation within one match. Per-tier biome / enemy / mapmod variety compresses into in-tier rotation pools; the [2026-04-20 age-history flavor + mapmods](../decisions/2026-04-20-age-history-flavor-mapmods.md) decision is rebased on that basis (logic survives; data collapses to the T1-T4+God shape). Re-rebase to the 2026-04-25 ratification is tracked as Follow-up #10.
 
-Not every match reaches all three tiers. Match length and mode determine max tier reached. Short solo missions may cap at Form; full Campaign and competitive modes reach Apotheosis. This is a design lever, not a bug.
+Not every match reaches every tier. Match length and mode determine max tier reached — short solo missions may cap at T3; full Campaign and competitive modes reach T4 and routinely land 2–3 Fusions. Fusion is intentionally rare (6-Divinity cap × 1-per-fusion cost after a 2-Divinity unlock), not a routine late-game spam. This is a design lever, not a bug.
 
-Early tiers are short and brittle. Late tiers are longer and more strategic. Total playtime stays within mode target.
+Early tiers are short and brittle. Late tiers are longer and more strategic. Fusion moments are the trailer-beats. Total playtime stays within mode target (30-round cap).
 
-**Tier-level mechanical identity** (what *feels* different between Dust, Form, and Apotheosis beyond cosmetic re-skin) is owed to Phase 4 (§4.2 divergence) and Phase 5 (§5.1 MVP, §5.3 art direction) under the silhouette-forward mythic frame.
+**Tier-level mechanical identity** (what *feels* different between T1 / T2 / T3 / T4 / Fusion beyond cosmetic re-skin) is owed to Phase 4 (§4.2 divergence, §4.3 Fusion system, §4.7 enemy system under the real-cultures frame) and Phase 5 (§5.1 MVP, §5.3 art direction — "stylized vector for T1-T3, silhouette-forward mythic for T4 / Gods"). Attack-type identity per tier is locked per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md).
 
 ## 3.6 Game modes (launch roster)
 
 *→ active drill-down: [stage 02 — mode select](../stages/02-mode-select.md). Backing research: [genre pulse](../research/01-genre-pulse.md).*
 
-1. **Solo Campaign** — story missions tied to each Commander. Progresses through tiers (Dust → Form → Apotheosis). Introduces mechanics gradually. Non-negotiable at launch. This is how the solo promise is kept.
-2. **Solo vs AI (Skirmish)** — pick map, difficulty, lineage restrictions. Quick game against AI.
+1. **Solo Campaign** — story missions tied to each Commander (Leonidas, Montezuma II, Ragnar Lothbrok). Progresses through the tier ladder (T1 → T2 → T3 → T4 → Fusion). Introduces mechanics gradually. Non-negotiable at launch. This is how the solo promise is kept.
+2. **Solo vs AI (Skirmish)** — pick map, difficulty, civilization restrictions. Quick game against AI.
 3. **Co-op Horde** — 2–4 players defend shared lanes against escalating waves. User-hosted or matchmade.
 4. **Lane Wars 1v1** — classic competitive tower wars PvP.
 5. **Lane Wars 2v2** — team PvP, matchmaking or party.
@@ -196,6 +200,6 @@ Tutorial style: **contextual + interactive + skippable**, not pop-up-based. Per-
 
 ## 3.8 Exit condition for Phase 3
 
-The shape of the game can be drawn on a whiteboard in five minutes: **3 commanders, 3 lineages (Ash / Nature / Prayer), 3 tiers (Dust / Form / Apotheosis) under an Ash→Altar dungeon-cosmology arc, 3 unit categories, 5 launch modes, 4 meta systems, and 2 hybrid families (Ash×Nature, Ash×Prayer — Nature×Prayer does not hybridize)**. Nothing in Phase 4 introduces a new system that contradicts Phase 3.
+The shape of the game can be drawn on a whiteboard in five minutes: **3 commanders (Leonidas / Montezuma II / Ragnar Lothbrok), 3 civilizations (Greek / Aztec / Norse), a 4-tier tower ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero) with a locked Fusion endgame (2 T4 Demigods → 1 named God, 9 Gods via 9 locked recipes), 3 unit categories, 5 launch modes, 4 meta systems, a 2-currency economy (Tribute + Divinity), and a 7-attack-type × 5-armor-tag combat matrix**. Nothing in Phase 4 introduces a new system that contradicts Phase 3.
 
 → **Hand off to [Phase 4](phase-4.md).**
