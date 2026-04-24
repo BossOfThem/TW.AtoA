@@ -23,9 +23,19 @@ Load this after [`README.md`](README.md). Reading order and stage/research table
 When the PM types **"prepare for handoff"** (or "handoff time", "wrap session", "checkpoint"):
 1. Re-read `PROGRESS.md`, `CASCADE.md`, `admin/concept.json` head, `prototype/index.html` BALANCE region, `decisions/` listing.
 2. Rewrite `HANDOFF.md` TL;DR + state snapshot + carried debts/blockers.
-3. Bump `CASCADE.md` pointer if doc statuses changed.
+3. Bump `CASCADE.md` pointer if doc statuses changed. **Trim live docs** (see Doc hygiene below): archive old session log entries from `PROGRESS.md` and old pointer blocks from `CASCADE.md`.
 4. Emit a single fenced copy-pasteable prompt for the next session after `/clear`.
 5. Stop. Do not start the next step.
+
+## Doc hygiene
+
+Keep bootstrap files small — they load every session and burn context fast.
+
+- **`PROGRESS.md` session log:** keep only the **3 most recent** entries. On each handoff, move older entries to `PROGRESS-archive.md` under the existing section there.
+- **`CASCADE.md` current work pointer:** keep only the **most recent pointer block**. On each CASCADE bump, move older blocks to `CASCADE-history.md` under the existing section there.
+- **`CASCADE.md` document version footer:** keep only the **2 most recent** version-bump sentences. Move older history to `CASCADE-history.md` under the "Archived version history" section.
+
+Archive files are on-demand references — they are never part of the bootstrap chain.
 
 ## Cascade discipline
 
