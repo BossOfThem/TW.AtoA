@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-22
+**Last reviewed:** 2026-04-26
 ---
 
 # Phase 2 — Analysis
@@ -8,6 +8,10 @@
 *What constrains the design before we design anything.*
 
 Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-1.md](phase-1.md). Next: [phase-3.md](phase-3.md).
+
+---
+
+**Amendment banner — 2026-04-26 real-cultures frame cascade (phase-2 residual bookkeeping).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility **Hard**) + [`decisions/2026-04-26-phase-1-exit-one-pager.md`](../decisions/2026-04-26-phase-1-exit-one-pager.md) — the 3/3/3 + 5-lineage framings in §2.3 are superseded by the 3-civilization (Greek / Aztec / Norse) + 4-tier-ladder + Fusion-endgame shape. §2.4a accessibility floor **[LOCKED]** is untouched. §2.5 monetization OPEN flag is untouched.
 
 ## 2.1 Competitive landscape
 
@@ -30,9 +34,9 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-1.md](phase-1.md). Next: 
 
 ## 2.3 Known risks
 
-- **Content explosion.** Commanders × lineages × tiers × forks × hybrids = combinatorial content under the 3/3/3 launch shape per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md); post-launch expansion re-opens the cross-product. Must be scoped aggressively. Data-driven pipeline is non-negotiable.
-- **Lineage balance.** Three lineages must feel mechanically distinct, not just cosmetically (amended 2026-04-22 from "five" to follow the 2026-04-21 concept tightening). Under a 3-lineage shape any convergence is more catastrophic than under a 5-lineage scaffold — the risk tightens, it does not relax. Role-differentiation is tracked as an open question at [phase-7 §7.1 #9](phase-7.md#71-open-questions-resolution-targets-noted). Multi-way balance is notoriously hard.
-- **Onboarding cliff.** Commander + ages + lineages + economy + send/defend + modes is a lot for a first-time player. Tutorial design is a real UX risk and gets its own Phase 5 attention.
+- **Content explosion.** Commanders × civilizations × tiers × forks × Fusion recipes = combinatorial content under the 2026-04-25 locked launch skeleton (3 civs × 6 T1-T3 + 5 units + 6 T4 Demigods + 3 Gods via 9 locked Fusion recipes) per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md); post-launch expansion re-opens the cross-product. Must be scoped aggressively. Data-driven pipeline is non-negotiable. Supersedes the prior "3/3/3 launch shape" framing (2026-04-21 concept tightening, now superseded).
+- **Civilization balance.** Three civilizations must feel mechanically distinct, not just cosmetically (amended 2026-04-26 from "lineages" to "civilizations" under the real-cultures ratification). Under a 3-civ shape any convergence is more catastrophic than under a 5-lineage scaffold — the risk tightens, it does not relax. Role-differentiation is tracked as an open question at [phase-7 §7.1 #10](phase-7.md#71-open-questions-resolution-targets-noted). The 7-type × 5-armor attack-type matrix per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md) assigns each civ an intentional attack-type-coverage gap (Greek lacks Slashing/Poison, Aztec lacks Crushing, Norse lacks Poison/Divine) that tells the player what to counter-pick — the gap is the differentiation tool. Multi-way balance is notoriously hard.
+- **Onboarding cliff.** Commander + civilization + 4-tier ladder + Fusion + Tribute/Divinity economy + 7-type × 5-armor matrix + send/defend + modes is a lot for a first-time player. Tutorial design is a real UX risk and gets its own Phase 5 attention. Under the real-cultures frame, the "mundane outside, myth inside" tower-label heuristic is deliberately load-bearing for onboarding — a Phalanx is a Phalanx at T1-T3 and only reveals its mythic interior at T4/Fusion.
 - **Multiplayer cold-start.** If ranked lobbies don't fill, competitive play dies. Solo mode must carry the game independently. See §2.4.
 - **Live-service ops commitment.** Battle pass + store + seasonal content requires ongoing team capacity. A two-dev team cannot run AAA-scale live ops. Content cadence must be realistic.
 - **Monetization model tension.** Battle pass + cosmetic store works *only* with strict no-pay-to-win discipline. One misstep burns audience trust permanently. This is not a marketing concern; it is an identity constraint.
