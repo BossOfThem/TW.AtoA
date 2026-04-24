@@ -120,20 +120,39 @@ See [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](decisions/20
 
 ## NEXT SESSION — primary directive
 
-**Default cadence: one-step-at-a-time with PM "go" gates.** HARD AUTONOMY MODE is NOT in force unless PM re-enables.
+**PM has named the next-session focus: commander mechanics.** Open in **plan mode**. Goal: design how the Commander behaves in-match — specifically, the proposed shift from *persistent on-field avatar* (2026-04-20 design) to *summoned-on-cast avatar* (emerges to cast a special, animates to target, retreats). See "Commander-as-summoned-ability-avatar" context below.
 
-### Two candidate directives (PM picks)
+Default cadence returns to **one-step-at-a-time with PM "go" gates**. HARD AUTONOMY MODE is NOT in force.
 
-**Candidate A — Prototype reshape plan ratification + execution (if PM ratifies).**
-- PM reviews [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md), flips Proposed → Accepted (or revises).
-- If Accepted: execute 6 steps C1→C6 one per turn. Data layer first (civilizations.json / fusion-recipes.json / attack-types.json; tiers.json rename; commander migration), then silhouette SVG migration, then Tribute+Divinity bar, then tier-ladder + Fusion menu UI, then RPS indicator, then dead-code pass.
-- Prototype freeze lifts for this work. Concept docs stay untouched.
+### Next-session directive: Commander-as-summoned-ability-avatar (plan-mode design pass)
 
-**Candidate B — Cultural-sensitivity pass scheduling (Follow-up #5).**
-- PM decides external-consultation plan: Aztec representation review, 300-ideology audit for Leonidas framing, TV-show-vs-history framing for Ragnar. Output is a dated decision entry defining the process + gate criteria + who consults. Blocks content-lock.
+**Context logged during prototype review 2026-04-26:** While viewing the prototype, PM surfaced that the current "on-field Commander Avatar with 2-cell aura + Shift-click move + Q signature" design ([`decisions/2026-04-20-commander-on-field-hero.md`](decisions/2026-04-20-commander-on-field-hero.md)) **does not match intent**. Intended behavior: the Commander is **not present on the field by default**. The Commander **emerges only to cast an ability** (short-CD / long-CD / signature), animates to the relevant location, performs the cast (e.g., Leonidas appears to shout "This Is Sparta!"), then retreats. This meshes with the 2026-04-25 real-cultures frame — Leonidas doesn't stand on your board; he appears to act, then vanishes.
 
-**Candidate C — Patch-1 commanders per civ (Follow-up #6).**
-- PM selects candidate rosters for the +1-per-civ patch-1 commander. Per 2026-04-25 ratification these are TBD post-playtest, but PM can pre-seed the candidate pool.
+**Scope of the plan-mode pass:**
+1. Ratify the summoned-on-cast pattern (supersede or rebase [`decisions/2026-04-20-commander-on-field-hero.md`](decisions/2026-04-20-commander-on-field-hero.md)).
+2. Resolve two specific open questions surfaced in the review:
+   - **Passive ability presence** — is the always-on passive (e.g., Leonidas "Spartan Training" = +X% to Sinew-equivalent towers) invisible and board-wide, or does the avatar briefly flicker on pickup of Tribute / wave-start?
+   - **Short-CD cast frequency** — does the avatar emerge for *every* short-CD cast (many per match, heavier animation budget, more flavorful), or only for long-CD + signature?
+3. Spec the cast-emerge → cast-act → cast-retreat animation phases at the conceptual level (no engine code).
+4. Update `concept/phase-4.md §4.1` commander spec.
+5. Determine if this adds a 7th step to [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md) (or extends C4).
+6. File `decisions/<next-date>-commander-as-summoned-ability-avatar.md` (Accepted once PM signs off plan; Reversibility Medium; 3x debug loop inline).
+
+**Plan-mode deliverables:** a decision draft + §4.1 diff + reshape-plan addendum. No code, no commits until PM exits plan mode with "go".
+
+### Background directives (remain parked; pick up when commander pass closes)
+
+**Candidate A — Prototype reshape plan ratification + execution.** PM reviews [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md), flips Proposed → Accepted (or revises). If Accepted: execute 6 (or 7, pending commander pass) steps one per turn.
+
+**Candidate B — Cultural-sensitivity pass scheduling (Follow-up #5).** External-consultation plan; Aztec representation, 300-ideology audit for Leonidas, TV-show-vs-history for Ragnar. Blocks content-lock.
+
+**Candidate C — Patch-1 commanders per civ (Follow-up #6).** PM pre-seeds the +1-per-civ candidate pool.
+
+**Candidate D — `admin/concept.json` migration path.** Rewrite / regenerate / retire.
+
+### Prototype UX debt noted during review (not blocking)
+
+While viewing the prototype PM hit a catch-22: the "Play" button only appears when `Profile.data.lastMode` is set (returning-player), but `menuNewGame() → commander-pick → selectCommander()` only saves the commander, never sets `lastMode`. First-time players are stuck at "New game" with no path to mode-select. **Workaround:** DevTools → `Profile.data.lastMode = "skirmish"; Profile.save(); location.reload();`. **Proper fix** is part of the reshape plan execution (C2/C4). Captured here so it doesn't get lost.
 
 ### Scope that STOPS autonomy (HANDOFF when reached)
 
