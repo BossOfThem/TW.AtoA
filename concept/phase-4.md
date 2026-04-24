@@ -11,7 +11,7 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-3.md](phase-3.md). Next: 
 
 ---
 
-**Amendment banner — 2026-04-26 real-cultures frame cascade (partial).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility Hard), this turn rewrites **§4.1 (commander spec)**, **§4.3 (hybrid system → Fusion system)**, and **§4.7 (enemy system)** to the real-cultures frame. **§4.2 (divergence), §4.5 (special effects), §4.6 (economy), §4.8 (exit condition)** retain their prior frame for traceability — they will be rewritten in follow-on turns of the same cascade queue (2026-04-25 ratification Follow-up #1). Attack-type / armor / RPS surfaces reference the 2026-04-26 mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md), Reversibility Medium).
+**Amendment banner — 2026-04-26 real-cultures frame cascade (§4.2 / §4.5 / §4.6 / §4.8 follow-on turn).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility Hard), prior cascade turn rewrote §4.1 + §4.3 + §4.7. This turn rewrites **§4.2 (divergence forks under T1→T4 ladder), §4.5 (special effects under real-cultures), §4.6 (economy — Tribute + Divinity per 2026-04-25 ratification), and §4.8 (exit condition)** to the new frame. Attack-type / armor / RPS surfaces reference the 2026-04-26 mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md), Reversibility Medium). §2.4a + §5.4 [LOCKED] untouched.
 
 ---
 
@@ -41,20 +41,20 @@ Each Commander also gets a one-page mechanical writeup before Phase 4 exits, cov
 
 ## 4.2 Divergence system
 
-*→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md). **Rescoped OPEN** under the 3-tier Ash→Altar arc per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md).*
+*→ active drill-down: [stage 05 — age evolution](../stages/05-age-evolution.md). **Rescoped OPEN** under the real-cultures 4-tier ladder + Fusion endgame per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) — supersedes the 2026-04-21 3-tier Ash→Altar rescope.*
 
-At tier transitions, the player picks a fork that re-skins every lineage's expression for that tier and all future tiers of the match. The fork does not change the lineage's mechanical role — it changes how that role is expressed visually and subtly mechanically (damage types, tempo, etc.).
+At tier transitions, the player picks a fork that re-skins the civ's roster expression for the advancing tier and all future tiers of the match. The fork does not change a tower's mechanical role or primary attack type (that's locked per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md)); it changes how that role is expressed visually and secondary mechanically (status-proc intensity, tempo, splash radius, etc.).
 
-Under the 3-tier arc there are at most **2 tier-transition forks** per match (Dust→Form, Form→Apotheosis); prior 4-fork × 3-option (81-path) variety math no longer applies. New fork pool and per-fork-option themes are **OPEN** — they must:
-- Sit inside the dungeon-cosmology aesthetic (`concept/phase-5.md §5.3`).
-- Express the Ash→Altar arc rather than a technology timeline.
-- Preserve enough combinatorial variety that two matches on the same commander feel different.
+Under the T1→T4 ladder there are at most **2 tier-transition forks** per match — at the **T2→T3** and **T3→T4** gates (T1→T2 is the first consolidation and too early for a meaningful fork; the Fusion step is gated by Divinity and locked-recipe selection, not by a fork). New fork pool and per-fork-option themes are **OPEN** — they must:
+- Sit inside the civ-coded visual identity (`concept/phase-5.md §5.3` hybrid — stylized vector for T1-T3, silhouette-forward mythic for T4 / Gods).
+- Express the mortal-to-mythic escalation (the T4 fork in particular is the "which Demigod face does your civ wear this run" moment).
+- Preserve enough combinatorial variety that two matches on the same commander feel different — especially given the locked 6 T4 Demigods per civ and 3 locked Fusion recipes.
 
 **Placeholder shape (not ratified):**
-- **Dust → Form fork:** 3 options, themes OPEN (candidates: salvage-lean / bloom-lean / rite-lean as tier-coloration).
-- **Form → Apotheosis fork:** 3 options, themes OPEN (candidates: ascension / descent / threshold).
+- **T2 → T3 fork:** 3 options, themes OPEN. Candidates (civ-agnostic coloration): martial-lean / ritual-lean / craft-lean.
+- **T3 → T4 fork:** 3 options, themes OPEN. Candidates: which pair of the civ's 6 T4 Demigods are *emphasized* this run (affecting which 1–2 Fusion recipes are most reachable) — the fork nudges the Fusion endgame toward a specific God without locking the player out of others.
 
-Run variety ceiling under 2×3=6 paths is narrow; heirloom / commander-affinity / mapmod layering may reopen breadth. Full fork design is a Phase 4/5 deliverable under the new tier frame.
+Run variety ceiling under 2×3=6 paths is narrow; commander-affinity / heirloom / mapmod / enemy-civ-match layering (§4.7 hybrid direction) may reopen breadth. Full fork design is deferred to Phase 4/5 under the real-cultures frame; Fork ratification is a PM-input gate.
 
 ## 4.3 Fusion system (signature mechanic)
 
@@ -115,30 +115,36 @@ Commander Hero Units (signature ability deployments) have richer control — dir
 Special effect units are limited in placement count per match to avoid spam. Examples:
 - Timed zones (debuff aura for 20 seconds).
 - Consumables (one-shot damage bursts, healing pulses).
-- Terrain modifiers (e.g., a tar pit or consecrated ground that expires at the next tier gate — per-lineage allocation is Phase 5 spec).
+- Terrain modifiers (e.g., a tar pit or consecrated ground that expires at the next tier gate — per-civ allocation is Phase 5 spec).
 
-Each special effect has a cooldown, a cost, and a visible indicator on the map. Specification per-item is a Phase 5 task; Phase 4 locks the *framework* only.
+Each special effect has a cooldown, a cost (Tribute for tactical effects, Divinity for mythic-tier effects that read as one-shot "prayer" moments — final currency split deferred to §4.6), and a visible indicator on the map. Status-effect procs (Burn, Bleed, Toxin, Hex, Smite, Armor-shred, Stagger) are **not** special-effect units — they're driven by the source tower's primary attack type per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md). Specification per-item is a Phase 5 task; Phase 4 locks the *framework* only. Cultural-sensitivity pass (2026-04-25 Follow-up #5) applies to any special-effect visual tied to a civ's religious iconography (especially Aztec ritual effects).
 
 ## 4.6 Economy specification
 
-*→ active drill-down: [stage 03 — match setup](../stages/03-match-setup.md), [stage 04 — in-match core](../stages/04-in-match-core.md). **Currency mapping rescoped OPEN** under 3-lineage shape per [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md).*
+*→ active drill-down: [stage 03 — match setup](../stages/03-match-setup.md), [stage 04 — in-match core](../stages/04-in-match-core.md). **Two-currency shape locked 2026-04-25** per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md); numerics [PROPOSAL].*
 
-Prior three-currency mapping (Gold / Knowledge / Influence from Forge / Ember / Crown, with Sinew + Veil as pure consumers) no longer applies — the lineages that backed those pillars don't exist in the 3-lineage shape. Under Ash / Nature / Prayer, the "every build must touch an economy lineage" invariant is auto-satisfied (only 3 lineages exist; any build touches at least one), so the prior *structural enforcement* of economy breadth is replaced by the lineage count itself.
+Prior three-lineage-aligned currency mapping (Gold / Faith / Cinders from Nature / Prayer / Ash) is **superseded** — the lineages that backed it don't exist under the real-cultures frame. The 2026-04-25 ratification locks a **two-currency economy** anchored to the 30-round match cap and the Fusion endgame:
 
-**Placeholder mapping [PROPOSAL] — flagged OPEN for Phase 4 resolution:**
-- **Gold** — generated by Nature towers (growth / economy pillar) and wave kills. Spent on tower placement and tower upgrades.
-- **Faith** — generated by Prayer towers (aura / order pillar). Spent on aura upgrades and fork choices.
-- **Cinders** — generated by Ash towers and tower losses / recycles. Spent on hybrid crafting and salvage-line upgrades. The salvage-loop is a load-bearing identity piece: Ash is the only lineage that converts *losing* towers into currency.
+### Locked shape (2026-04-25)
 
-**Multiplayer-only fourth currency (unchanged from prior spec):**
-- **Mythium** (placeholder) — time-based income from workers (Legion TD 2 pattern). Spent on sending creeps/mercenaries to opponent lanes.
+- **Tribute** (primary) — generated by tower placements, wave clears, enemy kills, and time. Spent on tower placement, tower T1→T2→T3 promotions, T3→T4 Demigod/Hero unlocks, unit purchases, special-effect consumables. This is the moment-to-moment economy — high-volume, always flowing.
+- **Divinity** (mythic token, 6-cap per match) — earned **one per boss round** across the 30-round arc: mini-bosses at rounds 5 / 15 / 25 and main bosses at rounds 10 / 20 / 30. Spent exclusively on the **Fusion endgame**: 2 Divinity to unlock the civ-wide Fusion menu, then 1 Divinity per fusion execution. Realistic match outcome: 2 menu-unlock + 3 fusions = 5 of 6 Divinity spent; one spare for flex or a late-game ritual special effect (see §4.5).
 
-**OPEN under new shape:**
-- Whether all three lineages produce currency (breadth-by-default) or whether one lineage is a pure consumer (breadth-by-constraint). Prior design used a producer/consumer split for deliberate tension; with a 3-lineage roster, making any one lineage pure-consumer risks making it skip-able.
-- Currency names (Gold / Faith / Cinders) are placeholders, not §5.4-ratified.
-- Hybrid-crafting cost model (does Cinders gate hybrid unlock, or just accelerate?) — depends on §4.3 blocker #1 resolution.
+The 2-currency shape replaces the prior 3-currency-per-lineage-producer split with a **scale split** — Tribute handles mortal-tier economy breadth, Divinity is the rare mythic token reserved for the game's identity moment (becoming a God). "Every build touches an economy lineage" is replaced by "every build touches Tribute, and every serious build reaches for Divinity."
 
-Bookkeeping is standard; balance work is extensive and deferred to Phase 5 under the new shape.
+### Multiplayer-only third currency (unchanged from prior spec)
+
+- **Mythium** (placeholder name — not §5.4-ratified) — time-based income from workers, Legion TD 2 pattern. Spent on sending creeps / mercenaries to opponent lanes. PvP-modes only. Does not interact with Divinity.
+
+### Open under the new shape
+
+- **Divinity income refinement:** is the 6-cap hard (forbidden to bank over), or soft (can-earn but wastes)? Leading: hard cap with a UI indicator when a boss round won't produce Divinity because you're capped. Encourages Fusion spend cadence.
+- **Tribute numerics:** starting Tribute, wave income curve, per-tier tower placement costs, T3→T4 Demigod unlock cost — all [PROPOSAL], balance pass in Phase 5.
+- **Late-game Tribute sinks** past round 25 once the T4/Fusion ladder is fully built — to prevent Tribute-hoarding trivializing late waves. Candidates: consumables, board-level buffs, emergency rebuilds.
+- **Status-proc cost integration:** attack-type procs from 2026-04-26 are "free" (part of the tower's kit), but should enhanced proc tiers be Tribute-purchasable at T3? Deferred to Phase 5 balance.
+- **Cultural-framing of Divinity:** the currency name "Divinity" is descriptive, not §5.4-ratified. Cultural-sensitivity pass applies (an Aztec "Divinity" spend to summon Huitzilopochtli needs care — 2026-04-25 Follow-up #5).
+
+Bookkeeping is standard; balance work is extensive and deferred to Phase 5.
 
 ## 4.7 Enemy system (PvE modes)
 
@@ -200,13 +206,14 @@ Per-slot UI, cloud-conflict resolution UX, corruption-recovery protocol, and mul
 
 ## 4.8 Exit condition for Phase 4
 
-- Commander spec complete (one-page per commander).
-- Hybrid discovery mechanic resolved.
-- Mobile unit control model resolved.
-- Enemy direction locked.
-- Economy balanced on paper (spreadsheet with currencies, costs, income curves).
-- Monetization model specifics resolved.
-- Engine choice locked.
+- Commander one-pagers complete for all 3 launch commanders (Leonidas / Montezuma II / Ragnar Lothbrok) — passive + short-CD active + long-CD active full specs under the §4.1 identity floor.
+- Fusion system shape signed off (done 2026-04-25: 9 locked Gods via 9 locked 2-Demigod recipes, Divinity-gated, menu-driven discovery). Fusion-numerics balance-pass remains [PROPOSAL].
+- Mobile unit control model resolved (§4.4 OPEN BLOCKER).
+- Enemy direction locked (§4.7 A/B/C choice ratified; leading placeholder = Option C hybrid).
+- Economy balanced on paper (Tribute + Divinity income curves, per-tier tower costs, Fusion spend cadence; §4.6 locks shape, numerics [PROPOSAL]).
+- Monetization model specifics resolved (cosmetic-only; no-pay-to-win non-negotiable).
+- Engine choice locked (leading: Godot 4 per `concept/phase-5.md §5.5`).
 - Art director engaged or scoped.
+- **Cultural-sensitivity pass scheduled** — 2026-04-25 Follow-up #5 gate landed before any Phase 5 content lock touches Aztec representation, Leonidas visual framing, or Ragnar TV-vs-history framing.
 
 → **Hand off to [Phase 5](phase-5.md).**
