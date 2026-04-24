@@ -1,6 +1,6 @@
 # Ash to Altar (working title) — TW-Commanders
 
-Tower wars game with persistent Commander identity, a compressed **Ash→Altar cosmological arc** across 3 tiers per match, 3 lineages (Ash-enabler hybrids), and a dungeon-like mythic aesthetic. Two-dev project, AI-assisted workflow, concept phase.
+Tower wars game with persistent Commander identity, a compressed **mortal-to-mythic arc** per match grounded in **real-world cultures and their native myths** (Greek / Aztec / Norse at launch), a 4-tier ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero) with a locked **Fusion endgame** where two Demigods merge into a named God of the civilization's pantheon. Two-dev project, AI-assisted workflow, concept phase.
 
 **Repo:** https://github.com/BossOfThem/TW.AtoA
 
@@ -43,7 +43,7 @@ Other root docs at a glance:
 
 **2. Names are placeholder.** Nothing is final unless marked `[LOCKED]`. Only the *naming conventions* in `CONCEPT.md §5.4` are locked, not specific names.
 
-**3. Structural counts are a lean-launch floor.** **3 lineages** (Ash / Nature / Prayer), **3 tiers** (Dust / Form / Apotheosis) under an **Ash→Altar dungeon-cosmology arc**, **3 launch commanders**, **2 hybrid families** (Ash×Nature, Ash×Prayer — Nature×Prayer does NOT hybridize). Ratified 2026-04-21 (Reversibility Hard) — see [concept tightening decision](decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md). The 3/3/3 shape is a lean-launch *floor*, not an expansion ceiling. Lineage + tier names are prose placeholders pending a deferred naming pass — `concept/phase-5.md §5.4 [LOCKED]` is untouched.
+**3. Structural counts are a lean-launch floor.** **3 civilizations** (Greek / Aztec / Norse), **3 launch commanders** (Leonidas / Montezuma II / Ragnar Lothbrok — one per civ), **18 T1-T3 towers** (6/civ), **15 units** (5/civ), **18 T4 Demigods & Heroes** (6/civ), **9 Gods** (3/civ) reachable only via **locked 2-Demigod Fusion recipes**. Economy: **Tribute** (primary) + **Divinity** (mythic token, 6-cap/match, 2 to unlock Fusion menu + 1 per fusion). Combat: **7 attack types** (Piercing / Slashing / Crushing / Fire / Poison / Arcane / Divine) × **5 armor tags** RPS matrix per [`decisions/2026-04-26-attack-type-mapping.md`](decisions/2026-04-26-attack-type-mapping.md) (Reversibility Medium). Ratified 2026-04-25 (Reversibility Hard) — see [real-cultures direction decision](decisions/2026-04-25-q2-real-cultures-direction-ratified.md), superseding the 2026-04-21 3×3×3 Ash / Nature / Prayer frame. The shape is a lean-launch *floor*, not an expansion ceiling. Specific commander / tower / unit / Demigod / God names from the 2026-04-25 ratification are locked content-skeleton placeholders pending a deferred naming pass — `concept/phase-5.md §5.4 [LOCKED]` conventions are untouched. `concept/phase-2.md §2.4a` accessibility floor is also [LOCKED] and untouched.
 
 ## Non-negotiables (hard inputs to every decision)
 
