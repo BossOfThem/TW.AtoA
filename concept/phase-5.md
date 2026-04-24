@@ -11,7 +11,7 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-4.md](phase-4.md). Next: 
 
 ---
 
-**Amendment banner — 2026-04-26 real-cultures frame cascade (partial).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md), this turn rewrites **§5.1 (MVP slice)** and **§5.3 (art and tone direction)** to the real-cultures frame. **§5.2 (build phases)** retains its prior frame for traceability — it will be rewritten in a follow-on turn under the same cascade queue (2026-04-25 Follow-up #1). **§5.4 (naming conventions) is [LOCKED] and is NOT touched by this turn or by the 2026-04-25 ratification** — only specific names flex; the conventions stay.
+**Amendment banner — 2026-04-26 real-cultures frame cascade (§5.2 follow-on turn).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md), prior cascade turn rewrote §5.1 + §5.3. This turn rewrites **§5.2 (build phases)** to the real-cultures frame. **§5.4 (naming conventions) is [LOCKED] and is NOT touched by this turn or by the 2026-04-25 ratification** — only specific names flex; the conventions stay. Attack-type surfaces reference [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md).
 
 ---
 
@@ -37,19 +37,21 @@ If the MVP is fun, the vision works. If it is not fun, no amount of content adde
 
 ## 5.2 Build phases after MVP
 
-Under the [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md), MVP converges with the full 3/3/3 launch roster (§5.1). Prior build-phases list assumed 5 lineages + 11 ages + 4 forks as post-MVP expansion; that assumption is obsolete. New sequence:
+Under the 2026-04-25 real-cultures ratification, MVP converges with the full launch roster (§5.1: 3 commanders, 3 civs, 18 T1-T3 towers, 15 units, 18 T4 Demigods, 9 Gods via 9 locked Fusion recipes, Tribute + Divinity economy, 7-type × 5-armor combat). The prior 3/3/3 Ash-enabler-hybrid-family build list (2026-04-21 tightening) and the earlier 5-lineage × 11-age × 4-fork list are both **obsolete**. New sequence:
 
-1. Add both **hybrid families** fully (Ash × Nature and Ash × Prayer per §4.3) — MVP ships one hybrid each; this phase completes the 4–8 hybrid unit target.
-2. Add **Divergence Forks** at the two tier transitions (Dust→Form, Form→Apotheosis per §4.2) — themes OPEN.
-3. Add multiplayer netcode + Lane Wars 1v1 mode.
-4. Add Co-op Horde mode.
-5. Add Commander meta progression (XP, levels, unlocks).
-6. Add Solo Campaign for the 3 launch commanders.
-7. Add Backpack + Battle Pass + Cosmetic Store.
+1. Add **Divergence Forks** at the two tier transitions (T2→T3 and T3→T4 per §4.2) — themes OPEN; fork ratification is a PM-input gate.
+2. Add **enemy roster under the ratified §4.7 direction** (leading placeholder: Option C hybrid — civ-matched bosses at rounds 5 / 10 / 15 / 20 / 25 / 30 + shared cross-cultural regular-wave pool). Cultural-sensitivity pass (2026-04-25 Follow-up #5) gates any Aztec myth-creature content lock.
+3. Add multiplayer netcode + Lane Wars 1v1 mode. Mythium PvP-only third currency wired here per §4.6.
+4. Add Co-op Horde mode. Resolve mixed-civ enemy-pool matchmaking under the ratified §4.7 direction.
+5. Add Commander meta progression (XP, 20-level ladder per §4.1, cosmetic / voice / portrait-frame unlocks — no gameplay-power gates).
+6. Add Solo Campaign for the 3 launch commanders (Leonidas / Montezuma II / Ragnar Lothbrok). Commander-storyline outline from §4.1 one-pagers; full script under cultural-sensitivity-pass guardrails.
+7. Add Backpack + Battle Pass + Cosmetic Store. Non-negotiable: no-pay-to-win; cosmetic-only.
 8. Add Lane Wars 2v2.
-9. Polish pass: art, sound, UX, onboarding, accessibility.
+9. Add **patch-1 commander per civilization** (2026-04-25 Follow-up #6, requires PM direction) — one additional historical / mythic commander per civ; expands commander choice from 3 to 6 without changing civ roster size.
+10. Expose **Foresight-coin cross-civ borrowing mechanic** (2026-04-25 Follow-up #7) — first controlled multi-civ play, still constrained by per-civ identity.
+11. Polish pass: art, sound, UX, onboarding, accessibility (§2.4a floor validation + WCAG 2.3.1 re-audit).
 
-Each phase has its own validation gate. See Phase 6.
+Each phase has its own validation gate. See Phase 6. PvE campaign scope (the deferred AGES concept per 2026-04-25 Follow-up #8) may insert between phases 6 and 7 once PM-ratified — it can reopen §4.7 enemy direction per-chapter and §3.5 tier pacing.
 
 ## 5.3 Art and tone direction
 
