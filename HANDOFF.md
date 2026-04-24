@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-22 (rebase banners + CASCADE hygiene + Step B plan filed; 5 commits; cascade-lint clean; no PR)
+**Last session:** 2026-04-24 (Phase 1 vision reopen ratified by PM; no doc edits made — decisions captured, next session executes)
 **Hand-off by:** Claude (Sonnet 4.6)
 **Hand-off to:** next Claude Code session (post `/clear` or cloud-session reset)
 
@@ -8,121 +8,104 @@
 
 ## TL;DR (this session)
 
-Five hygiene + planning commits landed on session branch `claude/resume-ash-to-altar-ghwri`, all fast-forwarded to `origin/main`:
+No commits landed this session — session was discovery + planning only. The PM confirmed a **Phase 1 vision reopen** (entire concept rehaul). Prior 2026-04-21 concept tightening (3/3/3 + dungeon cosmology + Ash-enabler, Reversibility Hard) is superseded in intent. The actual reopen decision file and cascade execution are the first items for the next session.
 
-| SHA | Artifact |
-|-----|----------|
-| `90a8588` | `CASCADE.md` doc-version v0.15 → v0.16 bookkeeping |
-| `8b18e6f` | Rebase banner on `decisions/2026-04-20-commander-identity-floor.md` |
-| `f6a5220` | Rebase banner on `decisions/2026-04-20-age-history-flavor-mapmods.md` |
-| `5ca6c06` | Rebase banner on `decisions/2026-04-20-commander-pick-identity-upgrade.md` |
-| `fbc01f0` | `decisions/2026-04-22-step-b-prototype-reshape-plan.md` filed **Proposed** + CASCADE table row |
+**PM decisions captured this session (no artifacts yet — captured here for next-session handoff):**
 
-**Rebase banners:** The three 2026-04-20 decisions that were rebased (not superseded) under the 2026-04-21 concept tightening now carry inline banners. Each states the rebase delta and confirms the Accepted status stands.
-
-**Step B plan:** Filed as `decisions/2026-04-22-step-b-prototype-reshape-plan.md` (Status: **Proposed**, Reversibility: Medium, 3x debug loop inline). 18-sub-step sequence: relax lint → migrate 7 data files → retighten lint → 4 index.html passes → 4 prototype docs → PROGRESS/HANDOFF close. **Step B execution NOT started — awaiting PM "go".**
-
----
-
-## 2026-04-22 addendum (earlier same day)
-
-Drift-sweep: `concept/phase-2.md §2.3` rewritten (`5c8aaa6`), `stages/04-in-match-core.md` A7 banner (`f99fd14`), CASCADE pointer (`cd5af55`), HANDOFF addendum (`f6049de`). HEAD at that point: **`f6049de`** on main.
+| # | Decision |
+|---|----------|
+| 1 | **Phase 1 vision reopen confirmed.** Full rehaul — vision, theme, 3/3/3 shape, dungeon cosmology, hybrid topology, title all on the table. Supersedes 2026-04-21. |
+| 2 | **Mechanics stay.** TD / merge / debuff / magic mechanic surface untouched. |
+| 3 | **Thematic direction: synthetic mythic-history braid.** Philosophy + real history + comparative religion + mythology combined into a single invented world — not pure history, not pure fantasy, not locked to one tradition. |
+| 4 | **Age model deferred.** Don't decide "within-match vs. seasonal vs. campaign-chapters" until the story/background/world is established first. |
+| 5 | **Locked items still locked.** §2.4a accessibility floor [LOCKED], §5.4 naming *conventions* [LOCKED] (specific names changeable), CASCADE cascade discipline, decision-log process. |
+| 6 | **Step B plan (prototype reshape) superseded by rehaul.** It remains a Proposed doc but the 18-sub-step plan is now downstream of the vision reopen, not upstream of playtest. |
 
 ---
 
 ## State snapshot
 
 ### Git
-- Branch in use: **`claude/resume-ash-to-altar-ghwri`** (pushed; tracking origin).
-- HEAD: **`fbc01f0`** (also on `origin/main` via fast-forward).
+- Branch in use: **`claude/resume-ash-to-altar-NMwFW`** (pushed; tracking origin).
+- HEAD: **`bebcffc`** (HANDOFF/PROGRESS/CASCADE close from 2026-04-22 session).
 - Working tree clean; cascade-lint clean.
 - No PR opened.
 
 ### Artifacts delta this session
-- 3 decision files amended (rebase banners).
-- 1 new decision file created (Step B plan, Proposed).
-- `CASCADE.md` updated (pointer + decisions table + doc-version v0.16 → v0.17).
-- `PROGRESS.md` 2026-04-22 session log entry appended.
-- 0 prototype files touched. 0 concept/ files touched. 0 tools/ edits.
+- 0 concept/ files touched.
+- 0 prototype files touched.
+- 0 decision files created.
+- HANDOFF.md, PROGRESS.md, CASCADE.md updated in this commit only.
 
 ### Docs state
-- `CASCADE.md` v0.17 — pointer includes later-2026-04-22 block; Step B plan Proposed noted.
-- `decisions/2026-04-22-step-b-prototype-reshape-plan.md` — Status: **Proposed**. 18 sub-steps. Awaiting PM "go".
-- All concept docs unchanged from 2026-04-21/22 Step A + drift-sweep state.
+- All concept docs unchanged from 2026-04-22 state (3/3/3 + dungeon cosmology + Ash-enabler shape).
+- That shape is now **pending reopen** per PM decision above — but no reopen decision file is filed yet. Next session files it first.
 
 ---
 
 ## Open threads / carried debts
 
-### Highest priority (blocks Step 5 playtest)
-- **Step B (prototype reshape) — Proposed, not yet started.** PM must accept [`decisions/2026-04-22-step-b-prototype-reshape-plan.md`](decisions/2026-04-22-step-b-prototype-reshape-plan.md) before any execution. Sub-step B1 (relax cascade-lint cardinality) is the first turn.
-- **Freeze date: 2026-05-15.** Step B → Step 5 (playtest) must land before this date.
+### Highest priority (blocks everything)
+- **Phase 1 vision reopen decision file** — must be filed before any concept edits. This supersedes 2026-04-21. Format: `decisions/2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md` (Reversibility Hard, 3x debug loop inline).
 
-### Open by design (not drift)
-- `§4.3` hybrid-discovery blocker #1 (reframed under Ash-enabler, not closed).
-- `§4.2` divergence fork themes OPEN under 2 tier-transition model.
-- `§4.6` currency mapping Gold/Faith/Cinders is [PROPOSAL].
-- `§4.7` enemy direction rescoped OPEN under dungeon cosmology.
-- Tier mechanical identity for Dust/Form/Apotheosis undefined.
+### Discovery sequence (Socratic, one question per turn — PM drives)
+After the reopen decision is filed, proceed through these in order. Each produces one artifact.
 
-### PM-gated workstreams (after Step 5)
-- 11 CONCEPT-GAPS rows remaining (SETTINGS-03, PAUSE-02, ONBOARD-02/03, A11Y-05, AUDIO-02, CMDR-03, FLOW-03-account-half, META-01/02/03).
-- Naming pass (prose placeholders Ash/Nature/Prayer/Dust/Form/Apotheosis vs §5.4 [LOCKED] single-syllable pattern).
-- Title lock ("Ash to Altar" still working-title-only).
+1. **Q1 — Reopen decision filed.** (See above.)
+2. **Q2 — World pitch.** What IS the world? Synthetic mythic-history braid — but what are its one-paragraph flavor rules? What makes the era system feel historic + religious + mythic simultaneously without being generic?
+3. **Q3 — Actors.** Who is the Commander in this world? What are the lineages (how many, what do they represent)? What are towers — structures, spirits, summoned warriors? Are there sent-units/minions at all?
+4. **Q4 — Match arc.** What story does one match tell in this world?
+5. **Q5 — Age model.** (Now contextually answerable.) Within-match, seasonal, campaign, or braid?
+6. **Q6 — Hybrid topology.** Does one lineage stay as "enabler"? Or any-pair hybrids? What does hybridizing MEAN in this world?
+7. **Q7 — Economy.** What resources drive the game in the new frame?
+8. **Q8 — Title.** Candidates under §5.4 conventions; 3x debug loop on options.
+9. **Q9 — 3x debug loop** over the full rebuilt concept.
+10. **Q10 — Ratification + cascade execution plan.** Which phase files update, which decisions rebase, which retire.
 
 ### LOCKED — do not touch
-- `concept/phase-5.md §5.4` naming conventions [LOCKED].
+- `concept/phase-5.md §5.4` naming conventions [LOCKED] (specific names can change; *conventions* cannot).
 - `concept/phase-2.md §2.4a` accessibility floor [LOCKED].
-- The 3 rebased 2026-04-20 decisions (banners now filed; Accepted status stands).
+- Prototype + mechanics (no prototype edits until vision ratified + Step B plan re-filed for new shape).
+
+### Freeze date
+- 2026-05-15 was the prior Step B freeze. With vision reopen that date is soft — but next session should assess whether it's still achievable.
 
 ---
 
 ## Next-session prompt
 
 ```
-Resuming Ash to Altar. Post 2026-04-22 full-session state.
-Work landed on origin/main (HEAD fbc01f0). A fresh cloud session will
-auto-spawn its own per-session branch off main — that is normal. Whenever
-you commit this session, push to BOTH the session branch AND main via
-fast-forward (standing rule).
+Resuming Ash to Altar. 2026-04-24 session — Phase 1 vision reopen ratified by PM,
+no doc edits yet. Bootstrap per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF
+→ PROGRESS → CONCEPT. State aloud phase status + drift + next step, then WAIT for PM go.
 
-Bootstrap per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS
-→ CONCEPT. State aloud (phase status + drift + next-step), then WAIT
-for PM "go" before any write.
+CADENCE: ONE FILE PER TURN. Push to BOTH session branch AND main every commit.
 
-CADENCE: ONE FILE PER TURN, short edits, commit if lint clean, push to
-branch + main. Keep turns SMALL — long turns cause API errors.
+WHAT THIS SESSION DECIDED (not yet in any doc except HANDOFF.md):
+- Phase 1 vision reopen confirmed by PM. Supersedes 2026-04-21 (3/3/3 + dungeon
+  cosmology + Ash-enabler, Reversibility Hard).
+- Full rehaul: vision, theme, shape, hybrid topology, title all open.
+- Mechanics stay (TD/merge/debuff/magic). §2.4a + §5.4 conventions stay [LOCKED].
+- Thematic direction: synthetic mythic-history braid (history + comparative religion
+  + mythology + philosophy — a single invented world with all four as raw material).
+- Age model deferred: do not decide within-match vs. seasonal vs. campaign-chapters
+  until story/background/world is established.
+- Step B prototype-reshape plan (Proposed) is downstream of rehaul, not a priority.
 
-WHAT LANDED (do NOT redo):
-- 2026-04-21: concept 3/3/3 pivot + dungeon cosmology + Ash-enabler
-  hybrids ratified. Full cascade across concept/phase-1..7.md, CONCEPT.md
-  v0.7, README.md, stages/01/05/06 (stub-amended), CONCEPT-GAPS.md v0.4.
-- 2026-04-22 (earlier): phase-2 §2.3 rewritten (5c8aaa6), stages/04
-  A7-banner (f99fd14), CASCADE pointer (cd5af55), HANDOFF addendum
-  (f6049de). All on main.
-- 2026-04-22 (this session): CASCADE v0.16 hygiene (90a8588), 3 rebase
-  banners (8b18e6f, f6a5220, 5ca6c06), Step B plan Proposed (fbc01f0).
+FIRST MOVE NEXT SESSION:
+  File decisions/2026-04-24-phase-1-vision-reopen-synthetic-mythic-history.md
+  (Reversibility Hard, supersedes 2026-04-21, 3x debug loop inline).
+  Then proceed to Q2 — World pitch.
+  One question per turn, PM drives pacing.
+
+DO NOT start reopen decision without PM "go".
 
 LOCKED (do NOT touch):
 - concept/phase-5.md §5.4 naming conventions [LOCKED].
 - concept/phase-2.md §2.4a accessibility floor [LOCKED].
-- 3 rebased 2026-04-20 decisions (banners now filed; Accepted stands).
-
-NEXT STEP — PM must choose:
-  1. Accept Step B plan → execute sub-step B1 (relax cascade-lint
-     cardinality asserts). Plan: decisions/2026-04-22-step-b-prototype-
-     reshape-plan.md. 18 turns total; freeze 2026-05-15.
-  2. Address one of 11 remaining CONCEPT-GAPS rows instead.
-  3. Other PM-directed work.
-
-DO NOT start B1 without PM "go". Step B plan is Proposed, not Accepted.
-
-WORKFLOW NOTES:
-- Push to BOTH session branch AND main every commit (fast-forward).
-- ONE FILE PER TURN — no exceptions.
-- DO NOT open a PR without explicit PM ask.
+- Prototype files (no edits until vision ratified).
 ```
 
 ---
 
-*End of HANDOFF — 2026-04-22. Rebase banners filed; Step B plan Proposed. Awaiting PM "go" for Step B execution. Freeze date 2026-05-15.*
+*End of HANDOFF — 2026-04-24. Phase 1 vision reopen ratified by PM; first artifact (reopen decision file) is next session's first move. Awaiting PM "go".*
