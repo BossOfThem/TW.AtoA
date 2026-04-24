@@ -4,6 +4,7 @@
     "workingTitle": true,
     "version": "0.1",
     "lastExported": "2026-04-19T00:00:00Z",
+    "staleNotice": "STALE as of 2026-04-26. This file reflects the pre-2026-04-21 5-lineage (Sinew/Ember/Forge/Crown/Veil) / 11-age concept shape. It has NOT been migrated to the 2026-04-21 3/3/3 shape, and it has NOT been migrated to the current 2026-04-25 real-cultures shape (Greek/Aztec/Norse civs + Leonidas/Montezuma II/Ragnar Lothbrok commanders + 18 T1-T3 towers + 15 units + 18 T4 Demigods + 9 Gods via 9 locked Fusion recipes + Tribute/Divinity economy). Do NOT trust counts/nodes/edges in this file. Source of truth is CONCEPT.md + concept/phase-*.md + decisions/2026-04-25-q2-real-cultures-direction-ratified.md + decisions/2026-04-26-phase-1-exit-one-pager.md. Migration is tracked as a PROGRESS debt pending PM direction.",
     "sessionNotes": "Concept-map V1 seeded from CONCEPT.md. All names placeholder. Drag nodes to rearrange. Click a node to edit in the sidebar. Use the Add menu to create new nodes. Export JSON when done — that file is what Claude will read to pick up your changes."
   },
   "counts": {
