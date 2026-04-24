@@ -49,6 +49,7 @@ Each step follows the fixed loop: **propose → PM "go" → produce → verify �
   - **Step B void** — [`2026-04-22-step-b-prototype-reshape-plan.md`](decisions/2026-04-22-step-b-prototype-reshape-plan.md) was Proposed; its 18-sub-step 3/3/3 migration is now superseded. Any prototype reshape is downstream of Phase 1 exit, not upstream of Step 5.
   - **Working-title "Ash to Altar"** no longer thematically load-bearing. Remains working-only; Q8 addresses near end of reopen sequence.
   - **Phase 1 exit gate (new):** PM answers in one page — *what the world is / Commander's role / hybrid topology meaning*. Until that page exists, Phase 1 stays open and all downstream reconciliation waits.
+    - **2026-04-25 annotation:** rubric is **substantively answered** by [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Real cultures frame: Greek/Aztec/Norse civs + commanders + 18 T1-T3 towers + 15 units + 18 T4 Demigods + 9 Gods + Tribute/Divinity economy + 30-round match arc). Only the **formal one-page write-up** is still owed; tracked as Follow-up #11 in the ratification decision. Downstream reconciliation (CONCEPT.md + concept/phase-*.md + stage docs + README cascade) unblocked and queued.
 
 ## Watch-items
 
