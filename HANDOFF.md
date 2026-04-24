@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-26 (later — HARD AUTONOMY continuation — Phase 1 exit one-pager + stages 01/04/05/06 stub-amendments + CONCEPT-GAPS v0.5 + prototype reshape plan Proposed)
+**Last session:** 2026-04-26 (later, continuation-2 — stages 03/07 stub-amendments + admin/concept.json staleness banner landed after HANDOFF rewrite; Phase 1 exit one-pager + stages 01/04/05/06 + CONCEPT-GAPS v0.5 + prototype reshape plan Proposed from the prior sub-pass)
 **Hand-off by:** Claude (Opus 4.7, 1M context)
 **Hand-off to:** next Claude Code session (post `/clear`)
 
@@ -10,7 +10,17 @@
 
 **Directive executed under HARD AUTONOMY MODE** after PM authorized "Full autonomy-safe queue + PM-gated answers" on a 4-question upfront gate. Scope cap: autonomy-safe items only; patch-1 commanders parked; working-title stays "Ash to Altar" ("Mud to Myth" floated); prototype reshape is plan-only-Proposed, no code.
 
-**9 commits**, one file per turn, all dual-pushed to `session/2026-04-25-q2-world-pitch` + `main`:
+**13 commits total** (9 from the earlier sub-pass + 4 from a continuation after HANDOFF was first rewritten), one file per turn, all dual-pushed to `session/2026-04-25-q2-world-pitch` + `main`:
+
+**Continuation-2 (4 commits after HANDOFF rewrite, user-triggered "continue till or prompt me"):**
+- `stages/03-match-setup.md` stub-amendment banner (Tribute+Divinity supersede gold/knowledge/influence; starting-age → starting-tier; civ-coded map + tone).
+- `stages/07-match-end.md` stub-amendment banner (MVP civilization + final-tier + Fusion count + named Gods + Tribute/Divinity stats; commander voice-line cultural-sensitivity gate).
+- `admin/concept.json` `meta.staleNotice` banner (file still on pre-2026-04-21 5-lineage/11-age shape; NOT migrated; migration tracked as PROGRESS debt pending PM).
+- `CASCADE.md` v0.23 → v0.24 + PROGRESS session-log continuation entry.
+
+Stages 00/02/08 scan-verified frame-independent — no amendments owed. All real-cultures cascade across stage tree now complete at stub-level (stages 01/03/04/05/06/07).
+
+**Earlier sub-pass (9 commits) originally captured here:**
 
 1. **Phase 1 exit one-pager filed** — [`decisions/2026-04-26-phase-1-exit-one-pager.md`](decisions/2026-04-26-phase-1-exit-one-pager.md) (Accepted; Reversibility Easy; 3x debug loop inline). Formal capture closing Follow-up #11. Structure: The one page (World / Commander role / Hybrid topology / Why this frame wins / What remains open) + Alternatives + Reason + Follow-ups. MVP validation bars restated: 50%+ civ-persistence, 30%+ Fusion-reach.
 
@@ -28,7 +38,19 @@ Autonomy stopped at the scope cap. Remaining items (cultural-sensitivity pass, p
 
 ---
 
-## Commits this session (all dual-pushed; `main` at `acb01ca`)
+## Commits this session (all dual-pushed; `main` at `fbd6e7e`)
+
+### Continuation-2 commits (after first HANDOFF rewrite)
+
+| # | Commit | Scope |
+|---|--------|-------|
+| 11 | `aa1e750` | `admin/concept.json` `meta.staleNotice` + PROGRESS debt line |
+| 12 | `8f2efb5` | `stages/03-match-setup.md` stub-amendment |
+| 13 | `6e4e3ca` | `stages/07-match-end.md` stub-amendment |
+| 14 | `fbd6e7e` | CASCADE v0.23 → v0.24 + PROGRESS continuation-2 entry |
+| 15 | (this) | HANDOFF rewrite for continuation-2 |
+
+### Earlier sub-pass commits
 
 | # | Commit | Scope |
 |---|--------|-------|
@@ -50,7 +72,7 @@ Autonomy stopped at the scope cap. Remaining items (cultural-sensitivity pass, p
 ### Git
 
 - Branch pushed: **`session/2026-04-25-q2-world-pitch`** (tracking origin, clean).
-- `main` HEAD: **`acb01ca`** (local + origin/main in sync).
+- `main` HEAD: **`fbd6e7e`** (local + origin/main in sync) pre-this-commit; will be the HANDOFF-rewrite commit after push.
 - Working tree clean. Dual-push cadence honored every commit.
 - No PR opened.
 
@@ -63,6 +85,12 @@ Autonomy stopped at the scope cap. Remaining items (cultural-sensitivity pass, p
 - **Prototype reshape plan Proposed** — awaiting PM ratification. Prototype files frozen.
 - `§2.4a` + `§5.4` [LOCKED] — untouched.
 
+### Stage-level cascade state (updated continuation-2)
+
+- **Stub-amendment banners filed:** stages 01, 03, 04, 05, 06, 07 ✓
+- **Frame-independent (no amendment owed):** stages 00, 02, 08 ✓
+- **Stage body rewrites:** all six still deferred to dedicated reopens (stub-level only).
+
 ### Not touched this pass (still owed)
 
 - **Cultural-sensitivity pass** (Follow-up #5) — mandatory gate before content-lock. External consultation needed.
@@ -70,9 +98,9 @@ Autonomy stopped at the scope cap. Remaining items (cultural-sensitivity pass, p
 - **Myth-creature PvE boss roster** (Follow-up #3).
 - **Title lock** (Q8) — "Mud to Myth" floated but not locked.
 - **Prototype reshape plan execution** — awaiting PM ratification of [`2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md).
-- **`concept/phase-1.md §1.1`** deep rewrite — one-pager supersedes informationally, but §1.1 body still carries 2026-04-21 Step A language.
-- Stage body rewrites (01/04/05/06) — deferred to dedicated reopens; banners only this pass.
-- `admin/concept.json` head — not revisited.
+- **`concept/phase-1.md §1.1`** — verified continuation-2: already rewritten in earlier 2026-04-26 pass (real-cultures framing + framing-note). No further work owed.
+- Stage body rewrites (01/03/04/05/06/07) — deferred to dedicated reopens; banners only.
+- `admin/concept.json` — staleness banner added continuation-2; full migration pending PM direction (new debt in PROGRESS).
 
 ---
 
@@ -122,7 +150,8 @@ See [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](decisions/20
 ### CLOSED this pass
 
 - **Follow-up #11** (Phase 1 exit formal one-page write-up) — CLOSED via [`decisions/2026-04-26-phase-1-exit-one-pager.md`](decisions/2026-04-26-phase-1-exit-one-pager.md).
-- **Stages 01/04/05/06 stub-amendments** — CLOSED (banners filed; body rewrites deferred).
+- **Stages 01/03/04/05/06/07 stub-amendments** — CLOSED (banners filed; body rewrites deferred). Stages 00/02/08 frame-independent.
+- **`admin/concept.json` staleness visibility** — CLOSED at banner-level (file carries `meta.staleNotice`); full migration is a new open debt.
 - **CONCEPT-GAPS audit against real-cultures frame** — CLOSED (v0.5 shape-audit re-pass).
 - **Stage 06 OPEN BLOCKER** (hybrid discovery mechanic) — CLOSED (menu-driven + codex-visible).
 
@@ -134,7 +163,8 @@ See [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](decisions/20
 4. **Myth-creature PvE bosses** (Follow-up #3).
 5. **Title lock** (Q8) — "Mud to Myth" PM-floated, not locked.
 6. **`concept/phase-1.md §1.1` + `concept/phase-2.md` body** deep rewrites — upstream closure, downstream of one-pager.
-7. **Stage body rewrites** (01/04/05/06) — deferred to dedicated reopens.
+7. **Stage body rewrites** (01/03/04/05/06/07) — deferred to dedicated reopens.
+7a. **`admin/concept.json` full migration** — rewrite to real-cultures shape, regenerate from CONCEPT.md tree via extended admin/ tooling, or retire in favor of concept/phase-*.md as sole source of truth. PM picks.
 8. **Foresight-coin cross-civ borrowing** (Follow-up #7) — parked post-launch.
 9. **PvE campaign + AGES + leveling + attributes** (Follow-up #8) — parked.
 10. **Non-boss enemy ontology** (Follow-up #9) — open.
