@@ -1083,23 +1083,28 @@ function renderProfileScene() {
   header.innerHTML = '<div>' + (data.username || "Commander") +
     '</div><span class="profile-sub">Joined ' + new Date(data.createdAt || Date.now()).toLocaleDateString() +
     ' · Last mode: ' + (data.lastMode || "—") + '</span>';
-  const defs = [
-    {id:"commander-a", name:"Warmother", tilt:"Sinew"},
-    {id:"commander-b", name:"Scholar-Architect", tilt:"Ember"},
-    {id:"commander-c", name:"Quartermaster", tilt:"Forge"},
-    {id:"commander-d", name:"Conductor", tilt:"Crown"},
-    {id:"commander-e", name:"Archivist", tilt:"Veil"}
-  ];
+  const legacyTilt = {"commander-a":"Sinew","commander-b":"Ember","commander-c":"Forge","commander-d":"Crown","commander-e":"Veil"};
+  const defs = (typeof COMMANDERS !== "undefined" && COMMANDERS.roster)
+    ? Object.entries(COMMANDERS.roster)
+        .filter(([id, c]) => c && c.playable)
+        .map(([id, c]) => ({
+          id,
+          name: c.name || id,
+          tilt: c.civ ? (c.civ.charAt(0).toUpperCase() + c.civ.slice(1)) : (legacyTilt[id] || "—"),
+          progression: c.progression || null
+        }))
+    : Object.keys(legacyTilt).map(id => ({ id, name: id, tilt: legacyTilt[id], progression: null }));
   const prog = data.commanderProgress || {};
   roster.innerHTML = defs.map(d => {
-    const p = prog[d.id] || { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 };
+    const p = prog[d.id] || d.progression || { level: 1, xp: 0, xpToNext: 100, unlockedCosmetics: 0 };
     const pct = Math.min(100, Math.round(100 * (p.xp || 0) / (p.xpToNext || 100)));
     const isLast = (data.commanderId === d.id);
+    const maxLvl = p.maxLevel || 20;
     return '<div class="profile-cmdr' + (isLast ? ' last' : '') + '">' +
       '<div class="p-cmdr-name">' + d.name + '</div>' +
       '<div class="p-cmdr-tilt">' + d.tilt + '</div>' +
       '<div class="p-cmdr-xp"><div class="p-cmdr-xp-fill" style="width:' + pct + '%"></div></div>' +
-      '<div class="p-cmdr-level">L' + (p.level || 1) + ' / 20</div>' +
+      '<div class="p-cmdr-level">L' + (p.level || 1) + ' / ' + maxLvl + '</div>' +
       '<div class="p-cmdr-unlocks">' + (p.unlockedCosmetics || 0) + ' / 3 cosmetics</div>' +
       '</div>';
   }).join("");

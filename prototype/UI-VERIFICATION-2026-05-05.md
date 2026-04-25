@@ -52,7 +52,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | Element | Handler / source | Status | Note |
 |---------|------------------|--------|------|
 | `#profile-header` username + joined date + last mode | `renderProfileScene` ln 1075 | OK | Triggered via `goto("profile")` ln 919. |
-| `#profile-roster` commander rows | iterates fixed `defs` array ln 1084: 5 legacy commanders only | NEEDS-FIX | **Roster hardcodes legacy `commander-a..e` (Warmother / Scholar-Architect / Quartermaster / Conductor / Archivist).** Phase 1 ratification (2026-04-25) replaced these with civ-commanders Leonidas (Greek) / Montezuma II (Aztec) / Ragnar (Norse). Profile scene shows stale roster. Medium severity — touches data-shape coupling. Queue for PM. |
+| `#profile-roster` commander rows | sources from `COMMANDERS.roster` filter `playable:true`; civ commanders with civ-derived tilt; legacy fallback retained | OK | **Phase B fix landed (`<commit>`):** ln 1086-1099 now iterates `Object.entries(COMMANDERS.roster).filter([_,c]=>c.playable)` → civ commanders Leonidas/Montezuma II/Ragnar surface with tilt Greek/Aztec/Norse. Active commander marked `last`. Falls back to legacy 5-lineage shape if `COMMANDERS` is absent. Verified live (3 rows render, all L1/20). |
 | XP bar fill | `pct = Math.min(100, Math.round(100 * xp / xpToNext))` | OK | |
 | Cosmetic-slot count | `unlockedCosmetics + " / 3 cosmetics"` | OK | |
 | Settings summary block | renders Master vol / UI scale / Reduce motion / Colorblind / Subtitles / Tutorial-on-new | OK | |
@@ -268,9 +268,9 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 ### NEEDS-FIX — medium (queue to AskUserQuestion)
 
-6. **Input rebind UI is decorative** — match keydown handler (ln 3537) hardcodes Space / 1-9 / I / U / X. Rebind UI captures + persists `input.binds` correctly, but no consumer. Touches input system; PM call: replace hardcoded keys with `binds[action]` lookup, or label rebind UI as "preview only" until input system lands properly. [scene-9 + scene-11]
-7. **Profile scene roster hardcodes legacy commanders** — `renderProfileScene` `defs` array (ln 1084) lists Warmother / Scholar-Architect / Quartermaster / Conductor / Archivist (the 5 legacy lineages). Phase 1 ratification (2026-04-25 real-cultures) replaced these with civ commanders. Roster should source from `COMMANDERS.roster` (filter `playable:true`). [scene-4]
-8. **End-screen XP doesn't persist** — `endMatch` (ln 3382) mutates `COMMANDERS.roster[id].progression` in-memory; never writes to `Profile.data.commanderProgress[id]`. Reload wipes XP. [scene-10]
+6. **Input rebind UI is decorative** — match keydown handler (ln 3537) hardcodes Space / 1-9 / I / U / X. Rebind UI captures + persists `input.binds` correctly, but no consumer. Touches input system; PM call: replace hardcoded keys with `binds[action]` lookup, or label rebind UI as "preview only" until input system lands properly. [scene-9 + scene-11] — **PENDING**
+7. ~~**Profile scene roster hardcodes legacy commanders**~~ — **FIXED Phase B** (PM Recommended pick): `renderProfileScene` ln 1086-1099 now sources from `COMMANDERS.roster` filter `playable:true`; civ commanders surface with civ-derived tilt; legacy 5-lineage shape retained as fallback. Verified live.
+8. **End-screen XP doesn't persist** — `endMatch` (ln 3382) mutates `COMMANDERS.roster[id].progression` in-memory; never writes to `Profile.data.commanderProgress[id]`. Reload wipes XP. [scene-10] — **PENDING**
 
 ### NEEDS-FIX — large (queue to AskUserQuestion; do NOT fix without ratification)
 
