@@ -1360,8 +1360,8 @@ function buildSnapshot() {
       statuses: e.statuses ? e.statuses.map(s => ({ kind: s.kind, ttl: s.ttl })) : []
     })),
     shots: game.shots.slice(0, 40).map(s => ({ x1: s.x1, y1: s.y1, x2: s.x2, y2: s.y2, color: s.color, accent: s.accent, lineage: s.lineage, life: s.life })),
-    // SUPERSEDED 2026-04-27 (C7.a) — commander snapshot field gutted; C7.b will replace with {castState,castTarget,castTtl}. Final delete: C6 sweep.
-    commander: null
+    // C7.b slice 1 — additive {castState,castTarget,castTtl} snapshot (absence-tolerant on guest).
+    commander: game.commander ? { castState: game.commander.castState, castTarget: game.commander.castTarget, castTtl: game.commander.castTtl } : null
   };
 }
 function applyGuestSnapshot(snap) {
@@ -1370,15 +1370,12 @@ function applyGuestSnapshot(snap) {
   game.gold = snap.gold; game.knowledge = snap.knowledge; game.divinity = snap.divinity || 0; game.ageIdx = snap.ageIdx; game.lives = snap.lives;
   game.totalKills = snap.totalKills;
   game.towers = snap.towers; game.enemies = snap.enemies; game.shots = snap.shots;
-  // SUPERSEDED 2026-04-27 (C7.a) — commander snapshot apply gutted; C7.b reintroduces with cast-emerge state. Final delete: C6 sweep.
-  /*
-  if (snap.commander && game.commander) {
-    game.commander.x = snap.commander.x; game.commander.y = snap.commander.y;
-    game.commander.lineage = snap.commander.lineage;
-    game.commander.cd = snap.commander.cd; game.commander.sigActiveTtl = snap.commander.sigActiveTtl;
-    if (snap.commander.auraCells) game.commander.auraCells = snap.commander.auraCells;
+  // C7.b slice 1 — apply cast-emerge state from host (absence-tolerant; legacy commander field shape ignored).
+  if (snap.commander && game.commander && snap.commander.castState !== undefined) {
+    game.commander.castState = snap.commander.castState;
+    game.commander.castTarget = snap.commander.castTarget;
+    game.commander.castTtl = snap.commander.castTtl || 0;
   }
-  */
   // Reconcile guest-side cell occupancy from authoritative tower positions.
   if (game.cells) {
     for (const c of game.cells) c.occupied = false;
@@ -1800,8 +1797,8 @@ function initMatch() {
     pathLen: pathLength(b.path), totalWaves: waves,
     isCoop, isGuest,
     matchStartMs: Date.now(), _eventLastId: null, pendingWaveMods: null,
-    // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar gutted; cast-emerge pipeline lands in C7.b. Final delete: C6 sweep.
-    /* commander: null, commanderMoveMode: false */
+    // C7.b slice 1 — cast-emerge state (replaces C7.a-gutted persistent avatar). Builder/snapshot-builders deferred to slice 2.
+    commander: { castState: null, castTarget: null, castTtl: 0 }
   };
   // Commander avatar (Strand 7 — on-field hero). Seeds at a grass cell nearest home.
   if (COMMANDERS) {
@@ -2073,6 +2070,8 @@ function renderCastBar() {
   set("cast-short-name",   c.stats.shortCdActive);
   set("cast-long-name",    c.stats.longCdSignature);
 }
+// C7.b slice 1 — cast-emerge durations [PROPOSAL] @ 60fps tick. Cast-bar long slot maps to signature class per C4 label "Long CD · Signature".
+const CAST_DURATIONS = { short: 72, long: 168, signature: 270 };
 function castAbility(slot) {
   if (!COMMANDERS) return;
   const c = COMMANDERS.roster[COMMANDERS.active];
@@ -2085,6 +2084,13 @@ function castAbility(slot) {
   toast("[stub] " + c.name + " casts " + (slot === "long" ? c.stats.longCdSignature : c.stats.shortCdActive) + " · targeting TBD");
   btn.classList.add("cooling");
   setTimeout(() => btn.classList.remove("cooling"), cdMs);
+  // C7.b slice 1 — fire cast-emerge avatar. Reduce-motion collapses to non-avatar VFX burst (handled in render).
+  if (game && game.commander) {
+    const tier = slot === "long" ? "signature" : "short";
+    game.commander.castState = tier;
+    game.commander.castTarget = null;
+    game.commander.castTtl = CAST_DURATIONS[tier] || CAST_DURATIONS.short;
+  }
 }
 
 // ============================================================================
@@ -2630,6 +2636,11 @@ function tick() {
   }
   for (const s of game.shots) s.life--;
   game.shots = game.shots.filter(s => s.life > 0);
+  // C7.b slice 1 — cast-emerge ttl tick (input-non-blocking; clears state at 0).
+  if (game.commander && game.commander.castTtl > 0) {
+    game.commander.castTtl--;
+    if (game.commander.castTtl <= 0) { game.commander.castState = null; game.commander.castTarget = null; }
+  }
   // SUPERSEDED 2026-04-27 (C7.a) — commander tick (cd timer + knock-back) gutted with persistent avatar; cast-emerge ttl lands in C7.b. Final delete: C6 sweep.
   /*
   if (game.commander) {
@@ -3132,6 +3143,38 @@ function draw() {
       ctx.setLineDash([]);
       ctx.restore();
     }
+  }
+  // C7.b slice 1 — cast-emerge render (transient; reuses renderSilhouette() 1.4× per C2 pose-lock gating). Reduce-motion collapses to a brief gold ring pulse.
+  if (game.commander && game.commander.castTtl > 0 && game.path && game.path[0]) {
+    const cmdr = game.commander;
+    const tier = cmdr.castState || "short";
+    const totalTtl = CAST_DURATIONS[tier] || CAST_DURATIONS.short;
+    const lifeFrac = cmdr.castTtl / totalTtl;
+    const c = COMMANDERS && COMMANDERS.roster[COMMANDERS.active];
+    const civPal = (c && c.civ && CIV_PALETTE[c.civ]) || CIV_PALETTE.greek;
+    const ax = game.path[0].x;
+    const ay = game.path[0].y;
+    const reduce = Profile.setting("a11y.reduceMotion", false);
+    ctx.save();
+    if (reduce) {
+      ctx.strokeStyle = civPal.primary;
+      ctx.lineWidth = 2 + 4 * lifeFrac;
+      ctx.globalAlpha = 0.85 * lifeFrac;
+      ctx.beginPath(); ctx.arc(ax, ay, 22 + 18 * (1 - lifeFrac), 0, Math.PI*2); ctx.stroke();
+    } else {
+      const kind = tier === "signature" ? "elite" : "heavy";
+      const fade = Math.min(1, lifeFrac * 1.4);
+      ctx.globalAlpha = fade;
+      renderSilhouette(ctx, kind, ax, ay, 1.4, civPal.primary, civPal.accent || "#f4e8c8");
+      ctx.globalAlpha = 0.7 * lifeFrac;
+      ctx.strokeStyle = civPal.primary; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(ax, ay, 22, 0, Math.PI*2); ctx.stroke();
+      if (tier === "signature") {
+        ctx.globalAlpha = 0.45 * lifeFrac;
+        ctx.beginPath(); ctx.arc(ax, ay, 30 + 14 * (1 - lifeFrac), 0, Math.PI*2); ctx.stroke();
+      }
+    }
+    ctx.restore();
   }
   // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar + aura render gutted; C7.b reuses renderSilhouette() 1.4× as the cast-emerge agent (pose-lock gated by C2's sensitivity pass). Final delete: C6 sweep.
   /*
