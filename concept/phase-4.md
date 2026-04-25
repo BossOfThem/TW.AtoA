@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-26
+**Last reviewed:** 2026-05-05
 ---
 
 # Phase 4 — Specification
@@ -306,6 +306,121 @@ Mode-aware save model + always-persistent commander profile:
 **Autosave loss-window:** in Solo Campaign, capped at one age's worth of play (age-gate autosave floor) — typically 2–4 minutes at target pacing.
 
 Per-slot UI, cloud-conflict resolution UX, corruption-recovery protocol, and multi-profile-per-install are Phase 5.
+
+## 4.10 Tower-vs-Unit math (conceptual frame)
+
+*Decision entries: [`2026-05-04 Balance-pass #1 conceptual frame`](../decisions/2026-05-04-balance-pass-1-conceptual-frame.md) (Accepted; Reversibility Medium) + [`2026-05-04 Round 12 aux UX + frame extension (s)`](../decisions/2026-05-04-round-12-aux-ux-frame-extension.md) (Accepted; Medium) + [`2026-05-05 Concept amendment pass scope`](../decisions/2026-05-05-concept-amendment-pass-scope.md) (Easy). Numbers consumed by [§4.11](#411-numbers-floor) — this section binds **shape**; §4.11 binds **values**. Reversibility: Medium.*
+
+This section anchors the equation governing tower-vs-runner combat. Magnitudes (HP curves, DPS ladders, commander-ability numbers, per-mode tuning) live in [§4.11](#411-numbers-floor); auxiliary-economy slot magnitudes live in [§4.6a](#46a-auxiliary-economy). The frame here is the source-of-truth for *what variables exist and how they combine*; §4.11 bind*s their values.*
+
+### 4.10.1 Variable nomenclature (locked 2026-05-04, extension 2026-05-04 R12)
+
+| Var | Meaning |
+|-----|---------|
+| (a) | **Tribute pool** — primary currency, sourced from kills + sell refunds + boss lump-sums. |
+| (b) | **Friendly tower roster** — count + type composition. |
+| (c) | **Tower base damage** — per-tower per-shot, scaled by level via `effectiveTowerStats` multipliers. |
+| (d) | **Lane runners** — count + type composition per wave. |
+| (e) | **Runner HP pool** — per-runner. |
+| (f) | **Runner speed** — per-runner; modifiable by status procs. |
+| (g) | **Tower-vs-runner type bonus** — RPS matrix lookup, **bidirectional ±25%** (1.25× / 0.75×). |
+| (h) | **Commander-avatar contribution** — three slots (passive / short-CD active / long-CD signature) × four effect types (damage / control / summon / economy). |
+| (i) | **Tower placement** — player-skill axis, function-shaping (sets engagement-time integral). |
+| (j) | **Map** — per-map (ε, N) tuple: ε engagement coefficient ∈ [0,1], N buildable hex count. |
+| (k) | **Difficulty tier** — Easy / Hard / Hardcore. Modifies HP-curve exponent only (single-axis compounding). |
+| (l) | **Tower lifecycle state** — (tier, level) tuple. Tier ∈ {T1, T2, T3, T4 Demigod, God}; Level ∈ {1, 2, 3}. Both axes first-class. |
+| (m) | **Adjacency / placement-coupling** — merge requires same-civ same-tier within `CIV_MERGE_RADIUS`. Promote requires single T3 + Tribute spend (per [§4.11](#411-numbers-floor)) + valid demigod mapping. Fusion requires two T4 Demigods of same civ + 1 Divinity (after 2-Divinity menu unlock). |
+| (n) | **Buildable-slot binding** — derived from (j) N; binds once (a) > N × cost-of-cheapest. |
+| (o) | **Divinity** — second currency. Cap 6/match. Drains 2 (Fusion menu unlock) + 1 per fusion. Source pattern locked per [`2026-05-05 Round 10 Divinity sources`](../decisions/2026-05-05-balance-pass-2-round-10-divinity-sources.md): 4-source floor (R10 / R15 / R30 boss + match-completion = 1 each) + 2 escalation sources (Perfect-Wave +1 per zero-leak boss-clear, max +3; First-Hybrid +1 one-shot per topology-true cross-civ hybrid). |
+| (p) | **Runner armor tag** — 5 buckets (Unarmored / Shielded / Beast / Spirit / Colossal). RPS matrix routes through this per [`2026-04-26 attack-type mapping`](../decisions/2026-04-26-attack-type-mapping.md). |
+| (q) | **Status-proc layer** — 7 procs (Armor-shred / Bleed / Stagger / Burn+splash / Toxin / Hex / Smite). Cross-tower feedback explicit (e.g., Piercing Armor-shred lowers (p) effective armor for downstream towers' damage). |
+| (r) | **Lives** — per-mode declarable per [`2026-05-04 Round 9 PvP-IW deep-dive`](../decisions/2026-05-04-round-9-pvp-interest-wars-deep-dive.md): Solo / Horde / PvE-MP / PvP-IW = 30 leak knockout; PvP-Maze = 10. Per-leak severity tunable. |
+| **(s)** | **Auxiliary multiplicative bonus** — first-class multiplier on the damage equation, applied globally per active aux slot. Magnitudes per [§4.6a](#46a-auxiliary-economy): Damage Bonus = 1 Divinity = (s) = 1.20× global, max 1 active/match. Round-12 extension; first-class to avoid pollution of (c)/(g)/(h). |
+
+### 4.10.2 Master damage equation
+
+For each runner R in a wave:
+
+```
+Damage_dealt(R) = (s) × Σ_T [ DPS(T) × t_engaged(T, R) × matchup(T, R, p) × passive_modifiers(T, h) × status_state(R, q, t) ]
+```
+
+Where:
+- `DPS(T) = damage(T) / (cd(T) / 60)` — damage per second.
+- `t_engaged(T, R) = path_length_in_range(T, j) / speed(R, q)` — engagement-time integral over the path within tower T's range.
+- `matchup(T, R, p) ∈ {0.75, 1.00, 1.25}` per the 7-attack × 5-armor RPS matrix.
+- `passive_modifiers(T, h)` — commander passive applies multiplicatively (e.g., +15% civ-matched aura per [§4.11](#411-numbers-floor)).
+- `status_state(R, q, t)` evolves as (q) procs accumulate on R; cross-tower feedback expressed (Armor-shred lowers (p) effective armor for downstream towers).
+- `(s)` global multiplier outside the sum — applied once per damage event regardless of tower count.
+
+**Win condition:** lives > 0 at end of round 30 (PvE modes) or last-alive (PvP modes per [§3.6](phase-3.md)). Each leaked runner deducts lives per its severity tag.
+
+### 4.10.3 Round-slot typology (locked 2026-05-04)
+
+Seven slot types: **Standard / Swarm / Elite / Modifier / Telegraph / Boss / Recovery**.
+
+R-assignments across the 30-round arc:
+
+- **R5** — Modifier
+- **R10** — Boss (drops 1 Divinity + Tribute medium lump)
+- **R15** — Elite (mini-boss; drops 1 Divinity per Round-10 Divinity-sources amendment)
+- **R20** — Modifier
+- **R25** — Telegraph
+- **R30** — Final Boss (drops 1 Divinity + Tribute huge lump; match-completion drops +1 Divinity for floor=4 sources)
+- **Recovery slots** float post-special (e.g., R6, R11)
+- **Standard** fills the remainder (~22 rounds)
+
+### 4.10.4 (k) single-axis compounding rule
+
+(k) modifies the **HP-per-wave curve exponent only**. All other R-curves identical across tiers. Easy / Hard / Hardcore diverge geometrically late, not flatly. **Anti-pattern explicitly flagged:** stacking HP + speed + reward + cost penalties simultaneously per tier compounds geometrically and makes R30 Hardcore mathematically unwinnable independent of skill execution. Single-axis discipline preserved across all numbers-phase ratifications.
+
+PvP modes (PvP-IW + PvP-Maze) declare no (k) — they are player-driven; tie-break uses HP-only escalation per [§3.6](phase-3.md) (R31+ HP × 1.5^(R−30) compound + R45 co-victory floor).
+
+### 4.10.5 Skill-bar axes (k winnability target)
+
+Three QA-instrumentable axes drive (k) winnability:
+
+1. **Matchup-correctness rate** — % of damage dealt with type advantage (drives (q) coverage).
+2. **Placement-coverage** — `ε_actual / ε_max` for the map (drives (i) bonus + engaged-time ε from (j)).
+3. **Ability-uptime** — % of commander cooldowns spent in engaged windows; signature explicitly excluded as once-per-match strategic-decision lever.
+
+Per-(k) thresholds locked per [§4.11](#411-numbers-floor); telemetry definitions per [`concept/phase-6.md`](phase-6.md).
+
+### 4.10.6 Sell-refund schedule (locked 2026-05-04)
+
+| Timing | Refund |
+|--------|--------|
+| Pre-wave (before "Send Wave" pressed) | **100%** |
+| Same wave post-send | **90%** |
+| R+1 (next round) | **80%** |
+| R+2 | **70%** |
+| R+3 onward | **60% flat** |
+| T4 / God (any timing) | **60% capped** |
+
+(k)-coupled: Easy = full schedule; Hard = floor at 60%; Hardcore = steeper schedule, floor at 50%.
+
+### 4.10.7 Tower target-priority (locked 2026-05-04)
+
+AI default = First (closest to base). Per-tower override via right-click → {First / Last / Strongest / Weakest / Closest}. Available as a Universal aux slot per [§4.6a](#46a-auxiliary-economy).
+
+### 4.10.8 Boss / Elite reward shape (locked 2026-05-04, amended 2026-05-05 R10)
+
+- **R10 Boss:** medium Tribute lump (250 T per [§4.11](#411-numbers-floor)) + 1 Divinity drop.
+- **R15 Elite:** medium Tribute lump (400 T) + 1 Divinity drop (per R10 Divinity-sources amendment promoting R15 from 0 → 1 Divinity).
+- **R30 Final Boss:** huge Tribute lump (1,500 T) + 1 Divinity drop (R30 specifically) + 1 Divinity at match-completion.
+- **Standard / Swarm / Modifier / Telegraph / Recovery:** per-runner reward curve only per yield(R) in [§4.11](#411-numbers-floor).
+
+### 4.10.9 Engine-port discipline
+
+The DPS×integral form translates 1:1 to Godot 4 process-tick math: `delta` is the engagement-time differential, summed per tower per tick. `(s)` and `passive_modifiers(T, h)` apply at damage-event resolution, not per-tick. `status_state(R, q, t)` is a per-runner state vector evolving in `_physics_process`. No structural rewrite required for the prototype-to-engine port.
+
+## 4.11 Numbers floor
+
+*Decision entries: [`2026-05-05 Round 1 HP curve`](../decisions/2026-05-05-balance-pass-2-round-1-hp-curve.md) + [`Round 2 (k) exponents`](../decisions/2026-05-05-balance-pass-2-round-2-k-exponents.md) + [`Round 3 Tribute economy`](../decisions/2026-05-05-balance-pass-2-round-3-tribute-economy.md) + [`Round 4 map+speed`](../decisions/2026-05-05-balance-pass-2-round-4-map-speed.md) + [`Round 5 tower baselines`](../decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md) + [`Round 6 commander magnitudes`](../decisions/2026-05-05-balance-pass-2-round-6-commander-magnitudes.md) + [`Round 8 per-mode tuning`](../decisions/2026-05-05-balance-pass-2-round-8-per-mode-tuning.md) + [`Round 9 skill-bar thresholds`](../decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md) (all Accepted; Reversibility Medium). All magnitudes consume the [§4.10](#410-tower-vs-unit-math-conceptual-frame) frame. Reversibility: Medium.*
+
+This section binds the Round 4 amendment-pass placeholder. Per-tower (cd / range / attack-type / status-proc variance) + per-commander effect-type variants (control / summon / economy beyond damage-floor) + per-civ specialization + per-map good-cell authoring are **deferred** to post-amendment-pass authoring sub-passes. The numbers here are the **floor**: every authoring sub-pass starts from these magnitudes and tunes within them.
+
+*[Round 4 of the amendment pass populates this section. Until that round lands, the magnitudes live in their respective decision files.]*
 
 ## 4.8 Exit condition for Phase 4
 

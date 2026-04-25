@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-26
+**Last reviewed:** 2026-05-05
 ---
 
 # Phase 3 — Design
@@ -113,7 +113,7 @@ Units come in three categories:
 - **Mobile units** — active units placed on the board that move along paths or patrol routes. Include melee front-liners, skirmishers, and hero-class units. Can be directed with waypoint-style commands, not full RTS micro.
 - **Special effect units** — timed abilities, temporary zones, consumables, debuff fields. Cross-civilization (not civ-exclusive under the real-cultures frame); per-civ allocation is Phase 4 spec. Limited in placement count per match to avoid spam. Status-effect proc attachment (Burn splash, Bleed DoT, Toxin stacks, Hex, Smite, Armor-shred, Stagger) is driven by the source tower's attack type per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md).
 
-The Commander, when deployed via signature ability, acts as a Hero Unit — a special high-value mobile unit with abilities. Only one Commander Hero per player on the map at a time.
+~~The Commander, when deployed via signature ability, acts as a Hero Unit — a special high-value mobile unit with abilities. Only one Commander Hero per player on the map at a time.~~ **Superseded 2026-04-27** by [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md). The Commander is no longer a controllable on-field Hero Unit; it emerges only during a cast window per [§4.1 in-match presence model](phase-4.md#in-match-presence-model--summoned-on-cast-new-2026-04-27). "Mobile units" in this section refers exclusively to the 15 launch-roster combat units (5/civ) + the new Builder unit class per [§4.4a](phase-4.md#44a-builder-unit-class-new-2026-04-27).
 
 ## 3.5 The four-tier ladder + Fusion endgame (in-match tower evolution arc)
 
@@ -135,21 +135,39 @@ Early tiers are short and brittle. Late tiers are longer and more strategic. Fus
 
 **Tier-level mechanical identity** (what *feels* different between T1 / T2 / T3 / T4 / Fusion beyond cosmetic re-skin) is owed to Phase 4 (§4.2 divergence, §4.3 Fusion system, §4.7 enemy system under the real-cultures frame) and Phase 5 (§5.1 MVP, §5.3 art direction — "stylized vector for T1-T3, silhouette-forward mythic for T4 / Gods"). Attack-type identity per tier is locked per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md).
 
-## 3.6 Game modes (launch roster)
+## 3.6 Game modes (launch roster — 6 first-class modes)
 
-*→ active drill-down: [stage 02 — mode select](../stages/02-mode-select.md). Backing research: [genre pulse](../research/01-genre-pulse.md).*
+*→ active drill-down: [stage 02 — mode select](../stages/02-mode-select.md). Backing research: [genre pulse](../research/01-genre-pulse.md). Per-mode auxiliary-economy magnitudes + per-mode (j) N-scaling + tie-break rules: see [§4.6a](phase-4.md) (auxiliary economy) and [§4.11](phase-4.md) (numbers floor).*
 
-1. **Solo Campaign** — story missions tied to each Commander (Leonidas, Montezuma II, Ragnar Lothbrok). Progresses through the tier ladder (T1 → T2 → T3 → T4 → Fusion). Introduces mechanics gradually. Non-negotiable at launch. This is how the solo promise is kept.
-2. **Solo vs AI (Skirmish)** — pick map, difficulty, civilization restrictions. Quick game against AI.
-3. **Co-op Horde** — 2–4 players defend shared lanes against escalating waves. User-hosted or matchmade.
-4. **Lane Wars 1v1** — classic competitive tower wars PvP.
-5. **Lane Wars 2v2** — team PvP, matchmaking or party.
+**Amendment banner — 2026-05-05 CONCEPT.md amendment pass Round 2.** Per [`decisions/2026-05-05-concept-amendment-pass-scope.md`](../decisions/2026-05-05-concept-amendment-pass-scope.md) (Easy). Mode roster expanded from prior 5-mode list (Solo Campaign / Solo Skirmish / Co-op Horde / Lane Wars 1v1 / Lane Wars 2v2) to **6 first-class launch modes** to absorb the 2026-05-04 deep-dive ratifications (Rounds 7–12) + 2026-05-05 Round 8 Horde-split + per-mode-tuning ratifications. Lane Wars 1v1/2v2 collapsed into the **PvP Interest Wars** mode (Squadron-TD-pattern Send-for-Interest centerpiece per [`decisions/2026-05-04-round-9-pvp-interest-wars-deep-dive.md`](../decisions/2026-05-04-round-9-pvp-interest-wars-deep-dive.md) + [`decisions/2026-05-05-balance-pass-2-round-8-per-mode-tuning.md`](../decisions/2026-05-05-balance-pass-2-round-8-per-mode-tuning.md)); Solo vs AI Skirmish absorbed into the Solo Campaign mission-runner per [`decisions/2026-05-04-round-7-solo-campaign-deep-dive.md`](../decisions/2026-05-04-round-7-solo-campaign-deep-dive.md); two new modes added (PvE Multiplayer per [`decisions/2026-05-04-round-10-pve-mp-deep-dive.md`](../decisions/2026-05-04-round-10-pve-mp-deep-dive.md), PvP Maze Lane per [`decisions/2026-05-04-round-11-pvp-maze-deep-dive.md`](../decisions/2026-05-04-round-11-pvp-maze-deep-dive.md)); Co-op Horde split into Horde-A / Horde-B per [`decisions/2026-05-04-round-8-horde-coop-deep-dive.md`](../decisions/2026-05-04-round-8-horde-coop-deep-dive.md). All 6 modes ship at launch ("Go big, no scope cuts" doctrine — see [§7.4](phase-7.md)).
 
-**Post-launch expansion (not at launch):**
-- **Hero Line Wars** — hero-controllable extended mode. Builds on the signature ability system.
-- **Ranked** — competitive laddered play with seasons.
-- **Custom modes** — community-driven, tied to modding support if we add it.
-- **Roguelite TD** — single-player run-based mode that borrows TTA concept ideas.
+| # | Mode | Lane topology | Player count | Win condition | (k) gating | Key auxiliary surface |
+|---|------|---------------|--------------|---------------|-----------|------------------------|
+| 1 | **Solo Campaign** | Single-lane; map-shaped path complexity (zoom in/out controls). Multi-mission saga structure per commander; per-mission (k). | 1 | Lives > 0 at R30 | Easy / Hard / Hardcore per mission | Universal aux only (Targeting / Build-queue / Damage Bonus / Economy Bonus / Tower-count) |
+| 2 | **Horde Co-op A — adjacent lanes** | Per-player adjacent lanes with **leak-bleed** between lanes (a teammate's leaked runner attacks your lane). | 2-8 | All players' lives > 0 at R30 | Easy / Hard / Hardcore (per-player wallet) | Universal aux + **Reinforce-Lane** (1 helper @ 4× R-runner HP per send, cap 1 active, Tribute-priced 100 T) |
+| 3 | **Horde Co-op B — shared lane** | Single shared lane on a **ring-of-zones map** that scales linearly with player count (N = 24 × player_count buildable hexes per [§4.11](phase-4.md)). | 2-8 | All players' lives > 0 at R30 | Easy / Hard / Hardcore (shared wallet split) | Universal aux + **Call-for-Help** (300 T one-shot) |
+| 4 | **PvE Multiplayer** | 8 identical parallel lanes on shared map; per-lane N=24. Last-alive race; view-only spectate after death. | 2-8 | Last alive (highest R reached) | Easy / Hard / Hardcore per player | Universal aux + **Lane-Trade** (100 T → 3 std creeps to your own next wave + +50% kill-bonus on yield(R); crossover ~R12-13 net-loss to net-gain) + **Call-for-Help** (300 T to assist a struggling teammate) |
+| 5 | **PvP Interest Wars Lane** | Per-player lane; **20s rounds** (compressed cadence); **30-leak knockout** rule; tie-break R31+ HP × 1.5^(R−30) compound + R45 co-victory floor. | 2-8 | Last alive (or co-victory at R45) | Player-driven (no (k); skill-bar emerges from PvP feedback) | Universal aux + **Send-for-Interest** (Squadron-TD pattern: 1 Divinity unlock + 150 T/send + +3 T/round permanent rest-of-match regardless of kill outcome; opponent kill yields refund as defensive incentive) |
+| 6 | **PvP Maze Lane** | Hex-grid preserved; **A\* pathfinding** routes runners around the maze the player builds. Cheap **Maze Stones** (25 T, upgradable +75 T to T1 = 100 T parity). N_maze = 30/side per [§4.11](phase-4.md). Lives = 10 per side. | 2-8 | Last alive (or longest survival) | Player-driven (no (k)) | Universal aux + **Maze Stone** (25 T blocker) + **Send-Through-Maze** (success = +5 T/round permanent rest-of-match to sender; opponent kill = sender loses 100 T + opponent gets yield(R) refund) |
+
+**Universal aux slots** (available in all 6 modes; magnitudes per [§4.6a](phase-4.md)):
+- Per-tower targeting overrides {First / Last / Strongest / Weakest / Closest}.
+- Build-queue (sequence resolver).
+- Tower-count expansion (1 Divinity = +2 N, cap 3 Divinity → +6 N).
+- Damage Bonus (1 Divinity = (s) = 1.20 global multiplier, max 1 active/match).
+- Economy Bonus (1 Divinity = +25% per-kill yield, max 1 active/match).
+
+**Per-mode lives** (extension from 2026-05-04 Round 9): per-mode declarable. Solo / Horde modes = 30 leak knockout (campaign tightens per-mission); PvE-MP = 30; PvP-IW = 30 (compressed 20s rounds = pressure-tempo design); PvP-Maze = 10 (lane-construction puzzle pacing).
+
+**Post-launch expansion** (not in the 6 launch modes):
+
+- **Hero Line Wars** — hero-controllable extended mode. Builds on the §4.1 summoned-on-cast Commander surface.
+- **Ranked** — competitive laddered play with seasons (drafts off PvP-IW + PvP-Maze pools).
+- **Custom modes** — community-driven, tied to modding support if added.
+- **Roguelite TD** — single-player run-based mode (borrows the deferred AGES concept per 2026-04-25 Follow-up #8).
+- **Myth-mode counterfactual** — solo mode collapsing all civs to pure-myth framing (per [§4.7](phase-4.md) tracking).
+
+**Solo-promise audit:** of the 6 launch modes, **3** play meaningfully solo (Solo Campaign + offline-AI fallback for PvE-MP / PvP-IW lobbies via bot-fillers). Co-op Horde A/B and PvP-Maze require live opponents at launch. The README non-negotiable "solo must be fully great" is satisfied by Solo Campaign carrying the solo promise; the other 5 modes are additive per the README discipline.
 
 ## 3.7 Meta systems (between-match progression)
 
@@ -200,6 +218,6 @@ Tutorial style: **contextual + interactive + skippable**, not pop-up-based. Per-
 
 ## 3.8 Exit condition for Phase 3
 
-The shape of the game can be drawn on a whiteboard in five minutes: **3 commanders (Leonidas / Montezuma II / Ragnar Lothbrok), 3 civilizations (Greek / Aztec / Norse), a 4-tier tower ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero) with a locked Fusion endgame (2 T4 Demigods → 1 named God, 9 Gods via 9 locked recipes), 3 unit categories, 5 launch modes, 4 meta systems, a 2-currency economy (Tribute + Divinity), and a 7-attack-type × 5-armor-tag combat matrix**. Nothing in Phase 4 introduces a new system that contradicts Phase 3.
+The shape of the game can be drawn on a whiteboard in five minutes: **3 commanders (Leonidas / Montezuma II / Ragnar Lothbrok), 3 civilizations (Greek / Aztec / Norse), a 4-tier tower ladder (T1 swarm → T2 mainline → T3 elite → T4 Demigod/Hero) with a locked Fusion endgame (2 T4 Demigods → 1 named God, 9 Gods via 9 locked recipes), 3 unit categories, 6 launch modes (Solo Campaign / Horde-A / Horde-B / PvE-MP / PvP-IW / PvP-Maze), 4 meta systems, a 2-currency economy (Tribute + Divinity), and a 7-attack-type × 5-armor-tag combat matrix**. Nothing in Phase 4 introduces a new system that contradicts Phase 3.
 
 → **Hand off to [Phase 4](phase-4.md).**
