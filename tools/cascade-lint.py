@@ -174,11 +174,10 @@ def check_prototype_data() -> None:
         return
     required = {
         "balance.json": ["wave", "age", "economy", "base", "match", "coop", "multiplayer", "save"],
-        "ages.json":    ["ages"],
-        "towers.json":  ["ages", "lineageOrder", "towers", "hybrids"],
         "commanders.json": ["active", "roster"],
         "enemies.json": ["enemies"],
-        # C1 reshape (2026-04-29) — new canonical files alongside legacy ages/towers.
+        # C1 reshape (2026-04-29) — canonical files. Legacy ages.json + towers.json
+        # deleted in C6 slice 2 / Slice C graduation cut (2026-04-25 session).
         "civilizations.json": ["civilizations"],
         "fusion-recipes.json": ["fusionMenuUnlockCost", "fusionExecutionCost", "recipes"],
         "attack-types.json": ["types", "armorTags", "rpsMatrix", "towerTypeAssignments", "demigodTypeAssignments"],
@@ -197,15 +196,6 @@ def check_prototype_data() -> None:
         for k in keys:
             if k not in data:
                 add(f"prototype/data/{name} missing top-level key: {k}")
-    # Cross-file: ages.json length must be 11 for the concept demo
-    ages_p = data_dir / "ages.json"
-    if ages_p.exists():
-        try:
-            ages = json.loads(ages_p.read_text(encoding="utf-8"))
-            if len(ages.get("ages", [])) != 11:
-                add(f"ages.json expected 11 rows, got {len(ages.get('ages', []))}")
-        except Exception:
-            pass
     # Cross-file: commanders all playable for pivot
     cmd_p = data_dir / "commanders.json"
     if cmd_p.exists():

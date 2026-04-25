@@ -11,8 +11,7 @@
     --ink-0: #e8dfca; --ink-1: #c9bfae; --ink-2: #847a66; --ink-3: #4a4134;
     --line: #2a251e; --line-2: #3a342b;
     --ember: #d97706; --ember-hi: #fbbf24; --ember-glow: rgba(217,119,6,0.35);
-    --sinew: #dc2626; --forge: #b45309; --crown: #7c3aed; --veil: #0891b2;
-    --gold: #fbbf24; --knowledge: #60a5fa; --life: #f87171;
+    --gold: #fbbf24; --life: #f87171;
     --tribute: #ca8a04; --divinity: #c084fc;
     --font-display: "Cormorant Garamond", "Cinzel", "EB Garamond", "Times New Roman", serif;
     --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -114,7 +113,7 @@
   #scene-lobby-coop .lobby-box .divider { height: 1px; background: var(--line); margin: 20px 0; }
 
   /* Chat panel for co-op match */
-  #chat-panel { position: absolute; right: 12px; bottom: 80px; width: 280px; max-height: 260px; background: rgba(10,10,16,0.92); border: 1px solid var(--line-2); border-left: 3px solid var(--crown); border-radius: 3px; display: none; flex-direction: column; z-index: 30; box-shadow: 0 6px 24px rgba(0,0,0,0.7); }
+  #chat-panel { position: absolute; right: 12px; bottom: 80px; width: 280px; max-height: 260px; background: rgba(10,10,16,0.92); border: 1px solid var(--line-2); border-left: 3px solid #7c3aed; border-radius: 3px; display: none; flex-direction: column; z-index: 30; box-shadow: 0 6px 24px rgba(0,0,0,0.7); }
   #chat-panel.on { display: flex; }
   #chat-log { flex: 1; overflow-y: auto; padding: 8px 10px; font-size: 12px; line-height: 1.5; color: var(--ink-0); font-family: var(--font-body); max-height: 200px; }
   #chat-log .chat-line { margin-bottom: 4px; }
@@ -167,11 +166,7 @@
   .cmdr-xp-ladder .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink-2); }
   .cmdr-xp-ladder .tick.unlocked { background: var(--ember-hi); box-shadow: 0 0 4px var(--ember-hi); }
   .cmdr-xp-ladder .tick-label { position: absolute; top: -14px; transform: translateX(-50%); font-family: var(--font-display); font-size: 9px; color: var(--ink-2); letter-spacing: 1px; }
-  .cmdr-portrait.sinew { background: var(--sinew); color: #fff; }
   .cmdr-portrait.ember { background: var(--ember); color: #2a1a04; }
-  .cmdr-portrait.forge { background: var(--forge); color: #fff; }
-  .cmdr-portrait.crown { background: var(--crown); color: #fff; }
-  .cmdr-portrait.veil  { background: var(--veil);  color: #fff; }
   .cmdr-name { font-family: var(--font-display); font-size: 26px; letter-spacing: 2px; color: var(--ember-hi); margin-bottom: 4px; text-align: center; }
   .cmdr-epithet { font-family: var(--font-display); font-size: 12px; letter-spacing: 3px; color: var(--ink-2); text-transform: uppercase; margin-bottom: 18px; text-align: center; }
   .cmdr-lore { font-family: var(--font-display); font-size: 14px; line-height: 1.55; color: var(--ink-0); font-style: italic; letter-spacing: 0.3px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin: 0 0 18px; }
@@ -197,9 +192,7 @@
   .cmdr-roster-chip.selected { color: var(--ember-hi); border-color: var(--ember); background: rgba(217,119,6,0.08); box-shadow: 0 0 10px var(--ember-glow); }
   .cmdr-roster-chip .chip-tilt { font-size: 9px; letter-spacing: 1.5px; color: var(--ink-2); text-transform: none; font-style: italic; }
   .cmdr-roster-chip .chip-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-  .chip-dot.sinew { background: var(--sinew); } .chip-dot.ember { background: var(--ember); }
-  .chip-dot.forge { background: var(--forge); } .chip-dot.crown { background: var(--crown); }
-  .chip-dot.veil  { background: var(--veil);  }
+  .chip-dot.ember { background: var(--ember); }
 
   /* ============================================================
      Match HUD
@@ -215,7 +208,7 @@
   .hud .hud-item { display: flex; align-items: center; gap: 7px; color: var(--ink-1); }
   .hud .hud-item b { color: var(--ember-hi); font-size: 14px; letter-spacing: 1px; }
   .hud .hud-item .icon { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px currentColor; }
-  .hud .gold { color: var(--gold); } .hud .knowledge { color: var(--knowledge); } .hud .life { color: var(--life); }
+  .hud .gold { color: var(--gold); } .hud .life { color: var(--life); }
   .hud .tribute { color: var(--tribute); } .hud .divinity { color: var(--divinity); }
   .divinity-pips { display: inline-flex; gap: 3px; margin-left: 4px; }
   .divinity-pip { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--divinity); background: transparent; box-shadow: 0 0 4px var(--divinity); opacity: 0.45; }
@@ -230,7 +223,7 @@
   .cast-bar .cast-btn:hover:not(:disabled) { border-color: var(--ember-hi); color: var(--ember-hi); }
   .cast-bar .cast-btn .cb-class { font-size: 9px; opacity: 0.65; letter-spacing: 1.5px; text-transform: uppercase; }
   .cast-bar .cast-btn.passive { border-color: var(--ember); color: var(--ember-hi); cursor: default; }
-  .cast-bar .cast-btn.short  { border-color: var(--knowledge); }
+  .cast-bar .cast-btn.short  { border-color: #60a5fa; }
   .cast-bar .cast-btn.long   { border-color: var(--divinity); }
   .cast-bar .cast-btn.cooling { opacity: 0.45; cursor: not-allowed; }
   /* C4 — Fusion menu modal */
@@ -247,14 +240,14 @@
   .fusion-modal .fm-god:hover.lit { background: rgba(192,132,252,0.08); }
   .fusion-modal .fm-god .fm-name { font-family: var(--font-display); letter-spacing: 2px; color: var(--ink-1); font-size: 13px; margin-bottom: 4px; }
   .fusion-modal .fm-god .fm-sources { color: var(--ink-2); font-size: 10px; margin-bottom: 3px; }
-  .fusion-modal .fm-god .fm-types { color: var(--knowledge); font-size: 10px; letter-spacing: 1px; margin-bottom: 3px; }
+  .fusion-modal .fm-god .fm-types { color: #60a5fa; font-size: 10px; letter-spacing: 1px; margin-bottom: 3px; }
   .fusion-modal .fm-god .fm-flavor { color: var(--ink-2); font-size: 10px; font-style: italic; }
   .fusion-modal .fm-foot { margin-top: 16px; display: flex; gap: 10px; align-items: center; }
   /* C5 — Codex modal (7×5 RPS matrix) */
   .codex-modal { position: fixed; inset: 0; background: rgba(8,6,4,0.82); display: none; align-items: center; justify-content: center; z-index: 1500; }
   .codex-modal.on { display: flex; }
-  .codex-modal .cx-card { background: var(--bg-1); border: 1px solid var(--knowledge); padding: 22px 26px; max-width: 920px; width: 94vw; max-height: 88vh; overflow: auto; box-shadow: 0 0 30px rgba(96,165,250,0.28); }
-  .codex-modal h2 { font-family: var(--font-display); letter-spacing: 4px; color: var(--knowledge); margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
+  .codex-modal .cx-card { background: var(--bg-1); border: 1px solid #60a5fa; padding: 22px 26px; max-width: 920px; width: 94vw; max-height: 88vh; overflow: auto; box-shadow: 0 0 30px rgba(96,165,250,0.28); }
+  .codex-modal h2 { font-family: var(--font-display); letter-spacing: 4px; color: #60a5fa; margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
   .codex-modal .cx-sub { color: var(--ink-2); font-size: 11px; margin-bottom: 14px; line-height: 1.45; }
   .codex-modal .cx-sub code { font-family: monospace; color: var(--ink-1); background: var(--bg-2); padding: 1px 5px; border-radius: 2px; }
   .codex-modal .cx-grid-wrap { overflow-x: auto; }
@@ -270,7 +263,7 @@
   .codex-modal .cx-legend .cx-row { font-size: 10px; color: var(--ink-2); border-left: 2px solid var(--line-2); padding: 3px 0 3px 8px; }
   .codex-modal .cx-legend .cx-row b { color: var(--ink-1); font-family: var(--font-display); letter-spacing: 1.5px; margin-right: 6px; }
   .codex-modal .cx-foot { margin-top: 6px; display: flex; gap: 10px; align-items: center; }
-  .hud .age-label { color: var(--ember); } .hud .wave-label { color: var(--ink-2); }
+  .hud .wave-label { color: var(--ink-2); }
   .hud .spacer { flex: 1; }
   .hud .banner-title { color: var(--ember-hi); letter-spacing: 3px; font-weight: 700; }
   .hud .hud-cmdr { display: flex; align-items: center; gap: 8px; padding-right: 10px; border-right: 1px solid var(--line-2); margin-right: 6px; }
@@ -287,9 +280,7 @@
   .action-bar .tower-btn.selected { border-color: var(--ember); color: var(--ember-hi); background: rgba(217,119,6,0.08); box-shadow: 0 0 10px var(--ember-glow); }
   .action-bar .tower-btn .cost { color: var(--gold); margin-left: 6px; }
   .action-bar .tower-btn .glyph { width: 10px; height: 10px; border-radius: 2px; display: inline-block; border: 1px solid rgba(255,255,255,0.3); }
-  .action-bar .glyph.sinew { background: var(--sinew); } .action-bar .glyph.ember { background: var(--ember); }
-  .action-bar .glyph.forge { background: var(--forge); } .action-bar .glyph.crown { background: var(--crown); }
-  .action-bar .glyph.veil  { background: var(--veil);  } .action-bar .glyph.hybrid { background: linear-gradient(135deg, var(--sinew), var(--ember)); }
+  .action-bar .glyph.ember { background: var(--ember); }
   .action-bar .spacer { flex: 1; }
   .action-bar .wave-indicator { font-family: var(--font-display); font-size: 11px; letter-spacing: 2px; color: var(--ember); text-transform: uppercase; padding: 0 10px; }
   .action-bar .wave-indicator.active { color: var(--life); animation: pulse 1.4s ease-in-out infinite; }
@@ -394,20 +385,9 @@
   #combat-feed .row.on { opacity: 1; transform: translateX(0); }
   #combat-feed .row.leak { border-left-color: #dc2626; color: #fecaca; font-weight: 700; }
   #combat-feed .row.kill { border-left-color: #16a34a; color: #bbf7d0; }
-  #combat-feed .row.hybrid { border-left-color: #a855f7; color: #e9d5ff; font-weight: 700; }
   #combat-feed .row.upgrade { border-left-color: #fbbf24; color: #fde68a; }
   #combat-feed .row.wave { border-left-color: var(--ember-hi); color: var(--ink-0); font-weight: 700; }
   body.reduce-motion #combat-feed .row { transition: none; }
-
-  /* Age banner (Strand 8) */
-  #age-banner { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, rgba(217,119,6,0.1), rgba(10,10,16,0.94)); border-top: 2px solid var(--ember); border-bottom: 2px solid var(--ember); padding: 18px 36px; font-family: var(--font-display); letter-spacing: 4px; color: var(--ember-hi); text-align: center; display: none; z-index: 50; max-width: 640px; opacity: 0; transition: opacity 0.4s; }
-  #age-banner.on { display: block; opacity: 1; animation: ageBannerIn 2.5s cubic-bezier(.2,.9,.2,1) both; }
-  #age-banner .ab-name { font-size: 22px; letter-spacing: 6px; color: var(--ember-hi); text-shadow: 0 0 12px var(--ember-glow); margin-bottom: 4px; }
-  #age-banner .ab-era { font-size: 12px; letter-spacing: 3px; color: var(--ink-1); text-transform: uppercase; margin-bottom: 8px; }
-  #age-banner .ab-lore { font-size: 12px; color: var(--ink-0); font-style: italic; letter-spacing: 0.5px; line-height: 1.5; max-width: 540px; margin: 0 auto; }
-  #age-banner .ab-motif { font-size: 10px; color: var(--ink-2); letter-spacing: 2px; margin-top: 6px; }
-  @keyframes ageBannerIn { 0% { opacity: 0; transform: translateX(-50%) translateY(-8px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; } }
-  body.reduce-motion #age-banner.on { animation: none; opacity: 1; }
 
   /* First-run prompts (Strand 5) */
   #first-run-toast { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); background: rgba(10,10,16,0.96); border: 1px solid var(--ember); border-left: 3px solid var(--ember-hi); border-radius: 3px; padding: 10px 16px; font-family: var(--font-display); letter-spacing: 1px; font-size: 12px; color: var(--ink-0); box-shadow: 0 8px 30px rgba(0,0,0,0.8); z-index: 40; max-width: 480px; display: none; }
@@ -517,7 +497,7 @@
     <div class="mode-card" tabindex="0" onclick="startMode('tutorial')" onkeydown="if(event.key==='Enter')startMode('tutorial')">
       <h3>Tutorial</h3>
       <div class="mode-sub">Five steps · narrated</div>
-      <div class="mode-body">Learn to build, defend, hybridize, and age-up. Skippable. Returns you to menu.</div>
+      <div class="mode-body">Learn to build, defend, merge, and promote. Skippable. Returns you to menu.</div>
       <div class="mode-tag">Available</div>
     </div>
     <div class="mode-card" tabindex="0" onclick="startMode('horde')" onkeydown="if(event.key==='Enter')startMode('horde')">
@@ -617,10 +597,8 @@
     <div class="hud">
       <div class="hud-item banner-title">Tutorial</div>
       <div class="hud-item gold"><span class="icon" style="background:var(--gold)"></span>Gold <b id="t-gold">0</b></div>
-      <div class="hud-item knowledge"><span class="icon" style="background:var(--knowledge)"></span>Knowledge <b id="t-knowledge">0</b></div>
       <div class="hud-item tribute" title="Tribute — primary currency (C3 alongside)"><span class="icon" style="background:var(--tribute)"></span>Tribute <b id="t-tribute">0</b></div>
       <div class="hud-item divinity" title="Divinity — mythic token. 1 pip per boss round; 2 pips opens Fusion menu; 1 pip per Fusion."><span class="icon" style="background:var(--divinity)"></span>Divinity<span class="divinity-pips" id="t-divinity-pips"></span></div>
-      <div class="hud-item age-label">Age <b id="t-age">Primal</b></div>
       <div class="hud-item life"><span class="icon" style="background:var(--life)"></span>Lives <b id="t-lives">3</b></div>
       <div class="spacer"></div>
       <div class="hud-item wave-label">Step <b id="t-step">1 / 5</b></div>
@@ -632,7 +610,7 @@
       <canvas id="board-tutorial"></canvas>
       <div id="narrator">
         <div class="narr-step" id="t-narr-step">Step 1</div>
-        <div class="narr-body" id="t-narr-body">Welcome, Commander. The creeps are coming. Click a glowing cell beside the path to place an Ember tower.</div>
+        <div class="narr-body" id="t-narr-body">Welcome, Commander. The creeps are coming. Click a glowing cell beside the path to place a Phalanx (Greek T1).</div>
         <div class="narr-cta" id="t-narr-cta"></div>
       </div>
     </div>
@@ -648,10 +626,8 @@
       <div class="hud-cmdr" id="m-cmdr"><div class="silhouette" id="m-silhouette">A</div><span id="m-cmdr-name">Commander A</span></div>
       <div class="hud-item banner-title" id="m-mode-label">Skirmish</div>
       <div class="hud-item gold"><span class="icon" style="background:var(--gold)"></span>Gold <b id="m-gold">0</b></div>
-      <div class="hud-item knowledge"><span class="icon" style="background:var(--knowledge)"></span>Knowledge <b id="m-knowledge">0</b></div>
       <div class="hud-item tribute" title="Tribute — primary currency (C3 alongside)"><span class="icon" style="background:var(--tribute)"></span>Tribute <b id="m-tribute">0</b></div>
       <div class="hud-item divinity" title="Divinity — mythic token. 1 pip per boss round; 2 pips opens Fusion menu; 1 pip per Fusion."><span class="icon" style="background:var(--divinity)"></span>Divinity<span class="divinity-pips" id="m-divinity-pips"></span></div>
-      <div class="hud-item age-label">Age <b id="m-age">Primal</b></div>
       <div class="hud-item life"><span class="icon" style="background:var(--life)"></span>Lives <b id="m-lives">10</b></div>
       <div class="spacer"></div>
       <div class="hud-item wave-label">Wave <b id="m-wave">0 / 3</b></div>
@@ -664,8 +640,7 @@
       <div id="combat-feed"></div>
       <div id="next-wave-strip"></div>
       <div id="net-status">Offline</div>
-      <div id="age-banner"></div>
-      <div id="event-banner" style="position:absolute; top:140px; left:50%; transform:translateX(-50%); background:rgba(10,10,16,0.94); border-left:3px solid var(--crown); padding:8px 18px; font-family:var(--font-display); letter-spacing:2px; font-size:12px; color:var(--ink-0); display:none; z-index:49;"></div>
+      <div id="event-banner" style="position:absolute; top:140px; left:50%; transform:translateX(-50%); background:rgba(10,10,16,0.94); border-left:3px solid #7c3aed; padding:8px 18px; font-family:var(--font-display); letter-spacing:2px; font-size:12px; color:var(--ink-0); display:none; z-index:49;"></div>
       <div id="chat-panel">
         <div id="chat-log"></div>
         <form id="chat-form" onsubmit="event.preventDefault(); sendChat();">
@@ -684,18 +659,9 @@
     </div>
     <div class="action-bar" id="action-bar">
       <span class="label">Build</span>
-      <span id="legacy-tower-btns" style="display:contents;">
-        <button class="tower-btn" data-tower="sinew" onclick="selectTower('sinew')"><span class="glyph sinew"></span>Sinew <span class="cost">40g</span></button>
-        <button class="tower-btn" data-tower="ember" onclick="selectTower('ember')"><span class="glyph ember"></span>Ember <span class="cost">30g</span></button>
-        <button class="tower-btn" data-tower="forge" onclick="selectTower('forge')"><span class="glyph forge"></span>Forge <span class="cost">50g</span></button>
-        <button class="tower-btn" data-tower="crown" onclick="selectTower('crown')"><span class="glyph crown"></span>Crown <span class="cost">45g</span></button>
-        <button class="tower-btn" data-tower="veil" onclick="selectTower('veil')"><span class="glyph veil"></span>Veil <span class="cost">35g</span></button>
-        <button class="tower-btn" id="btn-tower-hybrid" data-tower="hybrid" onclick="selectTower('hybrid')" disabled><span class="glyph hybrid"></span><span id="btn-tower-hybrid-label">Hybrid</span> <span class="cost">80g</span></button>
-      </span>
-      <span id="civ-tower-btns" style="display:none;"></span>
+      <span id="civ-tower-btns" style="display:contents;"></span>
       <span class="spacer"></span>
       <span class="wave-indicator" id="wave-indicator">Ready</span>
-      <button class="tower-btn" id="btn-age-up" onclick="ageUp()" disabled>Age up <span class="cost">50 know</span></button>
       <button class="ghost" id="btn-info" onclick="openReference()" title="Tier reference (I)">Info</button>
       <button class="primary" id="btn-wave" onclick="startWave()">Begin Wave 1</button>
     </div>
@@ -775,16 +741,15 @@
     <div class="opts-panel" data-panel="input">
       <div class="opts-row"><span class="opts-label">Pause</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="pause">Esc</span><button class="ghost" onclick="beginRebind('pause', this)">Rebind…</button></div></div>
       <div class="opts-row"><span class="opts-label">Send wave</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="send-wave">Space</span><button class="ghost" onclick="beginRebind('send-wave', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Age up</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="age-up">KeyA</span><button class="ghost" onclick="beginRebind('age-up', this)">Rebind…</button><select data-opt="input.ageUpMode" style="margin-left:6px;"><option value="toggle">Toggle</option><option value="hold">Hold</option></select></div></div>
       <div class="opts-row"><span class="opts-label">Info (reference)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="info">KeyI</span><button class="ghost" onclick="beginRebind('info', this)">Rebind…</button></div></div>
       <div class="opts-row"><span class="opts-label">Upgrade tower</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="upgrade">KeyU</span><button class="ghost" onclick="beginRebind('upgrade', this)">Rebind…</button></div></div>
       <div class="opts-row"><span class="opts-label">Sell tower</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="sell">KeyX</span><button class="ghost" onclick="beginRebind('sell', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Tower 1 (Sinew)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t1">Digit1</span><button class="ghost" onclick="beginRebind('t1', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Tower 2 (Ember)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t2">Digit2</span><button class="ghost" onclick="beginRebind('t2', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Tower 3 (Forge)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t3">Digit3</span><button class="ghost" onclick="beginRebind('t3', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Tower 4 (Crown)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t4">Digit4</span><button class="ghost" onclick="beginRebind('t4', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Tower 5 (Veil)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t5">Digit5</span><button class="ghost" onclick="beginRebind('t5', this)">Rebind…</button></div></div>
-      <div class="opts-row"><span class="opts-label">Hybrid (6)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t6">Digit6</span><button class="ghost" onclick="beginRebind('t6', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower slot 1</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t1">Digit1</span><button class="ghost" onclick="beginRebind('t1', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower slot 2</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t2">Digit2</span><button class="ghost" onclick="beginRebind('t2', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower slot 3</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t3">Digit3</span><button class="ghost" onclick="beginRebind('t3', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower slot 4</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t4">Digit4</span><button class="ghost" onclick="beginRebind('t4', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower slot 5</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t5">Digit5</span><button class="ghost" onclick="beginRebind('t5', this)">Rebind…</button></div></div>
+      <div class="opts-row"><span class="opts-label">Tower slot 6</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="t6">Digit6</span><button class="ghost" onclick="beginRebind('t6', this)">Rebind…</button></div></div>
       <div class="opts-row"><span class="opts-label">Commander Q (signature)</span><div class="opts-control"><span class="opts-value bind-display" data-bind-for="cmdrSig">KeyQ</span><button class="ghost" onclick="beginRebind('cmdrSig', this)">Rebind…</button></div></div>
     </div>
     <div class="opts-panel" data-panel="video">
@@ -808,8 +773,6 @@
       <div class="opts-row"><span class="opts-label">Damage-number density</span><div class="opts-control"><select data-opt="gp.dmgDensity"><option value="off">Off</option><option value="crits">Crits only</option><option value="all" selected>All</option></select></div></div>
       <div class="opts-row"><span class="opts-label">Combat feed</span><div class="opts-control"><input type="checkbox" data-opt="gp.combatFeed" checked/></div></div>
       <div class="opts-row"><span class="opts-label">Ghost placement preview</span><div class="opts-control"><input type="checkbox" data-opt="gp.ghostPreview" checked/></div></div>
-      <div class="opts-row"><span class="opts-label">Hybrid adjacency hint</span><div class="opts-control"><input type="checkbox" data-opt="gp.hybridHint" checked/></div></div>
-      <div class="opts-row"><span class="opts-label">Auto age-up</span><div class="opts-control"><input type="checkbox" data-opt="gp.autoAgeUp"/></div></div>
       <div class="opts-row"><span class="opts-label">Spontaneity events</span><div class="opts-control"><input type="checkbox" data-opt="gp.spontaneity" checked/></div></div>
       <div class="opts-row"><span class="opts-label">Auto-send-wave cooldown</span><div class="opts-control"><input type="range" min="0" max="15" value="0" data-opt="gp.autowaveCd"/><span class="opts-value" data-for="gp.autowaveCd">0</span>s</div></div>
       <div class="opts-row"><span class="opts-label">Tutorial on new mode</span><div class="opts-control"><input type="checkbox" data-opt="gp.tutorialOnNew" checked/></div></div>
@@ -887,11 +850,10 @@ const Profile = {
         "a11y.colorblind": false, "a11y.reduceMotion": false, "a11y.reduceFlash": false, "a11y.reduceEffects": false,
         "a11y.subtitles": true, "a11y.subDensity": "all", "a11y.capDensity": 2,
         "gp.threatBar": true, "gp.dmgDensity": "all", "gp.combatFeed": true, "gp.ghostPreview": true,
-        "gp.hybridHint": true, "gp.autoAgeUp": false, "gp.spontaneity": true,
+        "gp.spontaneity": true,
         "gp.autowaveCd": 0, "gp.tutorialOnNew": true,
-        "input.ageUpMode": "toggle",
         "input.binds": {
-          "pause": "Escape", "send-wave": "Space", "age-up": "KeyA", "info": "KeyI",
+          "pause": "Escape", "send-wave": "Space", "info": "KeyI",
           "upgrade": "KeyU", "sell": "KeyX", "cmdrSig": "KeyQ",
           "t1": "Digit1", "t2": "Digit2", "t3": "Digit3", "t4": "Digit4", "t5": "Digit5", "t6": "Digit6"
         },
@@ -1341,15 +1303,15 @@ function buildSnapshot() {
   if (!game) return null;
   return {
     wave: game.wave, totalWaves: game.totalWaves, waveActive: game.waveActive,
-    gold: game.gold, knowledge: game.knowledge, divinity: game.divinity || 0, ageIdx: game.ageIdx, lives: game.lives,
+    gold: game.gold, divinity: game.divinity || 0, lives: game.lives,
     totalKills: game.totalKills,
     towers: game.towers.map(t => ({ x: t.x, y: t.y, type: t.type, owner: t.owner || "host", level: t.level || 1, invested: t.invested || TOWER_STATS[t.type].cost })),
     enemies: game.enemies.map(e => ({
       x: e.x, y: e.y, hp: e.hp, maxHp: e.maxHp, dist: e.dist,
-      kind: e.kind, color: e.color, accent: e.accent, label: e.label, ageIdx: e.ageIdx,
+      kind: e.kind, color: e.color, accent: e.accent, label: e.label,
       statuses: e.statuses ? e.statuses.map(s => ({ kind: s.kind, ttl: s.ttl })) : []
     })),
-    shots: game.shots.slice(0, 40).map(s => ({ x1: s.x1, y1: s.y1, x2: s.x2, y2: s.y2, color: s.color, accent: s.accent, lineage: s.lineage, life: s.life })),
+    shots: game.shots.slice(0, 40).map(s => ({ x1: s.x1, y1: s.y1, x2: s.x2, y2: s.y2, color: s.color, accent: s.accent, life: s.life })),
     // C7.b slice 1 — additive {castState,castTarget,castTtl} snapshot (absence-tolerant on guest).
     commander: game.commander ? { castState: game.commander.castState, castTarget: game.commander.castTarget, castTtl: game.commander.castTtl } : null,
     // C7.b slice 2 — additive builders[] snapshot (absence-tolerant; cap 32 to bound payload).
@@ -1359,7 +1321,7 @@ function buildSnapshot() {
 function applyGuestSnapshot(snap) {
   if (!game || !snap) return;
   game.wave = snap.wave; game.totalWaves = snap.totalWaves; game.waveActive = snap.waveActive;
-  game.gold = snap.gold; game.knowledge = snap.knowledge; game.divinity = snap.divinity || 0; game.ageIdx = snap.ageIdx; game.lives = snap.lives;
+  game.gold = snap.gold; game.divinity = snap.divinity || 0; game.lives = snap.lives;
   game.totalKills = snap.totalKills;
   game.towers = snap.towers; game.enemies = snap.enemies; game.shots = snap.shots;
   // C7.b slice 1 — apply cast-emerge state from host (absence-tolerant; legacy commander field shape ignored).
@@ -1417,36 +1379,18 @@ function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;"
 // ============================================================================
 let BALANCE = {
   HP_PER_WAVE: 1.70, COUNT_PER_WAVE: 1.55, SPEED_PER_WAVE: 1.12, REWARD_PER_WAVE: 0.80, GAP_PER_WAVE: 0.85,
-  DAMAGE_PER_AGE: 1.60, CD_PER_AGE: 0.80, KNOWLEDGE_PER_AGE: 1.50,
+  DAMAGE_PER_AGE: 1.60, CD_PER_AGE: 0.80,
   GOLD_SURPLUS_TARGET: 1.25,
   BASE_HP: 10, BASE_COUNT: 6, BASE_SPEED: 0.85, BASE_REWARD: 8, BASE_GAP: 40,
   STARTING_GOLD_MATCH: 80, STARTING_GOLD_TUTORIAL: 60,
   STARTING_LIVES_MATCH: 10, STARTING_LIVES_TUTORIAL: 3,
-  AGE_UP_KNOWLEDGE_COST: 50, MATCH_WAVES: 3,
-  TOWERS: {
-    sinew:  { cost: 40, range: 110, baseDamage: 5, baseCd: 40 },
-    ember:  { cost: 30, range: 135, baseDamage: 3, baseCd: 48, baseKnowledge: 1 },
-    forge:  { cost: 50, range: 0,   baseDamage: 0, baseCd: 60 },
-    crown:  { cost: 45, range: 150, baseDamage: 0, baseCd: 30 },
-    veil:   { cost: 35, range: 130, baseDamage: 1, baseCd: 25 },
-    hybrid: { cost: 80, range: 120, baseDamage: 10, baseCd: 30 }
-  },
-  TOWER_META: {
-    sinew:  { label: "Sinew",  color: "#dc2626" },
-    ember:  { label: "Ember",  color: "#d97706" },
-    forge:  { label: "Forge",  color: "#b45309" },
-    crown:  { label: "Crown",  color: "#7c3aed" },
-    veil:   { label: "Veil",   color: "#0891b2" },
-    hybrid: { label: "Hybrid", color: "#fbbf24" }
-  }
+  MATCH_WAVES: 3,
+  TOWERS: {}, TOWER_META: {}
 };
 
-let AGES = ["Primal", "Mudbrick", "Iron", "Spires", "Alchemical", "Steamheart", "Atomic", "Signal", "Synthetic", "Stellar", "Ascendant"];
 let MAPMODS = null, EVENTS = null;
-let AGES_DATA = null;
 let COMMANDERS = null;
 let ENEMIES = null;
-let HYBRIDS = null;
 let CIVILIZATIONS = null;
 let TIERS = null;
 let ATTACK_TYPES = null;
@@ -1506,15 +1450,13 @@ function promoteTargetKey(t) {
 
 async function loadData() {
   try {
-    const [bal, tow, cmd, ages, ene, mmRes, evRes, civRes, tierRes, atkRes] = await Promise.all([
+    const [bal, cmd, ene, mmRes, evRes, civRes, tierRes, atkRes] = await Promise.all([
       fetch("data/balance.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
-      fetch("data/towers.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/commanders.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
-      fetch("data/ages.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/enemies.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/mapmods.json").then(r => r.ok ? r.json() : null).catch(() => null),
       fetch("data/events.json").then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch("data/civilizations.json").then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch("data/civilizations.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/tiers.json").then(r => r.ok ? r.json() : null).catch(() => null),
       fetch("data/attack-types.json").then(r => r.ok ? r.json() : null).catch(() => null)
     ]);
@@ -1529,25 +1471,7 @@ async function loadData() {
       WAVES_FULL: bal.match.waveCountFullConceptDemo || 11,
       TOWERS: {}, TOWER_META: {}
     };
-    for (const [k, v] of Object.entries(tow.towers)) {
-      BALANCE.TOWERS[k] = {
-        cost: v.cost, range: v.range, baseDamage: v.baseDamage, baseCd: v.baseCd,
-        ...(v.baseKnowledge != null ? { baseKnowledge: v.baseKnowledge } : {}),
-        ...(v.generatesGold != null ? { generatesGold: v.generatesGold } : {}),
-        ...(v.auraBuff != null ? { auraBuff: v.auraBuff } : {}),
-        ...(v.slowPct != null ? { slowPct: v.slowPct } : {})
-      };
-      BALANCE.TOWER_META[k] = { label: v.label, color: v.color, lineage: v.lineage };
-    }
-    HYBRIDS = tow.hybrids || null;
-    // Register default hybrid shortcut (sinew_ember → "hybrid") for legacy placement
-    if (HYBRIDS && HYBRIDS.sinew_ember) {
-      const h = HYBRIDS.sinew_ember;
-      BALANCE.TOWERS.hybrid = { cost: h.cost, range: h.range, baseDamage: h.baseDamage, baseCd: h.baseCd };
-      BALANCE.TOWER_META.hybrid = { label: h.label, color: h.color, lineage: "hybrid" };
-    }
-    // C6 slice 2 / C4-continuation Slice A — compose civ-tower entries alongside legacy.
-    // Tier-derived [PROPOSAL] base stats; civ-namespaced keys to avoid collision (Norse "forge" vs legacy "forge").
+    // C6 slice 2 Slice C — civ-tower entries are now the sole tower data source.
     if (CIVILIZATIONS && CIVILIZATIONS.civilizations) {
       for (const civ of CIVILIZATIONS.civilizations) {
         const pal = civ.palette || {};
@@ -1576,8 +1500,6 @@ async function loadData() {
         }
       }
     }
-    AGES_DATA = ages.ages;
-    AGES = AGES_DATA.map(a => a.name);
     COMMANDERS = cmd;
     ENEMIES = ene.enemies;
     DATA_SOURCE = "json";
@@ -1651,28 +1573,23 @@ function selectCommanderId(id) {
     ch.classList.toggle("selected", ch.dataset.cmdrId === id));
 }
 
-// C6 slice 2 / C4-continuation Slice A — civ-mode action-bar swap.
-// Tutorial forces legacy mode (uses 'ember' lock-step). Otherwise active-commander civ
-// drives 6 civ-tower buttons; legacy 5+1 row hidden but DOM-preserved.
+// C6 — civ-mode action-bar render. Tutorial pins to greek_phalanx single-button.
+// Match: active-commander civ drives T1–T3 civ-tower buttons.
 function renderActionBarBuildSet() {
-  const legacy = document.getElementById("legacy-tower-btns");
   const civHost = document.getElementById("civ-tower-btns");
-  if (!legacy || !civHost) return;
-  const c = COMMANDERS && COMMANDERS.roster[COMMANDERS.active];
-  const civId = c && c.civ;
+  if (!civHost) return;
   const inTutorial = (typeof game !== "undefined") && game && game.mode === "tutorial";
+  // Tutorial: pin to greek_phalanx single-button shape regardless of active commander.
+  const c = COMMANDERS && COMMANDERS.roster[COMMANDERS.active];
+  const civId = inTutorial ? "greek" : (c && c.civ);
   const civDef = (CIVILIZATIONS && CIVILIZATIONS.civilizations || []).find(x => x.id === civId);
-  if (inTutorial || !civDef) {
-    legacy.style.display = "contents";
-    civHost.style.display = "none";
-    civHost.innerHTML = "";
-    return;
-  }
-  legacy.style.display = "none";
-  civHost.style.display = "contents";
-  const pal = civDef.palette || {};
   civHost.innerHTML = "";
-  for (const t of (civDef.towersT1T3 || [])) {
+  if (!civDef) return;
+  const pal = civDef.palette || {};
+  const towerList = inTutorial
+    ? (civDef.towersT1T3 || []).filter(t => t.id === "phalanx")
+    : (civDef.towersT1T3 || []);
+  for (const t of towerList) {
     const key = civTowerKey(civDef.id, t.id);
     const stat = BALANCE.TOWERS[key];
     if (!stat) continue;
@@ -1688,15 +1605,19 @@ function renderActionBarBuildSet() {
       ' <span class="cost">' + stat.cost + 'g</span>';
     civHost.appendChild(btn);
   }
-  // Self-correct game.selectedTower to a valid civ key if currently legacy.
-  if (typeof game !== "undefined" && game && !BALANCE.TOWERS[game.selectedTower]) {
-    const first = (civDef.towersT1T3 || [])[0];
-    if (first) selectTower(civTowerKey(civDef.id, first.id));
-  } else if (typeof game !== "undefined" && game && game.selectedTower) {
-    const meta = BALANCE.TOWER_META[game.selectedTower];
-    if (!meta || meta.civ !== civDef.id) {
+  // Self-correct game.selectedTower to a valid civ key.
+  if (typeof game !== "undefined" && game) {
+    const fallback = inTutorial ? TUT_TOWER_KEY : (() => {
       const first = (civDef.towersT1T3 || [])[0];
-      if (first) selectTower(civTowerKey(civDef.id, first.id));
+      return first ? civTowerKey(civDef.id, first.id) : null;
+    })();
+    if (!BALANCE.TOWERS[game.selectedTower]) {
+      if (fallback) selectTower(fallback);
+    } else {
+      const meta = BALANCE.TOWER_META[game.selectedTower];
+      if (!meta || meta.civ !== civDef.id) {
+        if (fallback) selectTower(fallback);
+      }
     }
   }
 }
@@ -1770,15 +1691,7 @@ function deriveTowerStats() {
   const out = {};
   const meta = BALANCE.TOWER_META;
   for (const [k, v] of Object.entries(BALANCE.TOWERS)) {
-    const ageCount = AGES.length;
-    const damage = [], cd = [], knowledge = [];
-    for (let a = 0; a < ageCount; a++) {
-      damage.push(Math.round(v.baseDamage * Math.pow(BALANCE.DAMAGE_PER_AGE, a)));
-      cd.push(Math.round(v.baseCd * Math.pow(BALANCE.CD_PER_AGE, a)));
-      if (v.baseKnowledge != null) knowledge.push(Math.round(v.baseKnowledge * Math.pow(BALANCE.KNOWLEDGE_PER_AGE, a)));
-    }
-    out[k] = { ...meta[k], cost: v.cost, range: v.range, damage, cd };
-    if (knowledge.length) out[k].knowledge = knowledge;
+    out[k] = { ...meta[k], cost: v.cost, range: v.range, damage: Math.round(v.baseDamage), cd: Math.round(v.baseCd) };
   }
   return out;
 }
@@ -1805,10 +1718,11 @@ function rebuildDerived() {
 }
 
 function logBalanceCurve() {
-  const cheapest = Math.min(...Object.values(BALANCE.TOWERS).filter(t => t.cost > 0).map(t => t.cost));
+  const costs = Object.values(BALANCE.TOWERS).filter(t => t.cost > 0).map(t => t.cost);
+  if (!costs.length) return;
+  const cheapest = Math.min(...costs);
   const rows = [["Wave", "Count", "HP/ea", "TotalHP", "Reward/ea", "WaveGold", "Surplus≥"]];
-  let cumulative = 80;
-  cumulative -= BALANCE.TOWERS.sinew.cost + BALANCE.TOWERS.ember.cost;
+  let cumulative = 80 - cheapest * 2;
   for (let i = 0; i < WAVE_DEFS.length; i++) {
     const w = WAVE_DEFS[i];
     const waveGold = w.count * w.reward;
@@ -1895,8 +1809,8 @@ function initMatch() {
     towers: [], enemies: [], shots: [],
     flashes: [], damageNumbers: [], feed: [],
     wave: 0, waveActive: false, spawn: null,
-    gold: BALANCE.STARTING_GOLD_MATCH, knowledge: 0, divinity: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_MATCH,
-    selectedTower: "sinew", playing: true, paused: false, totalKills: 0, totalGold: 0,
+    gold: BALANCE.STARTING_GOLD_MATCH, divinity: 0, lives: BALANCE.STARTING_LIVES_MATCH,
+    selectedTower: null, playing: true, paused: false, totalKills: 0, totalGold: 0,
     pathLen: pathLength(b.path), totalWaves: waves,
     isCoop, isGuest,
     matchStartMs: Date.now(), _eventLastId: null, pendingWaveMods: null,
@@ -1937,7 +1851,6 @@ function initMatch() {
   }
   updateHUD();
   bindCanvas();
-  selectTower("sinew");
   renderActionBarBuildSet();
   logBalanceCurve();
   requestAnimationFrame(gameLoop);
@@ -1954,8 +1867,8 @@ function initTutorial() {
     towers: [], enemies: [], shots: [],
     flashes: [], damageNumbers: [], feed: [],
     wave: 0, waveActive: false, spawn: null,
-    gold: BALANCE.STARTING_GOLD_TUTORIAL, knowledge: 0, divinity: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_TUTORIAL,
-    selectedTower: "ember", playing: true, totalKills: 0,
+    gold: BALANCE.STARTING_GOLD_TUTORIAL, divinity: 0, lives: BALANCE.STARTING_LIVES_TUTORIAL,
+    selectedTower: TUT_TOWER_KEY, playing: true, totalKills: 0,
     pathLen: pathLength(b.path), tutorialStep: 1
   };
   updateHUD(); bindCanvas(); setTutorialStep(1);
@@ -1980,7 +1893,6 @@ function updateHUD() {
   const p = game.hudPrefix;
   const $ = id => document.getElementById(p + id);
   if ($("gold")) $("gold").textContent = Math.floor(game.gold);
-  if ($("knowledge")) $("knowledge").textContent = Math.floor(game.knowledge);
   // C3 — Tribute mirrors gold value (alongside; underlying field stays game.gold until C5/C6 dismantle).
   if ($("tribute")) $("tribute").textContent = Math.floor(game.gold);
   // C3 — Divinity rendered as 6 discrete pips; +1 per boss round (wave % 5 === 0); spec capped 6.
@@ -1995,7 +1907,6 @@ function updateHUD() {
   }
   const fusionBtn = document.getElementById(p + "btn-fusion");
   if (fusionBtn) fusionBtn.disabled = (game.divinity || 0) < 2;
-  if ($("age")) $("age").textContent = AGES[game.ageIdx];
   if ($("lives")) $("lives").textContent = game.lives;
   if (p === "m-") {
     const total = game.totalWaves || 3;
@@ -2009,13 +1920,6 @@ function updateHUD() {
       else if (game.wave >= total) { ind.textContent = "All waves complete"; ind.classList.remove("active"); }
       else { ind.textContent = "Ready — next: Wave " + (game.wave + 1); ind.classList.remove("active"); }
     }
-    document.getElementById("btn-age-up").disabled = game.knowledge < 50 || game.ageIdx >= AGES.length - 1 || game.waveActive || game.paused;
-    const hybridReady = game.towers.some(t => t.type === "sinew") && game.towers.some(t => t.type === "ember");
-    document.getElementById("btn-tower-hybrid").disabled = !hybridReady;
-    if (hybridReady) document.getElementById("btn-tower-hybrid").title = "Sinew + Ember adjacency detected";
-    if (hybridReady && !game._hybridAnnounced) { game._hybridAnnounced = true; if (typeof emitFeed === "function") emitFeed("hybrid", "Hybrid unlocked: Tank Corps"); }
-    const lbl = document.getElementById("btn-tower-hybrid-label");
-    if (lbl) lbl.textContent = (HYBRIDS && HYBRIDS.sinew_ember) ? HYBRIDS.sinew_ember.label : "Tank Corps";
   }
   if (p === "t-" && $("step")) $("step").textContent = game.tutorialStep + " / 5";
   if (p === "m-") renderCastBar();
@@ -2188,7 +2092,7 @@ function castAbility(slot) {
 function selectTower(type) {
   if (!game) return;
   if (game.paused) return;
-  if (game.mode === "tutorial" && type !== "ember" && game.tutorialStep < 5) return;
+  if (game.mode === "tutorial" && type !== TUT_TOWER_KEY && game.tutorialStep < 5) return;
   game.selectedTower = type;
   document.querySelectorAll(".tower-btn[data-tower]").forEach(b => {
     b.classList.toggle("selected", b.dataset.tower === type);
@@ -2219,8 +2123,6 @@ function processRemoteIntents() {
       if (cell) placeTower(cell, intent.tower, "guest");
     } else if (intent.type === "send-wave") {
       startWave();
-    } else if (intent.type === "age-up") {
-      ageUp();
     }
   }
 }
@@ -2254,12 +2156,6 @@ function placeTower(cell, type, owner) {
   const stat = TOWER_STATS[type];
   if (!stat) return;
   if (game.gold < stat.cost) { toast("Not enough gold."); return; }
-  if (type === "hybrid") {
-    const near = (t) => Math.hypot((cell.x+cell.w/2)-t.x, (cell.y+cell.h/2)-t.y) < 110;
-    const hasS = game.towers.some(t => t.type === "sinew" && near(t));
-    const hasE = game.towers.some(t => t.type === "ember" && near(t));
-    if (!(hasS && hasE)) { toast("Needs Sinew and Ember nearby."); return; }
-  }
   game.gold -= stat.cost;
   cell.occupied = true;
   game.towers.push({ x: cell.x + cell.w/2, y: cell.y + cell.h/2, type, cd: 0, cell, owner: owner || (game.isCoop ? "host" : null), level: 1, invested: stat.cost });
@@ -2294,12 +2190,10 @@ function effectiveTowerStats(t) {
   let dmgMul = Math.pow(1.50, lvl - 1);
   let rngMul = Math.pow(1.08, lvl - 1);
   let cdMul  = Math.pow(0.90, lvl - 1);
-  const age = game.ageIdx;
-  const dmg = stat.damage && stat.damage[age] != null ? Math.round(stat.damage[age] * dmgMul) : 0;
-  const cd  = stat.cd && stat.cd[age] != null ? Math.max(6, Math.round(stat.cd[age] * cdMul)) : 30;
+  const dmg = stat.damage != null ? Math.round(stat.damage * dmgMul) : 0;
+  const cd  = stat.cd != null ? Math.max(6, Math.round(stat.cd * cdMul)) : 30;
   const range = Math.round(stat.range * rngMul);
-  const kn  = stat.knowledge && stat.knowledge[age] != null ? Math.round(stat.knowledge[age] * dmgMul) : 0;
-  return { ...stat, damage: dmg, cd, range, knowledge: kn, level: lvl };
+  return { ...stat, damage: dmg, cd, range, level: lvl };
 }
 
 function upgradeCost(t) {
@@ -2362,12 +2256,13 @@ function sellTower(t) {
 // ============================================================================
 // Tutorial script
 // ============================================================================
+const TUT_TOWER_KEY = "greek_phalanx";
 const TUT = {
-  1: { step: "Step 1 — Build",   body: "Click a glowing cell beside the path to place your Ember tower. Ember towers are weak alone but generate Knowledge, which unlocks Ages.", cta: null },
-  2: { step: "Step 2 — Defend",  body: "Good. A small wave is coming. Watch your Ember tower strike. Each kill earns gold and knowledge.", cta: "Send wave" },
-  3: { step: "Step 3 — Hybrid",  body: "In a full match, placing a Sinew tower next to your Ember would unlock the Tank Corps hybrid — a cross-lineage unit. For now, behold.", cta: "Show me" },
-  4: { step: "Step 4 — Age up",  body: "Spend Knowledge to advance to the next Age. Every tower gets stronger. This is the cascade.", cta: "Advance" },
-  5: { step: "Step 5 — The real fight", body: "You've seen the loop: build → defend → evolve. Now take a full match. Three waves. No guardrails.", cta: "Solo Skirmish" }
+  1: { step: "Step 1 — Build",   body: "Click a glowing cell beside the path to place your Phalanx (Greek T1). Cheap, plentiful, the recruit line of any civilization.", cta: null },
+  2: { step: "Step 2 — Defend",  body: "Good. A small wave is coming. Watch your Phalanx strike. Each kill earns gold.", cta: "Send wave" },
+  3: { step: "Step 3 — Merge",   body: "In a full match, two T1 towers of the same civ merge into a T2 (Acropolis / Oracle / Trireme Dock). Two T2s merge into a T3. T3 promotes to a T4 Demigod via Tribute.", cta: "Got it" },
+  4: { step: "Step 4 — Fusion",  body: "Two T4 Demigods of the same civ fuse into a God — the match's endgame catharsis. Costs Divinity, earned on boss rounds.", cta: "Got it" },
+  5: { step: "Step 5 — The real fight", body: "You've seen the loop: build → merge → promote → fuse. Now take a full match. Three waves. No guardrails.", cta: "Solo Skirmish" }
 };
 function setTutorialStep(n) {
   game.tutorialStep = n;
@@ -2385,21 +2280,18 @@ function setTutorialStep(n) {
   updateHUD();
 }
 function advanceTutorialOnEvent(ev, data) {
-  if (ev === "placed" && game.tutorialStep === 1 && data === "ember") setTutorialStep(2);
+  if (ev === "placed" && game.tutorialStep === 1 && data === TUT_TOWER_KEY) setTutorialStep(2);
   else if (ev === "killed-all" && game.tutorialStep === 2) setTutorialStep(3);
-  else if (ev === "aged" && game.tutorialStep === 4) setTutorialStep(5);
 }
 function tutorialCTA(n) {
   if (n === 2) {
     game.waveActive = true; game.wave = 1;
     game.spawn = { count: 3, remaining: 3, cd: 0, gap: 50, hp: 10, speed: 0.9, reward: 6 };
   } else if (n === 3) {
-    toast("Imagine: Sinew + Ember → Tank Corps");
+    toast("T1 + T1 (same civ) → T2");
     setTimeout(() => setTutorialStep(4), 1600);
-    game.knowledge = Math.max(game.knowledge, 50);
-    updateHUD();
   } else if (n === 4) {
-    if (game.knowledge >= 50) { game.knowledge -= 50; game.ageIdx = Math.min(game.ageIdx + 1, AGES.length - 1); updateHUD(); advanceTutorialOnEvent("aged"); }
+    setTimeout(() => setTutorialStep(5), 1200);
   } else if (n === 5) {
     currentMatchMode = "skirmish"; BALANCE.MATCH_WAVES = 3; rebuildDerived();
     goto("match");
@@ -2428,10 +2320,6 @@ function startWave() {
   updateHUD();
   toast("Wave " + game.wave + " begins.");
   rollSpontaneityEvent("wave-start");
-  // Auto-age-up gameplay option
-  if (Profile.setting("gp.autoAgeUp", false) && game.knowledge >= 50 && game.ageIdx < AGES.length - 1) {
-    setTimeout(() => { if (!game.waveActive) ageUp(); }, 400);
-  }
 }
 // ---- Spontaneity events (Strand 9) ----
 function rollSpontaneityEvent(trigger) {
@@ -2460,7 +2348,6 @@ function rollSpontaneityEvent(trigger) {
 function applySpontaneityEvent(ev) {
   const e = ev.effect || {};
   if (e.type === "gold") game.gold += e.amount || 0;
-  else if (e.type === "knowledge") game.knowledge += e.amount || 0;
   else if (e.type === "wave-hp-mult") game.pendingWaveMods = Object.assign(game.pendingWaveMods || {}, { hpMult: e.mult });
   else if (e.type === "wave-speed-mult") game.pendingWaveMods = Object.assign(game.pendingWaveMods || {}, { speedMult: e.mult });
   else if (e.type === "wave-count-delta") game.pendingWaveMods = Object.assign(game.pendingWaveMods || {}, { countDelta: e.delta });
@@ -2480,39 +2367,6 @@ function showEventBanner(msg) {
   clearTimeout(showEventBanner._t);
   showEventBanner._t = setTimeout(() => host.style.display = "none", 3000);
 }
-function ageUp() {
-  if (game && game.isGuest) { Net.sendIntent({ type: "age-up" }); return; }
-  if (game.knowledge < 50 || game.ageIdx >= AGES.length - 1 || game.waveActive) return;
-  game.knowledge -= 50;
-  game.ageIdx++;
-  updateHUD();
-  toast("Age advanced: " + AGES[game.ageIdx]);
-  showAgeBanner(game.ageIdx);
-  rollSpontaneityEvent("age-gate");
-  // Age-gate autosave (Campaign only) per save-model.md:28
-  if ((game.matchMode === "campaign") && typeof buildSnapshot === "function") {
-    try { Profile.writeMatchSave("campaign", buildSnapshot()); } catch(e) {}
-  }
-}
-function showAgeBanner(idx) {
-  const arr = (typeof AGES_DATA !== "undefined" && AGES_DATA) ? AGES_DATA : null;
-  const age = arr && arr[idx];
-  const host = document.getElementById("age-banner");
-  if (!host) return;
-  const reduce = Profile.setting("a11y.reduceMotion", false);
-  const eraDesc = (age && age.eraDescriptor) || "A new age";
-  const lore = (age && age.lore) || "";
-  const name = (age && age.name) || (AGES[idx] || "");
-  const motif = (age && age.signatureMotif) ? ' · <em>' + age.signatureMotif + '</em>' : '';
-  host.innerHTML = '<div class="ab-name">Entering the ' + name + '</div>' +
-    '<div class="ab-era">' + eraDesc + '</div>' +
-    (lore ? '<div class="ab-lore">' + lore + '</div>' : '') +
-    (motif ? '<div class="ab-motif">' + motif + '</div>' : '');
-  host.classList.add("on");
-  clearTimeout(showAgeBanner._t);
-  showAgeBanner._t = setTimeout(() => host.classList.remove("on"), reduce ? 400 : 2500);
-}
-
 // ============================================================================
 // Pause
 // ============================================================================
@@ -2575,7 +2429,7 @@ function saveAndExit() {
   const mode = game.matchMode || "skirmish";
   if (mode === "campaign" || mode === "skirmish") {
     Profile.writeMatchSave(mode, {
-      wave: game.wave, ageIdx: game.ageIdx, gold: game.gold, knowledge: game.knowledge, lives: game.lives,
+      wave: game.wave, gold: game.gold, lives: game.lives,
       towers: game.towers.map(t => ({ x: t.x, y: t.y, type: t.type })), totalWaves: game.totalWaves
     });
     toast("Saved.");
@@ -2607,11 +2461,11 @@ function tick() {
   if (game.spawn && game.spawn.remaining > 0) {
     game.spawn.cd--;
     if (game.spawn.cd <= 0) {
-      const arch = archetypeFor(game.ageIdx);
+      const arch = archetypeFor(0);
       game.enemies.push({
         dist: 0, hp: game.spawn.hp, maxHp: game.spawn.hp, speed: game.spawn.speed, reward: game.spawn.reward,
         kind: arch.kind, color: arch.color, accent: arch.accent, label: arch.label, glyph: arch.glyph,
-        ageIdx: game.ageIdx, statuses: []
+        statuses: []
       });
       game.spawn.remaining--;
       game.spawn.cd = game.spawn.gap;
@@ -2651,12 +2505,11 @@ function tick() {
       const base = TOWER_STATS[t.type] ? TOWER_STATS[t.type].damage : eff.damage;
       const dmg = eff.damage;
       target.hp -= dmg;
-      const lineage = lineageOf(t.type);
       const meta = BALANCE.TOWER_META && BALANCE.TOWER_META[t.type];
       game.shots.push({
         x1: t.x, y1: t.y, x2: target.x, y2: target.y,
         color: eff.color, accent: (meta && meta.accent) || eff.color,
-        lineage, life: 8
+        life: 8
       });
       emitMuzzleFlash(t.x, t.y, eff.color);
       // Damage number — colored by magnitude vs. base
@@ -2664,22 +2517,11 @@ function tick() {
       if (dmg >= base * 2) numColor = "#fbbf24";
       else if (dmg <= base * 0.5) numColor = "#9ca3af";
       emitDamageNumber(target.x, target.y - 20, Math.round(dmg).toString(), numColor);
-      // Apply status effects by lineage
-      if (lineage === "veil" || t.type === "veil") {
-        if (!target.statuses.some(s => s.kind === "slow")) target.statuses.push({ kind: "slow", ttl: 60 });
-        else target.statuses.find(s => s.kind === "slow").ttl = 60;
-      } else if (lineage === "ember" || t.type === "ember") {
-        if (!target.statuses.some(s => s.kind === "burn")) target.statuses.push({ kind: "burn", ttl: 45 });
-        else target.statuses.find(s => s.kind === "burn").ttl = 45;
-      } else if (lineage === "forge" || t.type === "forge") {
-        if (!target.statuses.some(s => s.kind === "marked")) target.statuses.push({ kind: "marked", ttl: 90 });
-      }
       t.cd = eff.cd;
       if (target.hp <= 0) {
         game.gold += target.reward;
         if (game.mode === "match") game.totalGold = (game.totalGold || 0) + target.reward;
         game.totalKills++;
-        if (t.type === "ember") game.knowledge += eff.knowledge || 1;
         emitFeed("kill", (target.label || "Enemy") + " felled · +" + target.reward + "g");
       }
     }
@@ -2751,10 +2593,6 @@ function ageKey(idx) { return AGE_IDS[Math.min(Math.max(idx|0, 0), AGE_IDS.lengt
 function archetypeFor(ageIdx) {
   const key = ageKey(ageIdx);
   return (ENEMIES && ENEMIES[key]) || ENEMIES_INLINE[key] || ENEMIES_INLINE.primal;
-}
-function lineageOf(type) {
-  const meta = BALANCE.TOWER_META && BALANCE.TOWER_META[type];
-  return (meta && meta.lineage) || type;
 }
 // Map glyph names (from JSON) to unicode chars. Keep sparse; fall back to first letter.
 const GLYPH_UNICODE = {
@@ -2909,91 +2747,13 @@ function renderTowerHex(ctx, t, eff, isHovered) {
   ctx.restore();
 }
 
-// Per-lineage projectile shapes.
+// Generic projectile renderer (civ-tower shape; per-tower visual variation deferred to art pass).
 function renderProjectile(ctx, s) {
   const life = s.life / 8;
   ctx.save();
   ctx.globalAlpha = Math.min(1, Math.max(0.15, life));
-  const dx = s.x2 - s.x1, dy = s.y2 - s.y1;
-  const ang = Math.atan2(dy, dx);
-  const len = Math.hypot(dx, dy);
-  switch (s.lineage) {
-    case "sinew": {
-      // Red dart — elongated triangle at tip
-      ctx.strokeStyle = s.color; ctx.lineWidth = 2.4;
-      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-      ctx.fillStyle = s.color;
-      ctx.translate(s.x2, s.y2); ctx.rotate(ang);
-      ctx.beginPath();
-      ctx.moveTo(0, 0); ctx.lineTo(-6, -2); ctx.lineTo(-6, 2); ctx.closePath(); ctx.fill();
-      break;
-    }
-    case "ember": {
-      // Orange spark + trail dots
-      ctx.strokeStyle = s.color; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-      ctx.fillStyle = s.color;
-      for (let i = 0; i < 3; i++) {
-        const t = 0.25 + i * 0.25;
-        const tx = s.x1 + dx * t, ty = s.y1 + dy * t;
-        ctx.globalAlpha = Math.min(1, life) * (0.3 + i * 0.2);
-        ctx.beginPath(); ctx.arc(tx, ty, 1.8, 0, Math.PI*2); ctx.fill();
-      }
-      ctx.globalAlpha = Math.min(1, life);
-      ctx.beginPath(); ctx.arc(s.x2, s.y2, 2.4, 0, Math.PI*2); ctx.fill();
-      break;
-    }
-    case "forge": {
-      // Grey hex-bolt
-      ctx.strokeStyle = s.color; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-      ctx.fillStyle = s.color;
-      ctx.translate(s.x2, s.y2); ctx.rotate(ang + performance.now() / 120);
-      ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const a = Math.PI/3 * i;
-        const px = Math.cos(a)*3, py = Math.sin(a)*3;
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-      }
-      ctx.closePath(); ctx.fill();
-      break;
-    }
-    case "crown": {
-      // Purple chevron pair
-      ctx.strokeStyle = s.color; ctx.lineWidth = 2;
-      ctx.translate(s.x1, s.y1); ctx.rotate(ang);
-      for (let i = 0; i < 2; i++) {
-        const off = i * (len * 0.45);
-        ctx.beginPath();
-        ctx.moveTo(off, -3); ctx.lineTo(off + 5, 0); ctx.lineTo(off, 3);
-        ctx.stroke();
-      }
-      break;
-    }
-    case "veil": {
-      // Cyan wisp — wavy bezier
-      ctx.strokeStyle = s.color; ctx.lineWidth = 2;
-      const mx = (s.x1 + s.x2) / 2, my = (s.y1 + s.y2) / 2;
-      const perpX = -dy / Math.max(1, len) * 4, perpY = dx / Math.max(1, len) * 4;
-      ctx.beginPath();
-      ctx.moveTo(s.x1, s.y1);
-      ctx.quadraticCurveTo(mx + perpX, my + perpY, s.x2, s.y2);
-      ctx.stroke();
-      break;
-    }
-    case "hybrid": {
-      // Two-color split
-      ctx.strokeStyle = s.color; ctx.lineWidth = 2.2;
-      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo((s.x1+s.x2)/2, (s.y1+s.y2)/2); ctx.stroke();
-      ctx.strokeStyle = s.accent || "#fbbf24"; ctx.lineWidth = 2.2;
-      ctx.beginPath(); ctx.moveTo((s.x1+s.x2)/2, (s.y1+s.y2)/2); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-      break;
-    }
-    default: {
-      ctx.strokeStyle = hexA(s.color, life); ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-    }
-  }
+  ctx.strokeStyle = hexA(s.color, life); ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
   ctx.restore();
 }
 
@@ -3064,7 +2824,7 @@ function emitMuzzleFlash(x, y, color) {
 }
 function emitFeed(kind, text) {
   if (!game.feed) game.feed = [];
-  game.feed.push({ kind, text, life: kind === "leak" || kind === "hybrid" ? 360 : 240 });
+  game.feed.push({ kind, text, life: kind === "leak" ? 360 : 240 });
   if (game.feed.length > 8) game.feed.shift();
   renderCombatFeedDOM();
 }
@@ -3092,8 +2852,7 @@ function renderNextWaveTelegraph() {
   const nextIdx = game.wave; // 0-based index of upcoming wave
   const def = WAVE_DEFS[nextIdx];
   if (!def) { host.classList.remove("on"); return; }
-  // Derive archetype for the current age (waves pull from current age arc).
-  const arch = archetypeFor(game.ageIdx);
+  const arch = archetypeFor(0);
   host.innerHTML =
     '<span class="tw-label">NEXT · W' + (nextIdx + 1) + '</span>' +
     '<span class="tw-chip" id="nwt-chip">' +
@@ -3263,9 +3022,9 @@ function draw() {
   const pathLen = game.pathLen || 1;
   const showThreat = Profile.setting("insight.threatBar", true);
   for (const e of game.enemies) {
-    const kind = e.kind || archetypeFor(e.ageIdx != null ? e.ageIdx : game.ageIdx).kind;
-    const color = e.color || archetypeFor(e.ageIdx != null ? e.ageIdx : game.ageIdx).color;
-    const accent = e.accent || archetypeFor(e.ageIdx != null ? e.ageIdx : game.ageIdx).accent;
+    const kind = e.kind || archetypeFor(0).kind;
+    const color = e.color || archetypeFor(0).color;
+    const accent = e.accent || archetypeFor(0).accent;
     const scale = kind === "boss" ? 1.3 : kind === "heavy" ? 1.1 : kind === "swarmer" ? 0.75 : 0.95;
     renderSilhouette(ctx, kind, e.x, e.y, scale, color, accent);
     // HP bar
@@ -3372,31 +3131,19 @@ function hideTip() {
   tip.setAttribute("aria-hidden", "true");
 }
 
-function lineageRole(type) {
-  return ({
-    sinew: "Front line. High HP, low range. Takes and deals hits.",
-    ember: "Tech accelerator. Generates Knowledge on kill — spend it on Age-Up.",
-    forge: "Economy. Generates gold passively (not wired in prototype).",
-    crown: "Aura multiplier. Boosts adjacent towers (not wired in prototype).",
-    veil:  "Wild card. Debuff / terrain / reality-bend role.",
-    hybrid: "Sinew × Ember fusion. Tank Corps — high damage, mid range."
-  })[type] || "";
-}
-
 function towerTipHTML(t) {
   const eff = effectiveTowerStats(t);
   const meta = TOWER_STATS[t.type];
   const up = upgradeCost(t);
   const refund = sellRefund(t);
-  const ageName = AGES[game.ageIdx] || "—";
   const dots = "●".repeat(t.level || 1) + "○".repeat(3 - (t.level || 1));
   const civMeta = civTowerMeta(t.type);
   const tierStamp = civMeta ? ` <span class="tier-badge">${civMeta.tier}</span>` : "";
   const atk = attackTypeFor(t.type);
   const atkStamp = atk ? `<div class="tip-row"><span class="tip-k">Attack</span><span class="tip-v">${atk}</span></div>` : "";
   const subLine = civMeta
-    ? `${ageName} age · ${civMeta.civ} · owner: ${t.owner || "you"}`
-    : `${ageName} age · owner: ${t.owner || "you"}`;
+    ? `${civMeta.civ} · owner: ${t.owner || "you"}`
+    : `owner: ${t.owner || "you"}`;
   return `
     <div class="tip-title">${meta.label}${tierStamp} <span class="tip-hk">L${t.level || 1} ${dots}</span></div>
     <div class="tip-sub">${subLine}</div>
@@ -3404,8 +3151,6 @@ function towerTipHTML(t) {
     <div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">${eff.damage}</span></div>
     <div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">${eff.cd}</span></div>
     <div class="tip-row"><span class="tip-k">Range</span><span class="tip-v">${eff.range}</span></div>
-    ${eff.knowledge ? `<div class="tip-row"><span class="tip-k">Knowledge/kill</span><span class="tip-v">${eff.knowledge}</span></div>` : ""}
-    <div class="tip-role">${lineageRole(t.type)}</div>
     <div class="tip-hint">Right-click: ${(t.level||1) < 3 ? `upgrade ${up}g` : "max"} · sell ${refund}g</div>
   `;
 }
@@ -3421,17 +3166,14 @@ function enemyTipHTML(e) {
 function placementTipHTML(type) {
   const stat = TOWER_STATS[type];
   if (!stat) return "";
-  const age = game.ageIdx;
-  const dmg = stat.damage && stat.damage[age] != null ? stat.damage[age] : 0;
-  const cd  = stat.cd && stat.cd[age] != null ? stat.cd[age] : 30;
+  const dmg = stat.damage != null ? stat.damage : 0;
+  const cd  = stat.cd != null ? stat.cd : 30;
   const afford = game.gold >= stat.cost;
   const civMeta = civTowerMeta(type);
   const tierStamp = civMeta ? ` <span class="tier-badge">${civMeta.tier}</span>` : "";
   const atk = attackTypeFor(type);
   const atkStamp = atk ? `<div class="tip-row"><span class="tip-k">Attack</span><span class="tip-v">${atk}</span></div>` : "";
-  const subLine = civMeta ? `${AGES[age]} · ${civMeta.civ} · L1` : `${AGES[age]} · L1`;
-  const roleLine = civMeta ? "" : `<div class="tip-role">${lineageRole(type)}</div>`;
-  const extra = type === "hybrid" ? '<div class="tip-hint">Needs Sinew + Ember within 110px</div>' : "";
+  const subLine = civMeta ? `${civMeta.civ} · L1` : `L1`;
   return `
     <div class="tip-title">${stat.label}${tierStamp} <span class="tip-hk">click to place</span></div>
     <div class="tip-sub">${subLine}</div>
@@ -3490,40 +3232,41 @@ document.addEventListener("click", (ev) => {
   if (m && m.classList.contains("show") && !m.contains(ev.target)) hideCtxMenu();
 });
 
-// ---- Reference panel (I key) ----
+// ---- Reference panel (I key) — civ-tower listing per active commander ----
 function openReference() {
   const panel = document.getElementById("reference-panel");
   const content = document.getElementById("ref-content");
   if (!panel || !content || !game) return;
-  const age = game.ageIdx;
-  const ageName = AGES[age] || "—";
-  document.getElementById("ref-sub").textContent = `Current age: ${ageName} (${age + 1}/${AGES.length}). Numbers are age-scaled [PROPOSAL].`;
-  const types = ["sinew", "ember", "forge", "crown", "veil", "hybrid"];
+  const civId = (game.commander && game.commander.civ) || (CIVS_DATA && Object.keys(CIVS_DATA)[0]);
+  const civ = CIVS_DATA && civId ? CIVS_DATA[civId] : null;
+  const civLabel = civ ? civ.label : "—";
+  document.getElementById("ref-sub").textContent = `Civilization: ${civLabel}. Tier ladder T1 → T2 → T3 → T4 (promote). Numbers [PROPOSAL].`;
   let rows = "";
-  for (const ty of types) {
-    const stat = TOWER_STATS[ty]; if (!stat) continue;
-    const dmg = stat.damage && stat.damage[age] != null ? stat.damage[age] : 0;
-    const cd = stat.cd && stat.cd[age] != null ? stat.cd[age] : 30;
-    rows += `<tr><td><span class="ref-lineage" style="background:${stat.color}"></span>${stat.label}</td><td>${stat.cost}g</td><td>${dmg}</td><td>${cd}</td><td>${stat.range}</td><td>${lineageRole(ty)}</td></tr>`;
-  }
-  let ageRows = "";
-  for (let i = 0; i < AGES.length; i++) {
-    const cls = i === age ? ' class="current-age"' : "";
-    const dmgMul = Math.pow(BALANCE.DAMAGE_PER_AGE, i).toFixed(2);
-    const cdMul = Math.pow(BALANCE.CD_PER_AGE, i).toFixed(2);
-    ageRows += `<tr${cls}><td>${i + 1}</td><td>${AGES[i]}</td><td>×${dmgMul}</td><td>×${cdMul}</td></tr>`;
+  if (civ) {
+    const tierOrder = { T1: 0, T2: 1, T3: 2 };
+    const list = (civ.towersT1T3 || []).slice().sort((a, b) => (tierOrder[a.tier] ?? 9) - (tierOrder[b.tier] ?? 9));
+    for (const tw of list) {
+      const key = civTowerKey(civId, tw.id);
+      const stat = TOWER_STATS[key]; if (!stat) continue;
+      const dmg = stat.damage && stat.damage[0] != null ? stat.damage[0] : 0;
+      const cd  = stat.cd && stat.cd[0] != null ? stat.cd[0] : 30;
+      const atk = attackTypeFor(key) || "—";
+      rows += `<tr><td><span class="ref-lineage" style="background:${stat.color}"></span>${stat.label}</td><td>${tw.tier}</td><td>${stat.cost}g</td><td>${dmg}</td><td>${cd}</td><td>${stat.range}</td><td>${atk}</td></tr>`;
+    }
   }
   content.innerHTML = `
-    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:0 0 8px;">Towers @ ${ageName}</h3>
+    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:0 0 8px;">Towers · ${civLabel}</h3>
     <table>
-      <thead><tr><th>Lineage</th><th>Cost</th><th>DMG</th><th>CD</th><th>Range</th><th>Role</th></tr></thead>
+      <thead><tr><th>Tower</th><th>Tier</th><th>Cost</th><th>DMG</th><th>CD</th><th>Range</th><th>Attack</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:18px 0 8px;">Age ladder</h3>
-    <table>
-      <thead><tr><th>#</th><th>Age</th><th>DMG mult</th><th>CD mult</th></tr></thead>
-      <tbody>${ageRows}</tbody>
-    </table>
+    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:18px 0 8px;">Tier ladder</h3>
+    <div style="font-family:monospace;font-size:11px;color:var(--ink-1);line-height:1.7;">
+      T1 + T1 → T2 (within-civ merge).<br>
+      T2 + T2 → T3 (within-civ merge).<br>
+      T3 → T4 Demigod via Tribute promotion (${CIV_PROMOTE_T4_COST}g).<br>
+      Two T4 Demigods → 1 God via Fusion (1 Divinity).
+    </div>
     <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:18px 0 8px;">Upgrade [PROPOSAL]</h3>
     <div style="font-family:monospace;font-size:11px;color:var(--ink-1);line-height:1.7;">
       L1 → L2: damage ×1.50, range ×1.08, cooldown ×0.90. Cost = ceil(base × 0.75 × 1).<br>
@@ -3538,7 +3281,7 @@ function closeReference() {
   if (panel) panel.classList.remove("show");
 }
 
-// ---- Button tooltips (action bar + age-up + hybrid) ----
+// ---- Button tooltips (action bar) ----
 function bindActionBarTooltips() {
   document.querySelectorAll(".action-bar .tower-btn[data-tower]").forEach(btn => {
     btn.addEventListener("mouseenter", () => {
@@ -3548,38 +3291,16 @@ function bindActionBarTooltips() {
     btn.addEventListener("mouseenter", (ev) => {
       if (!game) return;
       const r = btn.getBoundingClientRect();
-      if (type === "hybrid") {
-        const ready = !btn.disabled;
-        const note = ready ? "Ready — Sinew + Ember detected." : "Needs Sinew + Ember within 110px of placement cell.";
-        const stat = TOWER_STATS.hybrid;
-        showTip(`<div class="tip-title">${HYBRIDS && HYBRIDS.sinew_ember ? HYBRIDS.sinew_ember.label : "Tank Corps"} <span class="tip-hk">6</span></div><div class="tip-sub">Hybrid · Sinew × Ember</div><div class="tip-row"><span class="tip-k">Cost</span><span class="tip-v">${stat.cost}g</span></div><div class="tip-role">${lineageRole("hybrid")}</div><div class="tip-hint">${note}</div>`, r.left + r.width/2, r.top);
-      } else {
-        showPlacementTip(type, r.left + r.width/2, r.top);
-      }
+      showPlacementTip(type, r.left + r.width/2, r.top);
     });
     btn.addEventListener("mouseleave", hideTip);
   });
-  const ageBtn = document.getElementById("btn-age-up");
-  if (ageBtn) {
-    ageBtn.addEventListener("mouseenter", () => {
-      if (!game) return;
-      const next = game.ageIdx + 1;
-      const r = ageBtn.getBoundingClientRect();
-      const canAge = next < AGES.length;
-      const nextName = canAge ? AGES[next] : "—";
-      const kn = BALANCE.AGE_UP_KNOWLEDGE_COST || 50;
-      const dmgBump = Math.round((BALANCE.DAMAGE_PER_AGE - 1) * 100);
-      const cdBump = Math.round((1 - BALANCE.CD_PER_AGE) * 100);
-      showTip(`<div class="tip-title">Age-Up <span class="tip-hk">A</span></div><div class="tip-sub">${AGES[game.ageIdx]} → ${nextName}</div><div class="tip-row"><span class="tip-k">Cost</span><span class="tip-v">${kn} knowledge</span></div><div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">+${dmgBump}% all towers</span></div><div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">-${cdBump}% all towers</span></div><div class="tip-hint">${canAge ? "Promotes every placed tower." : "Already at final age."}</div>`, r.left + r.width/2, r.top);
-    });
-    ageBtn.addEventListener("mouseleave", hideTip);
-  }
   const waveBtn = document.getElementById("btn-wave");
   if (waveBtn) {
     waveBtn.addEventListener("mouseenter", () => {
       if (!game) return;
       const r = waveBtn.getBoundingClientRect();
-      showTip(`<div class="tip-title">Send Wave <span class="tip-hk">Space</span></div><div class="tip-sub">Wave ${game.wave + 1} of ${game.totalWaves || 3}</div><div class="tip-hint">Cannot age-up while a wave is active.</div>`, r.left + r.width/2, r.top);
+      showTip(`<div class="tip-title">Send Wave <span class="tip-hk">Space</span></div><div class="tip-sub">Wave ${game.wave + 1} of ${game.totalWaves || 3}</div>`, r.left + r.width/2, r.top);
     });
     waveBtn.addEventListener("mouseleave", hideTip);
   }
@@ -3590,7 +3311,7 @@ function bindActionBarTooltips() {
 // ============================================================================
 function endMatch(won) {
   game.playing = false;
-  game.ended = { won, kills: game.totalKills, gold: game.totalGold || 0, lives: game.lives, age: AGES[game.ageIdx], towers: game.towers.length, waves: game.wave, totalWaves: game.totalWaves || 3 };
+  game.ended = { won, kills: game.totalKills, gold: game.totalGold || 0, lives: game.lives, towers: game.towers.length, waves: game.wave, totalWaves: game.totalWaves || 3 };
   if (game.isCoop && Net.role === "host") Net.broadcastMatchEnd(game.ended);
   // Award XP to active commander (display-only progression)
   if (COMMANDERS && Profile.data) {
@@ -3759,13 +3480,11 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { hideCtxMenu(); hideTip(); }
   if (currentScene !== "match" || !game || game.paused) return;
   if (e.key === " ") { e.preventDefault(); startWave(); }
-  else if (e.key.toLowerCase() === "a") ageUp();
-  else if (e.key === "1") selectTower("sinew");
-  else if (e.key === "2") selectTower("ember");
-  else if (e.key === "3") selectTower("forge");
-  else if (e.key === "4") selectTower("crown");
-  else if (e.key === "5") selectTower("veil");
-  else if (e.key === "6") selectTower("hybrid");
+  else if (e.key >= "1" && e.key <= "9") {
+    const idx = parseInt(e.key, 10) - 1;
+    const btns = document.querySelectorAll("#civ-tower-btns .tower-btn[data-tower]");
+    if (btns[idx]) selectTower(btns[idx].dataset.tower);
+  }
   else if (e.key.toLowerCase() === "i") { e.preventDefault(); openReference(); }
   else if (e.key.toLowerCase() === "u" && hoverState.tower) upgradeTower(hoverState.tower);
   else if (e.key.toLowerCase() === "x" && hoverState.tower) sellTower(hoverState.tower);
