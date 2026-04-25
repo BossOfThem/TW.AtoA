@@ -1,7 +1,76 @@
 {
-  "_comment": "Commander roster for the prototype concept-demo. All five now playable per Phase 10.1 pivot (decisions/2026-04-20-prototype-concept-demo-pivot.md). Names are placeholder per CONCEPT §5.4; passive/signature numbers are [PROPOSAL] per decisions/2026-04-20-commander-identity-floor.md and awaiting playtest. The lineageTilt field maps 1:1 to towers.json lineages. Display-only in prototype v1 (passive/signature not wired to combat — Phase 10.2 game-loop work). Per research/03-commander-archetypes.md, fantasy labels avoid the over-represented-archetype list (gritty male soldier, chosen-one orphan, scruffy scoundrel). Port target: Godot 4 Resource array (res://data/commanders/*.tres).",
+  "_comment": "Commander roster for the prototype. C1 reshape per decisions/2026-04-26-prototype-reshape-plan.md (Accepted 2026-04-29) lands the 3 locked civ commanders (Leonidas / Montezuma II / Ragnar Lothbrok) ALONGSIDE the 5 legacy Ash/Nature/Prayer commanders (commander-a..e) per the alongside-and-non-breaking pattern PM ratified for the C1 cardinality break. Legacy 5 stay playable so the existing pick UI keeps running through C1-C2; full removal is the C6 dead-code pass after C3-C5 dismantle the age-loop UI. Locked names per decisions/2026-04-25-q2-real-cultures-direction-ratified.md (Hard reversibility); locked signature-ability names from same — do NOT rename without a new dated decision. Identity-floor fields (passive/signature/long-CD names, 12-line VO bank shape, 20-level XP ladder, 3 cosmetic slots L5/L10/L15) preserved per decisions/2026-04-20-commander-identity-floor.md. All numbers [PROPOSAL] until balance pass. Port target: Godot 4 Resource array (res://data/commanders/*.tres).",
   "active": "commander-a",
   "roster": {
+    "leonidas": {
+      "name": "Leonidas",
+      "epithet": "Greek · Spartan King",
+      "civ": "greek",
+      "playable": true,
+      "lore": "\"The line is held by men who chose to die at it. Spartan training is not a regimen — it is a covenant. When the wall breaks, I am the wall.\"",
+      "stats": {
+        "civ": "Greek — phalanx anchor",
+        "passive": "Spartan Training",
+        "shortCdActive": "This Is Sparta!",
+        "longCdSignature": "The Last Stand"
+      },
+      "vo": {
+        "pick":    ["[VO] Sparta marches.", "[VO] The line is here.", "[VO] We hold."],
+        "victory": ["[VO] Sparta endures.", "[VO] The line held.", "[VO] As it was foretold."],
+        "defeat":  ["[VO] The Hot Gates fell.", "[VO] We die standing.", "[VO] Tell them in Sparta."],
+        "ability": ["[VO] This is Sparta!", "[VO] Hold the line!", "[VO] No retreat!"]
+      },
+      "progression": {
+        "level": 1, "maxLevel": 20, "xp": 0, "xpToNext": 100,
+        "cosmeticSlots": {"skin": null, "frame": null, "mapTint": null}
+      }
+    },
+    "montezuma-ii": {
+      "name": "Montezuma II",
+      "epithet": "Aztec · Priest-King",
+      "civ": "aztec",
+      "playable": true,
+      "lore": "\"The sun is fed by tribute. The tribute is paid in blood. The blood is mine to weigh, and the gods are mine to answer. The Great Sacrifice is not a cost — it is the bargain that lets the next dawn come.\"",
+      "stats": {
+        "civ": "Aztec — ritual priest-warrior",
+        "passive": "Blood Tribute",
+        "shortCdActive": "Sun Offering",
+        "longCdSignature": "The Great Sacrifice"
+      },
+      "vo": {
+        "pick":    ["[VO] The sun is hungry.", "[VO] The pyramid awakens.", "[VO] Tribute is due."],
+        "victory": ["[VO] The gods are fed.", "[VO] Another dawn purchased.", "[VO] The bargain holds."],
+        "defeat":  ["[VO] The sun goes dark.", "[VO] The bargain broke.", "[VO] The gods turn away."],
+        "ability": ["[VO] Sun Offering.", "[VO] Open the altar.", "[VO] The Great Sacrifice."]
+      },
+      "progression": {
+        "level": 1, "maxLevel": 20, "xp": 0, "xpToNext": 100,
+        "cosmeticSlots": {"skin": null, "frame": null, "mapTint": null}
+      }
+    },
+    "ragnar-lothbrok": {
+      "name": "Ragnar Lothbrok",
+      "epithet": "Norse · Raider-Chieftain",
+      "civ": "norse",
+      "playable": true,
+      "lore": "\"My sons are my line. The mead hall sings their names before they are born. Berserk is not madness — it is honesty. The Great Heathen Army is what arrives when honesty is shared.\"",
+      "stats": {
+        "civ": "Norse — raider, sons-of-Ragnar",
+        "passive": "Sons of Ragnar",
+        "shortCdActive": "Berserk",
+        "longCdSignature": "The Great Heathen Army"
+      },
+      "vo": {
+        "pick":    ["[VO] The longships are at the strand.", "[VO] My sons are watching.", "[VO] Skål."],
+        "victory": ["[VO] The mead hall sings tonight.", "[VO] The sons see the father.", "[VO] Valhalla waits."],
+        "defeat":  ["[VO] The line of Ragnar bends.", "[VO] The sons will avenge.", "[VO] Odin sees."],
+        "ability": ["[VO] Berserk!", "[VO] The Heathen Army!", "[VO] Sons, with me!"]
+      },
+      "progression": {
+        "level": 1, "maxLevel": 20, "xp": 0, "xpToNext": 100,
+        "cosmeticSlots": {"skin": null, "frame": null, "mapTint": null}
+      }
+    },
     "commander-a": {
       "name": "Commander A",
       "epithet": "Sinew-tilted · Frontline Specialist",

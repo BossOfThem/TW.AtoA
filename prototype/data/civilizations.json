@@ -1,0 +1,131 @@
+{
+  "_comment": "Three launch civilizations per decisions/2026-04-25-q2-real-cultures-direction-ratified.md (Reversibility Hard). Locked content skeleton: 6 T1-T3 towers + 5 units + 6 T4 Demigods + 3 Gods per civ. Tower/unit/demigod/god IDs are kebab-case slugs of the locked names; display labels are the verbatim locked names. Per-civ palette + glyph are working placeholders pending styling/cultural-sensitivity pass (Follow-up #4 + Follow-up #5 from 2026-04-25 ratification). Attack-type assignments per tower/demigod live in attack-types.json; god 2-type damage pairs live in fusion-recipes.json. Names from 2026-04-25 are LOCKED — do NOT rename without a new dated decision. C1 reshape per decisions/2026-04-26-prototype-reshape-plan.md (Accepted 2026-04-29). Port target: Godot 4 Resource array (res://data/civilizations/*.tres).",
+  "civilizations": [
+    {
+      "id": "greek",
+      "name": "Greek",
+      "palette": {
+        "primary": "#1e40af",
+        "accent": "#fbbf24",
+        "ink": "#0f172a"
+      },
+      "glyph": "Ω",
+      "iconPlaceholder": "shield-and-spear",
+      "flavor": "Spartan discipline, phalanx, defensive anchor",
+      "commander": "leonidas",
+      "patchCommander": null,
+      "towersT1T3": [
+        {"id": "phalanx",      "label": "Phalanx",      "tier": "T1"},
+        {"id": "acropolis",    "label": "Acropolis",    "tier": "T2"},
+        {"id": "oracle",       "label": "Oracle",       "tier": "T2"},
+        {"id": "colossus",     "label": "Colossus",     "tier": "T3"},
+        {"id": "trireme-dock", "label": "Trireme Dock", "tier": "T2"},
+        {"id": "parthenon",    "label": "Parthenon",    "tier": "T3"}
+      ],
+      "units": [
+        {"id": "hoplite",  "label": "Hoplite"},
+        {"id": "peltast",  "label": "Peltast"},
+        {"id": "hippeis",  "label": "Hippeis"},
+        {"id": "toxotes",  "label": "Toxotes"},
+        {"id": "krypteia", "label": "Krypteia"}
+      ],
+      "demigodsT4": [
+        {"id": "achilles",  "label": "Achilles",  "fromTower": "phalanx"},
+        {"id": "theseus",   "label": "Theseus",   "fromTower": "acropolis"},
+        {"id": "perseus",   "label": "Perseus",   "fromTower": "oracle"},
+        {"id": "hercules",  "label": "Hercules",  "fromTower": "colossus"},
+        {"id": "odysseus",  "label": "Odysseus",  "fromTower": "trireme-dock"},
+        {"id": "jason",     "label": "Jason",     "fromTower": "parthenon"}
+      ],
+      "gods": [
+        {"id": "zeus",     "label": "Zeus"},
+        {"id": "athena",   "label": "Athena"},
+        {"id": "poseidon", "label": "Poseidon"}
+      ]
+    },
+    {
+      "id": "aztec",
+      "name": "Aztec",
+      "palette": {
+        "primary": "#15803d",
+        "accent": "#dc2626",
+        "ink": "#1c1917"
+      },
+      "glyph": "𓁹",
+      "iconPlaceholder": "feathered-headdress",
+      "flavor": "Priest-warrior king, blood sacrifice, ritual",
+      "commander": "montezuma-ii",
+      "patchCommander": null,
+      "towersT1T3": [
+        {"id": "pyramid",                  "label": "Pyramid",                  "tier": "T1"},
+        {"id": "temple-of-the-sun",        "label": "Temple of the Sun",        "tier": "T2"},
+        {"id": "jaguar-warrior-hall",      "label": "Jaguar Warrior Hall",      "tier": "T2"},
+        {"id": "eagle-warrior-hall",       "label": "Eagle Warrior Hall",       "tier": "T2"},
+        {"id": "sacrificial-altar",        "label": "Sacrificial Altar",        "tier": "T3"},
+        {"id": "feathered-serpent-temple", "label": "Feathered Serpent Temple", "tier": "T3"}
+      ],
+      "units": [
+        {"id": "macehualli",     "label": "Macehualli"},
+        {"id": "jaguar-warrior", "label": "Jaguar Warrior"},
+        {"id": "eagle-warrior",  "label": "Eagle Warrior"},
+        {"id": "atlatl-thrower", "label": "Atlatl Thrower"},
+        {"id": "aztec-priest",   "label": "Aztec Priest"}
+      ],
+      "demigodsT4": [
+        {"id": "high-priest-king", "label": "High Priest-King", "fromTower": "pyramid"},
+        {"id": "nanahuatzin",      "label": "Nanahuatzin",      "fromTower": "temple-of-the-sun"},
+        {"id": "jaguar-champion",  "label": "Jaguar Champion",  "fromTower": "jaguar-warrior-hall"},
+        {"id": "eagle-champion",   "label": "Eagle Champion",   "fromTower": "eagle-warrior-hall"},
+        {"id": "blood-priest",     "label": "Blood Priest",     "fromTower": "sacrificial-altar"},
+        {"id": "serpent-priest",   "label": "Serpent-Priest",   "fromTower": "feathered-serpent-temple"}
+      ],
+      "gods": [
+        {"id": "quetzalcoatl",    "label": "Quetzalcoatl"},
+        {"id": "huitzilopochtli", "label": "Huitzilopochtli"},
+        {"id": "tezcatlipoca",    "label": "Tezcatlipoca"}
+      ]
+    },
+    {
+      "id": "norse",
+      "name": "Norse",
+      "palette": {
+        "primary": "#475569",
+        "accent": "#0ea5e9",
+        "ink": "#0c0a09"
+      },
+      "glyph": "ᚱ",
+      "iconPlaceholder": "longship-and-axe",
+      "flavor": "Raider-chieftain, sons-of-Ragnar, berserker fury",
+      "commander": "ragnar-lothbrok",
+      "patchCommander": null,
+      "towersT1T3": [
+        {"id": "longhouse",        "label": "Longhouse",        "tier": "T1"},
+        {"id": "mead-hall",        "label": "Mead Hall",        "tier": "T2"},
+        {"id": "rune-stone",       "label": "Rune Stone",       "tier": "T2"},
+        {"id": "longship-dock",    "label": "Longship Dock",    "tier": "T2"},
+        {"id": "berserker-lodge",  "label": "Berserker Lodge",  "tier": "T3"},
+        {"id": "forge",            "label": "Forge",            "tier": "T3"}
+      ],
+      "units": [
+        {"id": "viking-raider", "label": "Viking Raider"},
+        {"id": "shieldmaiden",  "label": "Shieldmaiden"},
+        {"id": "huscarl",       "label": "Huscarl"},
+        {"id": "berserker",     "label": "Berserker"},
+        {"id": "skald",         "label": "Skald"}
+      ],
+      "demigodsT4": [
+        {"id": "bjorn-ironside",   "label": "Björn Ironside",        "fromTower": "longhouse"},
+        {"id": "beowulf",          "label": "Beowulf",                "fromTower": "mead-hall"},
+        {"id": "harald-bluetooth", "label": "Harald Bluetooth",       "fromTower": "rune-stone"},
+        {"id": "leif-erikson",     "label": "Leif Erikson",           "fromTower": "longship-dock"},
+        {"id": "lagertha",         "label": "Lagertha",               "fromTower": "berserker-lodge"},
+        {"id": "sigurd",           "label": "Sigurd the Dragonslayer","fromTower": "forge"}
+      ],
+      "gods": [
+        {"id": "odin", "label": "Odin"},
+        {"id": "thor", "label": "Thor"},
+        {"id": "tyr",  "label": "Tyr"}
+      ]
+    }
+  ]
+}

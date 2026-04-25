@@ -178,6 +178,11 @@ def check_prototype_data() -> None:
         "towers.json":  ["ages", "lineageOrder", "towers", "hybrids"],
         "commanders.json": ["active", "roster"],
         "enemies.json": ["enemies"],
+        # C1 reshape (2026-04-29) — new canonical files alongside legacy ages/towers.
+        "civilizations.json": ["civilizations"],
+        "fusion-recipes.json": ["fusionMenuUnlockCost", "fusionExecutionCost", "recipes"],
+        "attack-types.json": ["types", "armorTags", "rpsMatrix", "towerTypeAssignments", "demigodTypeAssignments"],
+        "tiers.json": ["tiers", "fusion"],
     }
     for name, keys in required.items():
         p = data_dir / name
@@ -209,6 +214,64 @@ def check_prototype_data() -> None:
             non_playable = [k for k, v in cmd.get("roster", {}).items() if not v.get("playable")]
             if non_playable:
                 add(f"commanders.json non-playable roster entries: {non_playable}")
+        except Exception:
+            pass
+    # C1 reshape (2026-04-29) cross-file integrity
+    civ_p = data_dir / "civilizations.json"
+    fus_p = data_dir / "fusion-recipes.json"
+    atk_p = data_dir / "attack-types.json"
+    tie_p = data_dir / "tiers.json"
+    if civ_p.exists():
+        try:
+            civ = json.loads(civ_p.read_text(encoding="utf-8"))
+            civs = civ.get("civilizations", [])
+            if len(civs) != 3:
+                add(f"civilizations.json expected 3 civs (Greek/Aztec/Norse), got {len(civs)}")
+            for c in civs:
+                if len(c.get("towersT1T3", [])) != 6:
+                    add(f"civilizations.json[{c.get('id')}] expected 6 T1-T3 towers, got {len(c.get('towersT1T3', []))}")
+                if len(c.get("units", [])) != 5:
+                    add(f"civilizations.json[{c.get('id')}] expected 5 units, got {len(c.get('units', []))}")
+                if len(c.get("demigodsT4", [])) != 6:
+                    add(f"civilizations.json[{c.get('id')}] expected 6 T4 demigods, got {len(c.get('demigodsT4', []))}")
+                if len(c.get("gods", [])) != 3:
+                    add(f"civilizations.json[{c.get('id')}] expected 3 gods, got {len(c.get('gods', []))}")
+        except Exception:
+            pass
+    if fus_p.exists():
+        try:
+            fus = json.loads(fus_p.read_text(encoding="utf-8"))
+            recipes = fus.get("recipes", [])
+            if len(recipes) != 9:
+                add(f"fusion-recipes.json expected 9 recipes (3 per civ), got {len(recipes)}")
+            # Cross-ref god IDs against civilizations.json
+            if civ_p.exists():
+                try:
+                    civ = json.loads(civ_p.read_text(encoding="utf-8"))
+                    civ_god_ids = {g["id"] for c in civ.get("civilizations", []) for g in c.get("gods", [])}
+                    recipe_god_ids = {r.get("godId") for r in recipes}
+                    if civ_god_ids != recipe_god_ids:
+                        add(f"fusion-recipes.json godIds {recipe_god_ids - civ_god_ids} not in civilizations.json; missing {civ_god_ids - recipe_god_ids}")
+                except Exception:
+                    pass
+        except Exception:
+            pass
+    if atk_p.exists():
+        try:
+            atk = json.loads(atk_p.read_text(encoding="utf-8"))
+            if len(atk.get("types", [])) != 7:
+                add(f"attack-types.json expected 7 types, got {len(atk.get('types', []))}")
+            if len(atk.get("armorTags", [])) != 5:
+                add(f"attack-types.json expected 5 armor tags, got {len(atk.get('armorTags', []))}")
+        except Exception:
+            pass
+    if tie_p.exists():
+        try:
+            tie = json.loads(tie_p.read_text(encoding="utf-8"))
+            if len(tie.get("tiers", [])) != 4:
+                add(f"tiers.json expected 4 tiers (T1-T4), got {len(tie.get('tiers', []))}")
+            if not tie.get("fusion") or tie["fusion"].get("isATier", True):
+                add("tiers.json fusion meta missing or marked as a tier (must be isATier:false)")
         except Exception:
             pass
 

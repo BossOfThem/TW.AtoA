@@ -1,0 +1,48 @@
+{
+  "_comment": "4-tier ladder + Fusion meta-entry per decisions/2026-04-25-q2-real-cultures-direction-ratified.md (Reversibility Hard) and decisions/2026-04-26-prototype-reshape-plan.md (Accepted 2026-04-29). T1 swarm / T2 mainline / T3 elite / T4 Demigod via within-civ tower merge (T1+T1 -> T2; T2+T2 -> T3; T3 -> T4 via Tribute upgrade). Fusion is NOT a tier — it is the endgame event consuming 2 T4 Demigods of the same civ into 1 God board slot, costing 1 Divinity per execution. C1 lands tiers.json alongside the legacy ages.json (still feeds the running 11-age UI loop) per the alongside-and-non-breaking pattern; ages.json is dismantled at C3->C4 alongside the age-loop UI rewrite, then deleted at C6 dead-code pass. All numbers [PROPOSAL]. Port target: Godot 4 Resource array (res://data/tiers/*.tres).",
+  "tiers": [
+    {
+      "id": "t1",
+      "index": 0,
+      "label": "T1 Swarm",
+      "role": "swarm",
+      "mergePath": "T1+T1 -> T2 (within-civ)",
+      "lore": "The recruit line. Cheap, plentiful, dies fast. Every civilization starts here."
+    },
+    {
+      "id": "t2",
+      "index": 1,
+      "label": "T2 Mainline",
+      "role": "mainline",
+      "mergePath": "T2+T2 -> T3 (within-civ)",
+      "lore": "The professional line. Doctrine and drill. The bulk of any standing force."
+    },
+    {
+      "id": "t3",
+      "index": 2,
+      "label": "T3 Elite",
+      "role": "elite",
+      "mergePath": "T3 -> T4 via Tribute upgrade (within-civ; no merge, direct promotion)",
+      "lore": "The named line. A Spartan who is also a name, a jaguar warrior who is also a champion."
+    },
+    {
+      "id": "t4",
+      "index": 3,
+      "label": "T4 Demigod / Hero",
+      "role": "named-mythic",
+      "mergePath": "Two T4 Demigods of the same civ -> 1 God via Fusion (1 Divinity)",
+      "lore": "The mythic line. Achilles, Beowulf, Nanahuatzin. The match's high-water mark before the Fusion endgame."
+    }
+  ],
+  "fusion": {
+    "id": "fusion",
+    "isATier": false,
+    "label": "Fusion",
+    "role": "endgame-event",
+    "menuUnlockCost": 2,
+    "executionCost": 1,
+    "consumes": "2 T4 Demigods of the same civ",
+    "produces": "1 God in 1 board slot (sources removed)",
+    "lore": "The trailer beat. Two named demigods consumed into one God slot. The match's endgame catharsis."
+  }
+}

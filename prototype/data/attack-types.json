@@ -1,0 +1,110 @@
+{
+  "_comment": "7-type attack taxonomy + 5 armor-tag taxonomy + RPS matrix per decisions/2026-04-26-attack-type-mapping.md (Reversibility Medium). Each type carries one light status proc; Poison is the locked stacking exception (up to 5 stacks). RPS magnitudes are +25%/-25% [PROPOSAL] pending balance pass (Follow-up #1). Per-tower / per-demigod assignments are flex inside the taxonomy without reopening the decision. Per-God 2-type damage pairs live in fusion-recipes.json. C1 reshape per decisions/2026-04-26-prototype-reshape-plan.md (Accepted 2026-04-29). Port target: Godot 4 Resource array (res://data/attack-types/*.tres).",
+  "rpsBonusMultiplier": 1.25,
+  "rpsPenaltyMultiplier": 0.75,
+  "types": [
+    {
+      "id": "piercing",
+      "label": "Piercing",
+      "statusProc": {"name": "Armor-shred", "effect": "-1 armor for 3s", "duration": 3.0, "stacks": false, "refreshes": true}
+    },
+    {
+      "id": "slashing",
+      "label": "Slashing",
+      "statusProc": {"name": "Bleed", "effect": "DoT ~5% weapon damage/sec for 3s", "duration": 3.0, "stacks": false, "refreshes": true}
+    },
+    {
+      "id": "crushing",
+      "label": "Crushing",
+      "statusProc": {"name": "Stagger", "effect": "Move-speed -20% for 1s", "duration": 1.0, "stacks": false, "refreshes": true}
+    },
+    {
+      "id": "fire",
+      "label": "Fire",
+      "statusProc": {"name": "Burn + splash", "effect": "DoT ~4%/sec for 3s + ~25% splash on adjacent target", "duration": 3.0, "stacks": false, "refreshes": true}
+    },
+    {
+      "id": "poison",
+      "label": "Poison",
+      "statusProc": {"name": "Toxin", "effect": "DoT ~2% max-HP/sec per stack for 4s, up to 5 stacks", "duration": 4.0, "stacks": true, "maxStacks": 5}
+    },
+    {
+      "id": "arcane",
+      "label": "Arcane",
+      "statusProc": {"name": "Hex", "effect": "Attack-speed / cast-speed -25% for 2s", "duration": 2.0, "stacks": false, "refreshes": true}
+    },
+    {
+      "id": "divine",
+      "label": "Divine",
+      "statusProc": {"name": "Smite", "effect": "+10% true damage vs Spirit & Colossal armor; reveals stealth (PvE only)", "duration": 0, "stacks": false}
+    }
+  ],
+  "armorTags": [
+    {"id": "unarmored", "label": "Unarmored", "indicativeArchetypes": "Common swarm, light infantry, civilians, lesser monsters"},
+    {"id": "shielded",  "label": "Shielded",  "indicativeArchetypes": "Heavy infantry, armored elites, armored mini-bosses"},
+    {"id": "beast",     "label": "Beast",     "indicativeArchetypes": "Myth monsters, wildlife, feral PvE"},
+    {"id": "spirit",    "label": "Spirit",    "indicativeArchetypes": "Undead, ethereal, magic-born"},
+    {"id": "colossal",  "label": "Colossal",  "indicativeArchetypes": "Giants, titans, huge bosses"}
+  ],
+  "rpsMatrix": {
+    "piercing": {"strongVs": ["shielded"],          "weakVs": ["spirit"]},
+    "slashing": {"strongVs": ["unarmored"],         "weakVs": ["shielded"]},
+    "crushing": {"strongVs": ["shielded"],          "weakVs": ["unarmored"]},
+    "fire":     {"strongVs": ["beast"],             "weakVs": ["spirit"]},
+    "poison":   {"strongVs": ["beast"],             "weakVs": ["colossal"]},
+    "arcane":   {"strongVs": ["spirit"],            "weakVs": ["beast"]},
+    "divine":   {"strongVs": ["colossal"],          "weakVs": ["shielded"]}
+  },
+  "towerTypeAssignments": {
+    "greek": {
+      "phalanx":      "piercing",
+      "acropolis":    "crushing",
+      "oracle":       "arcane",
+      "colossus":     "fire",
+      "trireme-dock": "piercing",
+      "parthenon":    "divine"
+    },
+    "aztec": {
+      "pyramid":                  "divine",
+      "temple-of-the-sun":        "fire",
+      "jaguar-warrior-hall":      "slashing",
+      "eagle-warrior-hall":       "piercing",
+      "sacrificial-altar":        "poison",
+      "feathered-serpent-temple": "arcane"
+    },
+    "norse": {
+      "longhouse":       "slashing",
+      "mead-hall":       "crushing",
+      "rune-stone":      "arcane",
+      "longship-dock":   "piercing",
+      "berserker-lodge": "slashing",
+      "forge":           "fire"
+    }
+  },
+  "demigodTypeAssignments": {
+    "greek": {
+      "achilles": "piercing",
+      "theseus":  "slashing",
+      "perseus":  "divine",
+      "hercules": "crushing",
+      "odysseus": "arcane",
+      "jason":    "divine"
+    },
+    "aztec": {
+      "high-priest-king": "divine",
+      "nanahuatzin":      "fire",
+      "jaguar-champion":  "slashing",
+      "eagle-champion":   "piercing",
+      "blood-priest":     "poison",
+      "serpent-priest":   "arcane"
+    },
+    "norse": {
+      "bjorn-ironside":   "slashing",
+      "beowulf":          "crushing",
+      "harald-bluetooth": "divine",
+      "leif-erikson":     "piercing",
+      "lagertha":         "slashing",
+      "sigurd":           "fire"
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "_comment": "9 locked Fusion recipes (3 per civ) per decisions/2026-04-25-q2-real-cultures-direction-ratified.md. Each God consumes 2 T4 Demigods of the same civ into one board slot. Damage profile is the 2-type pair inherited via attack-types.json (per decisions/2026-04-26-attack-type-mapping.md). Source Demigod IDs match civilizations.json[civ].demigodsT4[*].id. Costs: 2 Divinity unlocks Fusion menu civ-wide; 1 Divinity per fusion execution. Recipe layer is LOCKED — Thor Slashing+Crushing dissonance with myth-Mjölnir-lightning is parked as Follow-up #6 (recipe-layer reconsideration, not taxonomy). C1 reshape per decisions/2026-04-26-prototype-reshape-plan.md (Accepted 2026-04-29). Numbers are [PROPOSAL]. Port target: Godot 4 Resource array (res://data/fusion-recipes/*.tres).",
+  "fusionMenuUnlockCost": 2,
+  "fusionExecutionCost": 1,
+  "recipes": [
+    {
+      "godId": "zeus",
+      "civ": "greek",
+      "sources": ["hercules", "jason"],
+      "damageTypes": ["crushing", "divine"],
+      "thematicFit": "Thunder + sky-father judgment"
+    },
+    {
+      "godId": "athena",
+      "civ": "greek",
+      "sources": ["theseus", "perseus"],
+      "damageTypes": ["slashing", "divine"],
+      "thematicFit": "Strategic warrior + wisdom-blessed"
+    },
+    {
+      "godId": "poseidon",
+      "civ": "greek",
+      "sources": ["achilles", "odysseus"],
+      "damageTypes": ["piercing", "arcane"],
+      "thematicFit": "Trident + sea-magic"
+    },
+    {
+      "godId": "quetzalcoatl",
+      "civ": "aztec",
+      "sources": ["serpent-priest", "high-priest-king"],
+      "damageTypes": ["arcane", "divine"],
+      "thematicFit": "Feathered-serpent + creator-god"
+    },
+    {
+      "godId": "huitzilopochtli",
+      "civ": "aztec",
+      "sources": ["nanahuatzin", "jaguar-champion"],
+      "damageTypes": ["fire", "slashing"],
+      "thematicFit": "Sun-war-god"
+    },
+    {
+      "godId": "tezcatlipoca",
+      "civ": "aztec",
+      "sources": ["blood-priest", "eagle-champion"],
+      "damageTypes": ["poison", "piercing"],
+      "thematicFit": "Night-trickster obsidian mirror"
+    },
+    {
+      "godId": "odin",
+      "civ": "norse",
+      "sources": ["harald-bluetooth", "leif-erikson"],
+      "damageTypes": ["divine", "piercing"],
+      "thematicFit": "Allfather + Gungnir spear"
+    },
+    {
+      "godId": "thor",
+      "civ": "norse",
+      "sources": ["bjorn-ironside", "beowulf"],
+      "damageTypes": ["slashing", "crushing"],
+      "thematicFit": "Hammer-and-axe (lightning deferred per Follow-up #6)"
+    },
+    {
+      "godId": "tyr",
+      "civ": "norse",
+      "sources": ["lagertha", "sigurd"],
+      "damageTypes": ["slashing", "fire"],
+      "thematicFit": "Sword + sacrifice-fire"
+    }
+  ]
+}
