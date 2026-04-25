@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-27 — Commander-as-summoned-ability-avatar plan-mode pass, **steps 1-4 of 8 LANDED**; steps 5-8 queued.
+**Last session:** 2026-04-27 — Commander-as-summoned-ability-avatar ALL 8 steps closed; §5.4 amendment queued with PM go.
 **Hand-off by:** Claude (Sonnet 4.6)
 **Hand-off to:** next Claude Code session (post `/clear`)
 
@@ -8,24 +8,24 @@
 
 ## TL;DR (this session)
 
-**Plan-mode pass on commander mechanics partially executed.** PM ratified the *summoned-on-cast* pattern via 8-question refinement round. Filed canonical decision, superseded the prior on-field-hero design, extended the prototype reshape plan with C4 Cast-bar + new C7 step, and amended `concept/phase-4.md §4.1` with the new in-match presence model. **4 of 8 plan steps complete.** Commit `7fd3be8` is the durable resume point.
+**Commander-as-summoned-ability-avatar plan-mode pass fully closed.** All 8 steps landed across two same-day sessions. Final commit `09453d9` lands steps 5-8: §4.4a Builder unit class, §4.4 stale-sentence redaction, §4.7 Historic match-arc beats subsection with locked round-30 antagonist roster, and Follow-up #11 closed (Jörmungandr locked; Fenrir reserved post-launch). CASCADE v0.27. PM confirmed §5.4 amendment as next directive before calling handoff.
 
-**Key ratifications:**
-- **Three-surface commander model:** identity plinth (out-of-match) / passive pip (in-HUD) / active cast avatar (summoned-on-cast).
-- **Three-tier cast budget:** ~1.2s short-CD / ~2.8s long-CD / ~4.5s signature.
-- **Builder unit class:** separated as degenerate mobile-hero (single anim, no AI, no combat).
-- **30-wave historic match-arc beats (solo-only):** round-30 = commander's historic antagonist.
-- **Round-30 antagonists:** Greek **Xerxes I** / Aztec **two-phase Tlaxcalan→Tezcatlipoca** (pre-contact, Cortés OUT) / Norse **Jörmungandr-or-Fenrir** (sub-Q OPEN as Follow-up #11).
-- **§5.4 Lineages-row deletion** confirmed-in-principle (Follow-up #10).
-
-**Steps 5-8 queued for next session** — see "NEXT SESSION" below.
+**Key ratifications this full pass:**
+- **Three-surface commander model:** identity plinth / passive pip / active cast avatar.
+- **Three-tier cast budget:** ~1.2s / ~2.8s / ~4.5s.
+- **Builder unit class:** degenerate mobile-hero (single anim, no AI, no combat, walkable-build-grid distinct from enemy-path-grid).
+- **Historic match-arc beats (solo-only):** round-30 antagonists — Xerxes I (Greek) / Tlaxcalan→Tezcatlipoca two-phase pre-contact (Aztec, Cortés OUT) / **Jörmungandr** (Norse, locked — Follow-up #11 closed; Fenrir post-launch).
+- **Cross-civ tonal arc:** mortal → bridge → cosmic — intentional asymmetry.
+- **Follow-up #11 CLOSED** at both anchors in the 2026-04-27 decision.
 
 ---
 
 ## Commits this session
 
-- `7fd3be8` — commander-as-summoned-ability-avatar — steps 1-4 of 8 + lint-row (decision filed, 2026-04-20 superseded, reshape-plan amendment, phase-4 §4.1 subsection, CASCADE decisions-table row).
-- Handoff bundle (this commit) — CASCADE pointer + version v0.25 → v0.26, PROGRESS new entry + 2 archived, HANDOFF rewrite.
+- `7fd3be8` — steps 1-4 of 8 + lint-row (prior session).
+- Handoff bundle — CASCADE v0.26 + PROGRESS entry (prior session).
+- `09453d9` — steps 5-8 of 8 + Follow-up #11 closure (this session).
+- This handoff commit — CASCADE "Next planned work" update + HANDOFF rewrite.
 
 ---
 
@@ -33,100 +33,82 @@
 
 ### Git
 
-- Branch: **`session/2026-04-25-q2-world-pitch`** at handoff bundle (push pending).
-- Last pre-handoff commit: **`7fd3be8`**.
-- `main` HEAD will be fast-forwarded by handoff push (dual-push discipline).
-- Working tree at handoff start: clean except `.accord/` untracked.
+- Branch: **`session/2026-04-25-q2-world-pitch`** dual-pushed to `main` at `09453d9` (plus this handoff commit).
+- Working tree: clean except `.accord/` untracked.
 - No PR opened.
 
 ### Phase status
 
 - **Phase 1 thematic direction: RATIFIED** (real-world cultures + native myth — 2026-04-25).
 - **Phase 1 exit one-pager: FILED** (2026-04-26).
-- **4-tier + Fusion endgame** frame live across concept/phase-3..7 + stages 01/03/04/05/06/07.
-- **7-type × 5-armor RPS matrix** live in [`decisions/2026-04-26-attack-type-mapping.md`](decisions/2026-04-26-attack-type-mapping.md).
-- **Commander-as-summoned-ability-avatar** filed Accepted (2026-04-27); supersedes 2026-04-20.
-- **Prototype reshape plan** still **Proposed** (now with 2026-04-27 amendment) — awaiting PM ratification. **Prototype files frozen.**
-- `§2.4a` + `§5.4` [LOCKED] — untouched.
+- **Commander-as-summoned-ability-avatar: FULLY LANDED** (2026-04-27, all 8 steps, commit `09453d9`).
+- **Follow-up #11 CLOSED** — Jörmungandr locked for Norse round-30; Fenrir reserved post-launch.
+- **Prototype reshape plan** still **Proposed** (2026-04-27 amendment in tree) — awaiting PM ratification. Prototype files frozen.
+- `§2.4a` + `§5.4` **[LOCKED]** — §5.4 amendment queued as next directive with PM go.
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log trimmed to 3 most recent entries (this handoff archived 2 oldest 2026-04-26 entries).
-- `CASCADE.md` pointer block: most recent only (2 prior pointer blocks archived to `CASCADE-history.md`).
-- `CASCADE.md` version footer: 2 most recent bumps (v0.26 + v0.25).
-- Bootstrap stays ~78KB.
+- `PROGRESS.md` session log: 3 most recent entries maintained (continuation note appended inline to the 2026-04-27 entry rather than creating a 4th).
+- `CASCADE.md` pointer: most recent block only (v0.27, all-8-landed state + updated "Next planned work").
+- Bootstrap remains lean.
 
 ---
 
 ## NEXT SESSION — primary directive
 
-**Resume Commander-as-summoned-ability-avatar plan-mode pass at step 5 of 8.** PM has not declared session complete — pass is mid-execution and was paused for handoff at context pressure.
+**Execute §5.4 [LOCKED] amendment (Follow-up #10).** PM gave explicit "go" this session before handoff. Scope is narrow and fully specified — no open sub-decisions.
 
-Default cadence: **one-step-at-a-time with PM "go" gates**. HARD AUTONOMY MODE is NOT in force.
+### What to do
 
-### Queued steps (5-8)
+1. **File `decisions/YYYY-MM-DD-phase-5-naming-conventions-lineages-row-deletion.md`** — decision entry per `decisions/TEMPLATE.md`:
+   - Status: Accepted. Reversibility: Easy.
+   - Scope: delete Lineages row from `concept/phase-5.md §5.4`; add Civilizations row; preserve Lineages convention in `CASCADE-history.md`. Cite Follow-up #10 from 2026-04-27 decision.
+   - 3x debug loop (touches [LOCKED] surface — warrant the loop).
 
-**Step 5 — `concept/phase-4.md` §4.4a Builder unit class subsection.**
-- Insert NEW subsection between §4.4 and §4.5 specifying Builder as degenerate mobile-hero (single walk anim, spawn-from-home, no AI, no combat, despawn-on-arrive, concurrency cap 3, 90% refund cancel, walkable-build-grid distinct from enemy-path-grid).
-- Redact `concept/phase-4.md §4.4` line 111 stale on-field-hero sentence ("Commander Hero Units have richer control — direct movement + 2-3 abilities + return-to-base. One active Commander Hero per player per match.") via strikethrough + dated supersede note pointing at the 2026-04-27 decision.
+2. **Edit `concept/phase-5.md §5.4`:**
+   - Delete the Lineages naming-convention row (one-syllable kenning: Sinew / Ember / Forge / Crown / Veil pattern).
+   - Add a **Civilizations** row: convention = real-culture proper nouns; no invented placeholders; no one-syllable-kenning rule; naming convention is "the culture names itself" (Greek / Aztec / Norse at launch; expansions follow same pattern).
+   - Add dated amendment banner at the top of §5.4 citing the new decision and Follow-up #10 lineage.
 
-**Step 6 — `concept/phase-4.md` §4.7 banner extension.**
-- Append "Historic match-arc beats (solo-only)" subsection.
-- Round-30 antagonist roster: Greek = **Xerxes I**; Aztec = **two-phase Tlaxcalan ally turned Tezcatlipoca avatar** (pre-contact, no Cortés); Norse = **Jörmungandr OR Fenrir** (open sub-decision tracked as Follow-up #11 on the 2026-04-27 decision).
-- Cross-civ tonal-arc note: mundane → mythic escalation across rounds 1-30; mini-bosses every 5 rounds; round-30 = commander's historic antagonist as boss.
+3. **Append to `CASCADE-history.md`** (under an "Archived naming conventions" section or similar) the original Lineages convention rule text for archival traceability.
 
-**Step 7 — `CASCADE.md` v0.26 pointer + footer + decisions-table row.**
-- ✅ DONE in this handoff bundle (pointer + version + decisions-table row already in tree).
-- Re-verify after steps 5-6 land that nothing further is owed.
+4. **Update `CASCADE.md` decisions table** — add new row at top for the §5.4 decision entry.
 
-**Step 8 — `PROGRESS.md` session-log entry + cultural-sensitivity debt note.**
-- ✅ Entry already added in this handoff bundle covering steps 1-4 + handoff.
-- After steps 5-6 land, append a brief continuation note (or amend the existing entry) capturing §4.4a / §4.7 completion and the Jörmungandr-vs-Fenrir narrowing if PM picks one in-session.
-- Cultural-sensitivity pass (Follow-up #5) remains a debt — reaffirm in PROGRESS Debts.
+5. **Append `PROGRESS.md` session log note** (or amend the most recent entry; doc-hygiene 3-most-recent rule applies).
 
-### Open sub-decisions waiting PM input
+6. **Commit + dual-push.** Then **stop** — do not continue to background candidates without PM.
 
-1. **Jörmungandr vs Fenrir** for Norse round-30 antagonist (Follow-up #11 on 2026-04-27 decision). Affects step 6 prose. Default if PM defers: keep "Jörmungandr OR Fenrir" plural in §4.7 with both options noted.
-2. **§5.4 [LOCKED] amendment** to delete "Lineages" row + add "Civilizations" row (Follow-up #10 on 2026-04-27 decision). Confirmed-in-principle but still requires explicit PM "go" since §5.4 is [LOCKED]. NOT in scope for steps 5-8 — separate dedicated PM-gated turn.
+### What NOT to touch
 
-### Background candidates (parked; pick up after commander pass closes)
-
-- **Candidate A** — Prototype reshape plan ratification + execution. Ratify [`2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md) (Proposed → Accepted, now with 2026-04-27 amendment), then execute C1→C2→C3→C4→C5→C7.a→C7.b→C6 one per turn.
-- **Candidate B** — Cultural-sensitivity pass scheduling (Follow-up #5). Mandatory content-lock gate.
-- **Candidate C** — Patch-1 commanders per civ (Follow-up #6).
-- **Candidate D** — `admin/concept.json` migration path (rewrite / regenerate / retire).
-
-### Prototype UX debt (not blocking)
-
-First-time players stuck: `menuNewGame() → commander-pick → selectCommander()` never sets `Profile.data.lastMode`, so "Play" button never surfaces. **Workaround:** DevTools `Profile.data.lastMode = "skirmish"; Profile.save(); location.reload();`. Proper fix lives in reshape plan C2/C4.
+- Any other §5.4 row — only the Lineages row is in scope.
+- Locked content-skeleton names from 2026-04-25 — those are under §5.4 conventions but are locked separately.
+- Prototype files — reshape plan still Proposed.
+- §2.4a — untouched always.
 
 ---
 
 ## Open threads / carried debts
 
-### Still open (priority order)
+### Priority order
 
-1. **Commander-as-summoned-ability-avatar steps 5-8** — primary next-session directive.
-2. **Jörmungandr vs Fenrir sub-decision** (Follow-up #11).
-3. **§5.4 amendment** (Follow-up #10) — Lineages → Civilizations row.
-4. **Prototype reshape plan ratification** (Proposed, now amended).
-5. **Cultural-sensitivity pass** (Follow-up #5) — mandatory content-lock gate.
-6. **Patch-1 commanders per civ** (Follow-up #6).
-7. **Myth-creature PvE bosses** (Follow-up #3).
-8. **Title lock** (Q8) — "Mud to Myth" floated; not locked.
-9. **Stage body rewrites** (01/03/04/05/06/07) — deferred to dedicated reopens.
-10. **`admin/concept.json` full migration** — rewrite / regenerate / retire.
-11. **Foresight-coin cross-civ borrowing** (Follow-up #7).
-12. **PvE campaign + AGES + leveling + attributes** (Follow-up #8).
-13. **Non-boss enemy ontology** (Follow-up #9).
-14. **Styling / tone pass** (Follow-up #4).
-15. **[PROPOSAL] balance-pass re-ratification** (Follow-up #13).
+1. **§5.4 [LOCKED] amendment** (Follow-up #10) — **PM go given; next session primary directive.**
+2. **Prototype reshape plan ratification** (Proposed, 2026-04-27 amendment in tree) — then C1→C7 execution.
+3. **Cultural-sensitivity pass** (Follow-up #5) — mandatory content-lock gate.
+4. **Patch-1 commanders per civ** (Follow-up #6).
+5. **Myth-creature PvE bosses** (Follow-up #3).
+6. **Title lock** (Q8) — "Mud to Myth" floated; not locked.
+7. **Stage body rewrites** (01/03/04/05/06/07) — deferred to dedicated reopens.
+8. **`admin/concept.json` full migration** — rewrite / regenerate / retire.
+9. **Foresight-coin cross-civ borrowing** (Follow-up #7).
+10. **PvE campaign + AGES + leveling + attributes** (Follow-up #8).
+11. **Non-boss enemy ontology** (Follow-up #9).
+12. **Styling / tone pass** (Follow-up #4).
+13. **[PROPOSAL] balance-pass re-ratification** (Follow-up #13).
 
 ### LOCKED — do NOT touch
 
-- `concept/phase-5.md §5.4` naming **conventions [LOCKED]** (amendment proposed via Follow-up #10 — wait for explicit PM "go").
+- `concept/phase-5.md §5.4` naming **conventions [LOCKED]** — §5.4 amendment is the ONE permitted touch next session, scoped to Lineages row only.
 - `concept/phase-2.md §2.4a` accessibility floor **[LOCKED]**.
-- Mechanics surface (TD / merge / debuff / magic).
 - Full 2026-04-25 locked content skeleton.
 - Prototype files — no edits until PM ratifies reshape plan.
 
@@ -135,9 +117,9 @@ First-time players stuck: `menuNewGame() → commander-pick → selectCommander(
 ## Cadence rules carried forward
 
 - **Default: one-step-at-a-time with PM "go" gates** per `CLAUDE.md`.
-- **Dual-push discipline:** push to BOTH session branch AND `main` after every commit (when autonomy enabled).
+- **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
-- **3x debug loop** inline on any CONCEPT-constraint-touching proposal.
+- **3x debug loop** on any CONCEPT-constraint-touching proposal.
 - **Doc hygiene on each handoff:** trim PROGRESS.md to 3 entries, CASCADE.md pointer to 1 block, version footer to 2 bumps.
 
 ---
@@ -145,80 +127,46 @@ First-time players stuck: `menuNewGame() → commander-pick → selectCommander(
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar — Commander-as-summoned-ability-avatar
-plan-mode pass, steps 5-8 of 8.
+Resuming Ash to Altar — §5.4 naming-conventions amendment (Follow-up #10).
 
 BOOTSTRAP per CLAUDE.md order:
   README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
 
-BEFORE reading docs, verify local main is current:
+BEFORE reading docs:
   git fetch origin
   git log --oneline HEAD..origin/main   # should be empty
-  (If not, pull --ff-only before reading any doc.)
 
 STATE ALOUD (before producing anything):
-- Phase status + drift vs. last HANDOFF (2026-04-27 commander
-  pass: steps 1-4 of 8 landed at commit 7fd3be8; steps 5-8
-  queued).
-- Primary open blocker: Commander-as-summoned-ability-avatar
-  steps 5-8.
-- Specific next-step proposal: open step 5 — propose
-  concept/phase-4.md §4.4a Builder unit subsection insertion +
-  §4.4 line-111 redaction, present diff, await PM "go".
+- Phase status + drift vs. last HANDOFF (commander pass fully
+  closed at 09453d9; Follow-up #11 closed — Jörmungandr locked;
+  §5.4 amendment queued with PM go given).
+- Primary directive: §5.4 [LOCKED] amendment (Follow-up #10).
+- Specific next-step: file dedicated decision entry for Lineages
+  row deletion + Civilizations row addition; propose draft +
+  3x debug loop; await PM "go" to execute phase-5.md edit.
 
-CADENCE: default one-step-at-a-time with PM "go" gates.
-Plan-mode pass continues. HARD AUTONOMY MODE is NOT in force.
+CADENCE: one-step-at-a-time with PM "go" gates. STOP after
+§5.4 amendment commit + dual-push — do not continue to
+background candidates without PM.
 
-PRIMARY DIRECTIVE — Commander-as-summoned-ability-avatar steps 5-8:
-  Step 5: concept/phase-4.md §4.4a NEW Builder unit subsection
-          (between §4.4 and §4.5) + redact §4.4 line 111 stale
-          on-field-hero sentence with strikethrough+supersede note.
-  Step 6: concept/phase-4.md §4.7 banner extension — historic
-          match-arc beats solo-only + round-30 antagonist roster
-          (Greek Xerxes I / Aztec two-phase Tlaxcalan→Tezcatlipoca
-          pre-contact / Norse Jörmungandr-or-Fenrir) + cross-civ
-          tonal-arc note.
-  Step 7: CASCADE.md verification (already at v0.26 + new
-          decisions-table row from this handoff — confirm
-          nothing further owed after steps 5-6).
-  Step 8: PROGRESS.md continuation note (already has steps 1-4
-          entry from this handoff — append step 5-6 completion
-          + cultural-sensitivity debt reaffirmation).
+PRIMARY DIRECTIVE — §5.4 amendment (Follow-up #10):
+  1. File decisions/YYYY-MM-DD-phase-5-naming-conventions-
+     lineages-row-deletion.md (Accepted, Easy, 3x debug loop).
+  2. Edit concept/phase-5.md §5.4 — delete Lineages row, add
+     Civilizations row, add dated amendment banner.
+  3. Append archived Lineages convention to CASCADE-history.md.
+  4. Update CASCADE.md decisions table (new row at top).
+  5. Append PROGRESS.md session note.
+  6. Commit + dual-push. STOP.
 
-OPEN SUB-DECISIONS (PM input needed during step 6):
-  - Jörmungandr vs Fenrir narrowing (Follow-up #11). If PM
-    defers, keep both options plural in §4.7 prose.
-  - §5.4 amendment (Follow-up #10) — Lineages → Civilizations
-    row. NOT in scope for steps 5-8; dedicated PM-gated turn.
+SCOPE GUARD: only the Lineages row in §5.4 is in scope.
+No other §5.4 rows. No prototype files. §2.4a untouched.
+2026-04-25 locked names untouched.
 
-ACTIVE DIRECTION (locked 2026-04-25, exit one-pager 2026-04-26):
-  Real cultures + native myth. Greek / Aztec / Norse.
-  Commanders: Leonidas / Montezuma II / Ragnar Lothbrok.
-  18 T1-T3 towers + 15 units + 18 T4 Demigods & Heroes.
-  Fusion-to-Gods: 9 Gods via 9 locked 2-Demigod recipes.
-  Tribute + Divinity (6 cap; 2 unlock menu + 1/fusion).
-  30-wave lane-wars. 7-type × 5-armor RPS + status procs.
-
-COMMANDER MODEL (locked 2026-04-27):
-  Three surfaces: identity plinth / passive pip / active cast
-  avatar (summoned-on-cast only). Three-tier cast budget
-  ~1.2s/~2.8s/~4.5s. Builder = degenerate mobile-hero (no AI,
-  no combat). 30-wave historic arc; round-30 = commander's
-  historic antagonist (solo-only).
-
-STOP AND HANDOFF when reaching:
-  - Cultural-sensitivity concern (Follow-up #5).
-  - §2.4a or §5.4 touch.
-  - Locked-name change without PM.
-  - Mechanics surface touch.
-  - Prototype execution before reshape plan Accepted.
-
-DO NOT:
-  - Touch §2.4a or §5.4 conventions without explicit PM go.
-  - Touch prototype files until reshape plan Accepted.
-  - Assume HARD AUTONOMY MODE.
-  - Change 2026-04-25 locked names without PM.
-  - Re-execute steps 1-4 (already landed at commit 7fd3be8).
+BACKGROUND CANDIDATES (do NOT start without PM):
+- Prototype reshape plan ratification + C1→C7 execution.
+- Cultural-sensitivity pass scheduling (Follow-up #5).
+- Patch-1 commanders per civ (Follow-up #6).
 ```
 
 ---
@@ -227,12 +175,10 @@ DO NOT:
 
 Hard-stop and flag if:
 
-- A proposed sub-decision would touch `§2.4a` or `§5.4` conventions without explicit PM "go".
-- A proposed sub-decision would modify 2026-04-25 locked names without PM.
-- A proposed sub-decision would touch mechanics (TD/merge/debuff/magic).
-- A cultural-sensitivity concern surfaces (Follow-up #5).
+- Any §5.4 row beyond Lineages is touched.
+- 2026-04-25 locked names would be modified.
+- §2.4a is touched.
+- Cultural-sensitivity concern surfaces (Follow-up #5).
 - Prototype file edits proposed before PM ratifies reshape plan.
 - Local `main` stale on session start.
 - `cascade-lint` fails and fix > 5min.
-
----

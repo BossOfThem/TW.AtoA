@@ -44,10 +44,14 @@ Every stage / research doc carries a **Status** (Stub | Draft | In review | Lock
 
 *Prior pointer blocks archived to [`CASCADE-history.md`](CASCADE-history.md).*
 
-**Next planned work (PM-gated):**
-1. PM reviews the five filed decision entries + CONCEPT.md amendments; supersedes any that miss the mark.
-2. PM picks direction on the remaining 13 CONCEPT-GAPS rows (ratify more, accept deferred, or reorder).
-3. Workflow queue (`PROGRESS.md` Step 1.5b onward) resumes per resumption criteria in [`decisions/2026-04-19-concept-thinness-escalation.md`](decisions/2026-04-19-concept-thinness-escalation.md) once ratification pass is closed.
+**Next planned work — primary directive (PM go already given 2026-04-27):**
+1. **§5.4 [LOCKED] amendment (Follow-up #10)** — dedicated decision entry + `concept/phase-5.md §5.4` edit (delete Lineages row, add Civilizations row) + archive Lineages convention in `CASCADE-history.md`. PM explicitly confirmed "go" for this item. Execute next session, then stop for PM review.
+
+**Background candidates (parked; pick up after §5.4 amendment closes):**
+- Prototype reshape plan ratification (Proposed → Accepted) + C1→C7 execution.
+- Cultural-sensitivity pass scheduling (Follow-up #5) — mandatory content-lock gate.
+- Patch-1 commanders per civ (Follow-up #6).
+- `admin/concept.json` migration path.
 
 Workflow upgrade Steps 0, 1, 1.5a remain complete. `PROGRESS.md` is the live step tracker.
 
