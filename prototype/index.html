@@ -372,6 +372,8 @@
 
   /* Tower upgrade level dots (drawn on canvas but we also ghost-highlight the action-bar) */
   .action-bar .tower-btn .lvl { display: inline-block; margin-left: 6px; color: var(--ember-hi); font-family: monospace; font-size: 10px; }
+  .action-bar .tower-btn .tier-badge { display: inline-block; margin-left: 6px; padding: 1px 5px; font-size: 9px; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.25); border-radius: 2px; color: var(--ink-2); }
+  .action-bar .tower-btn .glyph.civ { background: var(--civ-primary, #475569); }
   #scene-end .end-stats .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; color: var(--ink-1); border-bottom: 1px solid var(--line); }
   #scene-end .end-stats .row:last-child { border-bottom: 0; }
   #scene-end .end-stats .row b { color: var(--ember-hi); font-family: var(--font-display); letter-spacing: 1px; }
@@ -682,12 +684,15 @@
     </div>
     <div class="action-bar" id="action-bar">
       <span class="label">Build</span>
-      <button class="tower-btn" data-tower="sinew" onclick="selectTower('sinew')"><span class="glyph sinew"></span>Sinew <span class="cost">40g</span></button>
-      <button class="tower-btn" data-tower="ember" onclick="selectTower('ember')"><span class="glyph ember"></span>Ember <span class="cost">30g</span></button>
-      <button class="tower-btn" data-tower="forge" onclick="selectTower('forge')"><span class="glyph forge"></span>Forge <span class="cost">50g</span></button>
-      <button class="tower-btn" data-tower="crown" onclick="selectTower('crown')"><span class="glyph crown"></span>Crown <span class="cost">45g</span></button>
-      <button class="tower-btn" data-tower="veil" onclick="selectTower('veil')"><span class="glyph veil"></span>Veil <span class="cost">35g</span></button>
-      <button class="tower-btn" id="btn-tower-hybrid" data-tower="hybrid" onclick="selectTower('hybrid')" disabled><span class="glyph hybrid"></span><span id="btn-tower-hybrid-label">Hybrid</span> <span class="cost">80g</span></button>
+      <span id="legacy-tower-btns" style="display:contents;">
+        <button class="tower-btn" data-tower="sinew" onclick="selectTower('sinew')"><span class="glyph sinew"></span>Sinew <span class="cost">40g</span></button>
+        <button class="tower-btn" data-tower="ember" onclick="selectTower('ember')"><span class="glyph ember"></span>Ember <span class="cost">30g</span></button>
+        <button class="tower-btn" data-tower="forge" onclick="selectTower('forge')"><span class="glyph forge"></span>Forge <span class="cost">50g</span></button>
+        <button class="tower-btn" data-tower="crown" onclick="selectTower('crown')"><span class="glyph crown"></span>Crown <span class="cost">45g</span></button>
+        <button class="tower-btn" data-tower="veil" onclick="selectTower('veil')"><span class="glyph veil"></span>Veil <span class="cost">35g</span></button>
+        <button class="tower-btn" id="btn-tower-hybrid" data-tower="hybrid" onclick="selectTower('hybrid')" disabled><span class="glyph hybrid"></span><span id="btn-tower-hybrid-label">Hybrid</span> <span class="cost">80g</span></button>
+      </span>
+      <span id="civ-tower-btns" style="display:none;"></span>
       <span class="spacer"></span>
       <span class="wave-indicator" id="wave-indicator">Ready</span>
       <button class="tower-btn" id="btn-age-up" onclick="ageUp()" disabled>Age up <span class="cost">50 know</span></button>
@@ -1442,21 +1447,39 @@ let AGES_DATA = null;
 let COMMANDERS = null;
 let ENEMIES = null;
 let HYBRIDS = null;
+let CIVILIZATIONS = null;
+let TIERS = null;
+let ATTACK_TYPES = null;
 let DATA_SOURCE = "inline";
+
+// C6 slice 2 / C4-continuation Slice A (Bridge) — civ-tower base stats by tier.
+// [PROPOSAL] numbers under Follow-up #13 balance-pass debt; tier semantics from tiers.json.
+const CIV_TOWER_TIER_BASE = {
+  T1: { cost:  30, range: 110, baseDamage:  4, baseCd: 40 },
+  T2: { cost:  60, range: 130, baseDamage:  8, baseCd: 35 },
+  T3: { cost: 110, range: 150, baseDamage: 16, baseCd: 30 }
+};
+function civTowerKey(civId, towerId) { return civId + "_" + towerId; }
 
 async function loadData() {
   try {
-    const [bal, tow, cmd, ages, ene, mmRes, evRes] = await Promise.all([
+    const [bal, tow, cmd, ages, ene, mmRes, evRes, civRes, tierRes, atkRes] = await Promise.all([
       fetch("data/balance.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/towers.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/commanders.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/ages.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/enemies.json").then(r => r.ok ? r.json() : Promise.reject(r.status)),
       fetch("data/mapmods.json").then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch("data/events.json").then(r => r.ok ? r.json() : null).catch(() => null)
+      fetch("data/events.json").then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch("data/civilizations.json").then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch("data/tiers.json").then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch("data/attack-types.json").then(r => r.ok ? r.json() : null).catch(() => null)
     ]);
     MAPMODS = mmRes;
     EVENTS = evRes;
+    CIVILIZATIONS = civRes;
+    TIERS = tierRes;
+    ATTACK_TYPES = atkRes;
     BALANCE = {
       ...bal.wave, ...bal.age, ...bal.economy, ...bal.base,
       MATCH_WAVES: bal.match.waveCount,
@@ -1480,6 +1503,25 @@ async function loadData() {
       BALANCE.TOWERS.hybrid = { cost: h.cost, range: h.range, baseDamage: h.baseDamage, baseCd: h.baseCd };
       BALANCE.TOWER_META.hybrid = { label: h.label, color: h.color, lineage: "hybrid" };
     }
+    // C6 slice 2 / C4-continuation Slice A — compose civ-tower entries alongside legacy.
+    // Tier-derived [PROPOSAL] base stats; civ-namespaced keys to avoid collision (Norse "forge" vs legacy "forge").
+    if (CIVILIZATIONS && CIVILIZATIONS.civilizations) {
+      for (const civ of CIVILIZATIONS.civilizations) {
+        const pal = civ.palette || {};
+        for (const t of (civ.towersT1T3 || [])) {
+          const tierBase = CIV_TOWER_TIER_BASE[t.tier] || CIV_TOWER_TIER_BASE.T1;
+          const key = civTowerKey(civ.id, t.id);
+          BALANCE.TOWERS[key] = {
+            cost: tierBase.cost, range: tierBase.range,
+            baseDamage: tierBase.baseDamage, baseCd: tierBase.baseCd
+          };
+          BALANCE.TOWER_META[key] = {
+            label: t.label, color: pal.primary || "#475569",
+            accent: pal.accent || "#94a3b8", civ: civ.id, tier: t.tier, towerId: t.id
+          };
+        }
+      }
+    }
     AGES_DATA = ages.ages;
     AGES = AGES_DATA.map(a => a.name);
     COMMANDERS = cmd;
@@ -1491,6 +1533,7 @@ async function loadData() {
   }
   renderCommanderRoster();
   applyCommanderCard();
+  renderActionBarBuildSet();
 }
 
 // ============================================================================
@@ -1549,8 +1592,59 @@ function selectCommanderId(id) {
   COMMANDERS.active = id;
   if (Profile.data) { Profile.data.commanderId = id; Profile.save(); }
   applyCommanderCard();
+  renderActionBarBuildSet();
   document.querySelectorAll("#cmdr-roster .cmdr-roster-chip").forEach(ch =>
     ch.classList.toggle("selected", ch.dataset.cmdrId === id));
+}
+
+// C6 slice 2 / C4-continuation Slice A — civ-mode action-bar swap.
+// Tutorial forces legacy mode (uses 'ember' lock-step). Otherwise active-commander civ
+// drives 6 civ-tower buttons; legacy 5+1 row hidden but DOM-preserved.
+function renderActionBarBuildSet() {
+  const legacy = document.getElementById("legacy-tower-btns");
+  const civHost = document.getElementById("civ-tower-btns");
+  if (!legacy || !civHost) return;
+  const c = COMMANDERS && COMMANDERS.roster[COMMANDERS.active];
+  const civId = c && c.civ;
+  const inTutorial = (typeof game !== "undefined") && game && game.mode === "tutorial";
+  const civDef = (CIVILIZATIONS && CIVILIZATIONS.civilizations || []).find(x => x.id === civId);
+  if (inTutorial || !civDef) {
+    legacy.style.display = "contents";
+    civHost.style.display = "none";
+    civHost.innerHTML = "";
+    return;
+  }
+  legacy.style.display = "none";
+  civHost.style.display = "contents";
+  const pal = civDef.palette || {};
+  civHost.innerHTML = "";
+  for (const t of (civDef.towersT1T3 || [])) {
+    const key = civTowerKey(civDef.id, t.id);
+    const stat = BALANCE.TOWERS[key];
+    if (!stat) continue;
+    const btn = document.createElement("button");
+    btn.className = "tower-btn";
+    btn.dataset.tower = key;
+    btn.style.setProperty("--civ-primary", pal.primary || "#475569");
+    btn.onclick = () => selectTower(key);
+    btn.innerHTML =
+      '<span class="glyph civ"></span>' +
+      t.label +
+      ' <span class="tier-badge">' + (t.tier || "T1") + '</span>' +
+      ' <span class="cost">' + stat.cost + 'g</span>';
+    civHost.appendChild(btn);
+  }
+  // Self-correct game.selectedTower to a valid civ key if currently legacy.
+  if (typeof game !== "undefined" && game && !BALANCE.TOWERS[game.selectedTower]) {
+    const first = (civDef.towersT1T3 || [])[0];
+    if (first) selectTower(civTowerKey(civDef.id, first.id));
+  } else if (typeof game !== "undefined" && game && game.selectedTower) {
+    const meta = BALANCE.TOWER_META[game.selectedTower];
+    if (!meta || meta.civ !== civDef.id) {
+      const first = (civDef.towersT1T3 || [])[0];
+      if (first) selectTower(civTowerKey(civDef.id, first.id));
+    }
+  }
 }
 function applyCommanderCard() {
   if (!COMMANDERS) return;
@@ -1790,6 +1884,7 @@ function initMatch() {
   updateHUD();
   bindCanvas();
   selectTower("sinew");
+  renderActionBarBuildSet();
   logBalanceCurve();
   requestAnimationFrame(gameLoop);
   if (COMMANDERS) {
@@ -1810,6 +1905,7 @@ function initTutorial() {
     pathLen: pathLength(b.path), tutorialStep: 1
   };
   updateHUD(); bindCanvas(); setTutorialStep(1);
+  renderActionBarBuildSet();
   requestAnimationFrame(gameLoop);
 }
 function skipTutorial() { if (game) game.playing = false; goto("menu"); toast("Tutorial skipped."); }
