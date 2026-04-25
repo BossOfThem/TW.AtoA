@@ -72,7 +72,7 @@ The Commander has **three in-match surfaces and no others.** The board itself sh
 **Cross-references:**
 
 - **Builder unit class** — see [§4.4a](#44a-builder-unit-class-new-2026-04-27) (queued in immediate follow-on turn). Commander does not place towers; the civ-coded Builder unit (Greek Mason Crew / Aztec Priest-Builder / Norse Thrall Gang — all working labels per Follow-up #5) handles construction. "Priest-Builder" specifically flagged for caste-accuracy review in the cultural-sensitivity pass (macehualtin commoners did Aztec construction, not priests).
-- **Historic match-arc beats** — see [§4.7](#47-enemy-system-pve-modes) banner extension (queued in immediate follow-on turn). Commander's historic arc + round-30 antagonist drive solo-mode environmental beats; PvP retains the 2026-04-25 lane-wars shape unchanged. Round-30 antagonists per civ: **Xerxes I** (Greek, named historic) / **two-phase Tlaxcalan war-leader → Tezcatlipoca avatar** (Aztec, pre-contact framing — Cortés explicitly OUT of all acts) / **Jörmungandr or Fenrir** (Norse, myth-overlay; sub-question OPEN). Cross-civ tonal arc escalates mortal → bridge → myth — intentional, not asymmetry oversight.
+- **Historic match-arc beats** — see [§4.7](#47-enemy-system-pve-modes) banner extension (queued in immediate follow-on turn). Commander's historic arc + round-30 antagonist drive solo-mode environmental beats; PvP retains the 2026-04-25 lane-wars shape unchanged. Round-30 antagonists per civ: **Xerxes I** (Greek, named historic) / **two-phase Tlaxcalan war-leader → Tezcatlipoca avatar** (Aztec, pre-contact framing — Cortés explicitly OUT of all acts) / **Jörmungandr** (Norse, myth-overlay — locked 2026-04-27 per Follow-up #11 closure; Fenrir reserved for post-launch PvE/Hero-Mode content). Cross-civ tonal arc escalates mortal → bridge → cosmic — intentional, not asymmetry oversight.
 
 **Cultural-sensitivity inheritance.** Cast-emerge pose (the summoned avatar's silhouette + animation) inherits the [`concept/phase-5.md §5.3`](phase-5.md) silhouette-forward art-direction gate + the 2026-04-25 Follow-up #5 cultural consultation requirement. **No pose lock until the consultation pass closes** — placeholder neutral-abstract silhouettes carry the cast-emerge pipeline through the reshape-plan C7.b prototype step.
 
@@ -147,7 +147,47 @@ Mobile units need:
 
 **OPEN ISSUE:** Exact control model. Full RTS per-unit micro is scope-blowing and wrong genre. Waypoint + mode flags is achievable. Attack-Move command is useful. Must resolve before unit spec work starts.
 
-Commander Hero Units (signature ability deployments) have richer control — direct movement + 2–3 abilities + return-to-base. One active Commander Hero per player per match.
+~~Commander Hero Units (signature ability deployments) have richer control — direct movement + 2–3 abilities + return-to-base. One active Commander Hero per player per match.~~ **Superseded 2026-04-27** by [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) — Commander is no longer a controllable on-field unit; emerges only on cast (see [§4.1 in-match presence model](#in-match-presence-model--summoned-on-cast-new-2026-04-27)). Mobile units in this section refer exclusively to the 15 launch-roster units (5/civ) per [`concept/phase-3.md §3.2`](phase-3.md), not to the Commander.
+
+## 4.4a Builder unit class (NEW 2026-04-27)
+
+*Decision entry: [`2026-04-27 commander-as-summoned-ability-avatar`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted; Reversibility Medium). Reshape-plan execution surface: [`decisions/2026-04-26-prototype-reshape-plan.md`](../decisions/2026-04-26-prototype-reshape-plan.md) Amendment 2026-04-27 step C7.b. Reversibility: Medium.*
+
+Tower placement is performed by a **Builder unit** dispatched from the home base — not by the Commander, not by an invisible cursor-build. The Builder is a deliberately degenerate mobile-hero subclass: it exists to make construction **legible in time and space** (you see the Mason walk to the cell; the wall isn't free or instant) without inflating the unit-control surface §4.4 already constrains.
+
+**Builder spec (numerics [PROPOSAL], shape committed):**
+
+| Property | [PROPOSAL] |
+|----------|------------|
+| Visual | Civ-coded silhouette per [`concept/phase-5.md §5.3`](phase-5.md). Working labels (subject to 2026-04-25 Follow-up #5 cultural-sensitivity pass): Greek **Mason Crew** / Aztec **Priest-Builder** *(caste-accuracy flagged — historical Aztec construction was performed by macehualtin commoners, not priests; rename pending consultation)* / Norse **Thrall Gang** *(slavery framing flagged for review)*. |
+| Animation | **Single walk loop.** No idle, no combat, no targeting, no animation states beyond walk + despawn-on-arrive. |
+| Spawn | From home-base anchor on player issuing a build/upgrade order. |
+| Despawn | On arrival at the build cell — the tower assembles in-place; the Builder vanishes (cloud-puff or civ-coded VFX). |
+| AI | **None.** Pathfinder follows the walkable-build-grid only. No engagement rules, no fallback, no auto-retreat under threat. If the build cell becomes unreachable mid-walk, the Builder dies silently and the order auto-cancels at the 90% refund tier. |
+| Combat | **None.** Builders cannot attack, be targeted by single-target enemy AI, or block path. They are visually present but mechanically inert. |
+| Concurrency cap | **3 simultaneous Builders per player.** Issuing a 4th order queues until a slot frees. |
+| Cancel refund | **90% of the Tribute cost** if the player cancels mid-walk (before despawn-on-arrive). 100% if cancelled in the same tick as the order. After despawn, refund is the normal tower-sell rate (§4.6). |
+| **Walkable-build-grid** | **Distinct from the enemy-path-grid.** Builders cross terrain enemies cannot (and vice versa) — supports buildable platforms over enemy-only chokes, water tiles enemies path through but Builders bridge, etc. The two grids are authored side-by-side per map; mismatches are a §5.6 lint rule. |
+
+**Why a Builder unit (load-bearing rationale).** Three threads converge:
+
+1. **Commander-as-summoned-ability-avatar** (§4.1) explicitly removes the Commander from the field except during a cast window. *Something* has to physically construct towers if the genre's "build a thing on a cell" verb stays grounded — a free instant placement reads as cursor-magic and undoes the §3.10 mortal-to-mythic identity arc.
+2. **Civ-coded labor** is the cheapest legible-civ payoff in the build phase: seeing a Mason vs a Priest-Builder vs a Thrall walk is faster pattern-recognition than any tower-skin diff.
+3. **Sniping / harassment surface.** Builders walking the map create a small attention sink that lane-pressure / sending-creeps PvP modes (§4.6 Mythium) can target — without exposing the Commander to harassment risk.
+
+**Explicit non-goals** (these would re-create the on-field-hero surface §4.1 just removed):
+
+- No combat capability — ever, even as a "self-defense bite."
+- No multi-state animation beyond walk + despawn.
+- No player-issued waypoint or attack-move commands. Builders go to the build cell. That is all.
+- No XP, no levels, no progression — Builders are infrastructure, not content.
+
+**Cross-references:**
+
+- §4.1 in-match presence model — Commander does not place towers; the Builder does.
+- §4.4 mobile hero units — Builders are explicitly **out of scope** for the §4.4 control-model question (which addresses the 15 combat-capable launch units).
+- [`concept/phase-2.md §2.4a`](phase-2.md) [LOCKED] — reduce-motion accessibility toggle: when active, Builder walk collapses to a 0.3s teleport-fade (preserving the time-cost legibility while removing the motion).
+- 2026-04-25 Follow-up #5 cultural-sensitivity pass — all three working labels (Mason Crew / Priest-Builder / Thrall Gang) gate on that pass; rename allowed pre-content-lock.
 
 ## 4.5 Special effect units specification
 
@@ -220,6 +260,30 @@ Rock-paper-scissors matrix (attack type × armor tag at +25% / −25%) is locked
 5. **PvE campaign scope** — the deferred AGES concept (PvE campaign + leveling + attributes per 2026-04-25 Follow-up #8) may reopen this decision by introducing per-chapter enemy-direction overrides.
 
 Full enemy roster and per-wave archetype list deferred to Phase 5 under the §5.3 silhouette-forward aesthetic **and** the 2026-04-26 armor-tag legibility constraint. Decision required before Phase 5 begins.
+
+### Historic match-arc beats (solo-only) — NEW 2026-04-27
+
+*Decision entry: [`2026-04-27 commander-as-summoned-ability-avatar`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted; Reversibility Medium). Same-day amendment captures 8-question PM refinement. Follow-up #11 (Norse round-30 antagonist) **closed 2026-04-27** — Jörmungandr locked. Reversibility: Medium.*
+
+The 30-round match arc (mini-bosses at 5/15/25, main bosses at 10/20/30) is **dramatized in solo modes** as the commander's compressed historic-and-mythic narrative. PvP retains the 2026-04-25 lane-wars shape unchanged — historic beats are environmental flavor (banner art, music cues, boss skin), not mechanical asymmetry between modes.
+
+**Cross-civ tonal escalation** (intentional, not oversight): every civ traverses *mortal → bridge → mythic* across the 30 rounds, but each civ's round-30 antagonist sits at a different tier of that arc — by design, so each commander's run feels distinct rather than three reskins of one beat:
+
+| Civ | Commander | Round-30 antagonist | Historicity tier | Art / cinematic note |
+|-----|-----------|---------------------|------------------|----------------------|
+| Greek | Leonidas | **Xerxes I** | Named historic figure (Persian Wars / Thermopylae 480 BCE) | Mortal scale. Persian Immortal vanguard at rounds 25-29; Xerxes himself emerges at 30. Ties Leonidas's identity to his actual recorded enemy. |
+| Aztec | Montezuma II | **Tlaxcalan war-leader → Tezcatlipoca avatar (two-phase boss)** | Pre-contact framing. **Cortés explicitly OUT of all acts** per 2026-04-27 same-day amendment | Phase 1 (rounds 28-29 lead-in + round-30 phase 1): mortal Tlaxcalan antagonist (Aztec-Tlaxcalan rivalry was a real pre-Columbian conflict). Phase 2 (round-30 phase 2 + post-clear cinematic): the Tlaxcalan reveals as a Tezcatlipoca (Smoking Mirror) avatar, escalating to mythic. Mortal-to-mythic in a single round. |
+| Norse | Ragnar Lothbrok | **Jörmungandr (the World-Serpent)** | Pure myth (Eddic; Ragnarök foreshadow). Locked 2026-04-27 per Follow-up #11 closure | Cosmic scale. Sea-emergence pageant: rounds 25-29 deliver tidal-omen mini-events (kraken-tier Beast+Spirit minions), round-30 Jörmungandr breaches the lane as a Colossal+Spirit boss. Fenrir reserved for post-launch PvE / Hero-Mode content per Follow-up #11 closure rationale. |
+
+**Mini-boss cadence (rounds 5/15/25; same per-civ pool, lighter framing).** Mini-bosses pull from the same civ's myth/history pool as the round-30 boss but at one tier below in scale: Greek 5/15/25 candidates include hoplite-rivals → satrap commanders → Persian Immortal champion; Aztec candidates include rival altepetl warlords → Cipactli-tier myth fauna → priest-king of a Triple Alliance enemy state; Norse candidates include rival jarls → Draugr lord → Jötunn herald of Jörmungandr. Specific roster is OPEN under §4.7 Direction-C ratification + 2026-04-25 Follow-up #5 cultural-sensitivity pass.
+
+**Mixed historicity is intentional.** A Greek run reads as recorded history; an Aztec run shifts mortal-to-mythic mid-act-3; a Norse run is myth from minute one. This is not three failed attempts to be the same — it is three distinct flavors of "what does *this* commander's apocalypse look like." Same 30-round chassis; different narrative scale per civ.
+
+**Myth-mode counterfactual arc** (post-launch direction, confirmed in 2026-04-27 amendment but **not in launch scope**). A future modifier could collapse all three civs to pure-myth framing (Leonidas vs. Hydra at round 30, Montezuma vs. Tezcatlipoca un-veiled from round 1, Ragnar vs. Jörmungandr on a synchronized Ragnarök timeline) for replay variety. Tracked as a deferred direction; no concept-constraint impact at launch.
+
+**Solo-only.** PvP modes do **not** dramatize round-30 as the commander's antagonist — PvP round-30 is the symmetric "either side wins" lane-wars climax per `concept/phase-3.md §3.9`. The historic-arc framing is solo-only environmental theater layered over the same wave-shape backbone the matchmaker assumes for PvP, so co-op Horde inherits whichever player's commander is set as session host (or rotates per round per a future co-op-direction decision; OPEN).
+
+**Cultural-sensitivity gate (Follow-up #5).** Every name in the table above (Xerxes / Tlaxcalan / Tezcatlipoca / Jörmungandr) and every mini-boss candidate is **placeholder-pending-consultation**. The Aztec two-phase reveal in particular requires consultation review for the Tezcatlipoca framing (Smoking Mirror is an active living-religion deity figure for some communities, not a museum-cabinet myth); the Tlaxcalan-as-villain framing requires care to avoid flattening Aztec-Tlaxcalan history into a simple good-vs-evil. No round-30 art-lock until the 2026-04-25 Follow-up #5 pass closes.
 
 ## 4.9 Save model
 
