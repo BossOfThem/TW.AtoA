@@ -984,8 +984,11 @@ document.addEventListener("keydown", (e) => {
   if (currentScene === "splash") { dismissSplash(); return; }
   // Strand 7: Q fires commander signature; C toggles commander-move mode (mouse then click to relocate)
   if (currentScene === "match" && game && !game.paused) {
+    // SUPERSEDED 2026-04-27 (C7.a) — Q signature + C move-mode gutted; cast-bar in C4 owns ability triggers, targeting model TBD §4.1. Final delete: C6 sweep.
+    /*
     if (e.code === "KeyQ") { fireCommanderSignature(); e.preventDefault(); return; }
     if (e.code === "KeyC") { game.commanderMoveMode = !game.commanderMoveMode; toast(game.commanderMoveMode ? "Commander move: click a build cell." : "Commander move cancelled."); e.preventDefault(); return; }
+    */
   }
   if (e.key === "Escape") {
     if (currentScene === "match") { togglePause(); e.preventDefault(); }
@@ -1291,10 +1294,11 @@ const Net = {
         if (ov) ov.classList.toggle("on", !!msg.paused);
         if (game) game.paused = !!msg.paused;
       }
-      if (msg.type === "commander-move" && game && game.commander) {
+      // SUPERSEDED 2026-04-27 (C7.a) — commander-move/-sig net messages no-op now that on-field avatar is gutted. Final delete: C6 sweep.
+      if (false && msg.type === "commander-move" && game && game.commander) {
         game.commander.x = msg.x; game.commander.y = msg.y;
       }
-      if (msg.type === "commander-sig" && game && game.commander) {
+      if (false && msg.type === "commander-sig" && game && game.commander) {
         game.commander.cd = 60*60; game.commander.sigActiveTtl = 8*60;
       }
       if (msg.type === "match-end") {
@@ -1356,7 +1360,8 @@ function buildSnapshot() {
       statuses: e.statuses ? e.statuses.map(s => ({ kind: s.kind, ttl: s.ttl })) : []
     })),
     shots: game.shots.slice(0, 40).map(s => ({ x1: s.x1, y1: s.y1, x2: s.x2, y2: s.y2, color: s.color, accent: s.accent, lineage: s.lineage, life: s.life })),
-    commander: game.commander ? { x: game.commander.x, y: game.commander.y, lineage: game.commander.lineage, cd: game.commander.cd, sigActiveTtl: game.commander.sigActiveTtl, auraCells: game.commander.auraCells } : null
+    // SUPERSEDED 2026-04-27 (C7.a) — commander snapshot field gutted; C7.b will replace with {castState,castTarget,castTtl}. Final delete: C6 sweep.
+    commander: null
   };
 }
 function applyGuestSnapshot(snap) {
@@ -1365,13 +1370,15 @@ function applyGuestSnapshot(snap) {
   game.gold = snap.gold; game.knowledge = snap.knowledge; game.divinity = snap.divinity || 0; game.ageIdx = snap.ageIdx; game.lives = snap.lives;
   game.totalKills = snap.totalKills;
   game.towers = snap.towers; game.enemies = snap.enemies; game.shots = snap.shots;
-  // Additive: apply commander field if host sent one (ignored silently if missing — preserves back-compat).
+  // SUPERSEDED 2026-04-27 (C7.a) — commander snapshot apply gutted; C7.b reintroduces with cast-emerge state. Final delete: C6 sweep.
+  /*
   if (snap.commander && game.commander) {
     game.commander.x = snap.commander.x; game.commander.y = snap.commander.y;
     game.commander.lineage = snap.commander.lineage;
     game.commander.cd = snap.commander.cd; game.commander.sigActiveTtl = snap.commander.sigActiveTtl;
     if (snap.commander.auraCells) game.commander.auraCells = snap.commander.auraCells;
   }
+  */
   // Reconcile guest-side cell occupancy from authoritative tower positions.
   if (game.cells) {
     for (const c of game.cells) c.occupied = false;
@@ -1793,7 +1800,8 @@ function initMatch() {
     pathLen: pathLength(b.path), totalWaves: waves,
     isCoop, isGuest,
     matchStartMs: Date.now(), _eventLastId: null, pendingWaveMods: null,
-    commander: null, commanderMoveMode: false
+    // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar gutted; cast-emerge pipeline lands in C7.b. Final delete: C6 sweep.
+    /* commander: null, commanderMoveMode: false */
   };
   // Commander avatar (Strand 7 — on-field hero). Seeds at a grass cell nearest home.
   if (COMMANDERS) {
@@ -1805,6 +1813,8 @@ function initMatch() {
       const d = Math.hypot(cx - home.x, cy - home.y);
       if (d < bestD) { bestD = d; best = cell; }
     }
+    // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar struct gutted; replaced by {castState,castTarget,castTtl} in C7.b. Final delete: C6 sweep.
+    /*
     if (best) {
       game.commander = {
         x: best.x + best.w/2, y: best.y + best.h/2,
@@ -1816,6 +1826,7 @@ function initMatch() {
         auraCells: 2
       };
     }
+    */
   }
   // Co-op UI
   const chat = document.getElementById("chat-panel");
@@ -2092,12 +2103,14 @@ function onBoardClick(ev) {
   if (game.paused) return;
   const rect = game.canvas.getBoundingClientRect();
   const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
-  // Strand 7: Shift+click or commanderMoveMode relocates commander avatar (1 move per wave cap)
+  // SUPERSEDED 2026-04-27 (C7.a) — Shift+click commander relocation gutted; C7.b moves to cast-target click model. Final delete: C6 sweep.
+  /*
   if (game.commander && (ev.shiftKey || game.commanderMoveMode)) {
     moveCommanderTo(mx, my);
     game.commanderMoveMode = false;
     return;
   }
+  */
   if (game.isGuest) {
     // Guest sends intent with canvas-space click; host resolves to cell
     Net.sendIntent({ type: "place", x: mx, y: my, tower: game.selectedTower });
@@ -2184,11 +2197,14 @@ function effectiveTowerStats(t) {
   let rngMul = Math.pow(1.08, lvl - 1);
   let cdMul  = Math.pow(0.90, lvl - 1);
   const age = game.ageIdx;
-  // Strand 7: Commander aura bonus — applies passive to towers within aura radius.
+  // SUPERSEDED 2026-04-27 (C7.a) — commander aura mul gutted; passives now route through cast-bar (C4) + Cmdr identity floor §4.1. Final delete: C6 sweep.
+  const aura = { damage: 1, cd: 1, range: 1, active: false };
+  /*
   const aura = commanderAuraEffectOn(t);
   if (aura.damage) dmgMul *= aura.damage;
   if (aura.cd) cdMul *= aura.cd;
   if (aura.range) rngMul *= aura.range;
+  */
   const dmg = stat.damage && stat.damage[age] != null ? Math.round(stat.damage[age] * dmgMul) : 0;
   const cd  = stat.cd && stat.cd[age] != null ? Math.max(6, Math.round(stat.cd[age] * cdMul)) : 30;
   const range = Math.round(stat.range * rngMul);
@@ -2196,7 +2212,8 @@ function effectiveTowerStats(t) {
   return { ...stat, damage: dmg, cd, range, knowledge: kn, level: lvl, auraBuffed: aura.active };
 }
 
-// Strand 7: Commander aura effect on a given tower. Lineage-flavored.
+// SUPERSEDED 2026-04-27 (C7.a) — commanderAuraEffectOn / moveCommanderTo / fireCommanderSignature gutted; C7.b ships cast-emerge pipeline. Final delete: C6 sweep.
+/*
 function commanderAuraEffectOn(t) {
   const out = { damage: 1, cd: 1, range: 1, active: false };
   const cmdr = game && game.commander;
@@ -2207,15 +2224,13 @@ function commanderAuraEffectOn(t) {
   if (d > auraRadius) return out;
   out.active = true;
   const sigOn = (cmdr.sigActiveTtl || 0) > 0;
-  // Base passive (always while in aura):
   switch (cmdr.lineage) {
     case "sinew": out.damage *= 1.15; break;
-    case "ember": out.cd *= 0.90; break;         // +~10% fire rate
-    case "forge": out.damage *= 1.10; break;     // economy lineage — modest tower boost
+    case "ember": out.cd *= 0.90; break;
+    case "forge": out.damage *= 1.10; break;
     case "crown": out.range *= 1.15; break;
     case "veil":  out.damage *= 1.08; break;
   }
-  // Signature active: boost to all aura-covered towers.
   if (sigOn) {
     out.damage *= 1.20;
     out.cd *= 0.85;
@@ -2227,7 +2242,6 @@ function moveCommanderTo(mx, my) {
   const cmdr = game.commander;
   if (!cmdr) return;
   if (cmdr.movedThisWave) { toast("Commander already moved this wave."); return; }
-  // Allow move to grass cells only (not occupied, inside the placeable band).
   const cell = game.cells.find(c => !c.occupied && mx >= c.x && mx < c.x + c.w && my >= c.y && my < c.y + c.h);
   if (!cell) { toast("Commander moves only to empty build cells."); return; }
   cmdr.x = cell.x + cell.w/2;
@@ -2235,7 +2249,6 @@ function moveCommanderTo(mx, my) {
   cmdr.cell = cell;
   cmdr.movedThisWave = true;
   emitFeed && emitFeed("commander", (cmdr.name || "Commander") + " repositions.");
-  // Additive co-op broadcast
   try { if (game.isCoop && Net.role === "host" && Net.conn) Net.conn.send({ type: "commander-move", x: cmdr.x, y: cmdr.y }); } catch(e) {}
 }
 
@@ -2243,11 +2256,12 @@ function fireCommanderSignature() {
   const cmdr = game && game.commander;
   if (!cmdr) return;
   if (cmdr.cd > 0) { toast("Signature cooling: " + Math.ceil(cmdr.cd/60) + "s"); return; }
-  cmdr.cd = 60 * 60;         // 60 seconds (ticks @ 60fps)
-  cmdr.sigActiveTtl = 8 * 60; // 8 seconds
+  cmdr.cd = 60 * 60;
+  cmdr.sigActiveTtl = 8 * 60;
   emitFeed && emitFeed("commander", (cmdr.signatureName || "Signature") + " — aura towers empowered 8s.");
   try { if (game.isCoop && Net.role === "host" && Net.conn) Net.conn.send({ type: "commander-sig" }); } catch(e) {}
 }
+*/
 
 function upgradeCost(t) {
   const stat = TOWER_STATS[t.type];
@@ -2344,8 +2358,8 @@ function startWave() {
   game.wave++;
   const def = WAVE_DEFS[game.wave - 1];
   game.spawn = { count: def.count, remaining: def.count, cd: 0, gap: def.gap, hp: def.hp, speed: def.speed, reward: def.reward };
-  // Strand 7: reset commander's per-wave move quota
-  if (game.commander) game.commander.movedThisWave = false;
+  // SUPERSEDED 2026-04-27 (C7.a) — per-wave move quota reset gutted with on-field avatar. Final delete: C6 sweep.
+  /* if (game.commander) game.commander.movedThisWave = false; */
   // Apply pending event modifiers to this wave
   if (game.pendingWaveMods) {
     const pm = game.pendingWaveMods;
@@ -2616,12 +2630,12 @@ function tick() {
   }
   for (const s of game.shots) s.life--;
   game.shots = game.shots.filter(s => s.life > 0);
-  // Strand 7: commander timers + knock-back safety (non-destructible)
+  // SUPERSEDED 2026-04-27 (C7.a) — commander tick (cd timer + knock-back) gutted with persistent avatar; cast-emerge ttl lands in C7.b. Final delete: C6 sweep.
+  /*
   if (game.commander) {
     const cmdr = game.commander;
     if (cmdr.cd > 0) cmdr.cd--;
     if (cmdr.sigActiveTtl > 0) cmdr.sigActiveTtl--;
-    // Knock-back if an enemy overlaps the commander
     for (const e of game.enemies) {
       if (Math.hypot(e.x - cmdr.x, e.y - cmdr.y) < 18) {
         const home = game.path[0];
@@ -2633,6 +2647,7 @@ function tick() {
       }
     }
   }
+  */
   // Insight-layer ticks
   if (game.flashes) { for (const f of game.flashes) f.life--; game.flashes = game.flashes.filter(f => f.life > 0); }
   if (game.damageNumbers) {
@@ -3118,7 +3133,8 @@ function draw() {
       ctx.restore();
     }
   }
-  // Strand 7: Commander avatar + aura (drawn before enemies so enemies render on top).
+  // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar + aura render gutted; C7.b reuses renderSilhouette() 1.4× as the cast-emerge agent (pose-lock gated by C2's sensitivity pass). Final delete: C6 sweep.
+  /*
   if (game.commander) {
     const cmdr = game.commander;
     const cellSize = game.cellSize || 46;
@@ -3126,36 +3142,30 @@ function draw() {
     const lineColor = getLineageCss(cmdr.lineage);
     const sigOn = (cmdr.sigActiveTtl || 0) > 0;
     ctx.save();
-    // Aura faint fill
     const gA = ctx.createRadialGradient(cmdr.x, cmdr.y, 4, cmdr.x, cmdr.y, auraR);
     gA.addColorStop(0, hexA(lineColor, sigOn ? 0.22 : 0.10));
     gA.addColorStop(1, hexA(lineColor, 0));
     ctx.fillStyle = gA;
     ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, auraR, 0, Math.PI*2); ctx.fill();
-    // Aura dashed ring
     ctx.strokeStyle = hexA(lineColor, sigOn ? 0.9 : 0.55);
     ctx.lineWidth = sigOn ? 2 : 1.2;
     ctx.setLineDash([6, 5]);
     ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, auraR, 0, Math.PI*2); ctx.stroke();
     ctx.setLineDash([]);
-    // Tint the cells in aura that host a tower
     for (const t of game.towers) {
       if (Math.hypot(t.x - cmdr.x, t.y - cmdr.y) <= auraR && t.cell) {
         ctx.fillStyle = hexA(lineColor, sigOn ? 0.16 : 0.08);
         ctx.fillRect(t.cell.x, t.cell.y, t.cell.w, t.cell.h);
       }
     }
-    // Body silhouette — scaled 1.4x. Use existing silhouette primitives keyed loosely to lineage.
     const kind = cmdr.lineage === "sinew" ? "heavy"
               : cmdr.lineage === "ember"  ? "ranged"
               : cmdr.lineage === "forge"  ? "infantry"
               : cmdr.lineage === "crown"  ? "elite"
               : "swarmer";
     renderSilhouette(ctx, kind, cmdr.x, cmdr.y, 1.4, lineColor, "#f4e8c8");
-    // Commander laurel ring
     ctx.strokeStyle = "#f4e8c8"; ctx.lineWidth = 1.2;
     ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, 22, 0, Math.PI*2); ctx.stroke();
-    // Cooldown arc (top-anchored, sweeps as CD depletes)
     if (cmdr.cd > 0) {
       const frac = cmdr.cd / (60 * 60);
       ctx.strokeStyle = hexA(lineColor, 0.85); ctx.lineWidth = 3;
@@ -3163,12 +3173,12 @@ function draw() {
       ctx.arc(cmdr.x, cmdr.y, 26, -Math.PI/2, -Math.PI/2 + Math.PI*2*frac);
       ctx.stroke();
     } else {
-      // Q-ready pip
       ctx.fillStyle = "#f4e8c8";
       ctx.beginPath(); ctx.arc(cmdr.x + 20, cmdr.y - 20, 3, 0, Math.PI*2); ctx.fill();
     }
     ctx.restore();
   }
+  */
   // Enemies
   const pathLen = game.pathLen || 1;
   const showThreat = Profile.setting("insight.threatBar", true);
