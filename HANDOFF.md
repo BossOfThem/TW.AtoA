@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-30 — C2 + C3 + C4 (slice) LANDED.
+**Last session:** 2026-05-01 — C5 + C7.a + C7.b LANDED (C7.b across two slices).
 **Hand-off by:** Claude (Opus 4.7)
 **Hand-off to:** next Claude Code session (post `/clear`)
 
@@ -8,26 +8,29 @@
 
 ## TL;DR (this session)
 
-**Three pure-additive prototype passes landed under the alongside-and-non-breaking pattern, all dual-pushed.** Per PM "go" gates with bypass-permissions extension through C3 and explicit handoff heads-up before C4 ("context window still getting full quickly").
+**Four pure-additive prototype passes landed under the alongside-and-non-breaking pattern, all dual-pushed. C5 + C7.a + C7.b are now complete (C7.b across two slices).** Per PM "go" gates per step.
 
-1. **C2 — Silhouette 5→3 SVG migration (commit `cd376f1`).** Added `civSilhouetteSVG(civId)` + `commanderSilhouetteSVG(c)` + `commanderSilhouetteColor(c)` alongside legacy `silhouetteSVG()`; civ-aware dispatch routes civ commanders to civ silhouettes (Greek triangle / Aztec hexagon / Norse diamond) and legacy commander-a..e to legacy lineage silhouettes. `CIV_PALETTE` constant inlined (Greek blue+gold / Aztec green+red / Norse slate+light-slate). **Cultural-sensitivity gate honored** via abstract geometric primitives (no glyphs/poses); skipped using civilizations.json glyphs because the Aztec entry is "𓁹" (an Egyptian eye — flagged Follow-up #4 styling pass). 3 call sites updated: roster chip, portrait card, HUD silhouette. `?silhouette-test=1` harness still works for both 5 legacy + 3 civ silhouettes (8 tiles).
+1. **C5 — Codex modal: 7×5 attack-type vs armor RPS matrix (commit `95165b9`).** Tutorial + match HUD each gain a 📖 Codex button → opens `.codex-modal` with `<table class="cx-grid">`: 7 attack-type rows × 5 armor-tag columns; cells colored `.strong` (+25%, green) / `.weak` (-25%, red) / `.neutral` (1.0×); status-proc legend below grid + bonus/penalty footnote. Reads inlined `ATTACK_TYPES` constant sourced verbatim from [`prototype/data/attack-types.json`](prototype/data/attack-types.json) (Piercing/Slashing/Crushing/Fire/Poison/Arcane/Divine; armor tags Unarmored/Shielded/Beast/Spirit/Colossal). `openCodex()` / `closeCodex()` + Esc handler. ~70 lines JS + 24 lines CSS, all alongside; no balance wiring, no tower-card mutation.
 
-2. **C3 — Tribute + Divinity resource bar (commit `45ff858`).** Added two new HUD items in both tutorial and match scenes (Tribute + Divinity), plus a Fusion HUD button (disabled until `game.divinity >= 2`). Tribute = pure visual mirror of `game.gold` (legacy Gold + Knowledge keep running unchanged). Divinity = new state field (`game.divinity`, init 0, capped at 6 discrete pips matching the locked 30-round arc) added to both `initMatch` and `initTutorial` + Net snapshot build/apply for co-op sync. Wave-end hook on `game.wave % 5 === 0` boss rounds: increment Divinity (cap 6) + toast "+1 Divinity" + emit feed event. CSS vars `--tribute: #ca8a04; --divinity: #c084fc;` added. Legacy gold/knowledge HUD + tower buy/upgrade/sell + age-up logic untouched (C5/C6 territory).
+2. **C7.a — Gut persistent on-field commander avatar (commit `6063520`).** 12 commander-avatar surfaces commented-out (NOT deleted) with dated `// SUPERSEDED 2026-04-27 (C7.a)` markers preserving full code as raw material for C7.b/C6: `initMatch` commander state line + 5-field `game.commander` struct; KeyQ + KeyC handlers; net commander-move/-sig handlers (`if (false &&...)`); net snapshot build sets `commander: null` + apply block wrapped; `onBoardClick` Shift+click branch; `commanderAuraEffectOn` / `moveCommanderTo` / `fireCommanderSignature` function bodies; `startWave` movedThisWave reset; tick-block (cd timer + knock-back); render-block (aura + avatar). `towerStats` aura mul replaced with neutral identity values (`{damage:1, cd:1, range:1, active:false}`) so tower math stays unaffected.
 
-3. **C4 (slice) — Fusion menu modal + Commander Cast bar (commit `ca2a5cf`).** Self-trimmed under context pressure to the two pure-additive surfaces. **Fusion modal:** 3 civ columns × 3 god cards reading inline `FUSION_RECIPES` (verbatim PM-locked sources/types: zeus/athena/poseidon/quetzalcoatl/huitzilopochtli/tezcatlipoca/odin/thor/tyr); click → `fusionExecute()` decrements `game.divinity` by 1 + toast stub. Opens via Fusion HUD button (gated `disabled` if divinity < 2); Esc closes. **Cast bar:** 3 buttons (cast-passive [decorative] / cast-short [8s decorative CD] / cast-long [18s decorative CD]) populated from `c.stats.passive/shortCdActive/longCdSignature` for civ commanders only via `renderCastBar()`; `castAbility(slot)` plays a random VO ability bark from `c.vo.ability` and triggers decorative CD lockout. Legacy commander-a..e show no cast bar (gracefully empty — no `civ` field).
+3. **C7.b slice 1 — Cast-emerge pipeline (commit `ae28e1d`).** Restored minimal `commander: { castState, castTarget, castTtl }` struct in `initMatch`. Added `CAST_DURATIONS = { short: 72, long: 168, signature: 270 }` (frames @ 60Hz ~= ~1.2s/~2.8s/~4.5s per 2026-04-27 spec; `slot === "long"` → signature tier). Hook in `castAbility(slot)` sets `castState/castTarget/castTtl`. Tick decrements ttl + clears state at zero. Render: civ-paletted `renderSilhouette()` 1.4× at `game.path[0]` while cast active; signature outer pulsing ring; reduce-motion → gold ring pulse only. Net snapshot build/apply syncs all three fields.
 
-**Untouched everywhere:** legacy `prototype/data/ages.json` + `prototype/data/towers.json` + `prototype/index.html` boot loader; legacy `commander-a..e` entries; tower buy/upgrade/sell/place/attack logic; age-up logic. §2.4a + §5.4 [LOCKED] surfaces untouched. 2026-04-25 locked content-skeleton names untouched. cascade-lint clean throughout (`next-open-step: Step 5; clean.`).
+4. **C7.b slice 2 — BuilderUnit class (commit `817d048`).** `builders: []` array added to `initMatch` state (after commander struct). Spawn hook in `placeTower` pushes `{x, y, target:{x,y}, ttl:120, totalTtl:120, civ, tier:1}` from `path[0]` toward placed cell center. Tick lerps x/y by `1 - (ttl/totalTtl)`, decrements ttl, filters out ttl<=0. Render draws small 4px dot + 7px accent ring per builder, civ-tinted via `CIV_PALETTE` or neutral slate `{primary:"#94a3b8", accent:"#cbd5e1"}` for legacy commander-a..e (no `civ` field). Snapshot build slices to 32 + applies on guest. Builder concurrency cap + 90% refund-on-cancel deferred (no cancel UI surface yet).
 
-**C4-continuation deferred items** (need civ-tower placement wiring the legacy 5-lineage system lacks): merge-preview ghosts, Promote-to-T4 button, tower-card tier+type stamp. Queued either before C5 or interleaved per PM direction.
+**Untouched everywhere:** legacy `prototype/data/ages.json` + `prototype/data/towers.json` + `prototype/index.html` boot loader; legacy `commander-a..e` entries; `silhouetteSVG()` legacy; tower buy/upgrade/sell/place/attack logic; age-up logic. §2.4a + §5.4 [LOCKED] surfaces untouched. 2026-04-25 locked content-skeleton names untouched. cascade-lint clean throughout (`next-open-step: Step 5; clean.`).
+
+**C4-continuation deferred items** (need civ-tower placement wiring): merge-preview ghosts, Promote-to-T4 button, tower-card tier+type stamp. Queued before or alongside C6.
 
 ---
 
 ## Commits this session
 
-- `cd376f1` — C2 — Silhouette 5→3 SVG migration (alongside, geometric placeholders). Dual-pushed.
-- `45ff858` — C3 — Resource bar migration (Tribute + Divinity, alongside). Dual-pushed.
-- `ca2a5cf` — C4 (slice) — Fusion menu modal + Commander Cast bar. Dual-pushed.
-- This handoff commit — HANDOFF rewrite + PROGRESS trim + CASCADE pointer/version bump v0.30 → v0.31.
+- `95165b9` — C5 — Codex modal: 7×5 attack-type vs armor RPS matrix (alongside). Dual-pushed.
+- `6063520` — C7.a — Gut persistent on-field commander avatar (alongside, comment-out). Dual-pushed.
+- `ae28e1d` — C7.b slice 1 — cast-emerge pipeline (cast-bar → transient avatar at home anchor). Dual-pushed.
+- `817d048` — C7.b slice 2 — BuilderUnit class (spawn-lerp-despawn + builders snapshot). Dual-pushed.
+- This handoff commit — HANDOFF rewrite + PROGRESS trim + CASCADE pointer/version bump v0.31 → v0.32.
 
 ---
 
@@ -35,7 +38,7 @@
 
 ### Git
 
-- Branch: **`session/2026-04-25-q2-world-pitch`** dual-pushed to `main` at `ca2a5cf` (plus this handoff commit).
+- Branch: **`session/2026-04-25-q2-world-pitch`** dual-pushed to `main` at `817d048` (plus this handoff commit).
 - Working tree clean except `.accord/` untracked.
 - No PR opened.
 
@@ -43,45 +46,54 @@
 
 - **Phase 1 thematic direction: RATIFIED** (real-world cultures Greek/Aztec/Norse — 2026-04-25 Hard).
 - **Phase 1 exit one-pager: FILED** (2026-04-26).
-- **Commander-as-summoned-ability-avatar: FULLY LANDED** (2026-04-27).
+- **Commander-as-summoned-ability-avatar: FULLY LANDED** (decision 2026-04-27; prototype implementation across C7.a + C7.b this session).
 - **§5.4 [LOCKED] amendment: FULLY LANDED** (2026-04-28).
-- **Prototype reshape plan: RATIFIED** (2026-04-29). Effective execution order: **C1 ✓ → C2 ✓ → C3 ✓ → C4 ✓ (slice; continuation deferred) → C5 → C7.a → C7.b → C6**.
+- **Prototype reshape plan: RATIFIED** (2026-04-29). Effective execution order: **C1 ✓ → C2 ✓ → C3 ✓ → C4 ✓ (slice; continuation deferred) → C5 ✓ → C7.a ✓ → C7.b ✓ → C6**.
 - §2.4a + §5.4 **[LOCKED]** — both untouched this session.
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 most recent entries (C4 / C3 / C2). Prior C1 LANDED + RATIFIED + §5.4 amendment archived.
-- `CASCADE.md` pointer: most recent block only (v0.31, C2+C3+C4 slice LANDED); prior C1 LANDED block archived.
-- `CASCADE.md` version footer: 2 most recent bumps (v0.31 + v0.30 reference); v0.29 archived.
+- `PROGRESS.md` session log: 3 most recent entries (C7.b combined / C7.a / C5). Prior C2/C3/C4-slice archived.
+- `CASCADE.md` pointer: most recent block only (v0.32, C5+C7.a+C7.b LANDED); prior C2+C3+C4-slice block archived.
+- `CASCADE.md` version footer: 2 most recent bumps (v0.32 + v0.31 reference); v0.30 archived.
 - Bootstrap remains lean.
 
 ### Open follow-ups (carried)
 
 - **#4 — Aztec glyph styling pass.** civilizations.json has `𓁹` (Egyptian eye) for Aztec — wrong civilization. C2 sidestepped by using geometric primitives. Fix in dedicated styling pass; do not surface in silhouettes/HUD until corrected.
-- **#5 — Cultural-sensitivity pass.** Hard pose-lock gate on civ silhouettes. C2 used abstract placeholders so this is no longer a near-term blocker, but it remains a content-lock-gate before any pose-locked / culturally-coded art ships.
+- **#5 — Cultural-sensitivity pass.** Hard pose-lock gate on civ silhouettes. Remains a content-lock-gate before any pose-locked / culturally-coded art ships.
 - **#6 — Patch-1 commanders per civ + Thor Slashing+Crushing recipe-layer dissonance.**
 - **#7-#9 — Foresight-coin / PvE campaign + AGES + leveling + attributes / non-boss enemy ontology.**
 - **#11 — Norse round-30 boss CLOSED at Jörmungandr** (Fenrir post-launch).
-- **#13 — [PROPOSAL] balance-pass re-ratification** for C1/C3 [PROPOSAL] numbers (RPS magnitudes, tier costs, Divinity cap, decorative CD durations).
-- **C4-continuation deferred items** — merge-preview ghosts / Promote-to-T4 button / tower-card tier+type stamp. Need civ-tower placement wiring; queued before or alongside C5.
+- **#13 — [PROPOSAL] balance-pass re-ratification** for C1/C3 [PROPOSAL] numbers (RPS magnitudes, tier costs, Divinity cap, decorative CD durations, CAST_DURATIONS frame counts).
+- **C4-continuation deferred items** — merge-preview ghosts / Promote-to-T4 button / tower-card tier+type stamp. Need civ-tower placement wiring; queued before or alongside C6.
+- **C7.b deferred items** — Builder concurrency cap + 90% refund-on-cancel UI surface. Queued for C6 or post-C6 polish.
 - **`admin/concept.json` staleness debt** — still on pre-2026-04-21 5-lineage / 11-age shape. PM direction owed: rewrite / regenerate / retire.
 
 ---
 
 ## NEXT SESSION — primary directive
 
-**C5 — 7×5 RPS indicator.** PM "go" required before any work.
+**C6 — dead-code sweep.** PM "go" required before any work.
 
-**C5 scope** (from [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md)): surface the 7-attack-type × 5-armor-tag matrix from [`prototype/data/attack-types.json`](prototype/data/attack-types.json) in tooltip / codex / tower-card form so the +25%/-25% RPS layer is legible. Reads existing data; no balance changes. Pure-additive UI consistent with alongside discipline.
+**C6 scope** (from [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md) + 2026-04-27 amendment): final reshape step. Removes the alongside-discipline scaffolding now that C2-C5 + C7.a/b have all graduated:
+- Delete the 12 commented-out commander-avatar surfaces (`// SUPERSEDED 2026-04-27 (C7.a)` markers).
+- Delete legacy `silhouetteSVG()` (now fully replaced by `civSilhouetteSVG()` for civs).
+- Delete legacy `commander-a..e` entries from `commanders.json`.
+- Delete legacy `prototype/data/ages.json` + `prototype/data/towers.json` (or reshape into civ-aware data layer per the new tiers/civilizations files).
+- Delete legacy boot-loader fetches for ages.json/towers.json + inline fallbacks.
+- Tear down age-up logic / Knowledge resource / age-gate UI now that Tribute+Divinity is the live economy.
+- Tear down 5-lineage tower buy/upgrade/sell wiring (will be replaced by civ-tower placement track — gated by C4-continuation decision).
 
-**Possible PM redirect: C4-continuation first.** If the PM wants the deferred Fusion-related items (merge-preview ghosts / Promote-to-T4 button / tower-card tier+type stamp) before C5, those each require civ-tower placement wiring — not a strict-additive surface. Will need an AskUserQuestion gate on whether to (a) introduce a civ-tower placement track alongside the legacy 5-lineage placement, or (b) wait until the legacy placement is dismantled at C5/C6.
+**Critical sequencing question — surface to PM via AskUserQuestion before unilateral C6 work:**
+The legacy 5-lineage tower placement system is what currently drives playable matches. Removing it requires either (a) shipping civ-tower placement first as part of C6 (or as C4-continuation interleaved with C6), or (b) accepting that the prototype is non-playable for a window. Recommend option (a): combine C6 with the C4-continuation civ-tower placement track so the prototype stays playable through the transition.
 
 **Cadence:** propose plan → PM "go" → produce → verify (`python tools/cascade-lint.py`) → tick. Single PM-gated step per HANDOFF protocol.
 
 ### Background candidates (if PM redirects)
 
-1. **C5** (Recommended — next on plan order; pure-additive read of attack-types.json).
-2. **C4-continuation** — merge-preview / Promote-T4 / tower-card stamp. Needs civ-tower placement wiring decision.
+1. **C6** (Recommended — final step on plan order; needs sequencing AskUserQuestion).
+2. **C4-continuation only** — merge-preview / Promote-T4 / tower-card stamp first, defer C6.
 3. Cultural-sensitivity pass scheduling (Follow-up #5).
 4. Patch-1 commanders per civ (Follow-up #6).
 5. `admin/concept.json` migration direction.
@@ -92,9 +104,7 @@
 - `concept/phase-5.md §5.4` naming **[LOCKED]** — Lineages-row amendment LANDED 2026-04-28; no further row changes without a new dedicated [LOCKED]-amendment decision.
 - `concept/phase-2.md §2.4a` accessibility floor **[LOCKED]**.
 - 2026-04-25 locked content skeleton (3 civs × 6 T1-T3 towers + 5 units + 6 T4 Demigods + 3 Gods + 9 Fusion recipes + commander signature-ability names + Tribute/Divinity economy + 30-round arc).
-- Legacy `prototype/data/ages.json`, `prototype/data/towers.json`, `prototype/index.html` boot loader — DO NOT touch until C5/C6 dismantle the age-loop UI; full removal at C6.
-- Legacy `commander-a..e` entries in `commanders.json` — preserved alongside the 3 civ commanders; remove at C6 dead-code pass.
-- Legacy `silhouetteSVG()` — kept alongside `civSilhouetteSVG()`; remove at C6 dead-code pass.
+- C7.a comment-out markers stay as-is until C6 explicitly deletes them — do NOT silently delete or uncomment outside a C6 "go".
 
 ---
 
@@ -102,19 +112,19 @@
 
 - **Default: one-step-at-a-time with PM "go" gates** per `CLAUDE.md`.
 - **AskUserQuestion tool for PM gates** with "Recommended" first option (PM standing directive 2026-04-28).
-- **Alongside-and-non-breaking pattern (PM-ratified 2026-04-29):** when a step would break running surfaces, add new code/files alongside legacy; surface cardinality conflicts to PM via AskUserQuestion before unilateral action.
+- **Alongside-and-non-breaking pattern (PM-ratified 2026-04-29):** when a step would break running surfaces, add new code/files alongside legacy; surface cardinality conflicts to PM via AskUserQuestion before unilateral action. C6 is the explicit graduation point — alongside scaffolding is removed only on PM go.
 - **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
 - **Doc hygiene on each handoff:** trim PROGRESS to 3 entries, CASCADE pointer to 1 block, version footer to 2 bumps.
-- **Context-pressure self-trim:** when context budget tightens, trim step scope to pure-additive surfaces and document deferred items as continuation work (precedent: C4 slice this session).
+- **Context-pressure self-trim:** when context budget tightens, trim step scope to pure-additive surfaces and document deferred items as continuation work (precedent: C4 slice + C7.b two-slice split).
 
 ---
 
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar — primary directive C5 (7×5 RPS indicator).
+Resuming Ash to Altar — primary directive C6 (dead-code sweep).
 
 BOOTSTRAP per CLAUDE.md order:
   README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
@@ -124,35 +134,37 @@ BEFORE reading docs:
   git log --oneline HEAD..origin/main   # should be empty
 
 STATE ALOUD (before producing anything):
-- Phase status + drift vs. last HANDOFF: C2 (cd376f1) +
-  C3 (45ff858) + C4 slice (ca2a5cf) all dual-pushed via
-  alongside-and-non-breaking pattern. Civ silhouettes
-  (geometric placeholders) + Tribute/Divinity HUD +
-  Fusion menu modal + Commander Cast bar all live.
-  Legacy 5-lineage data + boot loader + commander-a..e
-  + silhouetteSVG() all preserved alongside.
-- Open blockers: C4-continuation items (merge-preview /
-  Promote-T4 / tower-card tier+type stamp) need civ-tower
-  placement wiring — surface to PM via AskUserQuestion
-  before either of: (a) starting C4-continuation, or
-  (b) starting C5 (which may also touch tower cards).
-- Specific next-step proposal: surface C5 plan via
-  AskUserQuestion with Recommended first option — read
-  attack-types.json + render the 7×5 matrix in tooltip
-  /codex form; pure-additive; no balance changes.
-  Alternate option: C4-continuation first.
+- Phase status + drift vs. last HANDOFF: C5 (95165b9) +
+  C7.a (6063520) + C7.b slice 1 (ae28e1d) + C7.b slice 2
+  (817d048) all dual-pushed via alongside-and-non-breaking
+  pattern. Codex modal + commander-avatar gutted (12
+  comment-out markers) + cast-emerge pipeline +
+  BuilderUnit class all live. Legacy 5-lineage data +
+  boot loader + commander-a..e + silhouetteSVG() all
+  preserved alongside, awaiting C6 graduation.
+- Open blockers: C6 sequencing question — removing legacy
+  5-lineage tower placement breaks playability unless
+  civ-tower placement (C4-continuation) ships first or
+  alongside. Surface to PM via AskUserQuestion with
+  Recommended option (a) C6 bundled with C4-continuation
+  civ-tower placement track to preserve playability.
+- Specific next-step proposal: surface C6 plan via
+  AskUserQuestion with Recommended first option —
+  bundled C6 + C4-continuation civ-tower placement so
+  prototype stays playable through alongside-graduation.
+  Alternate: C4-continuation only (defer C6); or C6
+  staged in two passes (markers/silhouetteSVG/cmdr-a..e
+  first, then 5-lineage placement teardown).
 
 CADENCE: one-step-at-a-time with PM "go" gates.
 USE AskUserQuestion for PM gates; always include a Recommended
 first option per 2026-04-28 PM standing directive.
 ALONGSIDE-AND-NON-BREAKING pattern (PM-ratified 2026-04-29):
-when a step would break a running surface, add alongside;
-surface cardinality conflicts via AskUserQuestion before
-unilateral action.
+C6 is the explicit graduation point — alongside scaffolding
+is removed only on PM go after sequencing question is answered.
 
 EXECUTION ORDER on standby (one PM gate per step):
-  C5 → C7.a → C7.b → C6
-  (C4-continuation can interleave per PM direction).
+  C6 (final) — possibly bundled with C4-continuation.
 
 VERIFY each step with: python tools/cascade-lint.py
 DUAL-PUSH each commit: session branch + main.
@@ -160,16 +172,15 @@ DUAL-PUSH each commit: session branch + main.
 SCOPE GUARD:
 - §5.4 [LOCKED] post-amendment; §2.4a [LOCKED]; 2026-04-25
   locked content skeleton untouched.
-- Legacy ages.json / towers.json / index.html boot loader
-  / commander-a..e / silhouetteSVG() preserved alongside;
-  full removal at C6 dead-code pass.
+- C7.a `// SUPERSEDED 2026-04-27 (C7.a)` markers stay until
+  C6 explicitly deletes; do NOT silently delete/uncomment.
 - Aztec glyph "𓁹" in civilizations.json is wrong (Egyptian
   eye) — Follow-up #4; do not surface until corrected.
 
-If PM redirects off C5, fall back: C4-continuation,
+If PM redirects off C6, fall back: C4-continuation only,
 cultural-sensitivity pass scheduling (Follow-up #5),
-patch-1 commanders per civ (Follow-up #6), admin/concept.json
-migration direction, follow-ups #7/#8/#9/#13.
+patch-1 commanders per civ (Follow-up #6),
+admin/concept.json migration direction, follow-ups #7/#8/#9/#13.
 ```
 
 ---
@@ -182,6 +193,6 @@ Hard-stop and flag if:
 - 2026-04-25 locked content-skeleton names would be modified.
 - §2.4a is touched.
 - Cultural-sensitivity concern surfaces (Follow-up #5) — hard pose-lock gate on any non-abstract civ art.
-- A reshape step would silently break a running surface (use alongside pattern + AskUserQuestion instead).
+- A reshape step would silently break a running surface without an alongside fallback or AskUserQuestion gate.
 - Local `main` stale on session start.
 - `cascade-lint` fails and fix > 5min.
