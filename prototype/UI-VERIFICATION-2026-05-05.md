@@ -213,7 +213,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | XP award | `endMatch` ln 3382: 40 win / 12 loss; auto-level-up toasts; persists to `Profile.data.commanderProgress[cid]` | OK | **Phase C fix landed:** `endMatch` ln 3390-3408 now syncs the in-memory mutation back to `Profile.data.commanderProgress[cid] = { level, xp, xpToNext, unlockedCosmetics }` and calls `Profile.save()`. Verified live: simulated win → `localStorage.atoA.profile.v1.commanderProgress.leonidas.xp = 40`; after reload, Profile scene XP bar reads 40%. |
 | VO line on end | `endMatch` ln 3392 — picks from `c.vo.victory/defeat` pool index 0 | (Test) | Always pool[0] — not random. By design? |
 | Co-op host broadcast | `Net.broadcastMatchEnd` ln 3380 (host only) | OK | |
-| Continue / Replay / Menu | HANDOFF lists three; markup has two (Play again + Back to menu) | (Test) | Mismatch between scene-checklist and live markup. PM to decide whether "Continue" (resume next match in arc?) belongs. |
+| Play again / Back to menu | markup has two; checklist obsolete | OK | **Phase C ratification (2026-05-05):** PM ruled markup canonical. 2-button shape stands (Play again + Back to menu); "Continue" has no semantics until Campaign mode lands (currently stub). HANDOFF/scene-checklist references to a 3rd "Continue" button are obsolete and should be amended at next handoff prep. No prototype code change. |
 
 ## Scene 11 — Options (`#scene-options`, lines 720-786)
 
@@ -275,7 +275,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 ### NEEDS-FIX — large (queue to AskUserQuestion; do NOT fix without ratification)
 
 9. **"A" (age-up) keyboard shortcut absent from match handler** — scene-checklist + HANDOFF list `A` as global; no branch in ln 3537-3556. Likely intent: either Tribute-economy retirement removed age-up (and checklist needs updating), or it regressed during a refactor. PM call before any fix. [scene-9]
-10. **End-screen Continue / Replay / Menu mismatch** — HANDOFF scene-checklist promises three buttons; markup has two (Play again + Back to menu). PM clarify whether "Continue" (resume arc / next mission) belongs and what semantics are. [scene-10]
+10. ~~**End-screen Continue / Replay / Menu mismatch**~~ — **RESOLVED Phase C (2026-05-05)**: PM ratified markup as canonical (2 buttons: Play again + Back to menu). "Continue" has no semantics until Campaign mode lands; obsolete checklist references to be amended at next handoff prep. No prototype code change. [scene-10]
 
 ### (Test) carried into Phase B (not yet NEEDS-FIX)
 
