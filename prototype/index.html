@@ -13,6 +13,7 @@
     --ember: #d97706; --ember-hi: #fbbf24; --ember-glow: rgba(217,119,6,0.35);
     --sinew: #dc2626; --forge: #b45309; --crown: #7c3aed; --veil: #0891b2;
     --gold: #fbbf24; --knowledge: #60a5fa; --life: #f87171;
+    --tribute: #ca8a04; --divinity: #c084fc;
     --font-display: "Cormorant Garamond", "Cinzel", "EB Garamond", "Times New Roman", serif;
     --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     --ui-scale: 1.0;
@@ -215,6 +216,12 @@
   .hud .hud-item b { color: var(--ember-hi); font-size: 14px; letter-spacing: 1px; }
   .hud .hud-item .icon { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px currentColor; }
   .hud .gold { color: var(--gold); } .hud .knowledge { color: var(--knowledge); } .hud .life { color: var(--life); }
+  .hud .tribute { color: var(--tribute); } .hud .divinity { color: var(--divinity); }
+  .divinity-pips { display: inline-flex; gap: 3px; margin-left: 4px; }
+  .divinity-pip { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--divinity); background: transparent; box-shadow: 0 0 4px var(--divinity); opacity: 0.45; }
+  .divinity-pip.filled { background: var(--divinity); opacity: 1; }
+  .hud-btn.fusion { color: var(--divinity); border-color: var(--divinity); }
+  .hud-btn.fusion:disabled { opacity: 0.35; cursor: not-allowed; }
   .hud .age-label { color: var(--ember); } .hud .wave-label { color: var(--ink-2); }
   .hud .spacer { flex: 1; }
   .hud .banner-title { color: var(--ember-hi); letter-spacing: 3px; font-weight: 700; }
@@ -561,10 +568,13 @@
       <div class="hud-item banner-title">Tutorial</div>
       <div class="hud-item gold"><span class="icon" style="background:var(--gold)"></span>Gold <b id="t-gold">0</b></div>
       <div class="hud-item knowledge"><span class="icon" style="background:var(--knowledge)"></span>Knowledge <b id="t-knowledge">0</b></div>
+      <div class="hud-item tribute" title="Tribute — primary currency (C3 alongside)"><span class="icon" style="background:var(--tribute)"></span>Tribute <b id="t-tribute">0</b></div>
+      <div class="hud-item divinity" title="Divinity — mythic token. 1 pip per boss round; 2 pips opens Fusion menu; 1 pip per Fusion."><span class="icon" style="background:var(--divinity)"></span>Divinity<span class="divinity-pips" id="t-divinity-pips"></span></div>
       <div class="hud-item age-label">Age <b id="t-age">Primal</b></div>
       <div class="hud-item life"><span class="icon" style="background:var(--life)"></span>Lives <b id="t-lives">3</b></div>
       <div class="spacer"></div>
       <div class="hud-item wave-label">Step <b id="t-step">1 / 5</b></div>
+      <button class="hud-btn fusion" id="t-btn-fusion" onclick="openFusionMenu()" disabled title="Spend 2 Divinity to open the Fusion menu">⚡ Fusion</button>
       <button class="hud-btn ghost" onclick="skipTutorial()">Skip</button>
     </div>
     <div class="board-wrap">
@@ -588,10 +598,13 @@
       <div class="hud-item banner-title" id="m-mode-label">Skirmish</div>
       <div class="hud-item gold"><span class="icon" style="background:var(--gold)"></span>Gold <b id="m-gold">0</b></div>
       <div class="hud-item knowledge"><span class="icon" style="background:var(--knowledge)"></span>Knowledge <b id="m-knowledge">0</b></div>
+      <div class="hud-item tribute" title="Tribute — primary currency (C3 alongside)"><span class="icon" style="background:var(--tribute)"></span>Tribute <b id="m-tribute">0</b></div>
+      <div class="hud-item divinity" title="Divinity — mythic token. 1 pip per boss round; 2 pips opens Fusion menu; 1 pip per Fusion."><span class="icon" style="background:var(--divinity)"></span>Divinity<span class="divinity-pips" id="m-divinity-pips"></span></div>
       <div class="hud-item age-label">Age <b id="m-age">Primal</b></div>
       <div class="hud-item life"><span class="icon" style="background:var(--life)"></span>Lives <b id="m-lives">10</b></div>
       <div class="spacer"></div>
       <div class="hud-item wave-label">Wave <b id="m-wave">0 / 3</b></div>
+      <button class="hud-btn fusion" id="m-btn-fusion" onclick="openFusionMenu()" disabled title="Spend 2 Divinity to open the Fusion menu">⚡ Fusion</button>
       <button class="hud-btn ghost" onclick="togglePause()" title="Pause (Esc)">⏸ Pause</button>
     </div>
     <div class="board-wrap">
@@ -1244,7 +1257,7 @@ function buildSnapshot() {
   if (!game) return null;
   return {
     wave: game.wave, totalWaves: game.totalWaves, waveActive: game.waveActive,
-    gold: game.gold, knowledge: game.knowledge, ageIdx: game.ageIdx, lives: game.lives,
+    gold: game.gold, knowledge: game.knowledge, divinity: game.divinity || 0, ageIdx: game.ageIdx, lives: game.lives,
     totalKills: game.totalKills,
     towers: game.towers.map(t => ({ x: t.x, y: t.y, type: t.type, owner: t.owner || "host", level: t.level || 1, invested: t.invested || TOWER_STATS[t.type].cost })),
     enemies: game.enemies.map(e => ({
@@ -1259,7 +1272,7 @@ function buildSnapshot() {
 function applyGuestSnapshot(snap) {
   if (!game || !snap) return;
   game.wave = snap.wave; game.totalWaves = snap.totalWaves; game.waveActive = snap.waveActive;
-  game.gold = snap.gold; game.knowledge = snap.knowledge; game.ageIdx = snap.ageIdx; game.lives = snap.lives;
+  game.gold = snap.gold; game.knowledge = snap.knowledge; game.divinity = snap.divinity || 0; game.ageIdx = snap.ageIdx; game.lives = snap.lives;
   game.totalKills = snap.totalKills;
   game.towers = snap.towers; game.enemies = snap.enemies; game.shots = snap.shots;
   // Additive: apply commander field if host sent one (ignored silently if missing — preserves back-compat).
@@ -1685,7 +1698,7 @@ function initMatch() {
     towers: [], enemies: [], shots: [],
     flashes: [], damageNumbers: [], feed: [],
     wave: 0, waveActive: false, spawn: null,
-    gold: BALANCE.STARTING_GOLD_MATCH, knowledge: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_MATCH,
+    gold: BALANCE.STARTING_GOLD_MATCH, knowledge: 0, divinity: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_MATCH,
     selectedTower: "sinew", playing: true, paused: false, totalKills: 0, totalGold: 0,
     pathLen: pathLength(b.path), totalWaves: waves,
     isCoop, isGuest,
@@ -1755,7 +1768,7 @@ function initTutorial() {
     towers: [], enemies: [], shots: [],
     flashes: [], damageNumbers: [], feed: [],
     wave: 0, waveActive: false, spawn: null,
-    gold: BALANCE.STARTING_GOLD_TUTORIAL, knowledge: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_TUTORIAL,
+    gold: BALANCE.STARTING_GOLD_TUTORIAL, knowledge: 0, divinity: 0, ageIdx: 0, lives: BALANCE.STARTING_LIVES_TUTORIAL,
     selectedTower: "ember", playing: true, totalKills: 0,
     pathLen: pathLength(b.path), tutorialStep: 1
   };
@@ -1781,6 +1794,20 @@ function updateHUD() {
   const $ = id => document.getElementById(p + id);
   if ($("gold")) $("gold").textContent = Math.floor(game.gold);
   if ($("knowledge")) $("knowledge").textContent = Math.floor(game.knowledge);
+  // C3 — Tribute mirrors gold value (alongside; underlying field stays game.gold until C5/C6 dismantle).
+  if ($("tribute")) $("tribute").textContent = Math.floor(game.gold);
+  // C3 — Divinity rendered as 6 discrete pips; +1 per boss round (wave % 5 === 0); spec capped 6.
+  const pipHost = $("divinity-pips");
+  if (pipHost) {
+    const div = Math.max(0, Math.min(6, game.divinity || 0));
+    if (pipHost.childElementCount !== 6) {
+      pipHost.innerHTML = "";
+      for (let i = 0; i < 6; i++) { const d = document.createElement("span"); d.className = "divinity-pip"; pipHost.appendChild(d); }
+    }
+    Array.from(pipHost.children).forEach((el, i) => el.classList.toggle("filled", i < div));
+  }
+  const fusionBtn = document.getElementById(p + "btn-fusion");
+  if (fusionBtn) fusionBtn.disabled = (game.divinity || 0) < 2;
   if ($("age")) $("age").textContent = AGES[game.ageIdx];
   if ($("lives")) $("lives").textContent = game.lives;
   if (p === "m-") {
@@ -1804,6 +1831,13 @@ function updateHUD() {
     if (lbl) lbl.textContent = (HYBRIDS && HYBRIDS.sinew_ember) ? HYBRIDS.sinew_ember.label : "Tank Corps";
   }
   if (p === "t-" && $("step")) $("step").textContent = game.tutorialStep + " / 5";
+}
+
+// C3 — Fusion menu stub. Wired in C4 (Tier-ladder UI sketch) per reshape plan.
+function openFusionMenu() {
+  if (!game) return;
+  if ((game.divinity || 0) < 2) { toast("Need 2 Divinity to open the Fusion menu."); return; }
+  toast("Fusion menu — wired in C4.");
 }
 
 // ============================================================================
@@ -2373,6 +2407,12 @@ function tick() {
   if (game.waveActive && game.spawn && game.spawn.remaining === 0 && game.enemies.length === 0) {
     game.waveActive = false;
     emitFeed("wave", "Wave " + game.wave + " cleared");
+    // C3 — Divinity awarded on boss rounds (5/10/15/20/25/30 per spec). Cap 6.
+    if (game.wave > 0 && game.wave % 5 === 0 && (game.divinity || 0) < 6) {
+      game.divinity = (game.divinity || 0) + 1;
+      toast("+1 Divinity (boss round) — " + game.divinity + "/6");
+      emitFeed("divinity", "+1 Divinity · " + game.divinity + "/6");
+    }
     if (game.mode === "tutorial") advanceTutorialOnEvent("killed-all");
     else {
       const total = game.totalWaves || 3;
