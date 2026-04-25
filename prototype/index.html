@@ -1459,7 +1459,50 @@ const CIV_TOWER_TIER_BASE = {
   T2: { cost:  60, range: 130, baseDamage:  8, baseCd: 35 },
   T3: { cost: 110, range: 150, baseDamage: 16, baseCd: 30 }
 };
+// Slice B — T4 Demigod base [PROPOSAL]; Promote cost is paid in gold (Tribute proxy).
+const CIV_TOWER_T4_BASE = { cost: 250, range: 170, baseDamage: 30, baseCd: 28 };
+const CIV_PROMOTE_T4_COST = 250;
+const CIV_MERGE_RADIUS = 110;
+// Slice B — stub attack-type assignment per civ until per-tower attack-types.json mapping lands.
+// All [PROPOSAL] under Follow-up #13.
+const CIV_DEFAULT_ATTACK_TYPE = { greek: "piercing", aztec: "slashing", norse: "crushing" };
+const TIER_NEXT = { T1: "T2", T2: "T3", T3: null };
 function civTowerKey(civId, towerId) { return civId + "_" + towerId; }
+function civTowerMeta(type) {
+  const m = BALANCE && BALANCE.TOWER_META && BALANCE.TOWER_META[type];
+  return (m && m.civ) ? m : null;
+}
+function attackTypeFor(type) {
+  const m = civTowerMeta(type);
+  if (!m) return null;
+  return CIV_DEFAULT_ATTACK_TYPE[m.civ] || "piercing";
+}
+function nearbySameTierCivTowerExists(centerX, centerY, type) {
+  const m = civTowerMeta(type);
+  if (!m || !game || !game.towers) return false;
+  return game.towers.some(t => {
+    const tm = civTowerMeta(t.type);
+    if (!tm) return false;
+    if (tm.civ !== m.civ || tm.tier !== m.tier) return false;
+    return Math.hypot(t.x - centerX, t.y - centerY) < CIV_MERGE_RADIUS;
+  });
+}
+function mergeTargetKeyForCiv(civId, currentTier) {
+  const next = TIER_NEXT[currentTier];
+  if (!next || !CIVILIZATIONS) return null;
+  const civDef = (CIVILIZATIONS.civilizations || []).find(c => c.id === civId);
+  if (!civDef) return null;
+  const tow = (civDef.towersT1T3 || []).find(t => t.tier === next);
+  return tow ? civTowerKey(civId, tow.id) : null;
+}
+function promoteTargetKey(t) {
+  const m = civTowerMeta(t && t.type);
+  if (!m || m.tier !== "T3" || !CIVILIZATIONS) return null;
+  const civDef = (CIVILIZATIONS.civilizations || []).find(c => c.id === m.civ);
+  if (!civDef) return null;
+  const dg = (civDef.demigodsT4 || []).find(d => d.fromTower === m.towerId);
+  return dg ? civTowerKey(m.civ, dg.id) : null;
+}
 
 async function loadData() {
   try {
@@ -1518,6 +1561,17 @@ async function loadData() {
           BALANCE.TOWER_META[key] = {
             label: t.label, color: pal.primary || "#475569",
             accent: pal.accent || "#94a3b8", civ: civ.id, tier: t.tier, towerId: t.id
+          };
+        }
+        // Slice B — register T4 Demigod entries via demigodsT4 fromTower mapping (Promote-to-T4 target).
+        for (const dg of (civ.demigodsT4 || [])) {
+          const key = civTowerKey(civ.id, dg.id);
+          const tb = CIV_TOWER_T4_BASE;
+          BALANCE.TOWERS[key] = { cost: tb.cost, range: tb.range, baseDamage: tb.baseDamage, baseCd: tb.baseCd };
+          BALANCE.TOWER_META[key] = {
+            label: dg.label, color: pal.accent || "#fbbf24",
+            accent: pal.primary || "#475569", civ: civ.id, tier: "T4",
+            towerId: dg.id, fromTower: dg.fromTower
           };
         }
       }
@@ -2268,6 +2322,25 @@ function upgradeTower(t) {
   t.invested = (t.invested || TOWER_STATS[t.type].cost) + cost;
   toast(`${TOWER_STATS[t.type].label} → L${t.level}`);
   if (typeof emitFeed === "function") emitFeed("upgrade", `${TOWER_STATS[t.type].label} → L${t.level} forged`);
+  updateHUD();
+  hideCtxMenu();
+  if (hoverState.tower === t) showTowerTip(t, hoverState.canvasX, hoverState.canvasY);
+}
+
+// Slice B — Promote-to-T4. Replaces a civ T3 tower in-place with its mapped Demigod entry.
+function promoteTowerToT4(t) {
+  if (!t || !game || game.paused) return;
+  const targetKey = promoteTargetKey(t);
+  if (!targetKey) { toast("Cannot promote (no T4 mapping)."); return; }
+  if (game.gold < CIV_PROMOTE_T4_COST) { toast("Not enough gold to promote."); return; }
+  game.gold -= CIV_PROMOTE_T4_COST;
+  t.invested = (t.invested || TOWER_STATS[t.type].cost) + CIV_PROMOTE_T4_COST;
+  t.type = targetKey;
+  t.level = 1;
+  rebuildDerived();
+  const meta = TOWER_STATS[targetKey];
+  toast((meta && meta.label) ? `Promoted → ${meta.label} (T4)` : "Promoted to T4");
+  if (typeof emitFeed === "function" && meta) emitFeed("upgrade", `${meta.label} ascends (T4)`);
   updateHUD();
   hideCtxMenu();
   if (hoverState.tower === t) showTowerTip(t, hoverState.canvasX, hoverState.canvasY);
@@ -3111,6 +3184,35 @@ function draw() {
       ctx.strokeRect(cell.x + 0.5, cell.y + 0.5, cell.w, cell.h);
       ctx.setLineDash([]);
       ctx.restore();
+      // Slice B — merge-preview ghost. Civ-mode T1/T2 selection + same-civ same-tier neighbor within radius -> faded outline of merge target tier+1.
+      const selMeta = civTowerMeta(game.selectedTower);
+      const reduce = Profile.setting("a11y.reduceMotion", false);
+      if (selMeta && (selMeta.tier === "T1" || selMeta.tier === "T2") &&
+          nearbySameTierCivTowerExists(gx, gy, game.selectedTower)) {
+        const targetKey = mergeTargetKeyForCiv(selMeta.civ, selMeta.tier);
+        const targetMeta = targetKey && BALANCE.TOWER_META[targetKey];
+        if (targetMeta) {
+          ctx.save();
+          ctx.globalAlpha = reduce ? 0.55 : 0.45;
+          ctx.strokeStyle = targetMeta.accent || targetMeta.color || "#fbbf24";
+          ctx.lineWidth = 2; ctx.setLineDash([5, 4]);
+          ctx.beginPath();
+          const rg = 18;
+          for (let i = 0; i < 6; i++) {
+            const a = Math.PI/3 * i - Math.PI/6;
+            const px = gx + Math.cos(a)*rg, py = gy + Math.sin(a)*rg;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.closePath(); ctx.stroke();
+          ctx.setLineDash([]);
+          if (!reduce) {
+            ctx.font = "10px monospace"; ctx.fillStyle = targetMeta.accent || "#fbbf24";
+            ctx.textAlign = "center";
+            ctx.fillText("→ " + (targetMeta.label || targetMeta.tier || ""), gx, gy - 24);
+          }
+          ctx.restore();
+        }
+      }
     }
   }
   // C7.b slice 1 — cast-emerge render (transient; reuses renderSilhouette() 1.4× per C2 pose-lock gating). Reduce-motion collapses to a brief gold ring pulse.
@@ -3288,9 +3390,17 @@ function towerTipHTML(t) {
   const refund = sellRefund(t);
   const ageName = AGES[game.ageIdx] || "—";
   const dots = "●".repeat(t.level || 1) + "○".repeat(3 - (t.level || 1));
+  const civMeta = civTowerMeta(t.type);
+  const tierStamp = civMeta ? ` <span class="tier-badge">${civMeta.tier}</span>` : "";
+  const atk = attackTypeFor(t.type);
+  const atkStamp = atk ? `<div class="tip-row"><span class="tip-k">Attack</span><span class="tip-v">${atk}</span></div>` : "";
+  const subLine = civMeta
+    ? `${ageName} age · ${civMeta.civ} · owner: ${t.owner || "you"}`
+    : `${ageName} age · owner: ${t.owner || "you"}`;
   return `
-    <div class="tip-title">${meta.label} <span class="tip-hk">L${t.level || 1} ${dots}</span></div>
-    <div class="tip-sub">${ageName} age · owner: ${t.owner || "you"}</div>
+    <div class="tip-title">${meta.label}${tierStamp} <span class="tip-hk">L${t.level || 1} ${dots}</span></div>
+    <div class="tip-sub">${subLine}</div>
+    ${atkStamp}
     <div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">${eff.damage}</span></div>
     <div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">${eff.cd}</span></div>
     <div class="tip-row"><span class="tip-k">Range</span><span class="tip-v">${eff.range}</span></div>
@@ -3315,15 +3425,22 @@ function placementTipHTML(type) {
   const dmg = stat.damage && stat.damage[age] != null ? stat.damage[age] : 0;
   const cd  = stat.cd && stat.cd[age] != null ? stat.cd[age] : 30;
   const afford = game.gold >= stat.cost;
+  const civMeta = civTowerMeta(type);
+  const tierStamp = civMeta ? ` <span class="tier-badge">${civMeta.tier}</span>` : "";
+  const atk = attackTypeFor(type);
+  const atkStamp = atk ? `<div class="tip-row"><span class="tip-k">Attack</span><span class="tip-v">${atk}</span></div>` : "";
+  const subLine = civMeta ? `${AGES[age]} · ${civMeta.civ} · L1` : `${AGES[age]} · L1`;
+  const roleLine = civMeta ? "" : `<div class="tip-role">${lineageRole(type)}</div>`;
   const extra = type === "hybrid" ? '<div class="tip-hint">Needs Sinew + Ember within 110px</div>' : "";
   return `
-    <div class="tip-title">${stat.label} <span class="tip-hk">click to place</span></div>
-    <div class="tip-sub">${AGES[age]} · L1</div>
+    <div class="tip-title">${stat.label}${tierStamp} <span class="tip-hk">click to place</span></div>
+    <div class="tip-sub">${subLine}</div>
     <div class="tip-row"><span class="tip-k">Cost</span><span class="tip-v" style="color:${afford?'var(--gold)':'#ef4444'}">${stat.cost}g</span></div>
     <div class="tip-row"><span class="tip-k">Damage</span><span class="tip-v">${dmg}</span></div>
     <div class="tip-row"><span class="tip-k">Cooldown</span><span class="tip-v">${cd}</span></div>
     <div class="tip-row"><span class="tip-k">Range</span><span class="tip-v">${stat.range}</span></div>
-    <div class="tip-role">${lineageRole(type)}</div>
+    ${atkStamp}
+    ${roleLine}
     ${extra}
   `;
 }
@@ -3339,10 +3456,16 @@ function showCtxMenu(t, cx, cy) {
   const atMax = (t.level || 1) >= 3;
   const up = upgradeCost(t); const refund = sellRefund(t);
   const canUp = !atMax && game.gold >= up;
+  const meta = civTowerMeta(t.type);
+  const promoteKey = promoteTargetKey(t);
+  const canPromote = !!promoteKey && game.gold >= CIV_PROMOTE_T4_COST;
+  const promoteLabel = promoteKey && BALANCE.TOWER_META[promoteKey] ? BALANCE.TOWER_META[promoteKey].label : "T4";
+  const tierTag = meta ? `<span class="tier-badge">${meta.tier}</span>` : "";
   m.innerHTML = `
-    <div class="ctx-title">${TOWER_STATS[t.type].label} · L${t.level || 1}</div>
+    <div class="ctx-title">${TOWER_STATS[t.type].label} ${tierTag} · L${t.level || 1}</div>
     <div class="ctx-sub">DMG ${eff.damage} · CD ${eff.cd} · RNG ${eff.range}</div>
     <button class="ctx-item" id="ctx-upgrade" ${canUp ? "" : "disabled"}>Upgrade <span class="ctx-cost">${atMax ? "MAX" : up + "g"}</span></button>
+    ${promoteKey ? `<button class="ctx-item" id="ctx-promote" ${canPromote ? "" : "disabled"}>Promote → ${promoteLabel} <span class="ctx-cost">${CIV_PROMOTE_T4_COST}g</span></button>` : ""}
     <button class="ctx-item" id="ctx-sell">Sell <span class="ctx-cost">+${refund}g</span></button>
     <button class="ctx-item" onclick="hideCtxMenu()">Close</button>
   `;
@@ -3354,6 +3477,8 @@ function showCtxMenu(t, cx, cy) {
   if (y + r.height + 8 > window.innerHeight) y = window.innerHeight - r.height - 8;
   m.style.left = x + "px"; m.style.top = y + "px";
   document.getElementById("ctx-upgrade").onclick = () => upgradeTower(t);
+  const promoteBtn = document.getElementById("ctx-promote");
+  if (promoteBtn) promoteBtn.onclick = () => promoteTowerToT4(t);
   document.getElementById("ctx-sell").onclick = () => sellTower(t);
 }
 function hideCtxMenu() {
