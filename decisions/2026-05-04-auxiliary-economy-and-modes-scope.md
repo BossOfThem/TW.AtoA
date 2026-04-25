@@ -1,8 +1,8 @@
 # Decision — Auxiliary economy structure + game modes ontology (Proposed)
 
 **Date:** 2026-05-04
-**Status:** Proposed (pending Round 6+ ratification)
-**Reversibility:** Easy
+**Status:** Accepted (advanced from Proposed → Accepted on 2026-05-04 after Rounds 6–12 ratified all 10 open axes; see superseding decision chain `2026-05-04-round-6-aux-economy-ratifications.md` through `2026-05-04-round-12-aux-ux-frame-extension.md`)
+**Reversibility:** Easy → Medium (now that ratifications have landed)
 **Affects:** CONCEPT.md (new sections pending), prototype scope (post-launch), Follow-up #7 (Divinity source), balance-pass #1 conceptual frame (`2026-05-04-balance-pass-1-conceptual-frame.md`)
 
 ---
