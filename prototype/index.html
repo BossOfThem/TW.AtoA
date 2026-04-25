@@ -2000,7 +2000,8 @@ function fusionExecute(r) {
 
 // C5 — Codex (7×5 RPS matrix; data inlined per alongside discipline; mirror of prototype/data/attack-types.json).
 // Update both surfaces together until C6 retires inline copies.
-const ATTACK_TYPES = {
+// 2026-05-05: renamed inline const to CODEX_DATA to avoid collision with data-loaded ATTACK_TYPES (let, line ~1397).
+const CODEX_DATA = {
   rpsBonusMultiplier: 1.25,
   rpsPenaltyMultiplier: 0.75,
   types: [
@@ -2035,13 +2036,13 @@ function openCodex() {
   const legend = document.getElementById("cx-legend");
   if (!grid || !legend) return;
   let html = "<thead><tr><th>Attack \\ Armor</th>";
-  ATTACK_TYPES.armorTags.forEach(a => { html += "<th>" + a.label + "</th>"; });
+  CODEX_DATA.armorTags.forEach(a => { html += "<th>" + a.label + "</th>"; });
   html += "</tr></thead><tbody>";
-  ATTACK_TYPES.types.forEach(t => {
-    const row = ATTACK_TYPES.rpsMatrix[t.id] || {};
+  CODEX_DATA.types.forEach(t => {
+    const row = CODEX_DATA.rpsMatrix[t.id] || {};
     const strong = row.strongVs || [], weak = row.weakVs || [];
     html += "<tr><th>" + t.label + "</th>";
-    ATTACK_TYPES.armorTags.forEach(a => {
+    CODEX_DATA.armorTags.forEach(a => {
       if (strong.includes(a.id))      html += '<td class="strong">+25%</td>';
       else if (weak.includes(a.id))   html += '<td class="weak">−25%</td>';
       else                            html += '<td class="neutral">·</td>';
@@ -2050,9 +2051,9 @@ function openCodex() {
   });
   html += "</tbody>";
   grid.innerHTML = html;
-  legend.innerHTML = ATTACK_TYPES.types.map(t => '<div class="cx-row"><b>' + t.label + '</b>' + t.proc + '</div>').join("");
-  document.getElementById("cx-bonus").textContent = ATTACK_TYPES.rpsBonusMultiplier.toFixed(2);
-  document.getElementById("cx-penalty").textContent = ATTACK_TYPES.rpsPenaltyMultiplier.toFixed(2);
+  legend.innerHTML = CODEX_DATA.types.map(t => '<div class="cx-row"><b>' + t.label + '</b>' + t.proc + '</div>').join("");
+  document.getElementById("cx-bonus").textContent = CODEX_DATA.rpsBonusMultiplier.toFixed(2);
+  document.getElementById("cx-penalty").textContent = CODEX_DATA.rpsPenaltyMultiplier.toFixed(2);
   const m = document.getElementById("codex-modal");
   m.classList.add("on"); m.setAttribute("aria-hidden", "false");
 }
