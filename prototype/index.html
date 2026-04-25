@@ -3561,15 +3561,21 @@ document.addEventListener("keydown", (e) => {
   if (cxOpen && cxOpen.classList.contains("on") && e.key === "Escape") { e.preventDefault(); closeCodex(); return; }
   if (e.key === "Escape") { hideCtxMenu(); hideTip(); }
   if (currentScene !== "match" || !game || game.paused) return;
-  if (e.key === " ") { e.preventDefault(); startWave(); }
-  else if (e.key >= "1" && e.key <= "9") {
-    const idx = parseInt(e.key, 10) - 1;
-    const btns = document.querySelectorAll("#civ-tower-btns .tower-btn[data-tower]");
-    if (btns[idx]) selectTower(btns[idx].dataset.tower);
+  // Match-scoped keybinds resolved from Profile.setting("input.binds") with sensible defaults.
+  // Rebind UI persists e.code values (Space / KeyI / Digit1 / ...); match keydown matches on e.code.
+  const binds = Profile.setting("input.binds", {});
+  const code = e.code;
+  if (code === (binds["send-wave"] || "Space")) { e.preventDefault(); startWave(); return; }
+  if (code === (binds["info"] || "KeyI")) { e.preventDefault(); openReference(); return; }
+  if (code === (binds["upgrade"] || "KeyU") && hoverState.tower) { upgradeTower(hoverState.tower); return; }
+  if (code === (binds["sell"] || "KeyX") && hoverState.tower) { sellTower(hoverState.tower); return; }
+  const btns = document.querySelectorAll("#civ-tower-btns .tower-btn[data-tower]");
+  for (let i = 1; i <= 9; i++) {
+    if (code === (binds["t" + i] || ("Digit" + i)) && btns[i - 1]) {
+      selectTower(btns[i - 1].dataset.tower);
+      return;
+    }
   }
-  else if (e.key.toLowerCase() === "i") { e.preventDefault(); openReference(); }
-  else if (e.key.toLowerCase() === "u" && hoverState.tower) upgradeTower(hoverState.tower);
-  else if (e.key.toLowerCase() === "x" && hoverState.tower) sellTower(hoverState.tower);
 });
 
 // ============================================================================

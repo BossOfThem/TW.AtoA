@@ -182,11 +182,11 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 | Key | Handler | Status | Note |
 |-----|---------|--------|------|
-| Space | `startWave` ln 3547 | NEEDS-FIX | **Hardcoded to literal `" "` — does not consult `Profile.setting("input.binds")["send-wave"]`.** Rebind UI in Options is decorative for this and all other match keys. Medium severity — touches input system. |
-| 1-9 | `selectTower` via `data-tower` index ln 3548-3552 | NEEDS-FIX | Same hardcoding — Options "Tower slot 1..6" rebinds are dead. Medium. |
-| I | `openReference` ln 3553 | NEEDS-FIX | Same hardcoding. Medium. |
-| U (with hover) | `upgradeTower(hoverState.tower)` ln 3554 | NEEDS-FIX | Same. Medium. |
-| X (with hover) | `sellTower(hoverState.tower)` ln 3555 | NEEDS-FIX | Same. Medium. |
+| send-wave (default Space) | `startWave` via `binds["send-wave"]` lookup | OK | **Phase C fix landed:** match keydown ln 3563-3578 now resolves all match-scoped binds via `Profile.setting("input.binds", {})` with sensible e.code defaults. Verified live: rebound `send-wave`→`KeyB`, dispatched KeyB → `game.waveActive` flipped true. |
+| t1..t9 (default Digit1-9) | `selectTower` via `binds["t" + i]` lookup | OK | **Phase C fix landed:** verified live: rebound t1→`KeyM`, dispatched KeyM → `selectedTower = "greek_phalanx"`. |
+| info (default KeyI) | `openReference` via `binds["info"]` lookup | OK | **Phase C fix landed:** verified live: rebound info→`KeyJ`, dispatched KeyJ → `openReference` invoked. Original KeyI no longer triggers (rebind correctly redirects). *Note: `openReference` itself throws `CIVS_DATA is not defined` — pre-existing bug, separate from rebind wiring. See cross-cutting checks.* |
+| upgrade (default KeyU, with hover) | `upgradeTower(hoverState.tower)` via `binds["upgrade"]` lookup | OK | **Phase C fix landed:** wired identically to send-wave. |
+| sell (default KeyX, with hover) | `sellTower(hoverState.tower)` via `binds["sell"]` lookup | OK | **Phase C fix landed:** wired identically. |
 | Q | (no handler) | OK | Inert post-C7.a. Options "Commander Q (signature)" rebind is decorative-only. |
 | Esc in match | `togglePause` ln 954 | OK | Match-scene branch fires before mode-specific guard. |
 | A (age-up) | absent by design | OK | **Phase C ratification (2026-05-05):** PM confirmed age-up intentionally retired under 2026-04-25 real-cultures ratification (4-tier ladder + Fusion endgame supersede AGES; Tribute/Divinity economy has no age-up trigger). AGES reopens only via Follow-up #8 if a PvE-campaign chapter lands (`concept/phase-7.md:31`, `phase-3.md:167`, `phase-5.md:54`, `phase-4.md:325`). HANDOFF/scene-checklist `A age-up` refs are obsolete — amend at next handoff prep. No prototype code change. |
@@ -224,7 +224,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | Audio sliders (master / music / sfx / ui / voice / duck-thresh / duck-ratio / duck-rel) | range inputs persisted via `saveOptsAndClose` ln 3445 | OK | |
 | Audio test-tone buttons | `playTestTone('master' / 'ui')` ln 3489 — 440Hz / 880Hz | OK | Falls back to toast if AudioContext unavailable. |
 | Focus-loss selects (solo / pvp) | `audio.focusSolo` / `audio.focusPvp` | OK | Persisted; not consumed in code (informational-only at prototype level). |
-| Input rebind buttons (12 rows) | `beginRebind(action, btn)` ln 3464 — captures next keydown, persists `input.binds[action]` | OK (capture) / NEEDS-FIX (consumption) | **Captures and persists rebind input fine, but the in-match keydown handler ln 3537 ignores `input.binds` entirely.** See match-keyboard rows above. Single-source fix. |
+| Input rebind buttons (12 rows) | `beginRebind(action, btn)` ln 3464 — captures next keydown, persists `input.binds[action]`; consumed by match keydown ln 3563-3578 via per-action e.code lookups | OK | **Phase C fix landed:** match keydown now reads `Profile.setting("input.binds", {})` and matches on `e.code` (defaults: Space / KeyI / KeyU / KeyX / Digit1..9). Verified live across send-wave / t1 / info rebinds. |
 | Video → Fullscreen toggle | `toggleFullscreen` ln 3502 | OK | Falls back to toast on failure. |
 | UI scale slider 75-150% | `applyUISettings` ln 3520 sets `--ui-scale` | OK | |
 | Subtitle scale 75-200% | `--sub-scale` | OK | |
@@ -268,7 +268,9 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 ### NEEDS-FIX — medium (queue to AskUserQuestion)
 
-6. **Input rebind UI is decorative** — match keydown handler (ln 3537) hardcodes Space / 1-9 / I / U / X. Rebind UI captures + persists `input.binds` correctly, but no consumer. Touches input system; PM call: replace hardcoded keys with `binds[action]` lookup, or label rebind UI as "preview only" until input system lands properly. [scene-9 + scene-11] — **PENDING**
+6. ~~**Input rebind UI is decorative**~~ — **FIXED Phase C (2026-05-05)**: match keydown ln 3563-3578 now reads `Profile.setting("input.binds", {})` and matches on `e.code` for send-wave / info / upgrade / sell / t1..t9 with sensible defaults. Verified live: send-wave→KeyB rebind triggers `startWave`; t1→KeyM rebind triggers `selectTower("greek_phalanx")`; info→KeyJ rebind invokes `openReference` (and original KeyI no longer fires). [scene-9 + scene-11]
+
+> **New finding flagged separately:** `openReference` ln 3310 throws `ReferenceError: CIVS_DATA is not defined` when `game.commander.civ` is falsy. The reference is undefined in the IIFE scope. Pre-existing bug — affects both Info button onclick and the I-key path; not caused by Phase C #6. Queue for next-session sweep.
 7. ~~**Profile scene roster hardcodes legacy commanders**~~ — **FIXED Phase B** (PM Recommended pick): `renderProfileScene` ln 1086-1099 now sources from `COMMANDERS.roster` filter `playable:true`; civ commanders surface with civ-derived tilt; legacy 5-lineage shape retained as fallback. Verified live.
 8. ~~**End-screen XP doesn't persist**~~ — **FIXED Phase C**: `endMatch` ln 3390-3408 now writes `Profile.data.commanderProgress[cid] = { level, xp, xpToNext, unlockedCosmetics }` after the in-memory mutation and calls `Profile.save()`. Verified live (sim-win → localStorage XP=40 → reload → Profile scene reads 40%). [scene-10]
 
