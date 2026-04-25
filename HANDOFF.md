@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-25 (**clear-safe**).
+**Last session:** 2026-05-06 (**clear-safe**).
 **Hand-off by:** Claude (Opus 4.7, post-compaction continuation)
 **Hand-off to:** next Claude Code session after `/clear`.
 
@@ -8,42 +8,46 @@
 
 ## TL;DR
 
-**Per-tower authoring sub-pass CLOSED** (R1+R2+R3+R4+RN LANDED, all 45 launch towers bound under 4 locks; arc-close commit `43e1271`, dual-pushed). **Per-civ specialization sub-pass OPENED.** Next-track fork resolved via AskUserQuestion (PM picked Recommended #1 = per-civ specialization). R1 scope decision LANDED at [`decisions/2026-05-06-per-civ-specialization-scope.md`](decisions/2026-05-06-per-civ-specialization-scope.md) (Accepted, Medium). PM picked Recommended on both AskUserQuestion gates: **Axis A (per-civ deep-dive)** + **5-field schema lock** (matchup_affinity / identity_hook / signature_creep_types / multi_civ_play_hook / commander_synergy). 4-round queue locked: R1 (DONE) + R2 Greek profile + R3 Aztec + R4 Norse + RN cross-civ × cross-field audit + spine-doc edits. **NEXT session: produce R2 Greek profile autonomously per PM autonomy mandate.**
+**Per-civ R2 (Greek profile) LANDED** — [`decisions/2026-05-06-per-civ-r2-greek-profile.md`](decisions/2026-05-06-per-civ-r2-greek-profile.md) (Accepted, Medium; commit `49c4c54` + cleanup `78cba67`, dual-pushed). 5-field Greek profile bound: matchup_affinity STRONG vs Colossal+Shielded / WEAK vs Beast (boss-and-elite-wall specialist with Beast-coverage hole) / identity_hook one-paragraph synthesis Leonidas Control + per-tower lockdown signature + status-proc archetype kinetic-suppression with **deceleration-weighted lifespan-compounding** shape (falsifiable proc-shape distinction vs Aztec/Norse) / signature_creep_types Colossal+Shielded armor-class grain / multi_civ_play_hook Poison-zero + Slashing-pre-T4 holes filled by Aztec + Norse cross-civ / commander_synergy Leonidas three-stage suppression cycle binding `controlled_by: leonidas` all 15 Greek rows. 3x debug loop on identity_hook ran inline. Cross-civ parity hook → R3 Aztec predicts Beast/Spirit specialist + Crushing-coverage hole + kill-multiplication identity. **Mistake flagged: cleanup commit `78cba67`** removes accidentally-committed `.accord/` (69MB) from tracking + adds to `.gitignore`; blob remains in history at `49c4c54` (purging requires destructive force-push, deferred to PM call). Hard guards verified across all 5 fields. Cascade-lint clean except pre-existing phase-4 soft-cap (629/600, carried). **NEXT session: produce R3 Aztec profile autonomously per PM autonomy mandate.**
 
 ---
 
 ## NEXT SESSION — primary directive
 
-**Per-civ R2 (Greek profile) — produce autonomously per the PM autonomy mandate** carried forward from per-tower R1-RN, per-commander R1-R5, CONCEPT amendment pass R1-R7, and Numbers-phase R1-R10.
+**Per-civ R3 (Aztec profile) — produce autonomously per the PM autonomy mandate** carried forward from per-civ R1+R2, per-tower R1-RN, per-commander R1-R5, CONCEPT amendment pass R1-R7, and Numbers-phase R1-R10.
 
-**R2 deliverable:** [`decisions/2026-05-06-per-civ-r2-greek-profile.md`](decisions/2026-05-06-per-civ-r2-greek-profile.md) (Accepted, Medium). Five-field Greek civ profile (matchup_affinity / identity_hook / signature_creep_types / multi_civ_play_hook / commander_synergy) + cross-civ parity hook paragraph forward-pointing to R3 Aztec.
+**R3 deliverable:** [`decisions/2026-05-06-per-civ-r3-aztec-profile.md`](decisions/2026-05-06-per-civ-r3-aztec-profile.md) (Accepted, Medium). Five-field Aztec civ profile (matchup_affinity / identity_hook / signature_creep_types / multi_civ_play_hook / commander_synergy) + cross-civ parity hook paragraph forward-pointing to R4 Norse.
 
 ### Step-by-step procedure
 
 1. **Bootstrap** per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
-2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean — last per-civ R1 push to both session branch + main).
-3. **Read R1 scope file** [`decisions/2026-05-06-per-civ-specialization-scope.md`](decisions/2026-05-06-per-civ-specialization-scope.md) end-to-end.
-4. **Read inputs** (Grep > full-file Read where possible):
-   - [`decisions/2026-05-06-per-tower-r2-greek-roster.md`](decisions/2026-05-06-per-tower-r2-greek-roster.md) — Greek 15-tower magnitude matrix + civ-identity-hook prose.
-   - [`decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md`](decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md) — type-coverage audit (Greek lacks Poison; 6 of 7 types) + cross-civ band statistics.
-   - [`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`](decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) — Leonidas one-pager + lane lock (Control, Hard).
+2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean — last per-civ R2 + cleanup pushed to both session branch + main).
+3. **Read inputs** (Grep > full-file Read where possible):
+   - [`decisions/2026-05-06-per-civ-specialization-scope.md`](decisions/2026-05-06-per-civ-specialization-scope.md) — R1 scope file.
+   - [`decisions/2026-05-06-per-civ-r2-greek-profile.md`](decisions/2026-05-06-per-civ-r2-greek-profile.md) — R2 reference (cross-civ parity hook predicts R3 Aztec shape).
+   - [`decisions/2026-05-06-per-tower-r3-aztec-roster.md`](decisions/2026-05-06-per-tower-r3-aztec-roster.md) — Aztec 15-tower magnitude matrix + civ-identity-hook prose (yield-stack / economy archetype; kill-multiplication via Poison-stacking + Fire-splash + Slashing-bleed).
+   - [`decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md`](decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md) — type-coverage audit (Aztec band-high T2-T3 + cd-1.4s + Poison/Fire/Slashing-bleed compounding; **Aztec-no-Crushing structural type-hole**).
+   - [`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`](decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) — Montezuma II one-pager + lane lock (Economy, Hard) + Lever-2 (Great Sacrifice 300 T + permanent +5%).
    - [`decisions/2026-04-26-attack-type-mapping.md`](decisions/2026-04-26-attack-type-mapping.md) — 7-attack × 5-armor RPS matrix.
-   - `concept/phase-4.md` §4.10 (RPS matrix substrate) + §4.11 (Numbers floor) — read-only.
-5. **Author R2** = 5-field Greek profile decision file. Synthesis discipline: identity_hook integrates Leonidas Control + per-tower Greek lockdown signature (dps-centered / cd-1.7s / range-4.0 / armor-shred + stagger + smite + slow + stun rich) into one paragraph. matchup_affinity bins Greek 15-tower roster against §4.10 5-armor classes (Unarmored / Shielded / Heavy / Magic / Boss) — aggregate not per-tower. signature_creep_types at armor-class grain (which armor classes Greek's RPS-matrix 1.25× cells cluster against). multi_civ_play_hook = Poison-coverage gap (Greek lacks all Poison sources at launch — patch-1 commander expansion path). commander_synergy = one-sentence statement of how Leonidas Spartan-Training aura + This Is Sparta! short-CD + The Last Stand signature interface with Greek lockdown magnitude signature.
-6. **Cascade-lint:** `python tools/cascade-lint.py` (expect clean except pre-existing `concept/phase-4.md` 629/600 soft-cap).
-7. **Commit R2 + dual-push** (session branch + main).
-8. **Continue to R3 (Aztec) autonomously if context budget healthy.** Otherwise stop after R2 and file mini-handoff.
+   - `concept/phase-4.md` §4.10 (RPS substrate) + §4.11 (Numbers floor) — read-only.
+4. **Author R3** = 5-field Aztec profile. Synthesis discipline: identity_hook integrates Montezuma II Economy + per-tower Aztec yield-stack signature (band-high T2-T3 / cd-1.4s / Poison-Fire-Slashing-bleed compounding) into one paragraph; **predicted proc-shape: kill-multiplication-weighted** (vs Greek deceleration-weighted, Norse summon-cleave-propagation-weighted) — falsifiable distinction. matchup_affinity bins Aztec 15-tower roster against §4.10 5-armor classes (predicted STRONG vs Beast + Unarmored swarm; predicted WEAK vs Shielded heavies given Crushing-coverage gap; Spirit/Colossal mid). signature_creep_types at armor-class grain. multi_civ_play_hook = Crushing-zero gap (Aztec lacks Crushing — patch-1 / cross-civ Greek+Norse Crushing density covers; Foresight-coin path noted). commander_synergy = Montezuma II Blood-Tribute aura + Sun-Offering 4s-spike + Great-Sacrifice 300 T lump + permanent +5% three-stage yield-cycle binding `economy_target: montezuma_ii` all 15 Aztec rows.
+5. **3x debug loop on identity_hook construction** — kill-multiplication-weighted proc-shape held as falsifiable vs Greek deceleration / Norse summon-cleave.
+6. **Cross-civ parity hook paragraph** forward-pointing to R4 Norse (predicted Bleed-density specialist + summon-cleave-propagation identity + Ragnar Sons-of-Ragnar / Berserk / Great-Heathen-Army three-stage commander_synergy).
+7. **Cascade-lint:** `python tools/cascade-lint.py` (expect clean except pre-existing `concept/phase-4.md` 629/600 soft-cap).
+8. **Commit R3 + dual-push** (session branch + main). **CRITICAL: use targeted `git add` of specific files — NOT `git add -A`** to avoid re-introducing untracked artifacts (`.accord/` is now `.gitignore`'d, but other paths may exist).
+9. **Continue to R4 (Norse) autonomously if context budget healthy.** Otherwise stop after R3 and file mini-handoff.
 
 ### Discipline (carry forward)
 
 - **No game code edits.** Concept-only — Phase 4 hasn't exited.
-- **3x debug loop** on any decision touching CONCEPT constraints. R2-R4 each produce a per-civ identity_hook synthesis paragraph; 3x debug loop on identity_hook construction.
+- **3x debug loop** on any decision touching CONCEPT constraints. R3 + R4 each produce a per-civ identity_hook synthesis paragraph; 3x debug loop on identity_hook construction.
 - **Dual-push every commit.** Push to session branch AND `main`.
+- **Targeted `git add`** — never `git add -A`. Stage decisions/HANDOFF/PROGRESS/CASCADE files explicitly.
 - **Cascade-lint after every round.** Phase-4 line-cap (currently 629/600) is breached carried-state — net-neutral target for future spine-doc edits OR explicit PM ratification of cap-bump.
-- **Cultural-sensitivity Follow-up #5 hard-gate** stays in force. Mechanical-content only — civ-neutral effect-type language. No art / VFX / pose / VO / civ-flavor surface direction prose. Locked content-skeleton names verbatim only.
+- **Cultural-sensitivity Follow-up #5 hard-gate** stays in force — **especially at Aztec (heaviest cultural-load center per per-tower R3 explicit acknowledgment)**. Mechanical-content only — civ-neutral effect-type language. No art / VFX / pose / VO / civ-flavor surface direction prose. Locked content-skeleton names verbatim only.
 - **Cross-arc dependency:** every per-civ row references per-tower RN type-coverage + status-proc-density audits + per-commander R5 lane locks. Any divergence is a cascade violation flagged in-round.
 
-Surface AskUserQuestion ONLY on: Genuine forks not anticipated in R1 scope / Scope expansion beyond locked 4-round queue / Cascade-violation risk (matchup_affinity contradicting per-tower RN; signature_creep_types crossing §4.7 archetype-grain; commander_synergy crossing civ lanes) / Cultural-sensitivity surface (Follow-up #5) / Handoff trigger.
+Surface AskUserQuestion ONLY on: Genuine forks not anticipated in R1 scope / Scope expansion beyond locked 4-round queue / Cascade-violation risk (matchup_affinity contradicting per-tower RN; signature_creep_types crossing §4.7 archetype-grain; commander_synergy crossing civ lanes) / Cultural-sensitivity surface (Follow-up #5; high-vigilance at Aztec) / Handoff trigger.
 
 ---
 
@@ -62,13 +66,14 @@ Surface AskUserQuestion ONLY on: Genuine forks not anticipated in R1 scope / Sco
 - All R1-R7 CONCEPT amendment-pass §-anchors — Accepted.
 - All per-commander R1-R5 spine-doc edits + lane locks (Leonidas=Control / Montezuma II=Economy / Ragnar=Summon, Hard reversibility) — Accepted.
 - All per-tower R1-RN magnitude matrix + 4 locks (attack-type / dps-band / proc-kind / lane-tag) — Accepted (45/45 zero cascade-violations).
+- Per-civ R1 scope (4-round queue + 5-field schema + Axis A) — Accepted.
 - Splash-fix `CODEX_DATA` rename — Accepted.
 - All Phase C UI-verification-sweep fixes (`5d2f3c8` / `8f67a08` / `4964895` / `abcb398`) — Accepted.
 
 ### NEW this session
 
-- **Per-tower authoring arc CLOSED** — R4 Norse + RN cross-civ audit landed; spine-doc §4.8 item #2 ticked DONE + §4.11.5 closing reference added; Phase 4 exit-gate items #1+#2 closed.
-- **Per-civ specialization R1 scope** LANDED via [`decisions/2026-05-06-per-civ-specialization-scope.md`](decisions/2026-05-06-per-civ-specialization-scope.md) (Accepted, Medium). Round queue + axis + 5-field schema + hard guards locked.
+- **Per-civ R2 Greek profile** LANDED via [`decisions/2026-05-06-per-civ-r2-greek-profile.md`](decisions/2026-05-06-per-civ-r2-greek-profile.md) (Accepted, Medium). 5 fields bound + identity_hook 3x debug loop + cross-civ parity hook → R3.
+- **`.gitignore` `.accord/` line added** + cleanup commit `78cba67` removes 69MB telemetry from tracking (blob still in history at `49c4c54` — purge deferred to PM authorization).
 
 ---
 
@@ -77,14 +82,15 @@ Surface AskUserQuestion ONLY on: Genuine forks not anticipated in R1 scope / Sco
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commit pre-handoff: `43e1271` (per-tower RN bundle dual-pushed). Per-civ R1 scope file + handoff bundle staged for this turn's chore commit. Will dual-push.
+- Latest commit pre-handoff: `78cba67` (cleanup: untrack `.accord/`). Prior `49c4c54` (R2 LANDED) — both dual-pushed. This handoff bundle commit will follow.
+- **Known git debt:** `49c4c54` contains 69MB `.accord/events.jsonl` blob (>50MB GitHub warning). Removing requires destructive force-push (deferred — only on explicit PM authorization).
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 most-recent entries (per-civ R1 scope / per-tower R1 OPENED / Phase C). Phase B archived to `PROGRESS-archive.md`.
-- `CASCADE.md` pointer: 1 most-recent block (per-civ R1 scope LANDED). Per-tower-arc-CLOSED block archived to `CASCADE-history.md`.
-- `CASCADE.md` version footer: 0.67 + 0.66. 0.65 archived to `CASCADE-history.md`.
-- cascade-lint expected clean except pre-existing `concept/phase-4.md` 629/600 soft-cap (carried — not introduced by this handoff).
+- `PROGRESS.md` session log: 3 most-recent entries (R2 Greek LANDED / per-civ R1 scope / per-tower R1 OPENED). Phase C archived to `PROGRESS-archive.md`.
+- `CASCADE.md` pointer: 1 most-recent block (R2 Greek LANDED). Per-civ R1 scope LANDED block archived to `CASCADE-history.md`.
+- `CASCADE.md` version footer: 0.68 + 0.67. 0.66 archived to `CASCADE-history.md`.
+- cascade-lint clean except pre-existing `concept/phase-4.md` 629/600 soft-cap (carried — not introduced by this handoff).
 
 ### Two prototype findings still queued (not in scope for this arc)
 
@@ -95,8 +101,8 @@ These remain queued from Phase C close. Pick up on a context-budget-friendly sid
 
 ### Open follow-ups (carried — UNCHANGED)
 
-- **#5** — Cultural-sensitivity pass (gates non-abstract civ art + VFX + civ-flavor surface direction). **Hard-gates per-civ specialization arc visual prose** (this arc is mechanical-content only — same discipline as per-tower arc).
-- **#6** — Patch-1 commanders per civ + Thor recipe-layer dissonance. Multi_civ_play_hook field in this arc explicitly notes the deferred patch-1 expansion path.
+- **#5** — Cultural-sensitivity pass (gates non-abstract civ art + VFX + civ-flavor surface direction). **Hard-gates per-civ specialization arc visual prose** — **especially at Aztec (R3 next session: heaviest cultural-load center).**
+- **#6** — Patch-1 commanders per civ + Thor recipe-layer dissonance. multi_civ_play_hook field in this arc explicitly notes the deferred patch-1 expansion path.
 - **#7** — Foresight-coin / PvE campaign / AGES / leveling / attributes.
 - **#8 / #9** — non-boss enemy ontology / additional commanders.
 - **C7.b deferred** — Builder concurrency cap + 90% refund-on-cancel UI.
@@ -133,6 +139,7 @@ These remain queued from Phase C close. Pick up on a context-budget-friendly sid
 - **AskUserQuestion is the standard interface** when gating is needed. Recommended-first.
 - **MD-first preservation** — for any scope expansion or non-trivial conceptual ratification, land in MD before further questions.
 - **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
+- **Targeted `git add` only** — never `git add -A`. (Lesson learned this session: `.accord/` 69MB blob.)
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
 - **Doc hygiene on each handoff:** trim PROGRESS to 3, CASCADE pointer to 1 block, footer to 2.
@@ -143,39 +150,36 @@ These remain queued from Phase C close. Pick up on a context-budget-friendly sid
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar. Per-tower authoring sub-pass CLOSED (R1+R2+R3+R4+RN
-LANDED, arc-close commit 43e1271 dual-pushed). Per-civ specialization sub-
-pass OPENED on 2026-05-06. R1 scope decision LANDED at
-decisions/2026-05-06-per-civ-specialization-scope.md (Accepted, Medium).
-PM picked Recommended on both AskUserQuestion gates: Axis A per-civ deep-
-dive + 5-field schema lock.
+Resuming Ash to Altar. Per-civ specialization sub-pass IN PROGRESS.
+R1 scope LANDED at b0d7841. R2 Greek profile LANDED at 49c4c54
+(+ cleanup 78cba67 untracking .accord/). Both dual-pushed.
 
-4-round queue locked:
-  R1 (DONE) — scope decision + 3x debug loop + 5-field schema lock
-  R2       — Greek profile: 5 fields + cross-civ parity hook → R3
-  R3       — Aztec profile: 5 fields + cross-civ parity hook → R4
-  R4       — Norse profile: 5 fields + cross-civ parity hook → RN
-  RN       — cross-civ × cross-field audit + phase-4.md §4.x per-civ
-            specialization body + possible §4.8 exit-gate item add
+R2 deliverable filed: decisions/2026-05-06-per-civ-r2-greek-profile.md
+(Accepted, Medium). 5 fields bound; identity_hook 3x debug loop ran;
+cross-civ parity hook → R3 Aztec embedded.
+
+KNOWN GIT DEBT: commit 49c4c54 contains accidentally-committed 69MB
+.accord/events.jsonl blob (>50MB GitHub warning). Cleanup 78cba67
+removes from tracking + adds to .gitignore, but blob remains in
+history. Full purge requires destructive force-push — DO NOT execute
+without explicit PM authorization.
+
+4-round queue (R1+R2 done):
+  R3 — Aztec profile: 5 fields + cross-civ parity hook → R4
+  R4 — Norse profile: 5 fields + cross-civ parity hook → RN
+  RN — cross-civ × cross-field audit + phase-4.md §4.x per-civ
+       specialization body + possible §4.8 exit-gate item add
 
 5-field schema (LOCKED for the arc):
-  matchup_affinity      (vs §4.10 7-attack × 5-armor RPS classes —
-                         civ aggregate against Unarmored/Shielded/
-                         Heavy/Magic/Boss; bins from per-tower RN
-                         type-coverage audit)
-  identity_hook         (one-paragraph mechanical thesis synthesizing
-                         lane-lock + per-tower magnitude signature +
-                         status-proc archetype + commander synergy;
-                         civ-neutral effect-type language)
-  signature_creep_types (armor-class grain pre-§4.7-lock; references
-                         §4.10 5-armor substrate)
-  multi_civ_play_hook   (per-tower RN type-coverage gaps: Greek-no-
-                         Poison / Aztec-no-Crushing / Norse-no-Poison-
-                         no-Divine-T1-T3; references deferred Foresight-
-                         coin + Follow-up #6 patch-1 commanders)
-  commander_synergy     (per-commander R5 lane-lock binding — Greek=
-                         Control via Leonidas / Aztec=Economy via
-                         Montezuma II / Norse=Summon via Ragnar)
+  matchup_affinity      (vs §4.10 7-attack × 5-armor RPS)
+  identity_hook         (one-paragraph mechanical thesis; civ-neutral
+                         effect-type language; falsifiable proc-shape
+                         distinction — Greek deceleration-weighted /
+                         Aztec predicted kill-multiplication-weighted /
+                         Norse predicted summon-cleave-propagation)
+  signature_creep_types (armor-class grain pre-§4.7-lock)
+  multi_civ_play_hook   (per-tower RN type-coverage gaps)
+  commander_synergy     (per-commander R5 lane-lock binding)
 
 BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
 
@@ -183,9 +187,10 @@ BEFORE reading docs:
   git fetch origin
   git log --oneline HEAD..origin/main   # should be empty
 
-PRIMARY DIRECTIVE — produce R2 (Greek profile) AUTONOMOUSLY per the
-PM autonomy mandate carried forward from per-tower R1-RN / per-commander
-R1-R5 / CONCEPT amendment-pass R1-R7 / Numbers-phase R1-R10.
+PRIMARY DIRECTIVE — produce R3 (Aztec profile) AUTONOMOUSLY per the
+PM autonomy mandate carried forward from per-civ R1+R2 / per-tower
+R1-RN / per-commander R1-R5 / CONCEPT amendment-pass R1-R7 / Numbers-
+phase R1-R10.
 
 Surface AskUserQuestion ONLY on:
   - Genuine forks not anticipated in R1 scope.
@@ -194,40 +199,44 @@ Surface AskUserQuestion ONLY on:
     type-coverage audit; signature_creep_types crossing §4.7 archetype-
     grain; commander_synergy crossing civ lanes).
   - Cultural-sensitivity surface (Follow-up #5 — art / VFX / civ-flavor
-    surface direction prose).
+    surface direction prose). HIGH-VIGILANCE at Aztec (per-tower R3
+    explicit acknowledgment: heaviest cultural-load center).
   - Handoff trigger.
 
-R2 INPUTS (Grep > full-file Read where possible):
+R3 INPUTS (Grep > full-file Read where possible):
   decisions/2026-05-06-per-civ-specialization-scope.md
-  decisions/2026-05-06-per-tower-r2-greek-roster.md
+  decisions/2026-05-06-per-civ-r2-greek-profile.md
+  decisions/2026-05-06-per-tower-r3-aztec-roster.md
   decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md
   decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md
   decisions/2026-04-26-attack-type-mapping.md
   concept/phase-4.md  (§4.10 / §4.11 — read-only)
 
-R2 DELIVERABLE:
-  decisions/2026-05-06-per-civ-r2-greek-profile.md (Accepted, Medium)
-  - 5-field Greek profile (matchup_affinity / identity_hook /
+R3 DELIVERABLE:
+  decisions/2026-05-06-per-civ-r3-aztec-profile.md (Accepted, Medium)
+  - 5-field Aztec profile (matchup_affinity / identity_hook /
     signature_creep_types / multi_civ_play_hook / commander_synergy)
-  - identity_hook synthesis: Leonidas Control + per-tower Greek lockdown
-    signature (dps-centered / cd-1.7s / range-4.0 / armor-shred +
-    stagger + smite + slow + stun rich) into one paragraph
+  - identity_hook synthesis: Montezuma II Economy + per-tower Aztec
+    yield-stack signature (band-high T2-T3 / cd-1.4s / Poison-Fire-
+    Slashing-bleed compounding) + status-proc archetype kill-
+    multiplication-weighted (predicted falsifiable distinction vs
+    Greek deceleration-weighted + Norse summon-cleave-propagation)
   - 3x debug loop on identity_hook construction
-  - Cross-civ parity hook paragraph forward-pointing to R3 Aztec
+  - Cross-civ parity hook paragraph forward-pointing to R4 Norse
 
-R2 PROCEDURE:
+R3 PROCEDURE:
   1. Read inputs.
-  2. Author 5-field Greek profile.
+  2. Author 5-field Aztec profile.
   3. 3x debug loop on identity_hook.
-  4. Cross-civ parity hook to R3 Aztec.
+  4. Cross-civ parity hook to R4 Norse.
   5. Cascade-lint: python tools/cascade-lint.py
      (expect clean except pre-existing phase-4 soft-cap 629/600)
-  6. Commit R2 + dual-push (session branch + main).
-  7. Continue to R3 (Aztec) autonomously if context budget healthy.
-     Otherwise stop after R2 and file mini-handoff.
+  6. Commit R3 + dual-push (session branch + main).
+     CRITICAL: targeted `git add <file>` only — never `git add -A`.
+  7. Continue to R4 (Norse) autonomously if context budget healthy.
+     Otherwise stop after R3 and file mini-handoff.
 
 DUAL-PUSH POINTS (locked from R1 scope):
-  After R2 (carries R1+R2)
   After R3 (carries R3)
   After RN (carries R4 + RN; CLOSES arc)
 
@@ -240,6 +249,7 @@ SCOPE GUARD:
 - All per-commander R1-R5 spine-doc edits + lane locks Accepted (Hard).
 - All per-tower R1-RN magnitude matrix + 4 locks Accepted (45/45 zero
   cascade-violations).
+- Per-civ R1 scope + R2 Greek profile Accepted.
 - §4.7 OPEN — signature_creep_types stays at armor-class archetype-grain
   only; per-creep-row specifics defer to §4.7 lock.
 - Cultural-sensitivity Follow-up #5 hard-gates non-abstract civ art /
@@ -247,12 +257,13 @@ SCOPE GUARD:
   only — civ-neutral effect-type language throughout.
 
 NO GAME CODE EDITS. Concept-only — Phase 4 hasn't exited.
-NO SPINE-DOC EDITS during R2/R3/R4. All phase-4.md §4.x body edits
+NO SPINE-DOC EDITS during R3/R4. All phase-4.md §4.x body edits
   + possible §4.8 exit-gate item add happen at RN.
 
 VERIFY each commit with: python tools/cascade-lint.py
   (expect clean except pre-existing phase-4 soft-cap 629/600)
 DUAL-PUSH each commit: session branch + main.
+TARGETED `git add` ONLY — never `git add -A`.
 
 POST-ARC ROADMAP (preserve, deferred until per-civ RN closes):
 1. Per-map / Round 11 (wave-randomization + crystal-lock + good-cell).
@@ -270,6 +281,12 @@ side-pass between rounds only if PM directs):
       ReferenceError when game.commander.civ is falsy.
   (b) prototype/index.html ln 495/507/513 mode-select copy obsolete
       "three ages"/"11-age arc" — post-2026-04-25 4-tier ladder.
+
+OUTSTANDING GIT DEBT (from R2 session):
+  Commit 49c4c54 has accidentally-committed 69MB .accord/events.jsonl
+  blob in history. Cleanup 78cba67 removed from tracking + .gitignore
+  blocks future re-entry. Full purge needs destructive force-push —
+  await explicit PM authorization before attempting.
 ```
 
 ---
@@ -281,7 +298,7 @@ Hard-stop and flag if:
 - §5.4 row beyond Civilizations would be touched.
 - 2026-04-25 locked content-skeleton names would be modified.
 - §2.4a is touched.
-- Cultural-sensitivity concern surfaces (Follow-up #5).
+- Cultural-sensitivity concern surfaces (Follow-up #5; high-vigilance at Aztec R3).
 - Local `main` stale on session start.
 - `cascade-lint` fails new (pre-existing phase-4 soft-cap is carried).
 - The 17-item frame would be silently edited.
@@ -289,8 +306,10 @@ Hard-stop and flag if:
 - Any amendment-pass §-anchor would be silently edited.
 - Any per-commander R1-R5 spine-doc surface would be silently edited.
 - Any per-tower R1-RN magnitude row would be silently re-tuned out of band.
+- Any per-civ R2 Greek profile field would be silently edited.
 - Any per-civ matchup_affinity row contradicts the per-tower RN type-coverage audit.
 - Any per-civ signature_creep_types row crosses §4.7 archetype-grain into per-creep-row specifics.
-- Any per-civ commander_synergy row crosses civ lanes (e.g., Leonidas tagged on Aztec).
+- Any per-civ commander_synergy row crosses civ lanes (e.g., Montezuma II tagged on Greek).
 - A track touching CONCEPT constraints lands without 3x debug loop.
+- `git add -A` is about to be invoked (use targeted staging instead).
 - Context budget pressure forces a mid-track split → file mini-handoff and stop cleanly.
