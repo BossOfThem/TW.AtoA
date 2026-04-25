@@ -8,78 +8,127 @@
 
 ## TL;DR
 
-**Per-commander effect-type-variant authoring sub-pass — ARC CLOSED 5/5 + prototype splash-fix LANDED.**
+**Per-commander effect-type-variant arc CLOSED 5/5 (`6069c49`); prototype splash-fix landed (`90f6f1c`); first handoff filed (`2edb70c`); this is a second handoff sequencing the NEXT session's prototype UI verification sweep as A→B with cadence guardrails per PM ask.**
 
-Two tracks closed this session:
+PM directive this turn: *"Prepare hand off to prepare for doing A and then B regardless (You checking yourself for functionality and fixing for a bit is a great way to move forward faster i hope - I want a cadence that avoids over loading API and causing errors, also keep context window in check softly please)."*
 
-1. **Per-commander arc** (commits `256cec7` R1-R3 + `6069c49` R4+R5+spine-doc edits, both dual-pushed). 5-round queue per Axis B (per-ability-slot, all 3 commanders per round) closed all (h)+(g)+(i) effect-type variants for Leonidas / Montezuma II / Ragnar Lothbrok. Effect-type lanes locked Leonidas=Control / Montezuma II=Economy / Ragnar=Summon. R5 cross-commander balance audit surfaced Aztec breakpoint breach (~110-140% of Hard 100%); **Lever-2 applied** (Great Sacrifice lump 600→300 T + permanent yield +10%→+5%) → ~88-104% in band, PvP-IW winrate 50-58% Aztec. Aura-anchor sub-decision resolved via 3x debug loop → **anointed-tower with auto-anoint fallback + free re-anoint UX**; active-cast targeting decoupled from aura center. 3 per-commander one-pagers filed (Leonidas / Montezuma II / Ragnar Lothbrok) — closes `phase-4.md §4.8` exit-condition item #1. Spine-doc edits APPLIED to `concept/phase-4.md` (§4.1 mechanical-content rewrite + Surface table reword + Non-goals reword + NEW Anointed-tower aura model subsection + §4.11.6 deferral removal + §4.8 exit tick).
-
-2. **Prototype splash-fix** (commit `90f6f1c`, dual-pushed). PM reported splash dismiss broken ("click or press any key to skip" non-responsive). Root cause: `ATTACK_TYPES` declared twice in `prototype/index.html` — `let ATTACK_TYPES = null` (data-loaded, line ~1397) collided with inline `const ATTACK_TYPES = {...}` (Codex copy, line ~2003). The `const` redeclaration threw `Uncaught SyntaxError` on script parse, halting all event-listener registration before splash handlers could attach. Fix: renamed inline copy to `CODEX_DATA` and updated 6 references in `openCodex()`. Splash dismiss + every interaction wired again. Data-loaded `ATTACK_TYPES` (richer shape with towerTypeAssignments + demigodTypeAssignments) remains canonical for in-match logic; inline `CODEX_DATA` stays alongside per the alongside-and-non-breaking discipline until C6 retires inline copies.
-
-PM autonomy mandate carried forward — R2-R5 produced fully autonomously. Two arc dual-push checkpoints + splash-fix dual-push + this handoff hygiene commit. cascade-lint clean throughout.
-
-**§5.4 + §2.4a [LOCKED] UNTOUCHED. 17-item conceptual frame UNTOUCHED. All Numbers-phase magnitudes UNTOUCHED. All R1-R7 amendment-pass §-anchors UNTOUCHED. 2026-04-25 locked content skeleton UNTOUCHED.**
+NEXT session executes both A and B; this turn is handoff-only.
 
 ---
 
-## NEXT SESSION — primary directive (NEW)
+## NEXT SESSION — primary directive (A→B sequence)
 
-**Prototype UI verification sweep.** PM directive: *"verify all 'buttons' work and full review all buttons/commands options work or atleast say (Test) if your unsure or needs to be refined (But doesn't forget the next steps/roadmap etc...)"*.
+### Phase A — Static-analysis UI sweep (run first)
 
-Run `prototype/start.bat` (Python `http.server` on :8765 + auto-open). Walk every scene end-to-end and produce a per-scene verification report. For each interactive element record: **OK** (verified working as designed), **(Test)** (unsure / needs PM call / behavior ambiguous), or **NEEDS-FIX** (broken / regressed). Don't fix anything mid-sweep; collect findings, then surface AskUserQuestion at the end with prioritized fix queue.
+Read `prototype/index.html` plus the `prototype/data/*.json` files. For every interactive element across all 11 scenes (splash / login / menu / profile / mode-select / lobby-coop / commander-pick / tutorial / match / end / options) record one row in a single Markdown report:
 
-### Scene checklist (11 scenes — exhaustive)
+| Scene | Element | Handler / source | Status | Note |
+|-------|---------|-------------------|--------|------|
+| match | Send-Wave button | `onSendWaveClick()` line ~XXX | OK | Disabled while `waveActive` per intended spec |
+| match | Q key (commander cast-passive) | `keydown` line ~XXX | (Test) | Post-C7.a comment-out — verify still inert in browser |
+| ... | ... | ... | ... | ... |
 
-1. **Splash** — auto-advance after 3s; click-to-dismiss; any-key-to-dismiss; reduce-motion respected. (Splash dismiss verified post-fix this session — re-verify in next session is a sanity check, not a regression hunt.)
-2. **Login** — username entry; "Continue as Guest" branch; Enter-key submit; localStorage `atoA.profile.v1` write; existing-profile detect → Returning branch.
-3. **Menu** — greeting text reflects username; Continue (resume last save) / Play / Commander / Options / Logout / Quit buttons; keyboard nav.
+**Status legend:**
+- **OK** — verified working as designed by reading the code path end-to-end.
+- **(Test)** — code path exists but behavior is ambiguous, conditional on runtime state, or depends on something static analysis can't confirm. Carry into Phase B.
+- **NEEDS-FIX** — code is broken, dead, regressed, or contradicts the intended spec from CONCEPT / decisions / prior commits.
+
+Output file: `prototype/UI-VERIFICATION-2026-05-MM.md` (use today's date once known). Single file. Don't sprawl across multiple docs.
+
+End Phase A with: prioritized fix queue at the bottom of the report (NEEDS-FIX first, then (Test) ranked by player-facing severity).
+
+**Commit at end of Phase A** (single commit — `feat(prototype): UI verification sweep phase A static-analysis report`). Dual-push.
+
+### Phase B — Live in-browser sweep + small-fix loop
+
+Use Claude-in-Chrome or preview MCP. Start `prototype/start.bat` first (or `python -m http.server 8765` in `prototype/`). Then walk the (Test) rows and a sample of OK rows to confirm. For each row:
+
+- (Test) → OK or (Test) → NEEDS-FIX based on observed behavior. Update the report in place (Edit, not Write).
+- New NEEDS-FIX discovered live → add row to report.
+- **Small NEEDS-FIX** (typo / dead handler reference / off-by-one / one-line CSS / missing aria-label / broken selector): **fix inline** as you find them. Commit per ~3-fix batch. Dual-push each batch.
+- **Medium / large NEEDS-FIX** (touches game logic / data shape / scene flow / requires PM call on intended behavior): leave in queue, do not fix. Surface in AskUserQuestion at end.
+
+End Phase B with: AskUserQuestion to PM listing the queued medium/large NEEDS-FIX items with a Recommended pick for which to tackle next.
+
+### Scene checklist (carried from first handoff — all 11)
+
+1. **Splash** — auto-advance after 3s; click-to-dismiss; any-key-to-dismiss; reduce-motion respected. (Splash dismiss verified post-fix; re-verify is sanity check.)
+2. **Login** — username entry; "Continue as Guest"; Enter-key submit; localStorage `atoA.profile.v1` write; existing-profile detect → Returning branch.
+3. **Menu** — greeting reflects username; Continue / Play / Commander / Options / Logout / Quit; keyboard nav.
 4. **Profile** — XP bar; cosmetic-slot rendering; Back-to-menu; profile-clear option; mode-gated `writeMatchSave` annotation.
-5. **Mode-select** — Skirmish / Tutorial / Co-op Horde / Campaign-stub cards; card hover state; selection commit; back navigation.
-6. **Lobby-coop** — host invite-code generation; `?join=<peerID>` URL paste path; ready-state toggle; host-start gate; chat panel 100-char limit; disconnect flow.
-7. **Commander-pick** — 5 lineage-colored portrait chips (legacy commander-a..e) + 3 civ portraits (Leonidas / Montezuma II / Ragnar Lothbrok) — confirm all 8 listed and clickable; XP progress bar reflects pick; cosmetic L5/L10/L15 lock badges; pick commit; back navigation; `?silhouette-test=1` harness.
-8. **Tutorial** — Skip button → menu; build-glow affordance; sequenced prompts; codex (📖) button → modal opens with 7×5 attack-type vs armor RPS grid; Esc closes codex.
-9. **Match** — Send-Wave (Space); pause (Esc); age-up (A); tower-select 1-5; tower placement on cell; merge-preview ghost on hover-over T1/T2 same-civ partner; T3 promote `↑` indicator; right-click sell; right-click targeting menu; Tribute / Divinity / lives HUD increments; Fusion HUD button (disabled until ≥2 Divinity); Cast Bar 3 buttons (passive decorative / short-CD 8s / long-CD 18s); Codex button; toast feed; combat feed; chat panel (co-op); reduce-motion path; UI-scale slider live-preview.
-10. **End-of-match** — Victory / Defeat banner; XP award (40 win / 12 loss); auto-level-up toasts; Continue / Replay / Menu buttons; co-op host broadcast `match-end` sync.
-11. **Options** — 5 tabs (Audio / Input / Video / Accessibility / Gameplay): per-tab sliders + toggles persisted to localStorage; rebind capture; UI-scale 75-150% live-preview; colorblind-glyph toggle; Apply / Reset / Back buttons.
+5. **Mode-select** — Skirmish / Tutorial / Co-op Horde / Campaign-stub cards; hover state; selection commit; back.
+6. **Lobby-coop** — host invite-code generation; `?join=<peerID>` URL paste path; ready-state toggle; host-start gate; chat 100-char limit; disconnect flow.
+7. **Commander-pick** — 5 legacy + 3 civ portraits; XP progress; cosmetic L5/L10/L15 lock badges; pick commit; back; `?silhouette-test=1`.
+8. **Tutorial** — Skip → menu; build-glow affordance; sequenced prompts; codex (📖) button → modal opens with 7×5 RPS grid; Esc closes.
+9. **Match** — Send-Wave (Space); pause (Esc); age-up (A); tower-select 1-5; placement; merge-preview ghost; T3 promote `↑`; right-click sell + targeting; Tribute / Divinity / lives HUD; Fusion HUD button (≥2 Div); Cast Bar 3 buttons; Codex; toast feed; combat feed; chat (co-op); reduce-motion; UI-scale slider.
+10. **End-of-match** — Victory / Defeat banner; XP award (40 win / 12 loss); auto-level-up toasts; Continue / Replay / Menu; co-op host broadcast `match-end` sync.
+11. **Options** — 5 tabs (Audio / Input / Video / Accessibility / Gameplay): sliders + toggles persisted; rebind capture; UI-scale 75-150%; colorblind-glyph toggle; Apply / Reset / Back.
 
 ### Cross-cutting checks
 
-- **Keyboard shortcuts global:** Space=send-wave, A=age-up, 1-5=tower-select, Esc=pause/back, Q=cast-passive (post-C7.a comment-out — verify still inert), C=cast-short (post-C7.a — same).
-- **Console clean** — no SyntaxError, no unhandled promise rejections, no fetch 404s (favicon 404 is known-cosmetic).
-- **Data fetches** — confirm `prototype/data/{balance,civilizations,fusion-recipes,attack-types,tiers,commanders,enemies}.json` all 200 (note: investigate whether `civilizations.json` contains commanders-shaped data — flagged this session as possible curl-output-ordering artifact, needs in-browser check).
+- **Keyboard shortcuts global:** Space / A / 1-5 / Esc / Q (post-C7.a inert) / C (post-C7.a inert).
+- **Console clean** — no SyntaxError, no unhandled promise rejections, no fetch 404s (favicon 404 known-cosmetic).
+- **Data fetches** — `prototype/data/{balance,civilizations,fusion-recipes,attack-types,tiers,commanders,enemies}.json` all 200. **Verify in-browser whether `civilizations.json` actually contains commanders-shaped data** (flagged previously as possible curl-output-ordering artifact; needs Phase B confirmation).
 - **Co-op snapshot/intent loop** — host snapshot at 10Hz; guest intents drained per tick; guest-owned towers dashed-white border; net status badge.
-- **Mode-aware pause behavior** — Resume / Options / Restart / Save-and-Exit / Quit depending on mode.
+- **Mode-aware pause** — Resume / Options / Restart / Save-and-Exit / Quit per mode.
 
-### Output shape
+---
 
-Produce a single Markdown report (`prototype/UI-VERIFICATION-2026-05-MM.md` or similar) with one section per scene + cross-cutting section, marking each row OK / (Test) / NEEDS-FIX with one-sentence detail. End with prioritized fix queue (NEEDS-FIX first, then (Test) ranked by player-facing severity). Then surface AskUserQuestion to PM for which items to fix in next track.
+## Cadence guardrails (per PM ask — soft, not hard)
+
+PM ask: *"a cadence that avoids over loading API and causing errors, also keep context window in check softly."*
+
+### API-overload avoidance
+
+- **Batch parallel reads** — when reading several files for a scene's verification, send all Read calls in a single message (parallel tool calls), not sequentially.
+- **Prefer Grep over full-file reads** — `prototype/index.html` is large. For a scene check, Grep for the scene's id / function names first, then Read with `offset` + `limit` around the hits. Don't read the whole file unless you genuinely need it (and you usually don't — the splash-fix this session was diagnosed via Grep + targeted Read).
+- **Don't re-read files already in context** — the harness tracks file state. If you already Read it this session and haven't edited it elsewhere, your context already has it.
+- **Keep tool calls per turn modest** — 3-6 well-chosen calls beats 15 scatter-shot ones.
+
+### Soft context-window discipline
+
+- **Archive findings to the report file, not into chat context.** Each scene's findings → Edit into `UI-VERIFICATION-*.md` immediately, then move to the next scene. Don't accumulate scene reports in your turn output.
+- **Use Edit not Write** for incremental report updates after the initial Write that creates the file.
+- **Summarize-and-discard intermediate scratch.** If you grep-and-read 200 lines to verify one handler, write the conclusion to the report and move on; don't quote 200 lines back in chat.
+- **Periodically self-check budget.** If a scene took heavy investigation, take a quick pulse before starting the next one — if budget feels tight, file a mini-handoff at the end of Phase A and let Phase B happen in a separate session.
+- **Acceptable to split A and B across two sessions** if budget pressure is real. Phase A's report file is the carrier between them; the second session reads the report and starts Phase B from there.
+
+### Commit cadence
+
+- **Phase A:** single commit at end of phase. Don't churn intermediate report drafts.
+- **Phase B:** commit per ~3-scene live-verification batch, AND per ~3-fix batch when fixing inline. So a typical Phase B session might have 4-8 commits. Each one dual-pushed.
+- **Never amend.** Pre-commit hook failure → fix and create a NEW commit.
+
+### Fix-in-flight discipline
+
+| Severity | Examples | Action |
+|----------|----------|--------|
+| Tiny | Typo in label / missing aria / one-line CSS / dead variable | Fix inline immediately, mention in report |
+| Small | Single-handler bug / off-by-one / wrong CSS class / broken selector | Fix inline within Phase B, commit in batch |
+| Medium | Touches game logic / data shape / multi-handler interaction | Queue to AskUserQuestion at end of Phase B |
+| Large | Touches scene flow / requires PM call on intended behavior / cross-arc cascade | Queue to AskUserQuestion; do NOT fix without ratification |
 
 ---
 
 ## What is locked (clear-safe)
 
-### Carried forward (untouched this session, except where noted)
+### Carried forward (untouched this session)
 
 - 17-item conceptual frame (a)-(r) + extension (s) — Accepted.
 - All 10 Numbers-phase magnitudes — Accepted.
 - 6-mode ontology — Accepted.
 - Auxiliary economy structure (Tribute kill-only + Divinity 6-source 4-floor+2-escalation; 6-cap discipline) — Accepted.
 - "Go big, no scope cuts" doctrine — Accepted (hub Non-negotiable).
-- 2026-04-25 locked content skeleton (3 civs × full ladder + 3 Gods via 9 Fusion recipes + 6 launch modes) — Accepted.
+- 2026-04-25 locked content skeleton — Accepted.
 - §5.4 [LOCKED] (Civilizations row).
 - §2.4a [LOCKED] (accessibility floor).
 - All R1-R7 CONCEPT amendment-pass §-anchors — Accepted.
+- All per-commander R1-R5 spine-doc edits + lane locks (Leonidas=Control / Montezuma II=Economy / Ragnar=Summon, Hard reversibility) — Accepted.
+- Splash-fix `CODEX_DATA` rename — Accepted.
 
-### NEW spine-doc surfaces this session
+### NEW this session
 
-| Surface | Bound by |
-|---------|----------|
-| `phase-4.md §4.1` Anointed-tower aura model subsection (mechanics + auto-anoint + re-anoint + active-cast vs passive-aura distinction + summon-cap signature-window exception 3→9 + per-commander effect-type lane-lock table) | Per-commander R5 |
-| `phase-4.md §4.1` Surface table "passive effect" row reword + Non-goals bullet reword + header-tag CLOSED | Per-commander R5 |
-| `phase-4.md §4.11.6` deferral language replaced with R2-R5 outcomes + Lever-2 note | Per-commander R5 |
-| `phase-4.md §4.8` exit-gate item #1 ticked DONE | Per-commander R5 |
-| 5 per-commander decision documents (R1 scope + R2 passive + R3 short-CD active + R4 signature + R5 audit/arc-close) | Per-commander R1-R5 |
-| `prototype/index.html` `CODEX_DATA` rename (was inline `ATTACK_TYPES`) | Splash fix |
+Doc-hygiene only. No code or spine-doc surfaces touched.
 
 ---
 
@@ -88,144 +137,126 @@ Produce a single Markdown report (`prototype/UI-VERIFICATION-2026-05-MM.md` or s
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commit (pre-handoff): **`90f6f1c`** — "fix(prototype): rename inline Codex const to unblock splash."
-- Arc commits this session: `256cec7` (per-commander R1-R3) + `6069c49` (R4+R5+spine-doc edits) + `90f6f1c` (prototype splash-fix). All dual-pushed to session branch + `main`.
-- Working tree before handoff commit: `PROGRESS.md` (modified — new entry + R9 trim) + `.accord/` (untracked).
-- This handoff itself produces one additional commit (PROGRESS / CASCADE / HANDOFF doc-hygiene); will be dual-pushed.
-
-### Phase status
-
-- Per-commander effect-type-variant authoring **CLOSED** — Phase 4 §4.1 mechanical content + §4.8 exit item #1 + §4.11.6 deferral all anchored.
-- All upstream untouched: 17-item frame + Numbers-phase magnitudes + amendment-pass §-anchors + locked content skeleton.
-- **Phase 5 readiness gate items** (engine-side telemetry per §6.5 + wave-composition variance per §4.7 R11) remain spec-anchored Phase-5-owns-this items.
+- Latest commit (pre-handoff): **`2edb70c`** — first handoff for UI verification sweep.
+- This session's commit: handoff-prep doc-hygiene bundle (PROGRESS / CASCADE / HANDOFF). Will be dual-pushed.
+- Working tree before handoff commit: `PROGRESS.md` + `CASCADE.md` + `CASCADE-history.md` + `PROGRESS-archive.md` + `HANDOFF.md` modified; `.accord/` untracked.
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 entries (per-commander arc + splash-fix / CONCEPT amendment-pass arc / Numbers-phase R10). R9 archived to `PROGRESS-archive.md`.
-- `CASCADE.md` pointer: 1 most-recent block (handoff hygiene + splash-fix + per-commander arc closed). Per-commander arc-close prior pointer archived to `CASCADE-history.md`.
-- `CASCADE.md` version footer: 0.61 + 0.60 reference. Older (0.59 / 0.58 / etc.) archived to `CASCADE-history.md`.
-- cascade-lint expected clean.
+- `PROGRESS.md` session log: 3 entries (handoff prep / per-commander arc + splash-fix / CONCEPT amendment-pass arc). R10 archived.
+- `CASCADE.md` pointer: 1 most-recent block (handoff prep A→B). Prior pointer archived to `CASCADE-history.md`.
+- `CASCADE.md` version footer: 0.62 + 0.61. Older (0.60 / 0.59 / etc.) archived.
+- cascade-lint expected clean except pre-existing `concept/phase-4.md` 626/600 soft-cap (carried from per-commander R5 spine-doc edits — not introduced by this handoff).
 
-### Open follow-ups (carried — UNCHANGED, all preserved for roadmap)
+### Open follow-ups (carried — UNCHANGED)
 
-- **#5** — Cultural-sensitivity pass (gates non-abstract civ art; intersects per-civ specialization track).
+- **#5** — Cultural-sensitivity pass (gates non-abstract civ art).
 - **#6** — Patch-1 commanders per civ + Thor recipe-layer dissonance.
 - **#7** — Foresight-coin / PvE campaign / AGES / leveling / attributes.
 - **#8 / #9** — non-boss enemy ontology / additional commanders.
-- **C7.b deferred items** — Builder concurrency cap + 90% refund-on-cancel UI.
-- **`admin/concept.json` staleness debt** — still on pre-2026-04-21 5-lineage / 11-age shape; PM picks (a) full rewrite, (b) regenerate from CONCEPT.md, or (c) retire.
-- **`research/06-tw-subgenres.md`** new stub — Squadron TD / Legion TD 2 / BTD6 / Element TD / Line Tower Wars / Mini-TD deep dives.
-
-### Authoring sub-passes / roadmap (post-arc — per-commander now CLOSED, others remain queued)
-
-- **Per-tower** — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs. Cross-arc dependency: per-commander affinity hooks (per-commander arc's interface side) bind tower-side targets here. Per-tower target-side hook contracts already specified across R2-R4: `aztec_tower.bonus_tribute_yield_in_active_zone` + `aztec_tower.permanent_tribute_yield_multiplier` + global `summons_alive_max = 3` w/ signature-window exception 3→9 + Berserker/Heathen Warrior Slashing-Bleed cross-ref to 2026-04-26 attack-type-mapping.
-- **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5 cultural-sensitivity gate.
-- **Per-map / Round 11** — good-cell authoring + wave-randomization seeds + crystal-lock variance per §4.7 R11 mandate. Cross-cuts all 6 modes.
-- **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave-composition variance per §4.7 R11.
+- **C7.b deferred** — Builder concurrency cap + 90% refund-on-cancel UI.
+- **`admin/concept.json` staleness** — long-deferred.
 - **`research/06-tw-subgenres.md`** new stub.
-- **`admin/concept.json` migration direction** — long-deferred.
+
+### Authoring sub-passes / roadmap (post-arc — preserve in any forward proposal)
+
+1. **Per-tower** — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs. Per-tower target-side hooks already specified by per-commander arc.
+2. **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5 cultural-sensitivity gate.
+3. **Per-map / Round 11** — good-cell authoring + wave-randomization + crystal-lock variance per §4.7 R11 mandate.
+4. **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave variance per §4.7 R11.
+5. **`research/06-tw-subgenres.md`** new stub.
+6. **`admin/concept.json`** migration direction.
 
 ### Regression-watch
 
-- Tutorial / match flow / merge-preview hover / Promote-T4 indicator / Aztec glyph (◈) / `logBalanceCurve` / `effectiveTowerStats` / snapshot.
-- **NEW post-splash-fix:** confirm Codex modal still opens correctly and renders 7×5 grid (the rename touched `openCodex()` references). Also verify `ATTACK_TYPES` data-loaded variant is what feeds in-match RPS multipliers.
+- Tutorial / match flow / merge-preview / Promote-T4 indicator / Aztec glyph (◈) / `logBalanceCurve` / `effectiveTowerStats` / snapshot.
+- **Codex modal** post-splash-fix (rename touched `openCodex()` references) — Phase B should explicitly verify modal opens + 7×5 grid renders.
+- Data-loaded `ATTACK_TYPES` shape feeds in-match RPS multipliers — Phase B should verify multiplier math observable in damage numbers.
 
 ---
 
-## Cadence rules carried forward
+## Cadence rules carried forward (project-level)
 
-- **Cadence exists to manage the context window, not to gate every step.** Concrete plan = execute end-to-end; gate on genuine ambiguity only.
-- **PM autonomy mandate:** within established multi-round arcs where PM has consistently picked Recommended, proceed autonomously without per-question gates. See `feedback_autonomy_mandate.md`.
-- **AskUserQuestion is the standard interface** when gating is needed. Always Recommended-first.
-- **MD-first preservation** — for any scope expansion or non-trivial conceptual ratification, land in MD before further questions. /clear must be safe at any prompt.
-- **Dual-push discipline:** push to BOTH session branch AND `main` after every commit. Commit at every ~3 rounds (or per-track for sweep work).
+- **Cadence exists to manage the context window, not to gate every step.**
+- **PM autonomy mandate:** within established multi-round arcs where PM has consistently picked Recommended, proceed autonomously. See `feedback_autonomy_mandate.md`.
+- **AskUserQuestion is the standard interface** when gating is needed. Recommended-first.
+- **MD-first preservation** — for any scope expansion or non-trivial conceptual ratification, land in MD before further questions.
+- **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
-- **Doc hygiene on each handoff:** trim PROGRESS to 3 entries, CASCADE pointer to 1 block, version footer to 2 bumps.
+- **Doc hygiene on each handoff:** trim PROGRESS to 3, CASCADE pointer to 1 block, footer to 2.
 
 ---
 
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar — per-commander effect-type-variant authoring sub-pass
-ARC CLOSED 2026-05-05 (5/5 rounds; spine-doc edits applied; dual-pushed
-6069c49). Prototype splash-fix landed same session (90f6f1c — ATTACK_TYPES
-const collision renamed to CODEX_DATA, restoring all event-listener wiring).
+Resuming Ash to Altar. Per-commander arc CLOSED 5/5 (6069c49); splash-fix
+landed (90f6f1c); two handoffs filed (2edb70c first, then this turn's
+doc-hygiene bundle). NEXT-SESSION work explicitly sequenced as A→B
+prototype UI verification sweep with cadence guardrails.
 
-BOOTSTRAP per CLAUDE.md order:
-  README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
+BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
 
 BEFORE reading docs:
   git fetch origin
-  git log --oneline HEAD..origin/main   # should be empty after dual-push
+  git log --oneline HEAD..origin/main   # should be empty
 
-STATE ALOUD (before producing anything):
-- Phase status: Per-commander arc CLOSED 5/5 + spine-doc edits applied
-  to concept/phase-4.md (§4.1 + §4.11.6 + §4.8). All upstream untouched.
-  Splash fix landed; prototype playable. Per-tower / per-civ / per-map /
-  Phase 5 readiness gate / research/06-tw-subgenres / admin migration /
-  Follow-ups #5/#6/#7/#8/#9 / C7.b deferred items all in roadmap.
-- Open blockers: none load-bearing.
-- Specific next-step: PRIMARY DIRECTIVE this session is the
-  PROTOTYPE UI VERIFICATION SWEEP per PM ask. Walk all 11 scenes
+PRIMARY DIRECTIVE this session:
+
+  PHASE A — Static-analysis UI sweep.
+  Read prototype/index.html (use Grep first, then targeted Read with
+  offset+limit; don't read the whole file). Walk all 11 scenes
   (splash/login/menu/profile/mode-select/lobby-coop/commander-pick/
-  tutorial/match/end/options) end-to-end. For each interactive element
-  mark OK / (Test) / NEEDS-FIX with one-sentence detail. Cross-cutting
-  checks: keyboard shortcuts, console clean, data fetches, co-op
-  snapshot loop, mode-aware pause. Output: single Markdown report
-  (prototype/UI-VERIFICATION-2026-05-MM.md). End with prioritized
-  fix queue + AskUserQuestion to PM for which items to fix next.
+  tutorial/match/end/options). For every interactive element record
+  one row in prototype/UI-VERIFICATION-2026-05-MM.md (single file)
+  with Status: OK / (Test) / NEEDS-FIX. End with prioritized fix
+  queue. Single commit at end of phase. Dual-push.
 
-CADENCE: AskUserQuestion is standard interface when gating needed.
-Recommended-first. MD-first on scope expansions. Execute end-to-end
-when plan concrete; gate on genuine ambiguity only. Commit + dual-push
-per logical batch.
+  PHASE B — Live in-browser sweep + small-fix loop.
+  Run prototype/start.bat. Use Claude-in-Chrome or preview MCP. Walk
+  (Test) rows + sample OK rows. Augment report in place via Edit.
+  Small NEEDS-FIX (typo / dead handler / one-line CSS / off-by-one):
+  fix inline. Medium/large: queue to AskUserQuestion at end with
+  Recommended pick.
 
-PM AUTONOMY MANDATE: once an arc establishes a stable "PM picks
-Recommended" pattern, proceed autonomously within that arc. Surface
-gates only on genuine forks / scope expansion / cascade-risk / handoff.
-See feedback_autonomy_mandate.md.
+CADENCE GUARDRAILS (soft, per PM ask):
+- Avoid API overload: batch parallel reads, prefer Grep over full-file
+  reads, don't re-read files in context.
+- Soft context budget: archive findings to report file not chat
+  context; use Edit not Write for incremental updates;
+  summarize-and-discard intermediate scratch.
+- Commit cadence: single end-of-phase commit for A; per-3-scene
+  batch + per-3-fix batch for B. Dual-push every commit.
+- Acceptable to split A and B across two sessions if budget tight —
+  the report file is the carrier.
 
-CURRENCY REMINDER: Tribute (kill-only, k-invariant) + Divinity (6-cap;
-4-floor R10/R15/R30 boss + match-completion + 2-escalation Perfect-Wave
-+ First-Hybrid). Mythium RETIRED.
+CURRENCY REMINDER: Tribute (kill-only) + Divinity (6-cap). Mythium retired.
 
-DOCTRINE REMINDER: "Go big at launch" is hub Non-negotiable. MVP ships
-full content skeleton (3 civs × full ladder + 3 Gods via 9 Fusion
-recipes + 6 launch modes). Cuts go to post-launch content, NEVER to
-launch skeleton.
+DOCTRINE REMINDER: "Go big at launch" non-negotiable.
 
-REGRESSION-WATCH: Tutorial / match flow / merge-preview / Promote-T4
-indicator / Aztec glyph ◈ / logBalanceCurve / effectiveTowerStats /
-snapshot. NEW: Codex modal post-splash-fix (rename touched
-openCodex() references); ATTACK_TYPES data-loaded variant feeds
-in-match RPS multipliers.
+REGRESSION-WATCH: Codex modal post-splash-fix; ATTACK_TYPES data-loaded
+shape feeds in-match RPS multipliers; Tutorial / merge-preview /
+Promote-T4 / Aztec glyph ◈ / logBalanceCurve / effectiveTowerStats /
+snapshot.
 
 VERIFY each step with: python tools/cascade-lint.py
 DUAL-PUSH each commit: session branch + main.
-PROTOTYPE RUN: prototype/start.bat (Python http.server on :8765).
 
 SCOPE GUARD:
-- §5.4 [LOCKED]; §2.4a [LOCKED]; 2026-04-25 locked content skeleton
-  untouched.
+- §5.4 [LOCKED]; §2.4a [LOCKED]; locked content skeleton untouched.
 - 17-item frame + extension (s) Accepted.
 - All Numbers-phase magnitudes Accepted.
 - All R1-R7 CONCEPT amendment-pass §-anchors Accepted.
 - All per-commander R1-R5 spine-doc edits Accepted.
-- 6-mode ontology + auxiliary economy structure Accepted.
-- "Go big at launch" doctrine Accepted (Non-negotiable).
-- Effect-type lane locks Hard reversibility (Leonidas=Control /
-  Montezuma II=Economy / Ragnar=Summon).
-- Cultural-sensitivity Follow-up #5 still hard-gates non-abstract
-  civ art.
+- Effect-type lane locks Hard reversibility.
+- Cultural-sensitivity Follow-up #5 still hard-gates non-abstract civ art.
 
-POST-SWEEP ROADMAP (preserve in any forward proposal):
-1. Per-tower authoring sub-pass (cd/range/attack-type/status-proc
-   across 45 towers; consumes per-commander target-side hooks).
+POST-SWEEP ROADMAP (preserve):
+1. Per-tower authoring (cd/range/attack-type/status-proc, 45 towers).
 2. Per-civ specialization (Greek/Aztec/Norse; Follow-up #5 gate).
 3. Per-map / Round 11 (wave-randomization + crystal-lock + good-cell).
-4. Phase 5 readiness gate (engine-side telemetry + wave variance).
+4. Phase 5 readiness gate (telemetry + wave variance).
 5. research/06-tw-subgenres.md.
 6. admin/concept.json migration.
 7. Follow-ups #5/#6/#7/#8/#9 + C7.b deferred items.
@@ -242,11 +273,11 @@ Hard-stop and flag if:
 - §2.4a is touched.
 - Cultural-sensitivity concern surfaces (Follow-up #5).
 - Local `main` stale on session start.
-- `cascade-lint` fails and fix > 5min.
+- `cascade-lint` fails new (pre-existing phase-4 soft-cap is carried).
 - The 17-item frame would be silently edited.
-- Any Numbers-phase bound magnitude would be silently re-tuned without a superseding decision entry.
-- Any amendment-pass §-anchor (§3.6 / §4.6 / §4.6a / §4.7 R11 / §4.10 / §4.11 / §6.5 / §7.4 / hub phase-index rows) would be silently edited.
-- Any per-commander R1-R5 spine-doc surface (§4.1 anointed-tower aura subsection / §4.11.6 outcomes summary / §4.8 exit tick / lane locks) would be silently edited.
-- A scope expansion occurs and PM has not landed it in MD before further questions.
-- An authoring-sub-pass commit lands without a `decisions/<date>-*-<slug>.md` entry capturing the bindings.
-- Prototype changes regress splash dismiss / event-listener registration / Codex modal / data-loaded `ATTACK_TYPES` shape.
+- Any Numbers-phase bound magnitude would be silently re-tuned.
+- Any amendment-pass §-anchor would be silently edited.
+- Any per-commander R1-R5 spine-doc surface would be silently edited.
+- A Phase B fix touches medium/large severity without PM ratification.
+- Phase A discovers something so broken that running prototype is unsafe → stop, file findings, AskUserQuestion before continuing.
+- Context budget pressure forces a mid-phase split → file mini-handoff and stop cleanly rather than running into context exhaustion.
