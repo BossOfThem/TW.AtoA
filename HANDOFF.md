@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-05-05 → 2026-05-06 (**clear-safe**).
+**Last session:** 2026-05-06 (**clear-safe**).
 **Hand-off by:** Claude (Opus 4.7)
 **Hand-off to:** next Claude Code session after `/clear`.
 
@@ -8,31 +8,54 @@
 
 ## TL;DR
 
-**Phase C of the prototype UI verification sweep LANDED. FULL SWEEP (A → B → C) CLOSED.** Four commits dual-pushed in Phase C: `5d2f3c8` (Medium #8 end-screen XP persists), `8f67a08` (Large #10 RESOLVED-no-code — markup canonical 2 buttons), `4964895` (Large #9 RESOLVED-no-code — `A` age-up intentionally retired under 2026-04-25 real-cultures ratification), `abcb398` (Medium #6 input rebind wiring via `Profile.setting("input.binds")` w/ `e.code` defaults). 9 of 10 NEEDS-FIX rows resolved. **Two new findings flagged** for next-session sweep: (a) `openReference` ln 3310 `CIVS_DATA` undefined ReferenceError (pre-existing, affects Info button + I-key); (b) mode-select copy ln 495/507/513 obsolete "three ages"/"11-age arc" refs. NEXT session picks next track from the post-sweep roadmap.
+**Per-tower authoring sub-pass OPENED. R1 scope decision LANDED.** Track gated via `AskUserQuestion` (Recommended-first, two questions). PM picked **Axis A — per-civ across tiers** + **7-field schema lock as proposed**. Filed [`decisions/2026-05-06-per-tower-authoring-scope.md`](decisions/2026-05-06-per-tower-authoring-scope.md) (Accepted, Medium): 4-round queue (R1 = scope file + R2 Greek 15 towers + R3 Aztec 15 + R4 Norse 15 + RN cross-civ × cross-tier audit + spine-doc edits). 3x debug loop ran inline; synthesis = Axis A with embedded per-tier readings at close of R2/R3/R4. 7-field schema locked: `attack_type` / `cd` / `range` / `status_proc` / `dps` / `aux_slot_compat` / `notes`. Hard guards: 2026-04-25 content-skeleton names verbatim / 2026-04-26 attack-type lock / 2026-05-05 R5 baseline DPS ±20% band / per-commander R1-R5 lane locks (Hard reversibility) / Cultural-sensitivity Follow-up #5. Inventory: 45 launch towers across Greek/Aztec/Norse. NEXT session opens at **R2 (Greek roster) — produce autonomously per autonomy mandate**.
 
 ---
 
 ## NEXT SESSION — primary directive
 
-Phase C is complete; the prototype UI verification sweep is closed. Pick **one** track from the post-sweep roadmap below. Default to `AskUserQuestion` (Recommended-first) at session start to gate the choice — this is a genuine fork.
+**Produce R2 — Greek roster — autonomously.** PM autonomy mandate carries forward from 2026-05-05 Numbers-phase / CONCEPT-amendment-pass / per-commander arc precedent. Surface AskUserQuestion ONLY on:
 
-### Roadmap (Recommended-first)
+- Genuine forks not anticipated in R1 scope.
+- Scope expansion beyond the locked 4-round queue.
+- Cascade-violation risk (any `attack_type` deviating from 2026-04-26 mapping; any `dps` beyond ±20% of 2026-05-05 R5 baseline; any per-commander affinity-target tag crossing civ lanes).
+- Cultural-sensitivity surface (Follow-up #5 — art / VFX / civ-flavor surface direction prose).
+- Handoff trigger.
 
-1. **Per-tower authoring sub-pass** *(Recommended)* — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs. Consumes §4.10 frame + §4.11 magnitudes + §4.6a aux catalog. Likely 5-10 rounds. **Cross-arc dependency:** per-commander affinity hooks (closed last week) bind tower-side targets here. Largest unblocked authoring track; closest to Phase 5 readiness.
-2. **Prototype UI verification sweep — micro-followup batch** *(small, contained)* — fix the two new findings flagged from Phase C: (a) `openReference` ln 3310 CIVS_DATA bug; (b) mode-select obsolete copy ln 495/507/513. Both small inline fixes. Good warm-up if context budget tight or PM wants a clean prototype state before opening the next big arc.
-3. **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5 cultural-sensitivity gate.
-4. **Per-map authoring (incl. Round 11 mandate)** — good-cell authoring + wave-randomization seeds + crystal-lock variance per §4.7 R11.
-5. **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave variance per §4.7 R11.
-6. **`research/06-tw-subgenres.md`** new stub.
-7. **`admin/concept.json` migration direction** — long-deferred.
-8. **Follow-ups** — #5 cultural-sensitivity / #6 Patch-1 commanders + Thor recipe / #7 Foresight-coin + PvE campaign + AGES + leveling / #8 non-boss enemy ontology / #9 additional commanders / C7.b deferred (Builder concurrency cap + 90% refund-on-cancel UI).
+### R2 deliverable shape
+
+File: `decisions/2026-05-06-per-tower-r2-greek-roster.md` (Accepted, Medium).
+
+**Content:**
+1. **Greek roster table** — 15 rows (6 T1-T3 mainline + 6 T4 Demigod + 3 God) × 7 columns (the locked schema).
+2. **Civ-identity-hook prose** — Greek lockdown / control archetype: how the roster tilts cd / range / status_proc toward control (slow / armor-shred / stun) per the per-commander R1-R5 Leonidas=Control lane lock.
+3. **Per-commander affinity-target tags in `notes`** — bind to Leonidas's `controlled_by` interface (Spartan-Training passive + This-Is-Sparta active + The-Last-Stand signature target classes).
+4. **Per-tier reading at close** — one paragraph per tier (T1 / T2 / T3 / T4-Demigod / God) summarizing how the round's 15 Greek towers fit the tier-archetype DPS-ladder (T1=20 / T2=60 / T3=180 / T4=540 / God=1080 dmg/sec ±20%) + cd/range bands.
+5. **Cross-arc parity hook** — closing note pointing at R3 Aztec / R4 Norse / RN cross-civ audit.
+
+### Step-by-step procedure
+
+1. **Bootstrap** per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
+2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean).
+3. **Read inputs** (Grep > full-file Read where possible):
+   - [`decisions/2026-05-06-per-tower-authoring-scope.md`](decisions/2026-05-06-per-tower-authoring-scope.md) — round queue + schema lock + guards + 3x debug loop.
+   - [`decisions/2026-04-26-attack-type-mapping.md`](decisions/2026-04-26-attack-type-mapping.md) — per-tower attack_type bindings (locked) + RPS matrix + status-proc table.
+   - [`decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md`](decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md) — DPS ladder + tier-up costs.
+   - [`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`](decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) — Leonidas one-pager + Spartan-Training / This-Is-Sparta / The-Last-Stand interface specs.
+   - [`concept/phase-4.md`](concept/phase-4.md) §4.6 / §4.6a / §4.10 / §4.11 — economy + aux catalog + variable nomenclature + Numbers floor.
+   - [`concept/phase-3.md`](concept/phase-3.md) §3.x — locked Greek tower content-skeleton names (verbatim).
+4. **Author the 15 Greek tower rows** in the locked 7-field schema, civ-identity-hook prose, per-tier reading, cross-arc note.
+5. **Cascade-lint:** `python tools/cascade-lint.py` — expect clean except pre-existing phase-4 soft-cap (626/600).
+6. **Commit** R2 only (R1 scope already landed last session). Dual-push to session branch + main per the locked dual-push schedule (after R2 carries R1+R2 effectively, but R1 is already committed — this push carries R2 alone).
+7. **Continue to R3 (Aztec roster)** autonomously if context budget healthy. Otherwise stop after R2 and file mini-handoff.
 
 ### Discipline (carry forward)
 
-- Preview server: `.claude/launch.json` config `prototype` (port **8766**, since 8765 is occupied on this machine). Or `python -m http.server 8766` from repo root + load `http://localhost:8766/prototype/index.html`.
-- Prefer `preview_eval` over `preview_screenshot` for state probes (cheaper, deterministic).
-- Commit per fix or per ~3-fix batch. Dual-push every commit.
-- Run `python tools/cascade-lint.py` before each commit; expect clean except pre-existing phase-4 soft-cap (626/600).
+- **No game code edits.** Concept-only — Phase 4 hasn't exited.
+- **No spine-doc edits during R2/R3/R4.** All `phase-4.md §4.x` body edits + `§4.8` exit-gate tick happen at RN.
+- **3x debug loop** inline on any decision that touches CONCEPT constraints — but R2/R3/R4 are *populating* a locked schema, not deciding new constraints, so loops are unlikely to fire unless a tower deviates from the bands.
+- **Dual-push every commit.** Push to session branch AND `main`.
+- **Cascade-lint after every round.**
 
 ---
 
@@ -51,14 +74,11 @@ Phase C is complete; the prototype UI verification sweep is closed. Pick **one**
 - All R1-R7 CONCEPT amendment-pass §-anchors — Accepted.
 - All per-commander R1-R5 spine-doc edits + lane locks (Leonidas=Control / Montezuma II=Economy / Ragnar=Summon, Hard reversibility) — Accepted.
 - Splash-fix `CODEX_DATA` rename — Accepted.
+- All Phase C UI-verification-sweep fixes (`5d2f3c8` / `8f67a08` / `4964895` / `abcb398`) — Accepted.
 
-### NEW this session (Phase C)
+### NEW this session (R1 scope)
 
-- Medium #8 LANDED (`5d2f3c8`) — `endMatch` at `prototype/index.html` ln 3390-3408 syncs in-memory `c.progression` mutation back to `Profile.data.commanderProgress[cid]` via `Profile.save()` per §4.9.
-- Medium #6 LANDED (`abcb398`) — match keydown ln 3563-3578 resolves all match-scoped binds via `Profile.setting("input.binds", {})` with sensible `e.code` defaults (Space / KeyI / KeyU / KeyX / Digit1..9). Replaces hardcoded `e.key` literals.
-- Large #10 RESOLVED-no-code (`8f67a08`) — PM ratified live markup canonical (2 buttons). Obsolete scene-checklist refs amended in this turn's doc-hygiene bundle.
-- Large #9 RESOLVED-no-code (`4964895`) — PM ratified `A` age-up intentionally retired under 2026-04-25 real-cultures ratification (4-tier ladder + Fusion replaced AGES; no age-up trigger in Tribute/Divinity economy). Reopens only via Follow-up #8 if PvE-campaign chapter lands. Concept anchors: phase-3.md:167, phase-4.md:325, phase-5.md:54, phase-7.md:31.
-- Report carrier `prototype/UI-VERIFICATION-2026-05-05.md` title bumped Phase A → Phases A → B → C (CLOSED) with phase totals summary.
+- **Per-tower authoring R1 scope** LANDED via `decisions/2026-05-06-per-tower-authoring-scope.md` (Accepted, Medium). Round queue + axis + 7-field schema + hard guards locked.
 
 ---
 
@@ -67,26 +87,26 @@ Phase C is complete; the prototype UI verification sweep is closed. Pick **one**
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commits: **`abcb398`** (Phase C close — Medium #6), `4964895` (Large #9 RESOLVED-no-code), `8f67a08` (Large #10 RESOLVED-no-code), `5d2f3c8` (Medium #8 XP persist). All dual-pushed.
-- Working tree at handoff: doc-hygiene bundle (PROGRESS / CASCADE / CASCADE-history / PROGRESS-archive / HANDOFF) staged for the chore commit. `.accord/` untracked.
+- Latest commit (pre-handoff): `8d8550f` (chore handoff doc-hygiene from Phase C). R1 scope file + handoff bundle staged for this turn's chore commit. Will dual-push.
+- Working tree at handoff: `decisions/2026-05-06-per-tower-authoring-scope.md` new + CASCADE.md + CASCADE-history.md + PROGRESS.md + PROGRESS-archive.md + HANDOFF.md modified. `.accord/` untracked (carried).
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 most-recent entries (Phase C / Phase B / Phase A). A→B handoff-prep entry archived to `PROGRESS-archive.md`.
-- `CASCADE.md` pointer: 1 most-recent block (Phase C LANDED, sweep CLOSED). Prior pointer (Phase B LANDED) archived to `CASCADE-history.md`.
-- `CASCADE.md` version footer: 0.65 + 0.64. 0.63 archived to `CASCADE-history.md`.
+- `PROGRESS.md` session log: 3 most-recent entries (R1 scope / Phase C / Phase B). Phase A entry archived to `PROGRESS-archive.md`.
+- `CASCADE.md` pointer: 1 most-recent block (R1 scope LANDED). Prior pointer (Phase C LANDED) archived to `CASCADE-history.md`.
+- `CASCADE.md` version footer: 0.66 + 0.65. 0.64 archived to `CASCADE-history.md`.
 - cascade-lint expected clean except pre-existing `concept/phase-4.md` 626/600 soft-cap (carried — not introduced by this handoff).
 
-### New findings flagged for next-session sweep (NOT Phase C scope)
+### Two prototype findings still queued (not in scope for this arc)
 
-- **(a) `openReference` CIVS_DATA bug** — `prototype/index.html` ln 3310 throws `ReferenceError: CIVS_DATA is not defined` when `game.commander.civ` is falsy and falls through to `CIVS_DATA && Object.keys(CIVS_DATA)[0]`. CIVS_DATA is undefined in the IIFE scope. Affects both Info button onclick and the I-key path. Pre-existing — independent of #6.
-- **(b) Mode-select copy obsolete** — `prototype/index.html` ln 495 / 507 / 513 still references "three ages" / "one wave per age" / "11-age arc solo". Obsolete under post-2026-04-25 4-tier ladder + Fusion endgame.
+These are independent of the per-tower arc and remain queued from Phase C close. Pick up on a context-budget-friendly side-pass *between* per-tower rounds if PM directs, else they wait until the per-tower arc closes.
 
-Both small inline fixes; both queued as the "micro-followup batch" track in the roadmap above.
+- **(a) `openReference` CIVS_DATA bug** — `prototype/index.html` ln 3310 throws `ReferenceError: CIVS_DATA is not defined` when `game.commander.civ` is falsy. Pre-existing.
+- **(b) Mode-select copy obsolete** — `prototype/index.html` ln 495 / 507 / 513 still references "three ages" / "11-age arc solo". Obsolete under post-2026-04-25 4-tier ladder.
 
 ### Open follow-ups (carried — UNCHANGED)
 
-- **#5** — Cultural-sensitivity pass (gates non-abstract civ art).
+- **#5** — Cultural-sensitivity pass (gates non-abstract civ art + VFX + civ-flavor surface direction). **Hard-gates per-tower arc visual prose** (this arc is mechanical-content only).
 - **#6** — Patch-1 commanders per civ + Thor recipe-layer dissonance.
 - **#7** — Foresight-coin / PvE campaign / AGES / leveling / attributes.
 - **#8 / #9** — non-boss enemy ontology / additional commanders.
@@ -94,52 +114,67 @@ Both small inline fixes; both queued as the "micro-followup batch" track in the 
 - **`admin/concept.json` staleness** — long-deferred.
 - **`research/06-tw-subgenres.md`** new stub.
 
-### Authoring sub-passes / roadmap (post-arc — preserve)
+### Post-arc roadmap (preserve)
 
-1. **Per-tower** — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs.
-2. **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5.
-3. **Per-map / Round 11** — good-cell authoring + wave-randomization + crystal-lock variance per §4.7 R11 mandate.
-4. **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave variance per §4.7 R11.
-5. **`research/06-tw-subgenres.md`** new stub.
-6. **`admin/concept.json`** migration.
+1. **Per-civ specialization** — Greek/Aztec/Norse identity profiles (matchup affinities, identity hooks, signature creep types). Intersects Follow-up #5.
+2. **Per-map / Round 11** — good-cell authoring + wave-randomization + crystal-lock variance per §4.7 R11 mandate.
+3. **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave variance per §4.7 R11.
+4. **`research/06-tw-subgenres.md`** new stub.
+5. **`admin/concept.json`** migration.
+6. **Follow-ups** #5 / #6 / #7 / #8 / #9 + C7.b deferred.
 
-### Regression-watch
+### Regression-watch (carried from Phase C)
 
-- End-screen XP persist (Phase C #8) — re-verify on a fresh skirmish next session: play → win → reload → Profile XP bar reflects gain.
-- Match keybinds (Phase C #6) — re-verify after a rebind round-trip via Options → Input tab → confirm match keydown picks up the new binding.
-- Tutorial Esc dismissal (Phase B carry — re-verify sanity).
-- Profile scene roster (Phase B carry — confirm L/XP rendering on reload, not just live nav).
-- End-screen layout post-Highest-Age row removal (Phase B carry — confirm no orphan styling).
-- `menu-last` resolution path (Phase B carry — confirm civ glyph correct for all three real-cultures commanders + legacy fallback path).
+- End-screen XP persist (Phase C #8) — re-verify on a fresh skirmish if any code touches `endMatch` ln 3390-3408.
+- Match keybinds (Phase C #6) — re-verify after a rebind round-trip if any code touches the `Profile.setting("input.binds")` resolver.
+- Tutorial Esc dismissal (Phase B carry).
+- Profile scene roster (Phase B carry).
+- End-screen layout post-Highest-Age row removal (Phase B carry).
+- `menu-last` resolution path (Phase B carry).
 
 ---
 
 ## Cadence rules carried forward (project-level)
 
 - **Cadence exists to manage the context window, not to gate every step.**
-- **PM autonomy mandate:** within established multi-round arcs where PM has consistently picked Recommended, proceed autonomously. See `feedback_autonomy_mandate.md`.
+- **PM autonomy mandate:** within established multi-round arcs where PM has consistently picked Recommended, proceed autonomously. See `feedback_autonomy_mandate.md` in user memory.
 - **AskUserQuestion is the standard interface** when gating is needed. Recommended-first.
 - **MD-first preservation** — for any scope expansion or non-trivial conceptual ratification, land in MD before further questions.
 - **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
 - **Doc hygiene on each handoff:** trim PROGRESS to 3, CASCADE pointer to 1 block, footer to 2.
-- **Preview MCP cadence:** prefer `preview_eval` for state probes over `preview_screenshot` (cheaper, deterministic). Screenshot only when visual layout is the question.
+- **Preview MCP cadence:** prefer `preview_eval` for state probes over `preview_screenshot` (cheaper, deterministic). Screenshot only when visual layout is the question. **N/A this arc — no prototype work.**
 
 ---
 
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar. Phase C of the prototype UI verification sweep
-LANDED — FULL SWEEP (A→B→C) CLOSED. Four commits dual-pushed in Phase C:
-5d2f3c8 (Medium #8 XP persist) + 8f67a08 (Large #10 RESOLVED-no-code:
-markup 2-button canonical) + 4964895 (Large #9 RESOLVED-no-code:
-A age-up intentionally retired under 2026-04-25 ratification) +
-abcb398 (Medium #6 input rebind via Profile.setting("input.binds") +
-e.code defaults). Report carrier prototype/UI-VERIFICATION-2026-05-05.md
-title bumped to "Phases A → B → C (CLOSED)". 9 of 10 NEEDS-FIX rows
-resolved.
+Resuming Ash to Altar. Per-tower authoring sub-pass OPENED on 2026-05-06.
+R1 scope decision LANDED at decisions/2026-05-06-per-tower-authoring-scope.md
+(Accepted, Medium). PM picked Recommended on both AskUserQuestion gates:
+Axis A (per-civ across tiers) + 7-field schema lock.
+
+4-round queue locked:
+  R1 (DONE) — scope decision + 3x debug loop + schema lock
+  R2       — Greek roster: 15 towers × 7 fields + civ-identity-hook prose
+            + per-tier reading + Leonidas controlled_by interface bind
+  R3       — Aztec roster: 15 towers × 7 fields + Montezuma II
+            economy_target interface bind
+  R4       — Norse roster: 15 towers × 7 fields + Ragnar summon_anchor
+            interface bind
+  RN       — cross-civ × cross-tier audit + phase-4.md §4.x per-tower
+            spec body + §4.8 exit-gate item #2 tick
+
+7-field schema (LOCKED for the arc):
+  attack_type (verbatim-confirms 2026-04-26 mapping)
+  cd          (§4.10 (g) / ±20% tier band)
+  range       (§4.10 (j) / ε=0.6 default)
+  status_proc (2026-04-26 status-proc table — kind locked)
+  dps         (2026-05-05 R5 ladder T1=20/T2=60/T3=180/T4=540/God=1080 ±20%)
+  aux_slot_compat (§4.6a 7-slot universal default)
+  notes       (civ-identity hook + per-commander affinity-target tag)
 
 BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
 
@@ -147,73 +182,91 @@ BEFORE reading docs:
   git fetch origin
   git log --oneline HEAD..origin/main   # should be empty
 
-PRIMARY DIRECTIVE — pick next-session track via AskUserQuestion
-(Recommended-first):
+PRIMARY DIRECTIVE — produce R2 (Greek roster) AUTONOMOUSLY per the
+PM autonomy mandate carried forward from 2026-05-05 Numbers-phase /
+CONCEPT-amendment-pass / per-commander arc precedent.
 
-1. Per-tower authoring sub-pass (RECOMMENDED) — bind cd/range/
-   attack-type/status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God
-   towers across 3 civs. Consumes §4.10 frame + §4.11 magnitudes
-   + §4.6a aux catalog. Likely 5-10 rounds. Largest unblocked
-   authoring track; closest to Phase 5 readiness.
-2. Prototype micro-followup batch — fix the two new findings flagged
-   in Phase C:
-   (a) openReference ln 3310 throws ReferenceError: CIVS_DATA is
-       not defined when game.commander.civ is falsy. Pre-existing
-       bug; affects Info button onclick + I-key. Small inline fix.
-   (b) Mode-select copy ln 495 / 507 / 513 still references
-       "three ages" / "one wave per age" / "11-age arc solo" —
-       obsolete under post-2026-04-25 4-tier ladder + Fusion endgame.
-       Small inline copy fix.
-   Both fixes ~minutes. Good warm-up if context budget tight.
-3. Per-civ specialization (Greek/Aztec/Norse identity profiles;
-   intersects Follow-up #5 cultural-sensitivity gate).
-4. Per-map / Round 11 mandate (good-cell + wave-randomization +
-   crystal-lock variance per §4.7).
-5. Phase 5 readiness gate (engine-side telemetry per §6.5 + wave
-   variance per §4.7 R11).
-6. research/06-tw-subgenres.md new stub.
-7. admin/concept.json migration direction (long-deferred).
-8. Follow-ups (#5/#6/#7/#8/#9 / C7.b deferred).
+Surface AskUserQuestion ONLY on:
+  - Genuine forks not anticipated in R1 scope.
+  - Scope expansion beyond the locked 4-round queue.
+  - Cascade-violation risk (attack_type deviating from 2026-04-26;
+    dps beyond ±20% of 2026-05-05 R5 baseline; per-commander
+    affinity-target tag crossing civ lanes).
+  - Cultural-sensitivity surface (Follow-up #5 — art / VFX / civ-
+    flavor surface direction prose).
+  - Handoff trigger.
 
-CADENCE GUARDRAILS:
-- Batch parallel reads; prefer Grep over full-file reads.
-- Prefer preview_eval over preview_screenshot for state probes.
-- Commit per fix; dual-push every commit.
+R2 INPUTS (Grep > full-file Read where possible):
+  decisions/2026-05-06-per-tower-authoring-scope.md
+  decisions/2026-04-26-attack-type-mapping.md
+  decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md
+  decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md
+  concept/phase-4.md  (§4.6 / §4.6a / §4.10 / §4.11)
+  concept/phase-3.md  (locked Greek tower content-skeleton names)
 
-REGRESSION-WATCH (carried):
-- End-screen XP persist (Phase C #8) — verify reload.
-- Match keybinds (Phase C #6) — verify rebind round-trip.
-- Tutorial Esc; profile roster L/XP after reload; end-screen layout;
-  menu-last civ glyph across three real-cultures commanders +
-  legacy fallback.
+R2 DELIVERABLE:
+  decisions/2026-05-06-per-tower-r2-greek-roster.md (Accepted, Medium)
+  - 15-row table (6 T1-T3 + 6 T4 Demigod + 3 God) × 7 fields
+  - Civ-identity-hook prose (Greek lockdown / control archetype)
+  - Per-commander affinity-target tags binding Leonidas controlled_by
+  - Per-tier reading at close (T1 / T2 / T3 / T4 / God paragraphs)
+  - Cross-arc parity hook → R3 Aztec / R4 Norse / RN audit
+
+R2 PROCEDURE:
+  1. Read inputs.
+  2. Author 15 Greek tower rows in locked 7-field schema.
+  3. Cascade-lint: python tools/cascade-lint.py
+     (expect clean except pre-existing phase-4 soft-cap 626/600)
+  4. Commit R2 + dual-push (session branch + main).
+  5. Continue to R3 (Aztec) autonomously if context budget healthy.
+     Otherwise stop after R2 and file mini-handoff.
+
+DUAL-PUSH POINTS (locked from R1 scope):
+  After R2 (carries R2)
+  After R3 (carries R3)
+  After RN (carries R4 + RN; CLOSES arc)
+
+SCOPE GUARD:
+- §5.4 [LOCKED]; §2.4a [LOCKED]; 2026-04-25 content-skeleton names
+  verbatim untouched.
+- 17-item frame + extension (s) Accepted.
+- All Numbers-phase magnitudes Accepted.
+- All R1-R7 CONCEPT amendment-pass §-anchors Accepted.
+- All per-commander R1-R5 spine-doc edits Accepted.
+- Effect-type lane locks (Greek=Control / Aztec=Economy / Norse=Summon)
+  Hard reversibility — every per-tower notes affinity-target tag
+  resolves cleanly to one of these three lanes.
+- 2026-04-26 attack-type lock — every attack_type column verbatim-
+  confirms the locked mapping.
+- 2026-05-05 R5 baseline DPS ±20% band — every per-tower dps within
+  band; out-of-band magnitude requires cascade-violation flag.
+- Cultural-sensitivity Follow-up #5 hard-gates non-abstract civ art /
+  VFX / civ-flavor surface direction. This arc is mechanical-content
+  only — civ-neutral effect-type language throughout.
+
+NO GAME CODE EDITS. Concept-only — Phase 4 hasn't exited.
+NO SPINE-DOC EDITS during R2/R3/R4. All phase-4.md §4.x body edits
+  + §4.8 exit-gate tick happen at RN.
 
 VERIFY each commit with: python tools/cascade-lint.py
   (expect clean except pre-existing phase-4 soft-cap 626/600)
 DUAL-PUSH each commit: session branch + main.
 
-PREVIEW SERVER:
-  .claude/launch.json config `prototype` (port 8766 — 8765 occupied)
-  or python -m http.server 8766 from repo root.
-  http://localhost:8766/prototype/index.html
+POST-ARC ROADMAP (preserve, deferred until RN closes):
+1. Per-civ specialization (Greek/Aztec/Norse identity profiles;
+   Follow-up #5 gate).
+2. Per-map / Round 11 (wave-randomization + crystal-lock + good-cell).
+3. Phase 5 readiness gate (telemetry + wave variance).
+4. research/06-tw-subgenres.md.
+5. admin/concept.json migration.
+6. Follow-ups #5/#6/#7/#8/#9 + C7.b deferred items.
 
-SCOPE GUARD:
-- §5.4 [LOCKED]; §2.4a [LOCKED]; locked content skeleton untouched.
-- 17-item frame + extension (s) Accepted.
-- All Numbers-phase magnitudes Accepted.
-- All R1-R7 CONCEPT amendment-pass §-anchors Accepted.
-- All per-commander R1-R5 spine-doc edits Accepted.
-- Effect-type lane locks Hard reversibility.
-- Cultural-sensitivity Follow-up #5 still hard-gates non-abstract
-  civ art.
-
-POST-SWEEP ROADMAP (preserve):
-1. Per-tower authoring (cd/range/attack-type/status-proc, 45 towers).
-2. Per-civ specialization (Greek/Aztec/Norse; Follow-up #5 gate).
-3. Per-map / Round 11 (wave-randomization + crystal-lock + good-cell).
-4. Phase 5 readiness gate (telemetry + wave variance).
-5. research/06-tw-subgenres.md.
-6. admin/concept.json migration.
-7. Follow-ups #5/#6/#7/#8/#9 + C7.b deferred items.
+TWO PROTOTYPE FINDINGS STILL QUEUED (independent of this arc;
+side-pass between rounds only if PM directs):
+  (a) prototype/index.html ln 3310 openReference CIVS_DATA undefined
+      ReferenceError when game.commander.civ is falsy.
+  (b) prototype/index.html ln 495/507/513 mode-select copy obsolete
+      "three ages"/"11-age arc" — post-2026-04-25 4-tier ladder.
 ```
 
 ---
@@ -232,5 +285,8 @@ Hard-stop and flag if:
 - Any Numbers-phase bound magnitude would be silently re-tuned.
 - Any amendment-pass §-anchor would be silently edited.
 - Any per-commander R1-R5 spine-doc surface would be silently edited.
+- Any per-tower `attack_type` deviates from 2026-04-26 mapping.
+- Any per-tower `dps` falls outside ±20% of the 2026-05-05 R5 baseline.
+- Any per-commander affinity-target tag crosses civ lanes.
 - A track touching CONCEPT constraints lands without 3x debug loop.
 - Context budget pressure forces a mid-track split → file mini-handoff and stop cleanly.
