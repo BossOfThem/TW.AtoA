@@ -8,31 +8,31 @@
 
 ## TL;DR
 
-**Phase B of the prototype UI verification sweep LANDED (`1b81f45` + `2d2a406`, dual-pushed).** All 5 small NEEDS-FIX applied + verified live via preview MCP; medium #7 (profile roster from `COMMANDERS.roster`) ratified by PM and landed. Live walk of (Test) rows updated in place. Report carrier still [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md). NEXT session executes **Phase C — remaining medium/large queue, Recommended-first**.
+**Phase C of the prototype UI verification sweep LANDED. FULL SWEEP (A → B → C) CLOSED.** Four commits dual-pushed in Phase C: `5d2f3c8` (Medium #8 end-screen XP persists), `8f67a08` (Large #10 RESOLVED-no-code — markup canonical 2 buttons), `4964895` (Large #9 RESOLVED-no-code — `A` age-up intentionally retired under 2026-04-25 real-cultures ratification), `abcb398` (Medium #6 input rebind wiring via `Profile.setting("input.binds")` w/ `e.code` defaults). 9 of 10 NEEDS-FIX rows resolved. **Two new findings flagged** for next-session sweep: (a) `openReference` ln 3310 `CIVS_DATA` undefined ReferenceError (pre-existing, affects Info button + I-key); (b) mode-select copy ln 495/507/513 obsolete "three ages"/"11-age arc" refs. NEXT session picks next track from the post-sweep roadmap.
 
 ---
 
-## NEXT SESSION — primary directive (Phase C)
+## NEXT SESSION — primary directive
 
-Phase A + Phase B are DONE. Carrier is still [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md). Read it, then pick the next item from the queue.
+Phase C is complete; the prototype UI verification sweep is closed. Pick **one** track from the post-sweep roadmap below. Default to `AskUserQuestion` (Recommended-first) at session start to gate the choice — this is a genuine fork.
 
-### Phase C — medium/large NEEDS-FIX queue (remaining)
+### Roadmap (Recommended-first)
 
-Queue (Recommended-first, top is recommended starting point):
+1. **Per-tower authoring sub-pass** *(Recommended)* — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs. Consumes §4.10 frame + §4.11 magnitudes + §4.6a aux catalog. Likely 5-10 rounds. **Cross-arc dependency:** per-commander affinity hooks (closed last week) bind tower-side targets here. Largest unblocked authoring track; closest to Phase 5 readiness.
+2. **Prototype UI verification sweep — micro-followup batch** *(small, contained)* — fix the two new findings flagged from Phase C: (a) `openReference` ln 3310 CIVS_DATA bug; (b) mode-select obsolete copy ln 495/507/513. Both small inline fixes. Good warm-up if context budget tight or PM wants a clean prototype state before opening the next big arc.
+3. **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5 cultural-sensitivity gate.
+4. **Per-map authoring (incl. Round 11 mandate)** — good-cell authoring + wave-randomization seeds + crystal-lock variance per §4.7 R11.
+5. **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave variance per §4.7 R11.
+6. **`research/06-tw-subgenres.md`** new stub.
+7. **`admin/concept.json` migration direction** — long-deferred.
+8. **Follow-ups** — #5 cultural-sensitivity / #6 Patch-1 commanders + Thor recipe / #7 Foresight-coin + PvE campaign + AGES + leveling / #8 non-boss enemy ontology / #9 additional commanders / C7.b deferred (Builder concurrency cap + 90% refund-on-cancel UI).
 
-1. **Medium #8 — end-screen XP doesn't persist.** `renderEnd` mutates `COMMANDERS.roster[cid].progression` only; it never writes back to `Profile.data.commanderProgress`. Result: XP awarded in-match evaporates on reload. Fix: after the in-memory progression mutation, `Profile.data.commanderProgress[cid] = { xp, level }` and `Profile.save()`. **Recommended first** — small, contained, no scene-flow risk, restores intended persistence.
-2. **Medium #6 — input rebind UI decorative.** Match `keydown` (around ln 3537) hardcodes keys; rebound bindings in `Profile.setting("input.binds")` are written but never read at dispatch. Fix: thread `Profile.setting("input.binds")` through the keydown handler with sensible defaults. Larger surface than #8 — touches input dispatch.
-3. **Large #9 — `A` (age-up) key absent from match keydown handler.** Was it intentionally retired or did it regress? **Requires PM intent call before any fix.** Check decisions/ + concept §4 for AGE mechanic status.
-4. **Large #10 — end-screen Continue / Replay / Menu mismatch.** Markup has 2 buttons; scene-checklist promises 3. **Requires PM intent call** on which is canonical (markup or checklist) before any fix.
+### Discipline (carry forward)
 
-Each item: propose → PM "go" → apply → verify live in preview MCP → commit (dual-push). After Recommended #8 lands, AskUserQuestion to PM for #6 vs #9 vs #10 next pick.
-
-### Live-verify discipline (carry from Phase B)
-
-- Preview server runs from `.claude/launch.json` config `prototype` (port **8766**, since 8765 is occupied on this machine). Start with the launch config or `python -m http.server 8766` from repo root and load `http://localhost:8766/prototype/index.html`.
-- Use `mcp__Claude_Preview__preview_*` tools for click/eval/screenshot. `COMMANDERS` is closed over inside the prototype IIFE — use `window.goto()` / `window.renderCommanderRoster()` helpers exposed at top level for navigation/state probing.
-- Update report Status in place via Edit (not Write).
+- Preview server: `.claude/launch.json` config `prototype` (port **8766**, since 8765 is occupied on this machine). Or `python -m http.server 8766` from repo root + load `http://localhost:8766/prototype/index.html`.
+- Prefer `preview_eval` over `preview_screenshot` for state probes (cheaper, deterministic).
 - Commit per fix or per ~3-fix batch. Dual-push every commit.
+- Run `python tools/cascade-lint.py` before each commit; expect clean except pre-existing phase-4 soft-cap (626/600).
 
 ---
 
@@ -52,11 +52,13 @@ Each item: propose → PM "go" → apply → verify live in preview MCP → comm
 - All per-commander R1-R5 spine-doc edits + lane locks (Leonidas=Control / Montezuma II=Economy / Ragnar=Summon, Hard reversibility) — Accepted.
 - Splash-fix `CODEX_DATA` rename — Accepted.
 
-### NEW this session (Phase B)
+### NEW this session (Phase C)
 
-- 5 small inline fixes in `prototype/index.html` — Highest-Age row dropped from end screen; tutorial Esc → menu wired; `saveAndExit` toasts mode-aware (campaign saves; skirmish/co-op explicitly toast non-autosave per §4.9); `menu-last` lineage resolves via `COMMANDERS.roster[id].civ` with legacy fallback; `CAST_DURATIONS.long` dead key removed.
-- Medium #7 — Profile scene roster sourced from `COMMANDERS.roster` filter `playable:true` (no more legacy hardcode).
-- `.claude/launch.json` added with `prototype` config on port **8766** (machine-specific — 8765 occupied).
+- Medium #8 LANDED (`5d2f3c8`) — `endMatch` at `prototype/index.html` ln 3390-3408 syncs in-memory `c.progression` mutation back to `Profile.data.commanderProgress[cid]` via `Profile.save()` per §4.9.
+- Medium #6 LANDED (`abcb398`) — match keydown ln 3563-3578 resolves all match-scoped binds via `Profile.setting("input.binds", {})` with sensible `e.code` defaults (Space / KeyI / KeyU / KeyX / Digit1..9). Replaces hardcoded `e.key` literals.
+- Large #10 RESOLVED-no-code (`8f67a08`) — PM ratified live markup canonical (2 buttons). Obsolete scene-checklist refs amended in this turn's doc-hygiene bundle.
+- Large #9 RESOLVED-no-code (`4964895`) — PM ratified `A` age-up intentionally retired under 2026-04-25 real-cultures ratification (4-tier ladder + Fusion replaced AGES; no age-up trigger in Tribute/Divinity economy). Reopens only via Follow-up #8 if PvE-campaign chapter lands. Concept anchors: phase-3.md:167, phase-4.md:325, phase-5.md:54, phase-7.md:31.
+- Report carrier `prototype/UI-VERIFICATION-2026-05-05.md` title bumped Phase A → Phases A → B → C (CLOSED) with phase totals summary.
 
 ---
 
@@ -65,15 +67,22 @@ Each item: propose → PM "go" → apply → verify live in preview MCP → comm
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commits: **`2d2a406`** (medium #7), **`1b81f45`** (small-fix batch 5/5), `e73a2f9` (handoff prep A→B), `caa1e61` (Phase A report). All dual-pushed.
-- Working tree at handoff: doc-hygiene bundle (PROGRESS / CASCADE / archives / HANDOFF) staged for the chore commit. `.accord/` untracked.
+- Latest commits: **`abcb398`** (Phase C close — Medium #6), `4964895` (Large #9 RESOLVED-no-code), `8f67a08` (Large #10 RESOLVED-no-code), `5d2f3c8` (Medium #8 XP persist). All dual-pushed.
+- Working tree at handoff: doc-hygiene bundle (PROGRESS / CASCADE / CASCADE-history / PROGRESS-archive / HANDOFF) staged for the chore commit. `.accord/` untracked.
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 most-recent entries (Phase B / Phase A landed / handoff prep A→B). Older archived to `PROGRESS-archive.md`.
-- `CASCADE.md` pointer: 1 most-recent block (Phase B LANDED). Prior pointer (Phase A LANDED) archived to `CASCADE-history.md`.
-- `CASCADE.md` version footer: 0.64 + 0.63. Older (0.62 / 0.61 / etc.) archived.
+- `PROGRESS.md` session log: 3 most-recent entries (Phase C / Phase B / Phase A). A→B handoff-prep entry archived to `PROGRESS-archive.md`.
+- `CASCADE.md` pointer: 1 most-recent block (Phase C LANDED, sweep CLOSED). Prior pointer (Phase B LANDED) archived to `CASCADE-history.md`.
+- `CASCADE.md` version footer: 0.65 + 0.64. 0.63 archived to `CASCADE-history.md`.
 - cascade-lint expected clean except pre-existing `concept/phase-4.md` 626/600 soft-cap (carried — not introduced by this handoff).
+
+### New findings flagged for next-session sweep (NOT Phase C scope)
+
+- **(a) `openReference` CIVS_DATA bug** — `prototype/index.html` ln 3310 throws `ReferenceError: CIVS_DATA is not defined` when `game.commander.civ` is falsy and falls through to `CIVS_DATA && Object.keys(CIVS_DATA)[0]`. CIVS_DATA is undefined in the IIFE scope. Affects both Info button onclick and the I-key path. Pre-existing — independent of #6.
+- **(b) Mode-select copy obsolete** — `prototype/index.html` ln 495 / 507 / 513 still references "three ages" / "one wave per age" / "11-age arc solo". Obsolete under post-2026-04-25 4-tier ladder + Fusion endgame.
+
+Both small inline fixes; both queued as the "micro-followup batch" track in the roadmap above.
 
 ### Open follow-ups (carried — UNCHANGED)
 
@@ -96,10 +105,12 @@ Each item: propose → PM "go" → apply → verify live in preview MCP → comm
 
 ### Regression-watch
 
-- Tutorial Esc dismissal (just wired — re-verify next session sanity).
-- Profile scene roster (just re-sourced — re-verify L/XP rendering still correct after page reload, not just live nav).
-- End-screen layout post-Highest-Age row removal — confirm no orphan styling.
-- `menu-last` resolution path — confirm civ glyph correct for all three real-cultures commanders + legacy fallback path.
+- End-screen XP persist (Phase C #8) — re-verify on a fresh skirmish next session: play → win → reload → Profile XP bar reflects gain.
+- Match keybinds (Phase C #6) — re-verify after a rebind round-trip via Options → Input tab → confirm match keydown picks up the new binding.
+- Tutorial Esc dismissal (Phase B carry — re-verify sanity).
+- Profile scene roster (Phase B carry — confirm L/XP rendering on reload, not just live nav).
+- End-screen layout post-Highest-Age row removal (Phase B carry — confirm no orphan styling).
+- `menu-last` resolution path (Phase B carry — confirm civ glyph correct for all three real-cultures commanders + legacy fallback path).
 
 ---
 
@@ -120,46 +131,70 @@ Each item: propose → PM "go" → apply → verify live in preview MCP → comm
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar. Phase B of the prototype UI verification sweep
-LANDED (1b81f45 + 2d2a406, dual-pushed). All 5 small fixes applied + medium
-#7 (profile roster from COMMANDERS) landed. Report carrier:
-prototype/UI-VERIFICATION-2026-05-05.md. NEXT session executes Phase C.
+Resuming Ash to Altar. Phase C of the prototype UI verification sweep
+LANDED — FULL SWEEP (A→B→C) CLOSED. Four commits dual-pushed in Phase C:
+5d2f3c8 (Medium #8 XP persist) + 8f67a08 (Large #10 RESOLVED-no-code:
+markup 2-button canonical) + 4964895 (Large #9 RESOLVED-no-code:
+A age-up intentionally retired under 2026-04-25 ratification) +
+abcb398 (Medium #6 input rebind via Profile.setting("input.binds") +
+e.code defaults). Report carrier prototype/UI-VERIFICATION-2026-05-05.md
+title bumped to "Phases A → B → C (CLOSED)". 9 of 10 NEEDS-FIX rows
+resolved.
 
 BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
-Then read prototype/UI-VERIFICATION-2026-05-05.md (the report).
 
 BEFORE reading docs:
   git fetch origin
   git log --oneline HEAD..origin/main   # should be empty
 
-PRIMARY DIRECTIVE — Phase C (remaining medium/large queue):
-1. Start preview server via .claude/launch.json `prototype` config
-   (port 8766 — 8765 is occupied on this machine) or
-   python -m http.server 8766 from repo root, then load
-   http://localhost:8766/prototype/index.html.
-2. RECOMMENDED FIRST — Medium #8: end-screen XP persist.
-   renderEnd mutates COMMANDERS.roster[cid].progression but never writes
-   Profile.data.commanderProgress. Fix: after the in-memory mutation,
-   Profile.data.commanderProgress[cid] = { xp, level } and Profile.save().
-   Verify live: play a match → win → reload → confirm XP persisted.
-   Commit + dual-push. Update report row in place.
-3. Then AskUserQuestion to PM for next pick: Medium #6 (input rebind
-   wiring through keydown) vs Large #9 (A age-up intent call) vs
-   Large #10 (end-screen 2-vs-3 button mismatch intent call).
-   Large items REQUIRE PM intent ratification before any fix.
+PRIMARY DIRECTIVE — pick next-session track via AskUserQuestion
+(Recommended-first):
 
-CADENCE GUARDRAILS (per PM ask, soft):
+1. Per-tower authoring sub-pass (RECOMMENDED) — bind cd/range/
+   attack-type/status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God
+   towers across 3 civs. Consumes §4.10 frame + §4.11 magnitudes
+   + §4.6a aux catalog. Likely 5-10 rounds. Largest unblocked
+   authoring track; closest to Phase 5 readiness.
+2. Prototype micro-followup batch — fix the two new findings flagged
+   in Phase C:
+   (a) openReference ln 3310 throws ReferenceError: CIVS_DATA is
+       not defined when game.commander.civ is falsy. Pre-existing
+       bug; affects Info button onclick + I-key. Small inline fix.
+   (b) Mode-select copy ln 495 / 507 / 513 still references
+       "three ages" / "one wave per age" / "11-age arc solo" —
+       obsolete under post-2026-04-25 4-tier ladder + Fusion endgame.
+       Small inline copy fix.
+   Both fixes ~minutes. Good warm-up if context budget tight.
+3. Per-civ specialization (Greek/Aztec/Norse identity profiles;
+   intersects Follow-up #5 cultural-sensitivity gate).
+4. Per-map / Round 11 mandate (good-cell + wave-randomization +
+   crystal-lock variance per §4.7).
+5. Phase 5 readiness gate (engine-side telemetry per §6.5 + wave
+   variance per §4.7 R11).
+6. research/06-tw-subgenres.md new stub.
+7. admin/concept.json migration direction (long-deferred).
+8. Follow-ups (#5/#6/#7/#8/#9 / C7.b deferred).
+
+CADENCE GUARDRAILS:
 - Batch parallel reads; prefer Grep over full-file reads.
 - Prefer preview_eval over preview_screenshot for state probes.
-- Archive findings to the report file, not chat context.
 - Commit per fix; dual-push every commit.
 
-REGRESSION-WATCH: tutorial Esc; profile roster L/XP after reload;
-end-screen layout post-Highest-Age removal; menu-last civ glyph
-across all three real-cultures commanders + legacy fallback.
+REGRESSION-WATCH (carried):
+- End-screen XP persist (Phase C #8) — verify reload.
+- Match keybinds (Phase C #6) — verify rebind round-trip.
+- Tutorial Esc; profile roster L/XP after reload; end-screen layout;
+  menu-last civ glyph across three real-cultures commanders +
+  legacy fallback.
 
 VERIFY each commit with: python tools/cascade-lint.py
+  (expect clean except pre-existing phase-4 soft-cap 626/600)
 DUAL-PUSH each commit: session branch + main.
+
+PREVIEW SERVER:
+  .claude/launch.json config `prototype` (port 8766 — 8765 occupied)
+  or python -m http.server 8766 from repo root.
+  http://localhost:8766/prototype/index.html
 
 SCOPE GUARD:
 - §5.4 [LOCKED]; §2.4a [LOCKED]; locked content skeleton untouched.
@@ -168,7 +203,8 @@ SCOPE GUARD:
 - All R1-R7 CONCEPT amendment-pass §-anchors Accepted.
 - All per-commander R1-R5 spine-doc edits Accepted.
 - Effect-type lane locks Hard reversibility.
-- Cultural-sensitivity Follow-up #5 still hard-gates non-abstract civ art.
+- Cultural-sensitivity Follow-up #5 still hard-gates non-abstract
+  civ art.
 
 POST-SWEEP ROADMAP (preserve):
 1. Per-tower authoring (cd/range/attack-type/status-proc, 45 towers).
@@ -196,5 +232,5 @@ Hard-stop and flag if:
 - Any Numbers-phase bound magnitude would be silently re-tuned.
 - Any amendment-pass §-anchor would be silently edited.
 - Any per-commander R1-R5 spine-doc surface would be silently edited.
-- A Phase C fix touches large severity without PM ratification.
-- Context budget pressure forces a mid-phase split → file mini-handoff and stop cleanly.
+- A track touching CONCEPT constraints lands without 3x debug loop.
+- Context budget pressure forces a mid-track split → file mini-handoff and stop cleanly.

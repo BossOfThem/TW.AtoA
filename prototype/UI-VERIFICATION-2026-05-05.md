@@ -1,11 +1,11 @@
-# UI verification sweep — Phase A (static analysis)
+# UI verification sweep — Phases A → B → C (CLOSED)
 
 **Date:** 2026-05-05 (filed against branch `session/2026-04-25-q2-world-pitch`)
-**Source:** `prototype/index.html` @ `e964cf5` (3,586 lines) + `prototype/data/*.json`
-**Method:** read code path end-to-end per scene; Grep-then-targeted-Read; no in-browser verification this phase.
-**Status legend:** OK = verified by code path / (Test) = ambiguous, conditional, or runtime-state-dependent / NEEDS-FIX = broken, dead, regressed, or contradicts intended spec.
+**Source:** `prototype/index.html` @ `e964cf5` baseline; current head `abcb398`. + `prototype/data/*.json`
+**Method:** Phase A static-analysis sweep (Grep + targeted Read); Phase B live in-browser via preview MCP (port 8766; 5 small fixes inline + medium #7 via AskUserQuestion); Phase C remaining medium/large queue (medium #8 + medium #6 fixed; large #9 + #10 ratified by PM).
+**Status legend:** OK = verified by code path or live preview / (Test) = ambiguous, conditional, or runtime-state-dependent / NEEDS-FIX = broken, dead, regressed, or contradicts intended spec.
 
-Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test) → OK or (Test) → NEEDS-FIX, fix small NEEDS-FIX inline, queue medium/large to AskUserQuestion.
+**Phase totals:** 5 small fixes (Phase B) + 2 medium fixes (#7 Phase B; #6, #8 Phase C) + 2 large ratified-no-code (#9, #10 Phase C) = **9 of 10 NEEDS-FIX rows resolved**. Two new findings flagged for next-session sweep: (a) `openReference` `CIVS_DATA is not defined`; (b) mode-select copy at ln 495/507/513 still references "three ages"/"11-age arc" obsolete under post-2026-04-25 4-tier ladder.
 
 ---
 
