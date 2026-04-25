@@ -189,7 +189,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | X (with hover) | `sellTower(hoverState.tower)` ln 3555 | NEEDS-FIX | Same. Medium. |
 | Q | (no handler) | OK | Inert post-C7.a. Options "Commander Q (signature)" rebind is decorative-only. |
 | Esc in match | `togglePause` ln 954 | OK | Match-scene branch fires before mode-specific guard. |
-| A (age-up) | **no handler in keydown listener** | NEEDS-FIX | HANDOFF + scene-checklist call out "A (age-up)" as a global match shortcut. Search of ln 3537-3556 shows no key === "a" branch. If age-up is intentionally retired (per Tribute kill-only economy revisit?), the scene-checklist needs amending; if intended, it's regressed. Queue for PM clarification. |
+| A (age-up) | absent by design | OK | **Phase C ratification (2026-05-05):** PM confirmed age-up intentionally retired under 2026-04-25 real-cultures ratification (4-tier ladder + Fusion endgame supersede AGES; Tribute/Divinity economy has no age-up trigger). AGES reopens only via Follow-up #8 if a PvE-campaign chapter lands (`concept/phase-7.md:31`, `phase-3.md:167`, `phase-5.md:54`, `phase-4.md:325`). HANDOFF/scene-checklist `A age-up` refs are obsolete — amend at next handoff prep. No prototype code change. |
 
 ### Co-op specifics
 
@@ -274,7 +274,9 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 ### NEEDS-FIX — large (queue to AskUserQuestion; do NOT fix without ratification)
 
-9. **"A" (age-up) keyboard shortcut absent from match handler** — scene-checklist + HANDOFF list `A` as global; no branch in ln 3537-3556. Likely intent: either Tribute-economy retirement removed age-up (and checklist needs updating), or it regressed during a refactor. PM call before any fix. [scene-9]
+9. ~~**"A" (age-up) keyboard shortcut absent from match handler**~~ — **RESOLVED Phase C (2026-05-05)**: PM ratified intentionally retired under 2026-04-25 real-cultures ratification (4-tier ladder + Fusion replaced AGES; deferred per Follow-up #8). Obsolete HANDOFF/scene-checklist `A age-up` refs to be amended at next handoff prep. No prototype code change. [scene-9]
+
+> **Follow-up flagged (separate fix, not Phase C):** mode-select copy at ln 495 / 507 / 513 still references "three ages" / "one wave per age" / "11-age arc solo" — obsolete under post-2026-04-25 4-tier ladder. Add to next-session sweep.
 10. ~~**End-screen Continue / Replay / Menu mismatch**~~ — **RESOLVED Phase C (2026-05-05)**: PM ratified markup as canonical (2 buttons: Play again + Back to menu). "Continue" has no semantics until Campaign mode lands; obsolete checklist references to be amended at next handoff prep. No prototype code change. [scene-10]
 
 ### (Test) carried into Phase B (not yet NEEDS-FIX)
