@@ -11,13 +11,11 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-3.md](phase-3.md). Next: 
 
 ---
 
-**Amendment banner — 2026-04-26 real-cultures frame cascade (§4.2 / §4.5 / §4.6 / §4.8 follow-on turn).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility Hard), prior cascade turn rewrote §4.1 + §4.3 + §4.7. This turn rewrites **§4.2 (divergence forks under T1→T4 ladder), §4.5 (special effects under real-cultures), §4.6 (economy — Tribute + Divinity per 2026-04-25 ratification), and §4.8 (exit condition)** to the new frame. Attack-type / armor / RPS surfaces reference the 2026-04-26 mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md), Reversibility Medium). §2.4a + §5.4 [LOCKED] untouched.
-
-**Amendment banner — 2026-04-27 commander-as-summoned-ability-avatar cascade (§4.1 turn; §4.4a + §4.7 queued).** Per [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted; Reversibility Medium; supersedes [`decisions/2026-04-20-commander-on-field-hero.md`](../decisions/2026-04-20-commander-on-field-hero.md)). **This turn lands §4.1 in-match presence model subsection (summoned-on-cast).** Immediate follow-on turns under the same decision: §4.4a NEW (Builder unit class) + §4.4 stale on-field-hero sentence redaction + §4.7 historic-match-arc-beats banner extension (solo-only; round-30 antagonists per civ — Greek Xerxes / Aztec two-phase Tlaxcalan→Tezcatlipoca pre-contact / Norse Jörmungandr-or-Fenrir myth). 8-question PM refinement same-day amendment on the 2026-04-27 decision narrows cultural-sensitivity scope (Cortés OUT of all acts; Aztec framing locked pre-contact). §2.4a + §5.4 [LOCKED] untouched. Locked content-skeleton names from 2026-04-25 ratification untouched.
+**Amendment-banner archive (cascades landed):** 2026-04-26 real-cultures frame cascade rewrote §4.2 / §4.5 / §4.6 / §4.8 per [`q2-real-cultures-direction-ratified`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Hard); attack-type / armor / RPS per [`attack-type-mapping`](../decisions/2026-04-26-attack-type-mapping.md) (Medium). 2026-04-27 commander-as-summoned-ability-avatar cascade landed §4.1 in-match presence model + §4.4a NEW Builder + §4.4 redaction + §4.7 historic match-arc beats per [`commander-as-summoned-ability-avatar`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Medium; supersedes [`commander-on-field-hero`](../decisions/2026-04-20-commander-on-field-hero.md); 8-Q PM same-day amendment narrows cultural-sensitivity scope — Cortés OUT, Aztec pre-contact). 2026-05-05 per-commander effect-type-variant authoring sub-pass ARC CLOSED 5/5 — §4.1 anointed-tower aura model + lane-lock table + §4.11.6 deferral removal + §4.8 item #1 tick per [`R5 audit and arc close`](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) (Medium). §2.4a + §5.4 [LOCKED] + 2026-04-25 locked content-skeleton names untouched throughout.
 
 ---
 
-## 4.1 Commander mechanical spec (identity floor [PROPOSAL], per-commander writeup OPEN)
+## 4.1 Commander mechanical spec (identity floor [PROPOSAL], per-commander writeup CLOSED 2026-05-05)
 
 *Decision entries: [2026-04-20 commander identity floor](../decisions/2026-04-20-commander-identity-floor.md) (rebased by [2026-04-21 concept tightening](../decisions/2026-04-21-concept-tightening-3x3x3-dungeon-cosmology.md), **Superseded by 2026-04-24 reopen**; re-rebase to [2026-04-25 real-cultures ratification](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) tracked as 2026-04-25 Follow-up #10). Floor shape (portrait + silhouette + voice + passive + signature + progression + cosmetic slots) survives the reframing unchanged. Reversibility: Medium.*
 
@@ -50,7 +48,7 @@ The Commander has **three in-match surfaces and no others.** The board itself sh
 | Surface | Where | Player input | Physical avatar? |
 |---------|-------|--------------|------------------|
 | **Identity plinth** | HUD frame top-left (portrait + name + level + XP tick) | none — passive display | no — 2D portrait only |
-| **Passive effect** | per-tower icon pip on buffed towers (hoverable for tooltip explaining the rule) | none — always on | no — pip sprite only; **board-wide invisible**, not aura-scoped |
+| **Passive effect** | per-tower icon pip on buffed towers within anointed-tower aura (hoverable for tooltip explaining the rule) | none — passive auto-applies to civ-matched towers in aura | no — pip sprite only; **anointed-tower-anchored aura** per "Anointed-tower aura model" subsection below |
 | **Active cast** (short-CD / long-CD / signature) | emerges onto board, acts at target, retreats off-board | button / hotkey + click-target | **yes — summoned-on-cast avatar** |
 
 **Three-tier cast animation budget.** Commander emerges for *every active cast* (passive excluded). Tiered durations balance flavor against fatigue:
@@ -64,7 +62,7 @@ The Commander has **three in-match surfaces and no others.** The board itself sh
 **Explicit non-goals** (these were prototype-scope inventions in the now-superseded 2026-04-20 on-field-hero design; none are concept-level intent):
 
 - No movement command. No relocate gesture.
-- No aura that lingers on the board (passive is board-wide invisible, signaled by per-tower pips).
+- No commander-avatar persistent on the board between casts. (Passive aura *does* exist and is anchored to the anointed tower per the model below — but the *commander* is not present; the aura is signaled by per-tower pips on buffed towers within range.)
 - No HP bar. No collision. No knock-back logic.
 
 **Fatigue mitigation.** Short-CD ceiling ~1.2s means even at minimum CD the Commander is on-screen <20% of the time during mashing. Variable VO banks ([PROPOSAL] 6 alts per commander per short-CD class) rotate to prevent line-repetition. **Reduce-motion accessibility toggle** (per §2.4a [LOCKED] floor) collapses short-CD emergence to a non-avatar VFX burst — opt-out path is built in, not patched on.
@@ -77,6 +75,37 @@ The Commander has **three in-match surfaces and no others.** The board itself sh
 **Cultural-sensitivity inheritance.** Cast-emerge pose (the summoned avatar's silhouette + animation) inherits the [`concept/phase-5.md §5.3`](phase-5.md) silhouette-forward art-direction gate + the 2026-04-25 Follow-up #5 cultural consultation requirement. **No pose lock until the consultation pass closes** — placeholder neutral-abstract silhouettes carry the cast-emerge pipeline through the reshape-plan C7.b prototype step.
 
 **Phase-3 cascade note.** Any prior on-field-hero references in [`concept/phase-3.md §3.2`](phase-3.md) (Commander system framing) and [`§3.4`](phase-3.md) (match loop) are **superseded transitively** by this subsection — no phase-3 amendment turn is owed as long as the §3.2 / §3.4 prose stays at framing level (no specific stale primitives like "aura," "Shift+click move," or "Q signature global empowerment"). If a phase-3 prose review surfaces specific stale primitives, file a banner there as a corollary turn under the same 2026-04-27 decision.
+
+### Anointed-tower aura model (R5 close 2026-05-05)
+
+*Decision entries: [`2026-05-05 per-commander R2 passive variants`](../decisions/2026-05-05-per-commander-r2-passive-variants.md) (raised the cascade drift between "board-wide invisible" §4.1 wording and "2-cell aura" §4.11.6 wording with `[anchor TBD R5]` placeholders) → [`2026-05-05 per-commander R5 audit and arc close`](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) (3x debug loop on 3 candidates — anointed-tower / Commander-pedestal / board-wide-civ-matched — synthesis picked anointed-tower with auto-anoint fallback). Reversibility Medium.*
+
+**The Commander's passive aura is anchored to a single player-designated civ-matched tower** — the **anointed tower**. The aura radiates outward from that tower's hex per the per-commander passive spec (default 2-cell hex-distance per §4.11.6; per-commander variant overrides land in R2 spec). Civ-matched towers within the aura receive the passive effect; the anointed tower itself is always inside its own aura.
+
+| Surface | Behavior |
+|---|---|
+| **Anoint UX** | Right-click any civ-matched tower → "Anoint as Commander seat." Free action, no resource cost, no cooldown. Persistent visual ring around the anointed tower's hex (civ-coded coloration). |
+| **Auto-anoint fallback** | If no tower is anointed at the moment a passive would apply (e.g., player hasn't anointed yet, or the anointed tower was just sold), the system auto-anoints the **earliest-built** civ-matched tower still on the board. If none exist, the passive is dormant (no aura) until one is built. |
+| **Re-anoint** | Free at any time. Right-click another civ-matched tower → seat moves. No cooldown gate — re-anoint friction is purely opportunity-cost (lost engagement-time on prior anchor). |
+| **Anointed-tower destruction / sell** | Falls back to auto-anoint rule above on the next tick. No grace period; the aura snaps. |
+
+**Why anointed-tower** (vs. board-wide / pedestal): preserves Greek lockdown's spatial-concentration identity (passive overlaps with active casts on a tower the player was building anyway), gives Norse summons a clean spawn anchor (R2-R4 specs require one), and gives Aztec's per-kill bonus a clean spatial test that doesn't break the §4.6a Economy aux multiplicative interaction. Full rationale in [R5 decision file](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) §a.
+
+**Active-cast vs. passive-aura distinction (load-bearing).** Passive aura is anchored to the anointed tower and always on; active casts (short-CD / signature) target a **player-aimed cell**, decoupled from the aura center. Player can cast This Is Sparta! / Sun Offering / Berserk / Last Stand / Great Sacrifice / Heathen Army anywhere on the board. Decoupling preserves the cross-zone-active-cast play pattern R3-R4 specs depend on (locking active-cast targeting to aura would compress two strategic axes into one).
+
+**Summon-cap with signature-window exception (R4 close).** Default global cap `summons_alive_max = 3` (1 Son + up to 2 Berserkers). During Heathen Army's 12s window, cap raises to **9** (8 Heathen Warriors + 1 Son), returning to 3 at despawn. Berserk fail-cast at-cap during signature window: consumes CD, spawns nothing, UX flashes "Cap reached."
+
+**Per-commander effect-type lane locks (R2-R4 close).** Each commander's three ability slots (passive + short-CD active + signature) are locked to a single effect-type lane:
+
+| Commander | Lane | Passive (h) | Short-CD active (g) | Signature (i) |
+|---|---|---|---|---|
+| **Leonidas** | **Control** | Spartan Training (15% slow / 2-cell aura / 50% soft-cap) | This Is Sparta! (4s hard-stun + 1-cell knockback in 3-cell radius) | The Last Stand (12s persistent zone-denial in 4-cell radius; hard-stun all enemies present + entering during 12s) |
+| **Montezuma II** | **Economy** | Blood Tribute (+15% bonus Tribute per kill in aura by Aztec towers, multiplicative w/ §4.6a Economy aux) | Sun Offering (4s window + 4-cell radius, +35% bonus Tribute on Aztec-tower kills in zone) | The Great Sacrifice (instant **300 T lump** + permanent **+5%** Aztec-tower yield board-wide for rest of match — Lever-2 applied per R5 audit to bring Aztec into Hard breakpoint band) |
+| **Ragnar Lothbrok** | **Summon** | Sons of Ragnar (one Son @ 40 DPS / 20s spawn cadence / max 1 alive / Slashing / HP=2× HP_std(R)) | Berserk (2 Berserkers @ 360 DPS × 4s / Slashing + frontal cleave + Bleed / 1× HP_std(R)) | The Great Heathen Army (8 Heathen Warriors @ 180 DPS × 12s / Slashing + frontal cleave + Bleed / 1.5× HP_std(R) / auto-advance toward path frontline) |
+
+Lane locks themselves are **Hard reversibility** at this point — they bind cross-commander parity (±10% R2-R3, ±15% R4 signature) and per-commander identity readings (Greek lockdown / Aztec scaling / Norse layered called-warriors). Magnitudes within each spec remain Medium reversibility (tunable against §4.11.6 floors + §4.11.8 skill-bar thresholds).
+
+**Per-commander one-pagers** (full civ + 3-ability kit + identity reading + solo-campaign outline + cosmetics + cultural-sensitivity gate): see [`2026-05-05 per-commander R5 audit and arc close`](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) §c. These close §4.8 exit-condition item #1.
 
 ## 4.2 Divergence system
 
@@ -547,7 +576,7 @@ Per [§4.10.1](#4101-variable-nomenclature-locked-2026-05-04-extension-2026-05-0
 - **Active burst (short CD):** `4 × T3_DPS × 4s` = 4 × 180 × 4 = **2,880 burst damage** to target tower's volley over 4s; 30s CD (~13% uptime).
 - **Signature ability (long CD):** **once per match** — instant tier-up of target tower (T1→T2 or T2→T3); bypasses Tribute cost only (no merge requirement). Excluded from §4.10.5 ability-uptime axis per locked rule.
 
-Per-commander effect-type variants (Leonidas / Montezuma II / Ragnar Lothbrok control / summon / economy spreads beyond the damage-floor) are deferred to the per-commander authoring sub-pass — only the **damage-floor magnitudes above are spec-locked**.
+**Per-commander effect-type variants AUTHORED 2026-05-05** (per-commander effect-type-variant authoring sub-pass R2-R5, ARC CLOSED). Effect-type lanes locked: Leonidas = Control / Montezuma II = Economy / Ragnar = Summon. Variant magnitudes authored equivalent-impact to the damage-floor above (passive ±10% / short-CD active ±10% / signature ±15% per signature-tier scope). See lane-lock table in [§4.1 "Anointed-tower aura model" subsection](#anointed-tower-aura-model-r5-close-2026-05-05) for the consolidated spec, and decision files for full per-round rationale: [`R2 passive`](../decisions/2026-05-05-per-commander-r2-passive-variants.md) / [`R3 short-CD active`](../decisions/2026-05-05-per-commander-r3-short-cd-active-variants.md) / [`R4 signature`](../decisions/2026-05-05-per-commander-r4-signature-variants.md) / [`R5 audit + arc close`](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md). **Lever-2 applied to The Great Sacrifice** in R5 audit (lump 600→300 T + permanent yield +10%→+5%) to bring Aztec full-stack into Hard 100% breakpoint band (~88-104%) and PvP-IW winrate band (50-58% Aztec favor).
 
 ### 4.11.7 Per-mode tuning (g / p / q)
 
@@ -584,7 +613,7 @@ Hardcore expert realized DPS multiplier: 0.90 × 0.80 × 0.80 ≈ **0.58× reali
 
 ## 4.8 Exit condition for Phase 4
 
-- Commander one-pagers complete for all 3 launch commanders (Leonidas / Montezuma II / Ragnar Lothbrok) — passive + short-CD active + long-CD active full specs under the §4.1 identity floor.
+- ✅ **Commander one-pagers complete** for all 3 launch commanders (Leonidas / Montezuma II / Ragnar Lothbrok) — passive + short-CD active + signature full specs under the §4.1 identity floor. **DONE 2026-05-05** per [`per-commander R5 audit and arc close`](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) §c (one-pagers) + R2-R4 decision files for per-round mechanical authoring.
 - Fusion system shape signed off (done 2026-04-25: 9 locked Gods via 9 locked 2-Demigod recipes, Divinity-gated, menu-driven discovery). Fusion-numerics balance-pass remains [PROPOSAL].
 - Mobile unit control model resolved (§4.4 OPEN BLOCKER).
 - Enemy direction locked (§4.7 A/B/C choice ratified; leading placeholder = Option C hybrid).
