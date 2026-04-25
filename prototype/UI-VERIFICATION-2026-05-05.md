@@ -45,7 +45,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | Options button | `openOptions('menu')` ln 3422 → `goto("options")` | OK | |
 | Logout button | `doLogout` → `goto("login")` | OK | |
 | `Quit` footer link | `confirmQuit` ln 1121 → `window.close()` after confirm | (Test) | `window.close()` is a no-op for tabs not opened by script in modern browsers. Verify in-browser whether it produces any visible behavior; mark NEEDS-FIX if silently dead. |
-| `#menu-last` last-played label | "Last played: {Sinew/Ember/Forge/Crown/Veil} · {mode}" | NEEDS-FIX | **Lineage map ln 1051 references the legacy 5-lineage commanders (`commander-a..e`) only.** Civ commanders (Leonidas / Montezuma II / Ragnar) fall through to `—`. Should resolve via `COMMANDERS.roster[id].civ` instead. Small fix. |
+| `#menu-last` last-played label | "Last played: {civ or lineage} · {mode}" | OK | **Phase B fix landed:** ln 1049-1056 now resolves via `COMMANDERS.roster[cid].civ` when present (legacy `commander-a..e` map preserved as fallback). Verified live: Leonidas → "Last played: greek · campaign". |
 
 ## Scene 4 — Profile (`#scene-profile`, lines 467-484)
 
@@ -114,7 +114,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | `Skip` button | `skipTutorial` ln 1892 → `game.playing=false` + `goto("menu")` | OK | |
 | `#narrator` step body + CTA | populated by `setTutorialStep` | (Test) | Phase B: walk steps 1→5; verify glow affordance + CTA copy. |
 | Build-glow affordance | per debt entry (`2026-04-19-tutorial-cell-affordance`) — was flagged "too subtle" | (Test) | Phase B grayscale-screenshot check. |
-| Esc in tutorial | **no handler** — global ln 953 covers match/options/mode-select/commander-pick only | NEEDS-FIX | Tutorial Esc is silently dead. Likely intent: pause or skip. Small fix (extend ln 956 condition or wire to `skipTutorial` confirm). |
+| Esc in tutorial | global ln 956 — now covers tutorial → `goto("menu")` | OK | **Phase B fix landed:** ln 956 condition extended. Verified live: Esc in tutorial returns to menu. |
 | Space / 1-5 keys | match-scene-only handler ln 3546 short-circuits unless `currentScene==="match"` | OK | By design — tutorial drives placement via narrator. |
 | Tutorial → match handoff | `tutorialCTA(5)` ln 2310 sets skirmish + `goto("match")` | OK | |
 
@@ -153,7 +153,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 |---------|------------------|--------|------|
 | Passive button (`#cast-passive`) | `disabled` in HTML; populated by `renderCastBar` ln 2068 | OK | Display-only by spec (passive = always-on aura). |
 | Short-CD button | `castAbility('short')` ln 2083 — 8s CD, fires VO + toast + cast-emerge state | OK | Cooldown class `cooling` for 8s; `CAST_DURATIONS.short = 72` frames. |
-| Long-CD / Signature button | `castAbility('long')` — 18s CD; uses signature CAST_DURATION 270 only via `tier="signature"` mapping line 2097 | (Test) | Note: `slot==="long" → tier="signature"`, but `CAST_DURATIONS.long = 168` is dead code (never read). Cosmetic / harmless; flag for cleanup. |
+| Long-CD / Signature button | `castAbility('long')` — 18s CD; uses signature CAST_DURATION 270 only via `tier="signature"` mapping line 2097 | OK | **Phase B fix landed:** dead `CAST_DURATIONS.long = 168` key removed (ln 2082 now `{ short: 72, signature: 270 }`). Code paths read `.short` and `.signature` only. |
 | Cast bar visibility | `bar.classList.add("on")` only when active commander has `c.civ && c.stats` ln 2073 | OK | Legacy commanders (commander-a..e) have no civ → bar hidden. |
 | Targeting model | "Targeting TBD · §4.1" inline text ln 659 | OK | Per spec (post-2026-04-27 amendment). |
 
@@ -207,7 +207,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 |---------|------------------|--------|------|
 | `#end-title` Victory / Defeat | `renderEnd` ln 3401 — toggles `defeat` class | OK | |
 | `#end-sub` "The altar stands / fell to ash" | ln 3406 | OK | |
-| `#end-stats` rows | waves / kills / gold / age / towers / lives — six rows | (Test) | Note: row label is "Highest Age" but `e.age` is never set in `endMatch` ln 3379 (only kills/gold/lives/towers/waves/totalWaves). Will display `undefined`. **NEEDS-FIX (small)** — either populate `age` in endMatch or remove the row. |
+| `#end-stats` rows | waves / kills / gold / towers / lives — five rows | OK | **Phase B fix landed:** "Highest Age" row dropped from `renderEnd` ln 3411 (age system no longer tracked under Tribute/Divinity economy). Verified live: 5 rows render, no `undefined`. |
 | `Play again` button | `restart` ln 3416 → `initMatch` + `goto("match")` | OK | |
 | `Back to menu` button | `goto('menu')` | OK | |
 | XP award | `endMatch` ln 3382: 40 win / 12 loss; auto-level-up toasts | OK | But mutates `COMMANDERS.roster[id].progression` directly, *not* `Profile.data.commanderProgress[id]` — XP is in-memory only and **does not persist to localStorage**. NEEDS-FIX (medium — progression lie). |
@@ -244,7 +244,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 | Concern | Status | Note |
 |---------|--------|------|
-| `Profile.hasSave('skirmish')` vs reality | NEEDS-FIX | `writeMatchSave` only persists `mode==="campaign"` (ln 882) — but `hasSave('skirmish')` and `saveAndExit` for skirmish toast "Saved." (ln 2450). Skirmish writeMatchSave returns silently w/o saving, but the user is told it saved. Small fix: only show "Saved" toast for campaign. |
+| `Profile.hasSave('skirmish')` vs reality | OK | **Phase B fix landed:** `saveAndExit` ln 2444-2456 now branches three ways — campaign writes + toasts "Saved.", skirmish toasts "Skirmish does not autosave (§4.9).", co-op toasts horde line. Verified live: skirmish path no longer claims "Saved." |
 | `data/civilizations.json` shape | (Test) | HANDOFF flag — verify in browser whether it actually contains commanders-shaped data; previously suspected curl-ordering artifact. |
 | Console clean | (Test) | Phase B — no SyntaxError / unhandled rejections / fetch 404s (except known favicon). |
 | Data fetches `loadData()` | (Test) | All 7 JSON files referenced in HANDOFF; locate `loadData()` and confirm endpoints match. |
@@ -258,13 +258,13 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 ## Prioritized fix queue (end of Phase A)
 
-### NEEDS-FIX — small (fix inline during Phase B)
+### NEEDS-FIX — small — ALL LANDED PHASE B (2026-05-05)
 
-1. **end scene "Highest Age" row shows `undefined`** — `endMatch` (ln 3379) doesn't set `e.age` before render. Either populate from `game.ageIdx`/age name or drop the row from `renderEnd` (ln 3411). [match scene-10]
-2. **Tutorial Esc dead** — extend global keydown ln 956 to include `currentScene === "tutorial"` → either confirm-skip or `skipTutorial`. [scene-8]
-3. **`saveAndExit` toasts "Saved." for skirmish** — gate the toast on `mode === "campaign"` (ln 2444-2453). [match → pause → save]
-4. **`menu-last` lineage map stale** — ln 1051 maps only legacy `commander-a..e`; civ commanders fall through to `—`. Resolve via `COMMANDERS.roster[id].civ` instead. [scene-3]
-5. **`CAST_DURATIONS.long` dead** — ln 2082; never read (slot===long maps to `tier="signature"`). Cosmetic cleanup; remove key or wire it. [match cast bar]
+1. ~~**end scene "Highest Age" row shows `undefined`**~~ — **FIXED**: row dropped from `renderEnd` ln 3411. Verified live (5 rows, no `undefined`).
+2. ~~**Tutorial Esc dead**~~ — **FIXED**: ln 956 condition extended to include `tutorial`. Verified live (Esc → menu).
+3. ~~**`saveAndExit` toasts "Saved." for skirmish**~~ — **FIXED**: 3-branch `saveAndExit` ln 2444-2456 (campaign saves; skirmish + co-op explicitly do-not-autosave). Verified live.
+4. ~~**`menu-last` lineage map stale**~~ — **FIXED**: ln 1049-1056 resolves civ via `COMMANDERS.roster[cid].civ`, legacy map preserved as fallback. Verified live (Leonidas → "greek").
+5. ~~**`CAST_DURATIONS.long` dead**~~ — **FIXED**: dead key removed ln 2082. No regressions (consumers read `.short` / `.signature` only).
 
 ### NEEDS-FIX — medium (queue to AskUserQuestion)
 

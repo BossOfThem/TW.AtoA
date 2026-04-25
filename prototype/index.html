@@ -953,7 +953,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     if (currentScene === "match") { togglePause(); e.preventDefault(); }
     else if (currentScene === "options") { closeOptions(); e.preventDefault(); }
-    else if (currentScene === "mode-select" || currentScene === "commander-pick") { goto("menu"); }
+    else if (currentScene === "mode-select" || currentScene === "commander-pick" || currentScene === "tutorial") { goto("menu"); }
   }
 });
 document.getElementById("scene-splash").addEventListener("click", dismissSplash);
@@ -1047,9 +1047,11 @@ function refreshMenu() {
     if (playBtn) playBtn.style.display = "";
     if (cont) cont.style.display = hasSave ? "" : "none";
     if (last) {
-      const cid = (data && data.commanderId) || "commander-a";
-      const lineage = ({"commander-a":"Sinew","commander-b":"Ember","commander-c":"Forge","commander-d":"Crown","commander-e":"Veil"})[cid] || "—";
-      last.textContent = "Last played: " + lineage + " · " + (data.lastMode || "—");
+      const cid = data && data.commanderId;
+      const legacyMap = {"commander-a":"Sinew","commander-b":"Ember","commander-c":"Forge","commander-d":"Crown","commander-e":"Veil"};
+      const cmdr = (typeof COMMANDERS !== "undefined" && cid && COMMANDERS.roster[cid]) || null;
+      const tag = cmdr ? (cmdr.civ || cmdr.name || "—") : (legacyMap[cid] || "—");
+      last.textContent = "Last played: " + tag + " · " + (data.lastMode || "—");
       last.style.display = "";
     }
   } else {
@@ -2079,7 +2081,7 @@ function renderCastBar() {
   set("cast-long-name",    c.stats.longCdSignature);
 }
 // C7.b slice 1 — cast-emerge durations [PROPOSAL] @ 60fps tick. Cast-bar long slot maps to signature class per C4 label "Long CD · Signature".
-const CAST_DURATIONS = { short: 72, long: 168, signature: 270 };
+const CAST_DURATIONS = { short: 72, signature: 270 };
 function castAbility(slot) {
   if (!COMMANDERS) return;
   const c = COMMANDERS.roster[COMMANDERS.active];
@@ -2442,12 +2444,14 @@ function restartCurrentMatch() {
 function saveAndExit() {
   if (!game) return;
   const mode = game.matchMode || "skirmish";
-  if (mode === "campaign" || mode === "skirmish") {
+  if (mode === "campaign") {
     Profile.writeMatchSave(mode, {
       wave: game.wave, gold: game.gold, lives: game.lives,
       towers: game.towers.map(t => ({ x: t.x, y: t.y, type: t.type })), totalWaves: game.totalWaves
     });
     toast("Saved.");
+  } else if (mode === "skirmish") {
+    toast("Skirmish does not autosave (§4.9).");
   } else {
     toast("Co-op Horde does not autosave (§4.9).");
   }
@@ -3408,7 +3412,6 @@ function renderEnd() {
     <div class="row"><span>Waves survived</span><b>${e.won ? e.totalWaves : Math.max(0, e.waves - 1)}</b></div>
     <div class="row"><span>Creeps slain</span><b>${e.kills}</b></div>
     <div class="row"><span>Gold earned</span><b>${e.gold}</b></div>
-    <div class="row"><span>Highest Age</span><b>${e.age}</b></div>
     <div class="row"><span>Towers built</span><b>${e.towers}</b></div>
     <div class="row"><span>Lives remaining</span><b>${e.lives}</b></div>
   `;
