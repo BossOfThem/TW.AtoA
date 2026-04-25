@@ -40,15 +40,16 @@ Every stage / research doc carries a **Status** (Stub | Draft | In review | Lock
 
 ## Current work pointer
 
-**2026-04-28 — §5.4 [LOCKED] amendment LANDED (Follow-up #10 CLOSED).** Per HANDOFF primary directive with PM go-confirmed. Filed [`decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md`](decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md) (Accepted, Easy, 3x debug loop inline). Edited [`concept/phase-5.md §5.4`](concept/phase-5.md) — Lineages row deleted, Civilizations row added (real-culture proper nouns; the culture names itself; Greek/Aztec/Norse launch; expansions follow same pattern), dated amendment banner prepended. Mirrored swap in [`CONCEPT.md §5.4`](CONCEPT.md) hub. Archived original Lineages convention verbatim to [`CASCADE-history.md`](CASCADE-history.md) under new "Archived naming conventions" section. Decisions-table row added at top (this file). Follow-up #10 from 2026-04-27 commander-as-summoned-ability-avatar decision CLOSED. No other §5.4 row touched. §2.4a [LOCKED] untouched. Locked content-skeleton names from 2026-04-25 untouched. Prototype frozen (reshape plan still Proposed). Audit of seven retained §5.4 rows confirmed neutral to real-cultures frame.
+**2026-04-29 — Prototype reshape plan RATIFIED (Proposed → Accepted).** Per PM "go" with full bypass permissions. [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md) Status flipped Proposed → **Accepted (ratified 2026-04-29)**; ratification note appended at file foot (no body rewrite — plan + 2026-04-27 amendment already ran 3x debug loops). Decisions-table row updated to drop "Proposed, awaiting PM ratification" annotation and add "**Accepted 2026-04-29**". Prototype unfreezes; per-step PM "go" gates resume. Effective execution order on standby: **C1 → C2 → C3 → C4 (incl. Cast-bar extension) → C5 → C7.a → C7.b → C6**. Cultural-sensitivity gate (Follow-up #5) remains hard pose-lock gate on C2; not on plan execution itself. §2.4a + §5.4 [LOCKED] surfaces and 2026-04-25 locked content-skeleton names untouched. Next step queued: **C1 — Data layer reshape (inert)** — add `civilizations.json` + `fusion-recipes.json` + `attack-types.json`; rename `ages.json` → `tiers.json`; migrate `commanders.json` to locked Leonidas / Montezuma II / Ragnar trio. PM go required before C1.
 
 *Prior pointer block archived to [`CASCADE-history.md`](CASCADE-history.md).*
 
-**Next planned work — background candidates (PM gate before any pickup):**
-1. Prototype reshape plan ratification (Proposed → Accepted) + C1→C7 execution.
-2. Cultural-sensitivity pass scheduling (Follow-up #5) — mandatory content-lock gate.
-3. Patch-1 commanders per civ (Follow-up #6).
-4. `admin/concept.json` migration path.
+**Next planned work:**
+1. **C1 — Data layer reshape (inert)** [next on PM "go"].
+2. C2 → C5 + C7.a → C7.b → C6 per amended order, one PM gate per step.
+3. Cultural-sensitivity pass scheduling (Follow-up #5) — independent track; gates C2 pose-lock.
+4. Patch-1 commanders per civ (Follow-up #6).
+5. `admin/concept.json` migration path.
 
 Workflow upgrade Steps 0, 1, 1.5a remain complete. `PROGRESS.md` is the live step tracker.
 
@@ -95,7 +96,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 |------|----------|---------------|
 | 2026-04-28 | [§5.4 [LOCKED] amendment: delete Lineages row, add Civilizations row (closes Follow-up #10; original convention archived to CASCADE-history.md)](decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md) | Easy |
 | 2026-04-27 | [Commander-as-summoned-ability-avatar (+ Builder unit class + historic match-arc beats, solo-only); supersedes 2026-04-20 on-field-hero; same-day amendment captures 8-Q PM refinement (Aztec pre-contact; round-30 antagonists; mixed historicity; myth-mode counterfactual)](decisions/2026-04-27-commander-as-summoned-ability-avatar.md) | Medium |
-| 2026-04-26 | [Prototype reshape plan (Step C, 6 steps + 2026-04-27 amendment adds C4 Cast-bar extension + new C7 step)](decisions/2026-04-26-prototype-reshape-plan.md) — **Proposed**, awaiting PM ratification | Medium |
+| 2026-04-26 | [Prototype reshape plan (Step C, 6 steps + 2026-04-27 amendment adds C4 Cast-bar extension + new C7 step; **Accepted 2026-04-29**)](decisions/2026-04-26-prototype-reshape-plan.md) | Medium |
 | 2026-04-26 | [Phase 1 exit one-pager (formal capture: World + Commander role + Hybrid topology + Why this frame wins + What remains open; closes 2026-04-25 Follow-up #11)](decisions/2026-04-26-phase-1-exit-one-pager.md) | Easy |
 | 2026-04-26 | [Attack-type mapping: 7-type taxonomy + per-tower/demigod/god map + RPS armor matrix + status-proc table](decisions/2026-04-26-attack-type-mapping.md) | Medium |
 | 2026-04-25 | [Q2 ratified: real-world cultures direction (Greek / Aztec / Norse) + launch-match design skeleton](decisions/2026-04-25-q2-real-cultures-direction-ratified.md) — supersedes Q2 draft; partially supersedes 2026-04-24 reopen (thematic direction only; structural guardrails intact) | **Hard** |
@@ -171,4 +172,4 @@ Treat `CASCADE.md` as single source of truth for "what exists and where." If it 
 
 ---
 
-*Document version: 0.28 — 2026-04-28: §5.4 [LOCKED] amendment LANDED (Follow-up #10 CLOSED). Lineages row deleted from `concept/phase-5.md §5.4` + `CONCEPT.md §5.4` mirror; Civilizations row added (real-culture proper nouns; the culture names itself; Greek/Aztec/Norse launch + expansions follow same pattern). Decision filed at [`decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md`](decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md) (Accepted, Easy, 3x debug loop inline). Original Lineages convention archived verbatim to [`CASCADE-history.md`](CASCADE-history.md) under new "Archived naming conventions" section. Decisions table gained new top row. Pointer rewritten; prior 2026-04-27 pointer block archived to history. §2.4a [LOCKED] untouched; locked content-skeleton names from 2026-04-25 untouched. Prior: 0.27 — 2026-04-27 (continuation, same-day close): Commander-as-summoned-ability-avatar plan-mode pass ALL 8 steps LANDED. [Older version history archived to [`CASCADE-history.md`](CASCADE-history.md).]*
+*Document version: 0.29 — 2026-04-29: Prototype reshape plan RATIFIED (Proposed → Accepted). [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md) Status flipped to "Accepted (ratified 2026-04-29)" with ratification note appended; decisions-table row updated to drop "Proposed" annotation. No body rewrite of plan or 2026-04-27 amendment. Pointer rewritten; prior 2026-04-28 §5.4-amendment pointer block archived to [`CASCADE-history.md`](CASCADE-history.md). Prototype unfreezes; effective execution order C1 → C2 → C3 → C4 (incl. Cast-bar) → C5 → C7.a → C7.b → C6 on standby pending per-step PM "go". §2.4a + §5.4 [LOCKED] untouched; locked content-skeleton names untouched; cultural-sensitivity gate (Follow-up #5) remains hard pose-lock gate on C2. Prior: 0.28 — 2026-04-28: §5.4 [LOCKED] amendment LANDED (Follow-up #10 CLOSED). [Older version history archived to [`CASCADE-history.md`](CASCADE-history.md).]*

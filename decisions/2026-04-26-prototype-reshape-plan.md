@@ -1,7 +1,7 @@
 # Decision — Prototype reshape plan (Step C)
 
 **Date:** 2026-04-26
-**Status:** Proposed
+**Status:** Accepted (ratified 2026-04-29)
 **Reversibility:** Medium (shape of plan is reversible; once implementation lands, reverting costs about a week of two-dev time)
 **Affects:** `prototype/index.html` BALANCE region, `prototype/commanders.json`, `prototype/ages.json` (rename candidate), `prototype/towers.json` (if exists), new `prototype/civilizations.json`, new `prototype/attack-types.json` (or inline), new `prototype/fusion-recipes.json`.
 **Parent:** [`2026-04-25-q2-real-cultures-direction-ratified.md`](2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility Hard), [`2026-04-26-attack-type-mapping.md`](2026-04-26-attack-type-mapping.md) (Reversibility Medium), [`2026-04-26-phase-1-exit-one-pager.md`](2026-04-26-phase-1-exit-one-pager.md).
@@ -156,3 +156,9 @@ Replaces the dying primitives from the superseded [`2026-04-20-commander-on-fiel
 - ✓ Does not lock silhouette poses — C7.b reuses C2's gated render.
 - ✓ Does not touch §2.4a accessibility floor [LOCKED] — references it as a constraint (reduce-motion toggle), does not amend it.
 - ✓ Does not touch §5.4 naming conventions [LOCKED] — Builder labels are working placeholders, not §5.4-locked.
+
+---
+
+## Ratification 2026-04-29
+
+PM ratified plan + 2026-04-27 amendment. Status flipped Proposed → **Accepted**. No body rewrite — the plan and its amendment already ran 3x debug loops; ratification is a pure status flip. Execution begins at **C1 — Data layer reshape (inert)** under the effective execution order: C1 → C2 → C3 → C4 (incl. Cast-bar extension) → C5 → C7.a → C7.b → C6. Cultural-sensitivity gate (Follow-up #5) remains a hard pose-lock gate on C2, not on plan execution. §2.4a + §5.4 [LOCKED] surfaces and 2026-04-25 locked content-skeleton names remain untouched. Prototype unfreezes at this ratification; per-step PM "go" gates resume per CLAUDE.md cadence.
