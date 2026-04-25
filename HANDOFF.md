@@ -1,31 +1,26 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-04-27 — Commander-as-summoned-ability-avatar ALL 8 steps closed; §5.4 amendment queued with PM go.
-**Hand-off by:** Claude (Sonnet 4.6)
+**Last session:** 2026-04-28 — §5.4 [LOCKED] amendment LANDED; Follow-up #10 CLOSED.
+**Hand-off by:** Claude (Opus 4.7)
 **Hand-off to:** next Claude Code session (post `/clear`)
 
 ---
 
 ## TL;DR (this session)
 
-**Commander-as-summoned-ability-avatar plan-mode pass fully closed.** All 8 steps landed across two same-day sessions. Final commit `09453d9` lands steps 5-8: §4.4a Builder unit class, §4.4 stale-sentence redaction, §4.7 Historic match-arc beats subsection with locked round-30 antagonist roster, and Follow-up #11 closed (Jörmungandr locked; Fenrir reserved post-launch). CASCADE v0.27. PM confirmed §5.4 amendment as next directive before calling handoff.
+**§5.4 [LOCKED] amendment fully landed in one tight pass.** Commit `dd97672` on `session/2026-04-25-q2-world-pitch`, dual-pushed to `main`. Decision filed at [`decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md`](decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md) (Accepted, Reversibility **Easy**, 3x debug loop inline because [LOCKED] surface). Lineages row (one-syllable kenning: Sinew / Ember / Forge / Crown / Veil) deleted from `concept/phase-5.md §5.4` and `CONCEPT.md §5.4` hub mirror. Replaced with **Civilizations** row: real-culture proper nouns; the culture names itself; Greek / Aztec / Norse at launch; expansions follow the same pattern. Original Lineages convention archived verbatim to `CASCADE-history.md` under new "Archived naming conventions" section. CASCADE.md decisions table gained new top row; pointer rewritten; prior 2026-04-27 pointer block archived to history; version v0.27 → v0.28. PROGRESS.md session note appended; oldest entry (2026-04-26 session close) archived to `PROGRESS-archive.md`. cascade-lint clean throughout.
 
-**Key ratifications this full pass:**
-- **Three-surface commander model:** identity plinth / passive pip / active cast avatar.
-- **Three-tier cast budget:** ~1.2s / ~2.8s / ~4.5s.
-- **Builder unit class:** degenerate mobile-hero (single anim, no AI, no combat, walkable-build-grid distinct from enemy-path-grid).
-- **Historic match-arc beats (solo-only):** round-30 antagonists — Xerxes I (Greek) / Tlaxcalan→Tezcatlipoca two-phase pre-contact (Aztec, Cortés OUT) / **Jörmungandr** (Norse, locked — Follow-up #11 closed; Fenrir post-launch).
-- **Cross-civ tonal arc:** mortal → bridge → cosmic — intentional asymmetry.
-- **Follow-up #11 CLOSED** at both anchors in the 2026-04-27 decision.
+**Key ratifications this session:**
+- **§5.4 row swap:** Lineages OUT, Civilizations IN. The Civilizations convention positively forbids invented placeholders and constrains expansion to real cultures.
+- **Audit of the seven retained §5.4 rows** (Game title / Commanders / Ages / Towers/Units / Hybrids / Enemies / Heirlooms / Modes) confirmed neutral to the real-cultures frame — no further amendments warranted.
+- **Follow-up #10 CLOSED** at the 2026-04-27 commander-as-summoned-ability-avatar decision and at this new decision entry.
 
 ---
 
 ## Commits this session
 
-- `7fd3be8` — steps 1-4 of 8 + lint-row (prior session).
-- Handoff bundle — CASCADE v0.26 + PROGRESS entry (prior session).
-- `09453d9` — steps 5-8 of 8 + Follow-up #11 closure (this session).
-- This handoff commit — CASCADE "Next planned work" update + HANDOFF rewrite.
+- `dd97672` — §5.4 amendment full bundle (decision + phase-5.md + CONCEPT.md hub + CASCADE.md + CASCADE-history.md + PROGRESS.md). Dual-pushed.
+- This handoff commit — HANDOFF rewrite + PROGRESS oldest-entry archive trim.
 
 ---
 
@@ -33,7 +28,7 @@
 
 ### Git
 
-- Branch: **`session/2026-04-25-q2-world-pitch`** dual-pushed to `main` at `09453d9` (plus this handoff commit).
+- Branch: **`session/2026-04-25-q2-world-pitch`** dual-pushed to `main` at `dd97672` (plus this handoff commit).
 - Working tree: clean except `.accord/` untracked.
 - No PR opened.
 
@@ -41,73 +36,43 @@
 
 - **Phase 1 thematic direction: RATIFIED** (real-world cultures + native myth — 2026-04-25).
 - **Phase 1 exit one-pager: FILED** (2026-04-26).
-- **Commander-as-summoned-ability-avatar: FULLY LANDED** (2026-04-27, all 8 steps, commit `09453d9`).
-- **Follow-up #11 CLOSED** — Jörmungandr locked for Norse round-30; Fenrir reserved post-launch.
+- **Commander-as-summoned-ability-avatar: FULLY LANDED** (2026-04-27, 8 steps).
+- **§5.4 [LOCKED] amendment: FULLY LANDED** (2026-04-28, this session).
+- **Follow-up #10 CLOSED.** Follow-up #11 closed prior session.
 - **Prototype reshape plan** still **Proposed** (2026-04-27 amendment in tree) — awaiting PM ratification. Prototype files frozen.
-- `§2.4a` + `§5.4` **[LOCKED]** — §5.4 amendment queued as next directive with PM go.
+- `§2.4a` + `§5.4` **[LOCKED]** — §5.4 has now received its one permitted amendment (Lineages row only).
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 most recent entries maintained (continuation note appended inline to the 2026-04-27 entry rather than creating a 4th).
-- `CASCADE.md` pointer: most recent block only (v0.27, all-8-landed state + updated "Next planned work").
+- `PROGRESS.md` session log: 3 most recent entries maintained (2026-04-28 + two 2026-04-27); 2026-04-26 entry archived this handoff.
+- `CASCADE.md` pointer: most recent block only (v0.28, §5.4 amendment landed); prior 2026-04-27 pointer archived to history.
+- `CASCADE.md` version footer: 2 most recent bumps only (v0.28 + v0.27 reference).
 - Bootstrap remains lean.
 
 ---
 
 ## NEXT SESSION — primary directive
 
-**Execute §5.4 [LOCKED] amendment (Follow-up #10).** PM gave explicit "go" this session before handoff. Scope is narrow and fully specified — no open sub-decisions.
+**No specific PM-go directive carried forward.** Background candidates queue is the menu; pick with PM at session start.
 
-### What to do
+### Background candidates (priority order)
 
-1. **File `decisions/YYYY-MM-DD-phase-5-naming-conventions-lineages-row-deletion.md`** — decision entry per `decisions/TEMPLATE.md`:
-   - Status: Accepted. Reversibility: Easy.
-   - Scope: delete Lineages row from `concept/phase-5.md §5.4`; add Civilizations row; preserve Lineages convention in `CASCADE-history.md`. Cite Follow-up #10 from 2026-04-27 decision.
-   - 3x debug loop (touches [LOCKED] surface — warrant the loop).
-
-2. **Edit `concept/phase-5.md §5.4`:**
-   - Delete the Lineages naming-convention row (one-syllable kenning: Sinew / Ember / Forge / Crown / Veil pattern).
-   - Add a **Civilizations** row: convention = real-culture proper nouns; no invented placeholders; no one-syllable-kenning rule; naming convention is "the culture names itself" (Greek / Aztec / Norse at launch; expansions follow same pattern).
-   - Add dated amendment banner at the top of §5.4 citing the new decision and Follow-up #10 lineage.
-
-3. **Append to `CASCADE-history.md`** (under an "Archived naming conventions" section or similar) the original Lineages convention rule text for archival traceability.
-
-4. **Update `CASCADE.md` decisions table** — add new row at top for the §5.4 decision entry.
-
-5. **Append `PROGRESS.md` session log note** (or amend the most recent entry; doc-hygiene 3-most-recent rule applies).
-
-6. **Commit + dual-push.** Then **stop** — do not continue to background candidates without PM.
-
-### What NOT to touch
-
-- Any other §5.4 row — only the Lineages row is in scope.
-- Locked content-skeleton names from 2026-04-25 — those are under §5.4 conventions but are locked separately.
-- Prototype files — reshape plan still Proposed.
-- §2.4a — untouched always.
-
----
-
-## Open threads / carried debts
-
-### Priority order
-
-1. **§5.4 [LOCKED] amendment** (Follow-up #10) — **PM go given; next session primary directive.**
-2. **Prototype reshape plan ratification** (Proposed, 2026-04-27 amendment in tree) — then C1→C7 execution.
-3. **Cultural-sensitivity pass** (Follow-up #5) — mandatory content-lock gate.
-4. **Patch-1 commanders per civ** (Follow-up #6).
-5. **Myth-creature PvE bosses** (Follow-up #3).
-6. **Title lock** (Q8) — "Mud to Myth" floated; not locked.
-7. **Stage body rewrites** (01/03/04/05/06/07) — deferred to dedicated reopens.
-8. **`admin/concept.json` full migration** — rewrite / regenerate / retire.
-9. **Foresight-coin cross-civ borrowing** (Follow-up #7).
-10. **PvE campaign + AGES + leveling + attributes** (Follow-up #8).
-11. **Non-boss enemy ontology** (Follow-up #9).
-12. **Styling / tone pass** (Follow-up #4).
-13. **[PROPOSAL] balance-pass re-ratification** (Follow-up #13).
+1. **Prototype reshape plan ratification** — [`decisions/2026-04-26-prototype-reshape-plan.md`](decisions/2026-04-26-prototype-reshape-plan.md) is Proposed with 2026-04-27 amendment (C4 Cast bar + C7.a/b). Ratify (Proposed → Accepted), then begin C1 → C2 → C3 → C4 → C5 → C7.a → C7.b → C6. Largest unblock for prototype work.
+2. **Cultural-sensitivity pass scheduling (Follow-up #5)** — Mandatory content-lock gate. Per-civ name + visual review for Greek / Aztec / Norse. No code dependency; pure scoping + scheduling.
+3. **Patch-1 commanders per civ (Follow-up #6)** — Design 2nd commander per civ for first post-launch patch. Pure design; no [LOCKED] surfaces touched.
+4. **Myth-creature PvE bosses (Follow-up #3)** — Round-30 antagonists locked (Xerxes / Tlaxcalan→Tezcatlipoca / Jörmungandr); design per-round mini-boss cadence (rounds 5/15/25 sketched in §4.7).
+5. **Title lock (Q8)** — "Mud to Myth" floated; not locked.
+6. **Stage body rewrites** (01/03/04/05/06/07) — deferred; reopen with discipline.
+7. **`admin/concept.json` migration** — rewrite / regenerate / retire.
+8. **Foresight-coin cross-civ borrowing (Follow-up #7).**
+9. **PvE campaign + AGES + leveling + attributes (Follow-up #8).**
+10. **Non-boss enemy ontology (Follow-up #9).**
+11. **Styling / tone pass (Follow-up #4).**
+12. **[PROPOSAL] balance-pass re-ratification (Follow-up #13).**
 
 ### LOCKED — do NOT touch
 
-- `concept/phase-5.md §5.4` naming **conventions [LOCKED]** — §5.4 amendment is the ONE permitted touch next session, scoped to Lineages row only.
+- `concept/phase-5.md §5.4` naming **conventions [LOCKED]** — the Lineages-row amendment is now LANDED (2026-04-28). No further §5.4 row changes without a new dedicated [LOCKED]-amendment decision.
 - `concept/phase-2.md §2.4a` accessibility floor **[LOCKED]**.
 - Full 2026-04-25 locked content skeleton.
 - Prototype files — no edits until PM ratifies reshape plan.
@@ -117,6 +82,7 @@
 ## Cadence rules carried forward
 
 - **Default: one-step-at-a-time with PM "go" gates** per `CLAUDE.md`.
+- **AskUserQuestion tool for PM gates** with "Recommended" first option (PM directive 2026-04-28).
 - **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
@@ -127,7 +93,7 @@
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar — §5.4 naming-conventions amendment (Follow-up #10).
+Resuming Ash to Altar — open menu of background candidates.
 
 BOOTSTRAP per CLAUDE.md order:
   README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
@@ -137,36 +103,33 @@ BEFORE reading docs:
   git log --oneline HEAD..origin/main   # should be empty
 
 STATE ALOUD (before producing anything):
-- Phase status + drift vs. last HANDOFF (commander pass fully
-  closed at 09453d9; Follow-up #11 closed — Jörmungandr locked;
-  §5.4 amendment queued with PM go given).
-- Primary directive: §5.4 [LOCKED] amendment (Follow-up #10).
-- Specific next-step: file dedicated decision entry for Lineages
-  row deletion + Civilizations row addition; propose draft +
-  3x debug loop; await PM "go" to execute phase-5.md edit.
+- Phase status + drift vs. last HANDOFF (§5.4 amendment landed
+  at dd97672; Follow-up #10 CLOSED; Follow-ups #5/#6/#7/#8/#9
+  remain open; prototype reshape plan still Proposed).
+- No specific PM-go directive carried forward. Open menu.
+- Specific next-step proposal: surface the background-candidates
+  list via AskUserQuestion with the highest-leverage option marked
+  Recommended (default Recommended: Prototype reshape plan
+  ratification, since it's the largest unblock and the next
+  natural step after the conceptual pass closed).
 
-CADENCE: one-step-at-a-time with PM "go" gates. STOP after
-§5.4 amendment commit + dual-push — do not continue to
-background candidates without PM.
+CADENCE: one-step-at-a-time with PM "go" gates.
+USE AskUserQuestion for PM gates; always include a Recommended
+first option per 2026-04-28 PM standing directive.
 
-PRIMARY DIRECTIVE — §5.4 amendment (Follow-up #10):
-  1. File decisions/YYYY-MM-DD-phase-5-naming-conventions-
-     lineages-row-deletion.md (Accepted, Easy, 3x debug loop).
-  2. Edit concept/phase-5.md §5.4 — delete Lineages row, add
-     Civilizations row, add dated amendment banner.
-  3. Append archived Lineages convention to CASCADE-history.md.
-  4. Update CASCADE.md decisions table (new row at top).
-  5. Append PROGRESS.md session note.
-  6. Commit + dual-push. STOP.
-
-SCOPE GUARD: only the Lineages row in §5.4 is in scope.
-No other §5.4 rows. No prototype files. §2.4a untouched.
-2026-04-25 locked names untouched.
-
-BACKGROUND CANDIDATES (do NOT start without PM):
+BACKGROUND CANDIDATES (PM picks one):
 - Prototype reshape plan ratification + C1→C7 execution.
 - Cultural-sensitivity pass scheduling (Follow-up #5).
 - Patch-1 commanders per civ (Follow-up #6).
+- Myth-creature PvE bosses (Follow-up #3).
+- Title lock (Q8) — "Mud to Myth" candidate.
+- Stage body rewrites (01/03/04/05/06/07).
+- admin/concept.json migration.
+- Follow-ups #7 / #8 / #9 / #4 / #13.
+
+SCOPE GUARD: §5.4 [LOCKED] post-amendment; §2.4a [LOCKED];
+2026-04-25 locked names untouched; prototype frozen pending
+reshape ratification.
 ```
 
 ---
@@ -175,7 +138,7 @@ BACKGROUND CANDIDATES (do NOT start without PM):
 
 Hard-stop and flag if:
 
-- Any §5.4 row beyond Lineages is touched.
+- §5.4 row beyond Lineages would be touched.
 - 2026-04-25 locked names would be modified.
 - §2.4a is touched.
 - Cultural-sensitivity concern surfaces (Follow-up #5).
