@@ -21,6 +21,7 @@ npm-debug.log*
 .claude/statsig/
 .claude/todos/
 .claude/settings.local.json
+.accord/
 
 # Local env (none currently, future-proof)
 .env
