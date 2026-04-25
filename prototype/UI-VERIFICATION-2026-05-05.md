@@ -210,7 +210,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 | `#end-stats` rows | waves / kills / gold / towers / lives — five rows | OK | **Phase B fix landed:** "Highest Age" row dropped from `renderEnd` ln 3411 (age system no longer tracked under Tribute/Divinity economy). Verified live: 5 rows render, no `undefined`. |
 | `Play again` button | `restart` ln 3416 → `initMatch` + `goto("match")` | OK | |
 | `Back to menu` button | `goto('menu')` | OK | |
-| XP award | `endMatch` ln 3382: 40 win / 12 loss; auto-level-up toasts | OK | But mutates `COMMANDERS.roster[id].progression` directly, *not* `Profile.data.commanderProgress[id]` — XP is in-memory only and **does not persist to localStorage**. NEEDS-FIX (medium — progression lie). |
+| XP award | `endMatch` ln 3382: 40 win / 12 loss; auto-level-up toasts; persists to `Profile.data.commanderProgress[cid]` | OK | **Phase C fix landed:** `endMatch` ln 3390-3408 now syncs the in-memory mutation back to `Profile.data.commanderProgress[cid] = { level, xp, xpToNext, unlockedCosmetics }` and calls `Profile.save()`. Verified live: simulated win → `localStorage.atoA.profile.v1.commanderProgress.leonidas.xp = 40`; after reload, Profile scene XP bar reads 40%. |
 | VO line on end | `endMatch` ln 3392 — picks from `c.vo.victory/defeat` pool index 0 | (Test) | Always pool[0] — not random. By design? |
 | Co-op host broadcast | `Net.broadcastMatchEnd` ln 3380 (host only) | OK | |
 | Continue / Replay / Menu | HANDOFF lists three; markup has two (Play again + Back to menu) | (Test) | Mismatch between scene-checklist and live markup. PM to decide whether "Continue" (resume next match in arc?) belongs. |
@@ -270,7 +270,7 @@ Phase B (live in-browser via Claude-in-Chrome / preview MCP) will augment (Test)
 
 6. **Input rebind UI is decorative** — match keydown handler (ln 3537) hardcodes Space / 1-9 / I / U / X. Rebind UI captures + persists `input.binds` correctly, but no consumer. Touches input system; PM call: replace hardcoded keys with `binds[action]` lookup, or label rebind UI as "preview only" until input system lands properly. [scene-9 + scene-11] — **PENDING**
 7. ~~**Profile scene roster hardcodes legacy commanders**~~ — **FIXED Phase B** (PM Recommended pick): `renderProfileScene` ln 1086-1099 now sources from `COMMANDERS.roster` filter `playable:true`; civ commanders surface with civ-derived tilt; legacy 5-lineage shape retained as fallback. Verified live.
-8. **End-screen XP doesn't persist** — `endMatch` (ln 3382) mutates `COMMANDERS.roster[id].progression` in-memory; never writes to `Profile.data.commanderProgress[id]`. Reload wipes XP. [scene-10] — **PENDING**
+8. ~~**End-screen XP doesn't persist**~~ — **FIXED Phase C**: `endMatch` ln 3390-3408 now writes `Profile.data.commanderProgress[cid] = { level, xp, xpToNext, unlockedCosmetics }` after the in-memory mutation and calls `Profile.save()`. Verified live (sim-win → localStorage XP=40 → reload → Profile scene reads 40%). [scene-10]
 
 ### NEEDS-FIX — large (queue to AskUserQuestion; do NOT fix without ratification)
 

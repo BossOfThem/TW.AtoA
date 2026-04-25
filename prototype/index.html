@@ -3387,15 +3387,24 @@ function endMatch(won) {
   game.playing = false;
   game.ended = { won, kills: game.totalKills, gold: game.totalGold || 0, lives: game.lives, towers: game.towers.length, waves: game.wave, totalWaves: game.totalWaves || 3 };
   if (game.isCoop && Net.role === "host") Net.broadcastMatchEnd(game.ended);
-  // Award XP to active commander (display-only progression)
+  // Award XP to active commander (persists to Profile.data.commanderProgress per §4.9)
   if (COMMANDERS && Profile.data) {
-    const c = COMMANDERS.roster[COMMANDERS.active];
+    const cid = COMMANDERS.active;
+    const c = COMMANDERS.roster[cid];
     if (c && c.progression) {
       c.progression.xp += won ? 40 : 12;
       while (c.progression.xp >= c.progression.xpToNext && c.progression.level < c.progression.maxLevel) {
         c.progression.xp -= c.progression.xpToNext; c.progression.level++;
         toast("Commander level up → " + c.progression.level);
       }
+      Profile.data.commanderProgress = Profile.data.commanderProgress || {};
+      Profile.data.commanderProgress[cid] = {
+        level: c.progression.level,
+        xp: c.progression.xp,
+        xpToNext: c.progression.xpToNext,
+        unlockedCosmetics: c.progression.unlockedCosmetics || 0
+      };
+      Profile.save();
     }
   }
   if (COMMANDERS) {
