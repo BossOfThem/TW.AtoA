@@ -1429,6 +1429,40 @@ function silhouetteSVG(lineage, size) {
     '</svg>';
 }
 
+// C2 — Civ silhouettes (alongside the legacy 5-lineage silhouettes above).
+// Source-of-truth for palette: prototype/data/civilizations.json palette.primary/accent.
+// Inlined here because the boot loader still loads only ages/towers/commanders/balance/enemies (C3 will add civilizations.json fetch). Update both surfaces together until C3 lands.
+// Geometric primitives only — no civ-specific poses. Cultural-sensitivity pose-lock pass (Follow-up #5) gates anything beyond abstract shapes; glyph overlay deferred to styling pass (Follow-up #4) since the Aztec glyph in civilizations.json is wrong.
+const CIV_PALETTE = {
+  greek: { primary: "#1e40af", accent: "#fbbf24" },
+  aztec: { primary: "#15803d", accent: "#dc2626" },
+  norse: { primary: "#475569", accent: "#94a3b8" }
+};
+function civSilhouetteSVG(civId, size) {
+  size = size || 96;
+  const pal = CIV_PALETTE[civId] || CIV_PALETTE.greek;
+  const c = pal.primary, accent = pal.accent;
+  const shapes = {
+    greek: '<polygon points="50,18 82,78 18,78" />',
+    aztec: '<polygon points="50,16 82,34 82,66 50,84 18,66 18,34" />',
+    norse: '<polygon points="50,16 84,50 50,84 16,50" />'
+  };
+  const shape = shapes[civId] || shapes.greek;
+  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+    '<circle cx="50" cy="50" r="48" fill="' + c + '" opacity="0.12"/>' +
+    '<g fill="' + c + '" stroke="' + accent + '" stroke-width="2">' + shape + '</g>' +
+    '<circle cx="50" cy="50" r="47" fill="none" stroke="' + c + '" stroke-width="1.5" opacity="0.8"/>' +
+    '</svg>';
+}
+function commanderSilhouetteSVG(c, size) {
+  if (c && c.civ) return civSilhouetteSVG(c.civ, size);
+  return silhouetteSVG(c && c.lineageTilt, size);
+}
+function commanderSilhouetteColor(c) {
+  if (c && c.civ) return (CIV_PALETTE[c.civ] || CIV_PALETTE.greek).primary;
+  return getLineageCss(c && c.lineageTilt);
+}
+
 function renderCommanderRoster() {
   const host = document.getElementById("cmdr-roster");
   if (!host || !COMMANDERS) return;
@@ -1442,7 +1476,7 @@ function renderCommanderRoster() {
     chip.className = "cmdr-roster-chip" + (id === COMMANDERS.active ? " selected" : "");
     chip.dataset.cmdrId = id;
     chip.innerHTML = '<span class="p-cmdr-silhouette" style="width:36px;height:36px;display:inline-block;">' +
-      silhouetteSVG(c.lineageTilt, 36) + '</span>' +
+      commanderSilhouetteSVG(c, 36) + '</span>' +
       '<span>' + c.name + '</span><span class="chip-tilt">' + (c.epithet || "") + '</span>';
     chip.addEventListener("click", () => selectCommanderId(id));
     host.appendChild(chip);
@@ -1462,9 +1496,9 @@ function applyCommanderCard() {
   if (!c) return;
   const portrait = document.getElementById("cmdr-portrait");
   if (portrait) {
-    portrait.className = "cmdr-portrait " + c.lineageTilt;
-    portrait.innerHTML = silhouetteSVG(c.lineageTilt, 96);
-    portrait.style.color = LINEAGE_COLORS[c.lineageTilt] || "#d97706";
+    portrait.className = "cmdr-portrait " + (c.civ || c.lineageTilt || "");
+    portrait.innerHTML = commanderSilhouetteSVG(c, 96);
+    portrait.style.color = commanderSilhouetteColor(c) || "#d97706";
     portrait.onclick = () => previewCommanderVO(c);
     portrait.style.cursor = "pointer";
     portrait.title = "Click to preview commander voice line";
@@ -1696,7 +1730,7 @@ function initMatch() {
     const c = COMMANDERS.roster[COMMANDERS.active];
     const sil = document.getElementById("m-silhouette");
     const nm = document.getElementById("m-cmdr-name");
-    if (sil && c) { sil.textContent = c.name.replace(/[^A-Z]/g, "").slice(-1) || c.name[0].toUpperCase(); sil.style.color = getLineageCss(c.lineageTilt); }
+    if (sil && c) { sil.textContent = c.name.replace(/[^A-Z]/g, "").slice(-1) || c.name[0].toUpperCase(); sil.style.color = commanderSilhouetteColor(c); }
     if (nm && c) nm.textContent = c.name;
   }
   updateHUD();
