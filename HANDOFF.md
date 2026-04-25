@@ -1,20 +1,20 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-05-06 (**clear-safe**).
-**Hand-off by:** Claude (Opus 4.7)
+**Last session:** 2026-04-25 (**clear-safe**).
+**Hand-off by:** Claude (Opus 4.7, post-compaction)
 **Hand-off to:** next Claude Code session after `/clear`.
 
 ---
 
 ## TL;DR
 
-**Per-tower authoring sub-pass OPENED. R1 scope decision LANDED.** Track gated via `AskUserQuestion` (Recommended-first, two questions). PM picked **Axis A — per-civ across tiers** + **7-field schema lock as proposed**. Filed [`decisions/2026-05-06-per-tower-authoring-scope.md`](decisions/2026-05-06-per-tower-authoring-scope.md) (Accepted, Medium): 4-round queue (R1 = scope file + R2 Greek 15 towers + R3 Aztec 15 + R4 Norse 15 + RN cross-civ × cross-tier audit + spine-doc edits). 3x debug loop ran inline; synthesis = Axis A with embedded per-tier readings at close of R2/R3/R4. 7-field schema locked: `attack_type` / `cd` / `range` / `status_proc` / `dps` / `aux_slot_compat` / `notes`. Hard guards: 2026-04-25 content-skeleton names verbatim / 2026-04-26 attack-type lock / 2026-05-05 R5 baseline DPS ±20% band / per-commander R1-R5 lane locks (Hard reversibility) / Cultural-sensitivity Follow-up #5. Inventory: 45 launch towers across Greek/Aztec/Norse. NEXT session opens at **R2 (Greek roster) — produce autonomously per autonomy mandate**.
+**Per-tower authoring sub-pass: R1 + R2 + R3 LANDED. R4 + RN remain.** This session produced R2 (Greek roster) and R3 (Aztec roster) autonomously per PM autonomy mandate; both committed and dual-pushed. R2 at `04efad6`, R3 at `abe8e9a`. Both author 15 towers × the locked 7-field schema (`attack_type` / `cd` / `range` / `status_proc` / `dps` / `aux_slot_compat` / `notes`) with civ-identity-hook prose + per-tier reading + cross-arc parity hook. Falsifiable per-civ magnitude signatures emerged: **Greek = dps-band-centered + cd-moderate + lockdown-status mix** (control archetype, `controlled_by: leonidas`); **Aztec = dps-band-high-at-T2-T3 (4 of 6 mainline at +10%) + cd-band-low-mainline (0.8-2.0s) + Poison-stack/Fire-splash/Slashing-bleed compounding** (yield-stack archetype, `economy_target: montezuma_ii`). All attack_types verbatim-confirm 2026-04-26 mapping; all dps within ±20% of 2026-05-05 R5 baseline ladder. cascade-lint clean both rounds (pre-existing phase-4 626/600 soft-cap carried). NEXT session opens at **R4 (Norse roster) — produce autonomously per mandate**.
 
 ---
 
 ## NEXT SESSION — primary directive
 
-**Produce R2 — Greek roster — autonomously.** PM autonomy mandate carries forward from 2026-05-05 Numbers-phase / CONCEPT-amendment-pass / per-commander arc precedent. Surface AskUserQuestion ONLY on:
+**Produce R4 — Norse roster — autonomously, then continue to RN cross-civ × cross-tier audit + spine-doc edits if context budget healthy.** PM autonomy mandate continues to apply. Surface AskUserQuestion ONLY on:
 
 - Genuine forks not anticipated in R1 scope.
 - Scope expansion beyond the locked 4-round queue.
@@ -22,32 +22,47 @@
 - Cultural-sensitivity surface (Follow-up #5 — art / VFX / civ-flavor surface direction prose).
 - Handoff trigger.
 
-### R2 deliverable shape
+### R4 deliverable shape
 
-File: `decisions/2026-05-06-per-tower-r2-greek-roster.md` (Accepted, Medium).
+File: `decisions/2026-05-06-per-tower-r4-norse-roster.md` (Accepted, Medium).
 
 **Content:**
-1. **Greek roster table** — 15 rows (6 T1-T3 mainline + 6 T4 Demigod + 3 God) × 7 columns (the locked schema).
-2. **Civ-identity-hook prose** — Greek lockdown / control archetype: how the roster tilts cd / range / status_proc toward control (slow / armor-shred / stun) per the per-commander R1-R5 Leonidas=Control lane lock.
-3. **Per-commander affinity-target tags in `notes`** — bind to Leonidas's `controlled_by` interface (Spartan-Training passive + This-Is-Sparta active + The-Last-Stand signature target classes).
-4. **Per-tier reading at close** — one paragraph per tier (T1 / T2 / T3 / T4-Demigod / God) summarizing how the round's 15 Greek towers fit the tier-archetype DPS-ladder (T1=20 / T2=60 / T3=180 / T4=540 / God=1080 dmg/sec ±20%) + cd/range bands.
-5. **Cross-arc parity hook** — closing note pointing at R3 Aztec / R4 Norse / RN cross-civ audit.
+1. **Norse roster table** — 15 rows (6 T1-T3 mainline + 6 T4 Demigod + 3 God) × 7 columns (locked schema).
+2. **Civ-identity-hook prose** — Norse summon / called-warriors archetype: how the roster tilts toward Bleed-density + cd-band-low + dps-band-centered per the per-commander R1-R5 Ragnar=Summon lane lock + Great-Heathen-Army signature.
+3. **Per-commander affinity-target tags in `notes`** — bind to Ragnar's `summon_anchor` interface.
+4. **Per-tier reading at close** — one paragraph per tier (T1 / T2 / T3 / T4-Demigod / God).
+5. **Cross-arc parity hook** — closing note pointing at RN cross-civ × cross-tier audit.
+
+**Predicted-falsifiable Norse signature** (set by R3 cross-arc parity hook): `cd-band-low + Bleed-density-high + dps-band-centered`. R4 either confirms this or RN audit notes the deviation.
+
+### RN deliverable shape (if context permits)
+
+File: `decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md` (Accepted, Medium).
+
+**Content:**
+1. **Cross-civ × cross-tier audit table** — 45-tower matrix sanity-check on dps-ladder ±20% adherence + cd/range bands + status-proc kind locks + per-commander lane-tag distribution.
+2. **Per-civ signature confirmation/deviation summary** — Greek control / Aztec yield-stack / Norse summon falsifiable signatures verified.
+3. **Spine-doc edits** specified by per-commander R5 deferral (§4.1 mechanical-content rewrite + §4.11.6 deferral removal + §4.8 exit-tick item #2).
+4. **§4.8 exit-gate item #2 tick** (per-tower spec table populated).
+5. **Closes the per-tower authoring arc.**
 
 ### Step-by-step procedure
 
 1. **Bootstrap** per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
-2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean).
+2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean — last R3 push was `abe8e9a` to both session branch + main).
 3. **Read inputs** (Grep > full-file Read where possible):
-   - [`decisions/2026-05-06-per-tower-authoring-scope.md`](decisions/2026-05-06-per-tower-authoring-scope.md) — round queue + schema lock + guards + 3x debug loop.
-   - [`decisions/2026-04-26-attack-type-mapping.md`](decisions/2026-04-26-attack-type-mapping.md) — per-tower attack_type bindings (locked) + RPS matrix + status-proc table.
-   - [`decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md`](decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md) — DPS ladder + tier-up costs.
-   - [`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`](decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) — Leonidas one-pager + Spartan-Training / This-Is-Sparta / The-Last-Stand interface specs.
-   - [`concept/phase-4.md`](concept/phase-4.md) §4.6 / §4.6a / §4.10 / §4.11 — economy + aux catalog + variable nomenclature + Numbers floor.
-   - [`concept/phase-3.md`](concept/phase-3.md) §3.x — locked Greek tower content-skeleton names (verbatim).
-4. **Author the 15 Greek tower rows** in the locked 7-field schema, civ-identity-hook prose, per-tier reading, cross-arc note.
-5. **Cascade-lint:** `python tools/cascade-lint.py` — expect clean except pre-existing phase-4 soft-cap (626/600).
-6. **Commit** R2 only (R1 scope already landed last session). Dual-push to session branch + main per the locked dual-push schedule (after R2 carries R1+R2 effectively, but R1 is already committed — this push carries R2 alone).
-7. **Continue to R3 (Aztec roster)** autonomously if context budget healthy. Otherwise stop after R2 and file mini-handoff.
+   - [`decisions/2026-05-06-per-tower-authoring-scope.md`](decisions/2026-05-06-per-tower-authoring-scope.md) — round queue + schema lock + guards.
+   - [`decisions/2026-05-06-per-tower-r2-greek-roster.md`](decisions/2026-05-06-per-tower-r2-greek-roster.md) — R2 reference for cross-arc parity comparison.
+   - [`decisions/2026-05-06-per-tower-r3-aztec-roster.md`](decisions/2026-05-06-per-tower-r3-aztec-roster.md) — R3 reference + Norse-signature prediction.
+   - [`decisions/2026-04-26-attack-type-mapping.md`](decisions/2026-04-26-attack-type-mapping.md) — Norse attack_type bindings (locked).
+   - [`decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md`](decisions/2026-05-05-balance-pass-2-round-5-tower-baselines.md) — DPS ladder.
+   - [`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`](decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) — Ragnar one-pager + Heathen-Bond / Berserkergang / Great-Heathen-Army interface specs.
+   - [`concept/phase-3.md`](concept/phase-3.md) — locked Norse content-skeleton names verbatim.
+4. **Author R4** Norse 15-row roster + identity-hook + per-tier reading + cross-arc note.
+5. **Cascade-lint:** `python tools/cascade-lint.py` — expect clean except phase-4 soft-cap.
+6. **Add CASCADE.md decisions-table row** for R4 (lint will flag if missing).
+7. **Commit R4 + dual-push** (session branch + main).
+8. **Continue to RN** autonomously if context budget healthy. Otherwise stop after R4 and file mini-handoff.
 
 ### Discipline (carry forward)
 
