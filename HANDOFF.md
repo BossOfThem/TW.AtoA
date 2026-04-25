@@ -8,17 +8,35 @@
 
 ## TL;DR
 
-**Per-commander effect-type-variant arc CLOSED 5/5 (`6069c49`); prototype splash-fix landed (`90f6f1c`); first handoff filed (`2edb70c`); this is a second handoff sequencing the NEXT session's prototype UI verification sweep as A→B with cadence guardrails per PM ask.**
-
-PM directive this turn: *"Prepare hand off to prepare for doing A and then B regardless (You checking yourself for functionality and fixing for a bit is a great way to move forward faster i hope - I want a cadence that avoids over loading API and causing errors, also keep context window in check softly please)."*
-
-NEXT session executes both A and B; this turn is handoff-only.
+**Phase A of the prototype UI verification sweep LANDED (`caa1e61`, dual-pushed).** All 11 scenes walked statically; report filed at [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md) with prioritized fix queue (5 small + 3 medium + 2 large NEEDS-FIX, ~25 (Test) rows for Phase B). NEXT session executes **Phase B — live in-browser sweep + small-fix loop**.
 
 ---
 
-## NEXT SESSION — primary directive (A→B sequence)
+## NEXT SESSION — primary directive (Phase B)
 
-### Phase A — Static-analysis UI sweep (run first)
+Phase A is DONE (`caa1e61`). The carrier is [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md). Next session reads that file and goes straight to Phase B.
+
+### Phase B — Live in-browser sweep + small-fix loop
+
+1. Start `prototype/start.bat` (or `python -m http.server 8765` from `prototype/`).
+2. Load Claude-in-Chrome or preview MCP against `http://localhost:8765/prototype/index.html`.
+3. Walk every (Test) row in the report (~25) plus a representative sample of OK rows. For each: update Status in place via Edit (Test → OK or Test → NEEDS-FIX). New NEEDS-FIX discovered live → add a row.
+4. **Small NEEDS-FIX queue** (fix inline, commit per ~3-fix batch, dual-push):
+   - end-screen "Highest Age" `undefined` (populate or drop the row)
+   - tutorial Esc dead (extend global keydown ln 956 to include `tutorial`)
+   - `saveAndExit` toasts "Saved." for skirmish (gate to campaign)
+   - `menu-last` lineage map stale (resolve via `COMMANDERS.roster[id].civ`)
+   - `CAST_DURATIONS.long` dead key (remove or wire)
+5. **Medium NEEDS-FIX queue** (do NOT fix — surface in AskUserQuestion at end of B):
+   - input-rebind UI decorative (match keydown ln 3537 hardcodes keys; consult `Profile.setting("input.binds")` instead)
+   - profile scene roster hardcodes legacy commanders (source from `COMMANDERS.roster` filter `playable:true`)
+   - end-screen XP doesn't persist (mutates `COMMANDERS.roster.progression` only, never writes `Profile.data.commanderProgress`)
+6. **Large NEEDS-FIX queue** (require PM ratification before any fix):
+   - `A` (age-up) key absent from match keydown handler — was it intentionally retired or did it regress?
+   - end-screen Continue / Replay / Menu mismatch — markup has 2 buttons, scene-checklist promises 3
+7. End Phase B with AskUserQuestion to PM listing the queued medium+large items with a Recommended pick.
+
+### Original Phase A directive (kept for reference)
 
 Read `prototype/index.html` plus the `prototype/data/*.json` files. For every interactive element across all 11 scenes (splash / login / menu / profile / mode-select / lobby-coop / commander-pick / tutorial / match / end / options) record one row in a single Markdown report:
 
@@ -137,9 +155,9 @@ Doc-hygiene only. No code or spine-doc surfaces touched.
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commit (pre-handoff): **`2edb70c`** — first handoff for UI verification sweep.
-- This session's commit: handoff-prep doc-hygiene bundle (PROGRESS / CASCADE / HANDOFF). Will be dual-pushed.
-- Working tree before handoff commit: `PROGRESS.md` + `CASCADE.md` + `CASCADE-history.md` + `PROGRESS-archive.md` + `HANDOFF.md` modified; `.accord/` untracked.
+- Latest commit: **`caa1e61`** — Phase A static-analysis report (dual-pushed).
+- Prior commits: `e964cf5` (handoff prep), `2edb70c` (first handoff), `90f6f1c` (splash-fix), `6069c49` (per-commander arc close).
+- Working tree clean; `.accord/` untracked.
 
 ### Doc-hygiene state
 
@@ -191,56 +209,43 @@ Doc-hygiene only. No code or spine-doc surfaces touched.
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar. Per-commander arc CLOSED 5/5 (6069c49); splash-fix
-landed (90f6f1c); two handoffs filed (2edb70c first, then this turn's
-doc-hygiene bundle). NEXT-SESSION work explicitly sequenced as A→B
-prototype UI verification sweep with cadence guardrails.
+Resuming Ash to Altar. Phase A of the prototype UI verification sweep
+LANDED (caa1e61, dual-pushed). Report carrier:
+prototype/UI-VERIFICATION-2026-05-05.md. NEXT session executes Phase B.
 
-BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
+BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
+Then read prototype/UI-VERIFICATION-2026-05-05.md (the report).
 
 BEFORE reading docs:
   git fetch origin
   git log --oneline HEAD..origin/main   # should be empty
 
-PRIMARY DIRECTIVE this session:
+PRIMARY DIRECTIVE — Phase B (live in-browser sweep + small-fix loop):
+1. Start prototype/start.bat (or python -m http.server 8765 from prototype/).
+2. Load Claude-in-Chrome or preview MCP at
+   http://localhost:8765/prototype/index.html.
+3. Walk every (Test) row in the report (~25) + sample of OK rows.
+   Update Status in place via Edit (Test→OK or Test→NEEDS-FIX).
+4. Fix the 5 small NEEDS-FIX inline, commit per ~3-fix batch, dual-push:
+   - end-screen "Highest Age" undefined (populate or drop)
+   - tutorial Esc dead (extend keydown ln 956 to tutorial)
+   - saveAndExit toasts "Saved" for skirmish (gate to campaign)
+   - menu-last lineage map stale (use COMMANDERS.roster[id].civ)
+   - CAST_DURATIONS.long dead key (remove or wire)
+5. Queue 3 medium + 2 large NEEDS-FIX to AskUserQuestion at end of B,
+   Recommended-first.
 
-  PHASE A — Static-analysis UI sweep.
-  Read prototype/index.html (use Grep first, then targeted Read with
-  offset+limit; don't read the whole file). Walk all 11 scenes
-  (splash/login/menu/profile/mode-select/lobby-coop/commander-pick/
-  tutorial/match/end/options). For every interactive element record
-  one row in prototype/UI-VERIFICATION-2026-05-MM.md (single file)
-  with Status: OK / (Test) / NEEDS-FIX. End with prioritized fix
-  queue. Single commit at end of phase. Dual-push.
-
-  PHASE B — Live in-browser sweep + small-fix loop.
-  Run prototype/start.bat. Use Claude-in-Chrome or preview MCP. Walk
-  (Test) rows + sample OK rows. Augment report in place via Edit.
-  Small NEEDS-FIX (typo / dead handler / one-line CSS / off-by-one):
-  fix inline. Medium/large: queue to AskUserQuestion at end with
-  Recommended pick.
-
-CADENCE GUARDRAILS (soft, per PM ask):
-- Avoid API overload: batch parallel reads, prefer Grep over full-file
-  reads, don't re-read files in context.
-- Soft context budget: archive findings to report file not chat
-  context; use Edit not Write for incremental updates;
-  summarize-and-discard intermediate scratch.
-- Commit cadence: single end-of-phase commit for A; per-3-scene
-  batch + per-3-fix batch for B. Dual-push every commit.
-- Acceptable to split A and B across two sessions if budget tight —
-  the report file is the carrier.
-
-CURRENCY REMINDER: Tribute (kill-only) + Divinity (6-cap). Mythium retired.
-
-DOCTRINE REMINDER: "Go big at launch" non-negotiable.
+CADENCE GUARDRAILS (per PM ask, soft):
+- Batch parallel reads; prefer Grep over full-file reads.
+- Archive findings to the report file, not chat context.
+- Commit per ~3-fix batch; dual-push every commit.
+- AskUserQuestion at end of Phase B for medium/large items.
 
 REGRESSION-WATCH: Codex modal post-splash-fix; ATTACK_TYPES data-loaded
-shape feeds in-match RPS multipliers; Tutorial / merge-preview /
-Promote-T4 / Aztec glyph ◈ / logBalanceCurve / effectiveTowerStats /
-snapshot.
+shape feeds in-match RPS multipliers; merge-preview / Promote-T4 /
+Aztec glyph ◈ / snapshot.
 
-VERIFY each step with: python tools/cascade-lint.py
+VERIFY each commit with: python tools/cascade-lint.py
 DUAL-PUSH each commit: session branch + main.
 
 SCOPE GUARD:
