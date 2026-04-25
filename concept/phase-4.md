@@ -257,16 +257,9 @@ The auxiliary economy is the universal-aux-slot surface — every mode draws fro
 
 ### Currency-budget audit (locked 2026-05-05 R7)
 
-- **Max-aux + 1 Fusion** = 1 (Damage) + 1 (Economy) + 3 (Tower-count) + 1 (Fusion) = **5 Div** vs 6-cap ✓
-- **Max-aux + no Fusion** = 1 + 1 + 3 = **5 Div** ✓ (room for 1 Fusion if Perfect-Wave / First-Hybrid surplus)
-- **Max-Fusion (3) + menu-unlock (2)** = **5 Div** ✓ (no aux)
-- **Combined per-tower expert stack**: 1.20 (s) × 1.15 (h passive per [§4.11.6](#4116-commander-magnitudes-h)) × 1.25 (matchup per RPS) = **1.725× pre-(i)/(q)** — anchors the [§4.11.8](#4118-skill-bar-thresholds-per-k) Hardcore-expert realized math (0.576 × 1.725 ≈ 1.0× realized vs nominal).
+Max-aux+1-Fusion = 1+1+3+1 = **5 Div** ✓ vs 6-cap; Max-Fusion (3) + menu (2) = **5 Div** ✓ (no aux). Combined per-tower expert stack: 1.20 (s) × 1.15 ([h](#4116-commander-magnitudes-h)) × 1.25 (matchup) = **1.725× pre-(i)/(q)**, anchoring [§4.11.8](#4118-skill-bar-thresholds-per-k) Hardcore-expert realized math (0.576 × 1.725 ≈ 1.0× realized). Tribute headroom: ~14,300 T baseline drops to ~12,400 T at Co-op/Maze-typical aux-spend — healthy cycling preserved. PvP-IW Send-for-Interest feasibility: 1 Div unlock + 1 Div Damage Bonus = 2 Div vs 4-Div floor → fits pre-escalation.
 
-Tribute headroom: ~14,300 T baseline (per §4.6) drops to ~12,400 T in Co-op / Maze-typical aux-spend scenarios — healthy cycling preserved. PvP-IW Send-for-Interest feasibility: 1 Div unlock + 1 Div Damage Bonus = 2 Div vs 4-Div floor → fits before any escalation source.
-
-### Mode availability matrix
-
-Per-mode (s)-availability and aux-slot reach is held inside [§4.11.7](#4117-per-mode-tuning-g--p--q) tuning rules; this table is the catalog of *what slots exist*, not *which mode optimizes which slot*. Per-mode optimization (e.g., "Horde-B prefers Tower-count expansion at 3 Div + Damage-Bonus passes on Economy-Bonus") is left to the per-mode authoring sub-pass.
+**Mode-optimization** (which slots a given mode prefers — e.g., Horde-B Tower-count vs PvP-IW Send-for-Interest rush) is deferred to the per-mode authoring sub-pass; cross-link to [§4.11.7](#4117-per-mode-tuning-g--p--q) for tuning rules.
 
 ## 4.7 Enemy system (PvE modes)
 
@@ -327,6 +320,10 @@ The 30-round match arc (mini-bosses at 5/15/25, main bosses at 10/20/30) is **dr
 **Solo-only.** PvP modes do **not** dramatize round-30 as the commander's antagonist — PvP round-30 is the symmetric "either side wins" lane-wars climax per `concept/phase-3.md §3.9`. The historic-arc framing is solo-only environmental theater layered over the same wave-shape backbone the matchmaker assumes for PvP, so co-op Horde inherits whichever player's commander is set as session host (or rotates per round per a future co-op-direction decision; OPEN).
 
 **Cultural-sensitivity gate (Follow-up #5).** Every name in the table above (Xerxes / Tlaxcalan / Tezcatlipoca / Jörmungandr) and every mini-boss candidate is **placeholder-pending-consultation**. The Aztec two-phase reveal in particular requires consultation review for the Tezcatlipoca framing (Smoking Mirror is an active living-religion deity figure for some communities, not a museum-cabinet myth); the Tlaxcalan-as-villain framing requires care to avoid flattening Aztec-Tlaxcalan history into a simple good-vs-evil. No round-30 art-lock until the 2026-04-25 Follow-up #5 pass closes.
+
+### Wave-composition variance mandate (NEW 2026-05-05 R9 close-out)
+
+Per [`decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md`](../decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md), the [§4.11.8](#4118-skill-bar-thresholds-per-k) skill-bar thresholds are vulnerable to a **memorization meta** — a player who learns one fixed wave script can clear Hardcore at novice skill-bar values. To defend threshold integrity, the wave-composition system must support: (a) **random-seeded armor-tag mix per wave** (within difficulty-appropriate distributions; the matchup-correctness axis stays measurable but non-memorizable); (b) **per-map crystal-lock variance** (the boss-spike tile or wave-spawn point is map-specific and not editor-cloned across modes). Implementation lives in Phase 5; this section is the spec mandate. Locked content-skeleton bosses (R10 / R15 / R30 per civ) are exempt — their *composition* can vary but the *identity* (Xerxes / Tezcatlipoca / Jörmungandr) is fixed per the locked roster.
 
 ## 4.9 Save model
 

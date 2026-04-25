@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-26
+**Last reviewed:** 2026-05-05
 ---
 
 # Phase 7 — Iteration
@@ -78,3 +78,4 @@ Order in which open items get addressed, assuming no new emergencies:
 - **Live-service ops is a permanent state, not a project.** Scope content cadence realistically for a two-dev team. Seasonal content means *seasonal*, not *monthly*.
 - **Cultural sensitivity is not optional.** Real-world cultures come with real-world responsibilities. Aztec representation in particular must clear external review before any content lock. Leonidas visual must not replay the 300-movie ideology. Ragnar must not flatten into the TV-show character. This is a hard gate, not a polish pass.
 - The game title deserves the same discipline as every other naming convention. Don't ship with a placeholder.
+- **Go big at launch (non-negotiable).** MVP ships the full locked content skeleton — 3 civilizations × (6 T1–T3 towers + 5 units + 6 T4 Demigods) + 3 Gods via the 9 locked Fusion recipes (per 2026-04-25 ratification). No MVP truncation to "1 civ + 2 commanders + 1 God." The validation rubric (`phase-6.md §6.4`) is built on the full arc, the trailer beat is the Fusion endgame, and the civilization-persistence callback only emerges if all three civs are present to compare against each other. Cutting scope at MVP saves weeks and loses the product. If timeline pressure forces a cut, cut **post-launch** content (patch-1 commanders, post-launch Gods, modes 7+) — never the launch skeleton.

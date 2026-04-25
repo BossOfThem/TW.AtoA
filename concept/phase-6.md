@@ -1,6 +1,6 @@
 ---
 **Status:** Draft
-**Last reviewed:** 2026-04-26
+**Last reviewed:** 2026-05-05
 ---
 
 # Phase 6 — Validation
@@ -53,7 +53,21 @@ Under the 2026-04-25 real-cultures ratification, MVP converges with the full lau
 - **Post-patch-1-commanders:** no civilization's patch-1 commander picked <35% of their civ's match share (prevents the launch commander soft-dominating its civ forever).
 - **Alpha:** Average session length ≥ 30 minutes. Day-2 return rate ≥ 40%.
 
-## 6.5 Exit condition for Phase 6
+## 6.5 Skill-bar telemetry (NEW 2026-05-05)
+
+*Decision entry: [`2026-05-05 R9 skill-bar thresholds`](../decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md) (Accepted; Reversibility Medium). Resolves the [`phase-4.md §4.11.8`](phase-4.md#4118-skill-bar-thresholds-per-k) forward-anchor. Engine-side gathering is a Phase 5 task; this section binds the measurement protocol.*
+
+The 3 skill-bar axes (matchup-correctness / placement-coverage / ability-uptime) per `phase-4.md §4.10.5` carry per-(k) expert + novice thresholds in `§4.11.8`. Each axis is computed from gameplay events as follows:
+
+- **Matchup-correctness** — for every kill event, log `effective_multiplier = 1.25` if the firing tower's attack-type RPS-counters the runner's armor-tag, `0.75` if RPS-countered, `1.0` otherwise (per [`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md)). The axis value is `(count of 1.25-events) / (total kill events)` over the match. Hardcore expert target: 90%.
+- **Placement-coverage** — for every active tower-second, log `engaged = 1` if any runner is within tower range during that second, else `0`. The axis value is `Σ engaged / Σ tower-seconds` across the match — i.e., the realized ε in §4.11.4. Hardcore expert target: 80%.
+- **Ability-uptime** — for the commander active ability (and any aux-slot timed effect), log `cast_count` against `(match_duration / cooldown)`. The axis value is `cast_count / max_cast_count`. Signature ability is **excluded** per §4.10.5 lock. Hardcore expert target: 80%.
+
+Realized DPS multiplier per match = product of the three axis values (Hardcore expert ≈ 0.576) — used by the validation rubric to detect "winning despite skill-bar fail" outliers (memorization meta) and "losing despite skill-bar pass" outliers (numerics drift). Both signal the §4.7 Round-11 mandate is needed.
+
+The same telemetry feeds the §6.4 success-metric "civilization-persistence by end of T3" check: per-civ matchup-correctness should rise across T1→T3 as the player learns the civ's RPS coverage.
+
+## 6.6 Exit condition for Phase 6
 
 A validation plan exists for every build phase. Success metrics are defined in advance, not defined after the data comes in. The team knows what would make them cancel the project. The **cultural-sensitivity pass** is scheduled as a hard gate between MVP content-lock and any external playtest.
 
