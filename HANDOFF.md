@@ -8,69 +8,52 @@
 
 ## TL;DR
 
-**Numbers-phase Follow-up #13 — ARC CLOSED. Rounds 1–10 of 10 LANDED across 4 commits, all dual-pushed to session branch + main.**
+**CONCEPT.md amendment pass — ARC CLOSED. Rounds 1–7 of 7 LANDED across 3 dual-pushed commits (`6580303` + `44ada2c` + `7cae3a4`).**
 
-Ten `AskUserQuestion`-driven ratification rounds bound concrete numbers/magnitudes onto the 17-item conceptual frame (Balance-pass #1, ratified 2026-05-04) + extension variable (s):
+Seven topical rounds rolled all 22 ratifications from the prior two arcs (2026-05-04 Balance-pass #1 conceptual-frame 12 rounds + 2026-05-05 Numbers-phase Follow-up #13 10 rounds) into the spine docs as stable §-anchors:
 
-1. **Round 1 — Runner HP curve (e).** `HP_std(R) = 100 · 1.16^R` Easy baseline; boss-spike overlay R10 ×3 / R15 ×2 / R30 ×5.
-2. **Round 2 — (k) compounding exponents.** Easy 1.16 / Hard 1.19 / Hardcore 1.22.
-3. **Round 3 — Tribute economy (a).** `yield(R) = 5 · 1.10^R` per std kill; boss lumps R10=250 / R15=400 / R30=1,500.
-4. **Round 4 — Speed (f) + per-map (j).** `f_base = 50 u/s` constant; archetype mults Std 1.0 / Swarm 1.5 / Elite 1.0 / Boss 0.7 / Colossal 0.5; ε=0.6, N=24 defaults.
-5. **Round 5 — Tower (c) DPS ladder + tier costs.** T1=1×/T2=3×/T3=9×/T4=27×/God=54×; T1_base=20 dmg/sec; costs 100/300/900/2,500 Tribute (Fusion=Divinity-priced).
-6. **Round 6 — Commander (h) damage-variant floor.** Passive +15% / 2-cell civ-aura; active 4× T3 DPS / 3-cell / 4s / 30s CD; signature once-per-match free tier-up.
-7. **Round 7 — Aux-slot costs + (s) ranges.** Damage Bonus 1 Div=(s)=1.20 global; Economy Bonus 1 Div=+25% per-kill yield; Tower-count expansion 1 Div=+2 N (cap 3 Div); Send-Creeps 100 T / Call-for-Help 300 T / Maze Stone 25 T.
-8. **Round 8 — Per-mode tuning.** Solo Off-Wave + PvE-MP Lane-Trade 100 T → 3 creeps + +50% kill-bonus; Horde Reinforce-Lane 1 helper @ 4× R-HP; PvP-Maze Send-Through +5 T/round; PvP-IW Send-for-Interest 1 Div unlock + 150 T/send + +3 T/round (Squadron pattern). Per-mode N: Horde-B = 24×player_count linear; PvP-Maze N=30. PvP tie-break: R31+ HP×1.5^(R-30) + R45 co-victory.
-9. **Round 9 — Skill-bar thresholds per (k).** Matchup-correctness Hardcore 90% / Hard 75% / Easy 60% / novice 30%; Placement-coverage 80%/65%/50%/30%; Ability-uptime 80%/60%/40%/20%. Hardcore expert realized 0.576 × 1.725× = ~1.0× closes margin exactly.
-10. **Round 10 — Divinity sources (CLOSES arc).** 4-Div floor (R10/R15/R30 boss + match-completion); Source 5 Perfect-Wave +1 Div per zero-leak boss-clear (max +3); Source 6 First-Hybrid +1 Div one-shot per topology-true hybrid. Ceiling 8 theoretical / 5-6 realistic expert fits 6-cap.
+1. **R1** — Scope decision + §-placement table + 7-round queue. 3x debug loop on §-placement (Option A single mega-round / Option B per-decision-file / **Option C topical 7-round queue chosen**). [`scope`](decisions/2026-05-05-concept-amendment-pass-scope.md).
+2. **R2** — `phase-3.md §3.6` mode roster 5→6 (Solo Campaign / Horde-A / Horde-B / PvE-MP / PvP-IW / PvP-Maze) + per-mode summary table + §3.4 stale Commander-Hero residue redacted + §3.8 mode-count update. [`R2`](decisions/2026-05-05-concept-amendment-pass-round-2-phase-3-modes.md).
+3. **R3** — `phase-4.md §4.10 Tower-vs-Unit math NEW` (9 sub-sections: variable nomenclature (a)-(r) + extension (s) + master damage equation + 7-slot round typology + (k) single-axis rule + skill-bar axes + sell-refund + target-priority + boss/Divinity reward shape + engine-port discipline) + §4.11 placeholder. Inserted §4.9→§4.10→§4.11→§4.8 per §4.4a precedent. [`R3`](decisions/2026-05-05-concept-amendment-pass-round-3-phase-4-tower-vs-unit-math.md).
+4. **R4** — `phase-4.md §4.11 Numbers floor` body populated (placeholder → 8 sub-sections binding all R1-R9 magnitudes: HP / (k) / Tribute / speed+map / DPS ladder + tier-up / commander / per-mode / skill-bar). [`R4`](decisions/2026-05-05-concept-amendment-pass-round-4-phase-4-numbers-floor.md).
+5. **R5** — `phase-4.md §4.6 Economy` rewrite (Tribute kill-only + Divinity 6-source 4-floor+2-escalation + Mythium retirement note) + `§4.6a Auxiliary economy NEW` (7-slot universal catalog + currency-budget audit + 1.725× expert-stack). Phase-4 trimmed to 600 lines. [`R5`](decisions/2026-05-05-concept-amendment-pass-round-5-phase-4-economy.md).
+6. **R6** — `phase-4.md §4.7` Wave-composition variance mandate (R9 close-out) + `phase-6.md §6.5 Skill-bar telemetry NEW` + `phase-7.md §7.4` "Go big at launch (non-negotiable)" bullet. §4.6a audit + mode-availability compressed for line cap (phase-4 597 lines). [`R6`](decisions/2026-05-05-concept-amendment-pass-round-6-phase-4-7-r11-and-phase-6-7.md).
+7. **R7 CLOSES arc 7/7** — Hub `CONCEPT.md` phase-index rows 3/4/6/7 touched + Non-negotiables list += "Go big at launch" + version footer 0.8→0.9. [`R7`](decisions/2026-05-05-concept-amendment-pass-round-7-hub-close.md).
 
-PM picked Recommended on every question across ~25 AskUserQuestion calls. Mid-arc (after R9) PM granted autonomy mandate: *"come to me only if you HAVE to for questions, I will continue using 'recommended' for the most part unless there is something you really need to flag me for."* Saved as feedback memory `feedback_autonomy_mandate.md`. R10 produced autonomously; final post-arc fork surfaced as genuine scope question (handoff vs which authoring sub-pass to open).
+**Spine-anchor stability achieved.** All 22 ratifications now resolve to stable §-anchors in `CONCEPT.md` + `concept/phase-3..7.md`.
 
-Ten new decision documents filed; CASCADE bumped v0.37 → v0.47 across the arc. cascade-lint clean throughout.
+PM autonomy mandate from Numbers-phase mid-arc carried forward — **R2-R7 produced fully autonomously without per-question gates.** Three dual-push checkpoints (after R3 / R5 / R7); cascade-lint clean throughout. 7 new decision documents. CASCADE bumped 0.47 → 0.55.
 
-**No code edits this session.** Pure concept/math work. §2.4a + §5.4 [LOCKED] + 17-item conceptual frame untouched (only magnitudes for items (e), (k), (a), (f), (j), (c), (l), (m), (h), (s) bound + skill-bar input rates + Divinity sources defined; shapes unchanged).
-
-**All 17 conceptual-frame variables (a)-(r) + extension (s) now have ratified magnitudes.** Numbers-phase complete.
+**No game code edits this session.** Pure spine-doc consolidation. §5.4 + §2.4a [LOCKED] UNTOUCHED throughout entire arc; 17-item conceptual frame UNTOUCHED; 2026-04-25 locked content skeleton UNTOUCHED; hub vision line UNTOUCHED.
 
 ---
 
 ## What is locked (clear-safe)
 
-### Carried forward from 2026-05-04 (untouched)
+### Carried forward (untouched this session)
 
-- Balance-pass #1 conceptual frame (17 items) — Accepted.
+- 17-item conceptual frame (a)-(r) + extension (s) — Accepted.
+- All 10 Numbers-phase magnitudes (HP curve / (k) / Tribute / speed / DPS ladder + tier-up / commander / aux-slot costs / per-mode tuning / skill-bar thresholds / Divinity sources) — Accepted.
 - 6-mode ontology — Accepted.
-- Auxiliary economy structure — Accepted.
-- "Go big, no scope cuts" project doctrine — Accepted.
-- Frame extensions: variable (s) first-class multiplicative; per-mode declarable lives.
+- Auxiliary economy structure (Tribute kill-only + Divinity 6-source 4-floor+2-escalation; 6-cap discipline) — Accepted.
+- "Go big, no scope cuts" doctrine — Accepted (now hub Non-negotiable).
+- 2026-04-25 locked content skeleton (3 civs × full ladder + 3 Gods via 9 Fusion recipes + 6 launch modes) — Accepted.
+- §5.4 [LOCKED] (Civilizations row, real-culture proper nouns).
+- §2.4a [LOCKED] (accessibility floor).
 
-### NEW this session (Rounds 1–10, full arc)
+### NEW spine-doc surfaces this session
 
-| Item | Locked value |
-|------|--------------|
-| (e) HP base curve | `HP_std(R) = 100 · 1.16^R` Easy; boss overlay R10 ×3 / R15 ×2 / R30 ×5 |
-| (k) exponents | Easy 1.16 / Hard 1.19 / Hardcore 1.22 (single-axis HP-only) |
-| (a) per-kill yield | `yield(R) = 5 · 1.10^R`; constant across (k); R30=87/kill |
-| (a) boss lumps | R10=250 / R15=400 / R30=1,500 |
-| (f) speed | f_base=50 u/s; archetype mults Std 1.0 / Swarm 1.5 / Elite 1.0 / Boss 0.7 / Colossal 0.5 |
-| (j) per-map defaults | ε=0.6, N=24; Horde-B 24×player_count; PvP-Maze N=30 |
-| (c) DPS ladder | T1=1×/T2=3×/T3=9×/T4=27×/God=54× off T1_base=20 dmg/sec |
-| Tier-up costs | T1=100 / T2=300 / T3=900 / T4=2,500 Tribute; Fusion=0 Tribute + 1 Divinity |
-| (h) passive | +15% / 2-cell civ-gated aura |
-| (h) active | 4× T3 DPS / 3-cell / 4s / 30s CD = 2,880 burst |
-| (h) signature | Once-per-match free tier-up T1→T2 or T2→T3 |
-| (s) Damage Bonus | 1 Div = (s)=1.20 global, max 1 active/match |
-| Economy Bonus | 1 Div = +25% per-kill yield, max 1 active/match |
-| Tower-count expansion | 1 Div = +2 N, cap 3 Div |
-| Send-Creeps cost | 100 T baseline; PvP-IW SfI = 1 Div unlock + 150 T/send |
-| Skill-bar Hardcore expert | Matchup 90% / Placement 80% / Uptime 80% |
-| Skill-bar novice (all k) | Matchup 30% / Placement 30% / Uptime 20% |
-| Divinity floor | 4 Div (R10 + R15 + R30 + match-completion = 1 each) |
-| Divinity Source 5 | Perfect-Wave: +1 Div per zero-leak boss-clear, max +3 |
-| Divinity Source 6 | First-Hybrid: +1 Div one-shot per topology-true hybrid |
-| Divinity ceiling | 8 theoretical / 5-6 realistic expert (fits 6-cap) |
-| PvP tie-break | R31+ HP × 1.5^(R-30) + R45 co-victory floor |
-
-Hardcore winnability ground (Round 2): expert skill-stack ~5× × tier-ladder 54× = ~270× expert effective damage; Hardcore R30 std HP ~565× R1 → margin closes via 1.725× per-tower stack ((s) 1.20 × (h passive) 1.15 × (q matchup) 1.25) + Round 9 realized 0.576 coverage = ~1.0× realized at expert thresholds.
+| Surface | Bound by |
+|---------|----------|
+| `phase-3.md §3.6` 6-mode roster + summary table | R2 |
+| `phase-4.md §4.10 Tower-vs-Unit math` (9 sub-sections) | R3 |
+| `phase-4.md §4.11 Numbers floor` (8 sub-sections) | R4 |
+| `phase-4.md §4.6 Economy` rewrite | R5 |
+| `phase-4.md §4.6a Auxiliary economy` (7-slot catalog + budget audit) | R5 |
+| `phase-4.md §4.7` Wave-composition variance mandate (R11 anchor) | R6 |
+| `phase-6.md §6.5 Skill-bar telemetry` (3-axis protocol) | R6 |
+| `phase-7.md §7.4` "Go big at launch (non-negotiable)" bullet | R6 |
+| Hub `CONCEPT.md` phase-index rows 3/4/6/7 + Non-negotiables list | R7 |
 
 ---
 
@@ -79,43 +62,42 @@ Hardcore winnability ground (Round 2): expert skill-stack ~5× × tier-ladder 54
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commit: **`7ddccab`** — "Numbers-phase #13 Round 10: Divinity sources — CLOSES arc 10/10."
-- Prior arc commits: `d23c651` (R7-R9), `363047e` (R4-R6), `b9a25a1` (R1-R3).
-- All four arc commits dual-pushed to session branch AND `main`. `git log HEAD..origin/main` should be empty.
-- Working tree: only `.accord/` (untracked, untouched).
+- Latest commit (pre-handoff): **`7cae3a4`** — "CONCEPT amendment pass ARC CLOSED — Rounds 6-7 of 7 LANDED."
+- Arc commits: `6580303` (R1-R3) + `44ada2c` (R4-R5) + `7cae3a4` (R6-R7). All dual-pushed to session branch + `main`.
+- Working tree before handoff commit: only `.accord/` (untracked, untouched).
+- This handoff itself will produce one additional commit (PROGRESS / CASCADE / HANDOFF doc-hygiene); will be dual-pushed.
 
 ### Phase status
 
-- All Phase 1–4 conceptual ratification carried forward.
-- **Balance-pass #2 numbers-phase 100% done (10 of 10 rounds; arc CLOSED).**
-- All 17 conceptual-frame variables (a)-(r) + extension (s) now have ratified magnitudes.
-- Per-tower (cd, range, attack-type, status-proc) + per-commander (effect-type variants) + per-civ specialization + per-map (good-cell authoring + wave-randomization seeds + crystal-lock variance per Round 11 mandate) authoring sub-passes ALL deferred post-arc. Estimated 5-10 rounds each.
+- All Phase 1–4 conceptual ratification carried forward + now consolidated into spine docs.
+- Numbers-phase 100% done (all 17 frame variables (a)-(r) + extension (s) bound).
+- Spine-anchor stability achieved — all 22 ratifications resolve to stable §-anchors.
+- **Phase 5 readiness gate** — engine-side telemetry per §6.5 protocol + wave-composition variance per §4.7 R11 mandate are now spec-anchored Phase-5 owns-this items.
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 entries (Round 10 / Round 9 / Round 8). Rounds 1–7 + 2026-05-04 archived to `PROGRESS-archive.md`.
-- `CASCADE.md` pointer: 1 most-recent block (2026-05-05 Rounds 1–10, arc CLOSED).
-- `CASCADE.md` version footer: v0.47 + v0.46 reference. Older in `CASCADE-history.md`.
-- `CONCEPT-GAPS.md`: unchanged (11 active gaps + 3 resolved).
+- `PROGRESS.md` session log: 3 entries (CONCEPT amendment pass arc / Numbers-phase R10 / Numbers-phase R9). R8 archived to `PROGRESS-archive.md`.
+- `CASCADE.md` pointer: 1 most-recent block (CONCEPT amendment pass ARC CLOSED). Numbers-phase Follow-up #13 prior block archived to `CASCADE-history.md`.
+- `CASCADE.md` version footer: 0.55 + 0.54 reference. Older (0.53 / 0.52 / 0.51 / 0.50 / 0.47 / etc.) archived to `CASCADE-history.md`.
+- `CONCEPT-GAPS.md`: unchanged (11 active gaps + resolved set).
+- cascade-lint clean.
 
 ### Open follow-ups (carried)
 
-- **#5** — Cultural-sensitivity pass (gates non-abstract civ art).
-- **#6** — Patch-1 commanders + Thor recipe-layer dissonance.
+- **#5** — Cultural-sensitivity pass (gates non-abstract civ art; intersects per-civ specialization track).
+- **#6** — Patch-1 commanders per civ + Thor recipe-layer dissonance.
 - **#7** — Foresight-coin / PvE campaign / AGES / leveling / attributes.
 - **#8 / #9** — non-boss enemy ontology / additional commanders.
-- **#11 (NEW post-R9)** — Round 11 mandate: random-seeded wave composition + per-map crystal-lock variance to defend skill-bar threshold integrity from memorization meta. Cross-cuts all 6 modes. Subset of per-map authoring sub-pass.
 - **C7.b deferred items** — Builder concurrency cap + 90% refund-on-cancel UI.
-- **`admin/concept.json` staleness debt** — still on pre-2026-04-21 5-lineage / 11-age shape.
-- **CONCEPT.md amendment pending** — §-new "Tower-vs-Unit math" (consumes Rounds 1–10) + 12-round 2026-05-04 ratifications. Authoring-heavy.
+- **`admin/concept.json` staleness debt** — still on pre-2026-04-21 5-lineage / 11-age shape; PM picks (a) full rewrite, (b) regenerate from CONCEPT.md, or (c) retire.
 - **`research/06-tw-subgenres.md`** new stub — Squadron TD / Legion TD 2 / BTD6 / Element TD / Line Tower Wars / Mini-TD deep dives.
 
 ### Authoring sub-passes (post-arc, no order-of-operations locked)
 
-- **Per-tower** — bind cd / range / attack-type / status-proc variance for 18 T1-T3 + 18 T4 Demigod + 9 God across 3 civs.
-- **Per-commander** — bind control / summon / economy effect-type variants of the 3 (h) slots, equivalent-impact to damage-floor.
-- **Per-civ** — specialization profile per Greek / Aztec / Norse (matchup affinities, identity hooks, signature creep types).
-- **Per-map / Round 11** — good-cell authoring + wave-randomization seeds + crystal-lock variance.
+- **Per-tower** — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs. **Now unblocked.** Consumes §4.10 frame + §4.11 magnitudes + §4.6a aux catalog as the spec floor.
+- **Per-commander** — bind control / summon / economy effect-type variants of the 3 (h) slots, equivalent-impact to damage-floor. **Now unblocked.** Consumes §4.11.6 damage-floor + §4.1 identity-floor.
+- **Per-civ** — Greek / Aztec / Norse specialization (matchup affinities, identity hooks, signature creep types). Intersects Follow-up #5 cultural-sensitivity gate.
+- **Per-map / Round 11** — good-cell authoring + wave-randomization seeds + crystal-lock variance per §4.7 R11 mandate.
 
 ### Regression-watch (unchanged this session)
 
@@ -125,15 +107,15 @@ Hardcore winnability ground (Round 2): expert skill-stack ~5× × tier-ladder 54
 
 ## NEXT SESSION — primary directive
 
-**No single Recommended track.** The numbers-phase arc closing leaves multiple non-trivial branches with no obvious leader. PM must scope first.
+**No single Recommended track.** With the amendment pass closed, the post-arc forks are concrete authoring sub-passes against now-stable §-anchors. PM picks scope first.
 
-Candidate tracks (in rough order of design-merit):
+Candidate tracks (rough design-merit order):
 
-1. **CONCEPT.md amendment pass** — roll all 12 conceptual rounds + 10 numbers-phase rounds into CONCEPT.md as new §-sections. Doc-spine consolidation; high-value but authoring-heavy.
-2. **Per-tower authoring sub-pass** — most concrete "numbers becoming game" progress. Likely 5-10 rounds binding cd / range / attack-type / status-proc across 45 towers.
-3. **Per-map / Round 11 authoring sub-pass** — defends skill-bar threshold integrity. Cross-cuts all 6 modes; combines wave-randomization + crystal-lock + good-cell sets.
-4. **Per-commander effect-type-variant authoring** — control / summon / economy variants of (h) slots; needs equivalent-impact-to-damage-variant constraint per R6.
-5. **Per-civ specialization** — Greek / Aztec / Norse identity profiles; intersects #5 cultural-sensitivity Follow-up.
+1. **Per-commander effect-type-variant authoring sub-pass** — control / summon / economy variants of (h) slots; needs equivalent-impact-to-damage-variant constraint per R6. **Likely Recommended** — consumes §4.11.6 damage-floor + §4.1 identity-floor cleanly; unblocks Phase 4 exit-condition test ("can a non-damage commander match damage commander match-impact").
+2. **Per-tower authoring sub-pass** — most concrete "numbers becoming game" progress. 5-10 rounds binding cd / range / attack-type / status-proc across 45 towers.
+3. **Per-map / Round 11 authoring sub-pass** — defends skill-bar threshold integrity per §4.7 R11 mandate. Cross-cuts all 6 modes; combines wave-randomization + crystal-lock + good-cell sets.
+4. **Per-civ specialization** — Greek / Aztec / Norse identity profiles; intersects Follow-up #5 cultural-sensitivity gate (hard pose-lock + content-lock before any culturally-coded civ art ships).
+5. **Phase 5 readiness gate** — engine-side telemetry implementation per §6.5 protocol; wave-composition variance per §4.7 R11.
 6. `research/06-tw-subgenres.md` deep-dive.
 7. `admin/concept.json` migration — long-deferred staleness debt.
 
@@ -142,16 +124,17 @@ Candidate tracks (in rough order of design-merit):
 - `concept/phase-5.md §5.4` naming **[LOCKED]**.
 - `concept/phase-2.md §2.4a` accessibility floor **[LOCKED]**.
 - 2026-04-25 locked content skeleton.
-- 17-item conceptual frame + extension (s) — **Accepted**. All Rounds 1–10 magnitudes — **Accepted**. Revisions require superseding decisions.
+- 17-item conceptual frame + extension (s) — **Accepted**. All Numbers-phase magnitudes — **Accepted**. Revisions require superseding decisions.
 - 6-mode ontology + auxiliary economy structure — **Accepted**.
-- "Go big, no scope cuts" project doctrine — **Accepted**.
+- "Go big at launch" doctrine — **Accepted (Non-negotiable)**.
+- All R1-R7 amendment-pass spine surfaces (§3.6 / §4.6 / §4.6a / §4.7 R11 / §4.10 / §4.11 / §6.5 / §7.4 bullet / hub phase-index rows + non-negotiables) — **Accepted**.
 
 ---
 
 ## Cadence rules carried forward
 
 - **Cadence exists to manage the context window, not to gate every step.** Concrete plan = execute end-to-end; gate on genuine ambiguity only.
-- **PM autonomy mandate (NEW 2026-05-05):** within established multi-round arcs where PM has consistently picked Recommended, proceed autonomously without per-question gates. Surface AskUserQuestion only on genuine forks (no clear Recommended), scope expansion, cascade-violation risk, or handoff trigger. See `feedback_autonomy_mandate.md`.
+- **PM autonomy mandate:** within established multi-round arcs where PM has consistently picked Recommended, proceed autonomously without per-question gates. Surface AskUserQuestion only on genuine forks (no clear Recommended), scope expansion, cascade-violation risk, or handoff trigger. See `feedback_autonomy_mandate.md`.
 - **AskUserQuestion is the standard interface** when gating is needed. Always Recommended-first.
 - **MD-first preservation** — for any scope expansion or non-trivial conceptual ratification, land in MD before further questions. /clear must be safe at any prompt.
 - **Dual-push discipline:** push to BOTH session branch AND `main` after every commit. Commit at every ~3 rounds.
@@ -164,10 +147,12 @@ Candidate tracks (in rough order of design-merit):
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar — Numbers-phase Follow-up #13 ARC CLOSED 2026-05-05.
-All 10 of 10 rounds LANDED. All 17 conceptual-frame variables (a)-(r) +
-extension (s) now have ratified magnitudes. Four commits dual-pushed
-across the arc (b9a25a1 + 363047e + d23c651 + 7ddccab). cascade-lint clean.
+Resuming Ash to Altar — CONCEPT.md amendment pass ARC CLOSED 2026-05-05.
+All 7 of 7 rounds LANDED. All 22 prior-arc ratifications (12 Balance-pass
+#1 conceptual + 10 Numbers-phase #13) now resolve to stable §-anchors in
+spine docs (phase-3 §3.6 / phase-4 §4.6 / §4.6a / §4.7 R11 / §4.10 / §4.11
+/ phase-6 §6.5 / phase-7 §7.4 / hub CONCEPT.md). Three commits dual-pushed
+across the arc (6580303 + 44ada2c + 7cae3a4) plus handoff hygiene commit.
 
 BOOTSTRAP per CLAUDE.md order:
   README → CLAUDE → CASCADE → HANDOFF → PROGRESS → CONCEPT.
@@ -177,25 +162,26 @@ BEFORE reading docs:
   git log --oneline HEAD..origin/main   # should be empty after dual-push
 
 STATE ALOUD (before producing anything):
-- Phase status: Numbers-phase 10/10 COMPLETE; arc CLOSED. Per-tower /
-  per-commander / per-civ / per-map authoring sub-passes ALL deferred
-  post-arc (5-10 rounds each, no order-of-operations locked). CONCEPT.md
-  amendment still pending (now consumes all 22 rounds: 12 conceptual +
-  10 numbers). admin/concept.json staleness debt outstanding.
-  research/06-tw-subgenres.md not yet written. Round 11 mandate
-  (wave-randomization + crystal-lock variance) flagged within per-map
-  sub-pass.
+- Phase status: CONCEPT amendment pass 7/7 COMPLETE; arc CLOSED. All 17
+  conceptual-frame variables (a)-(r) + extension (s) bound + spine-anchored.
+  Per-tower / per-commander / per-civ / per-map authoring sub-passes ALL
+  unblocked (consume §4.10/§4.11/§4.6a + §4.1 identity-floor). Phase 5
+  readiness gate items spec-anchored (§6.5 telemetry + §4.7 R11 wave
+  variance). admin/concept.json staleness debt outstanding.
+  research/06-tw-subgenres.md not yet written.
 - Open blockers: none load-bearing.
-- Specific next-step: surface AskUserQuestion with NO clear Recommended —
-  PM must scope first. Candidate tracks (rough design-merit order):
-    1. CONCEPT.md amendment pass (consolidates doc spine).
-    2. Per-tower authoring sub-pass (cd/range/attack-type/status-proc
-       across 45 towers).
+- Specific next-step: surface AskUserQuestion — PM scopes the post-arc
+  fork. Candidate tracks (rough design-merit order):
+    1. Per-commander effect-type-variant authoring sub-pass (control/
+       summon/economy variants of (h); equivalent-impact-to-damage
+       constraint per R6; unblocks Phase 4 exit-condition test).
+    2. Per-tower authoring (cd/range/attack-type/status-proc across
+       45 towers).
     3. Per-map / Round 11 authoring (wave-randomization + crystal-lock
-       + good-cell sets).
-    4. Per-commander effect-type-variant authoring (control/summon/
-       economy variants of (h) slots).
-    5. Per-civ specialization (Greek/Aztec/Norse identity profiles).
+       + good-cell sets per §4.7 R11 mandate).
+    4. Per-civ specialization (Greek/Aztec/Norse identity profiles;
+       intersects Follow-up #5 cultural-sensitivity gate).
+    5. Phase 5 readiness gate (engine-side telemetry + wave variance).
     6. research/06-tw-subgenres.md.
     7. admin/concept.json migration.
 
@@ -204,17 +190,20 @@ Recommended-first. MD-first on scope expansions. Execute end-to-end
 when plan concrete; gate on genuine ambiguity only. Commit + dual-push
 every ~3 rounds.
 
-PM AUTONOMY MANDATE (2026-05-05): once an arc establishes a stable
-"PM picks Recommended" pattern, proceed autonomously within that arc.
-Surface gates only on genuine forks / scope expansion / cascade-risk /
-handoff. See feedback_autonomy_mandate.md.
+PM AUTONOMY MANDATE: once an arc establishes a stable "PM picks
+Recommended" pattern, proceed autonomously within that arc. Surface
+gates only on genuine forks / scope expansion / cascade-risk / handoff.
+See feedback_autonomy_mandate.md.
 
-CURRENCY REMINDER: Tribute (primary, kills) + Divinity (secondary,
-cap 6/match, drain 2 + 1×N for Fusion). NOT "gold."
+CURRENCY REMINDER: Tribute (kill-only, k-invariant) + Divinity (6-cap;
+4-floor R10/R15/R30 boss + match-completion + 2-escalation Perfect-Wave
++ First-Hybrid). Mythium RETIRED. NOT "gold."
 
-DOCTRINE REMINDER: "Go big, no scope cuts." Do NOT recommend the
-smallest-scope option for dev-load reduction; recommend on design
-merit only.
+DOCTRINE REMINDER: "Go big at launch" is now a hub Non-negotiable.
+MVP ships full content skeleton (3 civs × full ladder + 3 Gods via 9
+Fusion recipes + 6 launch modes). Cuts go to post-launch content,
+NEVER to launch skeleton. Do NOT recommend the smallest-scope option
+for dev-load reduction; recommend on design merit only.
 
 REGRESSION-WATCH: Tutorial / match flow / merge-preview / Promote-T4
 indicator / Aztec glyph ◈ / logBalanceCurve / effectiveTowerStats /
@@ -226,12 +215,14 @@ DUAL-PUSH each commit: session branch + main.
 SCOPE GUARD:
 - §5.4 [LOCKED]; §2.4a [LOCKED]; 2026-04-25 locked content skeleton
   untouched.
+- 17-item frame + extension (s) Accepted.
+- All Numbers-phase magnitudes Accepted.
+- All R1-R7 amendment-pass §-anchors Accepted (§3.6 / §4.6 / §4.6a /
+  §4.7 R11 / §4.10 / §4.11 / §6.5 / §7.4 / hub).
+- 6-mode ontology + auxiliary economy structure Accepted.
+- "Go big at launch" doctrine Accepted (Non-negotiable).
 - Cultural-sensitivity Follow-up #5 still hard-gates non-abstract civ
   art (intersects per-civ specialization track).
-- 17-item frame + extension (s) Accepted.
-- All Rounds 1-10 numbers-phase magnitudes Accepted.
-- 6-mode ontology + auxiliary economy structure Accepted.
-- "Go big, no scope cuts" doctrine Accepted.
 ```
 
 ---
@@ -240,14 +231,15 @@ SCOPE GUARD:
 
 Hard-stop and flag if:
 
-- §5.4 row beyond Lineages would be touched.
+- §5.4 row beyond Civilizations would be touched.
 - 2026-04-25 locked content-skeleton names would be modified.
 - §2.4a is touched.
 - Cultural-sensitivity concern surfaces (Follow-up #5).
 - Local `main` stale on session start.
 - `cascade-lint` fails and fix > 5min.
 - The 17-item frame would be silently edited.
-- Any Round 1-10 bound magnitude would be silently re-tuned without a superseding decision entry.
+- Any Numbers-phase bound magnitude would be silently re-tuned without a superseding decision entry.
+- Any amendment-pass §-anchor (§3.6 / §4.6 / §4.6a / §4.7 R11 / §4.10 / §4.11 / §6.5 / §7.4 / hub phase-index rows) would be silently edited.
 - A scope expansion occurs and PM has not landed it in MD before further questions.
-- Any recommendation invokes "lessen dev load" without explicit PM override of the "Go big" doctrine.
+- Any recommendation invokes "lessen dev load" without explicit PM override of the "Go big at launch" doctrine.
 - An authoring-sub-pass commit lands without a `decisions/<date>-*-<slug>.md` entry capturing the bindings.
