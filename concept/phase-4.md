@@ -13,6 +13,8 @@ Parent hub: [CONCEPT.md](../CONCEPT.md). Prior: [phase-3.md](phase-3.md). Next: 
 
 **Amendment banner — 2026-04-26 real-cultures frame cascade (§4.2 / §4.5 / §4.6 / §4.8 follow-on turn).** Per [`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](../decisions/2026-04-25-q2-real-cultures-direction-ratified.md) (Reversibility Hard), prior cascade turn rewrote §4.1 + §4.3 + §4.7. This turn rewrites **§4.2 (divergence forks under T1→T4 ladder), §4.5 (special effects under real-cultures), §4.6 (economy — Tribute + Divinity per 2026-04-25 ratification), and §4.8 (exit condition)** to the new frame. Attack-type / armor / RPS surfaces reference the 2026-04-26 mapping ([`decisions/2026-04-26-attack-type-mapping.md`](../decisions/2026-04-26-attack-type-mapping.md), Reversibility Medium). §2.4a + §5.4 [LOCKED] untouched.
 
+**Amendment banner — 2026-04-27 commander-as-summoned-ability-avatar cascade (§4.1 turn; §4.4a + §4.7 queued).** Per [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted; Reversibility Medium; supersedes [`decisions/2026-04-20-commander-on-field-hero.md`](../decisions/2026-04-20-commander-on-field-hero.md)). **This turn lands §4.1 in-match presence model subsection (summoned-on-cast).** Immediate follow-on turns under the same decision: §4.4a NEW (Builder unit class) + §4.4 stale on-field-hero sentence redaction + §4.7 historic-match-arc-beats banner extension (solo-only; round-30 antagonists per civ — Greek Xerxes / Aztec two-phase Tlaxcalan→Tezcatlipoca pre-contact / Norse Jörmungandr-or-Fenrir myth). 8-question PM refinement same-day amendment on the 2026-04-27 decision narrows cultural-sensitivity scope (Cortés OUT of all acts; Aztec framing locked pre-contact). §2.4a + §5.4 [LOCKED] untouched. Locked content-skeleton names from 2026-04-25 ratification untouched.
+
 ---
 
 ## 4.1 Commander mechanical spec (identity floor [PROPOSAL], per-commander writeup OPEN)
@@ -38,6 +40,43 @@ Each Commander also gets a one-page mechanical writeup before Phase 4 exits, cov
 - Solo campaign storyline (outline only at Phase 4; full script in Phase 5 polish) anchored in the commander's real historical arc + civ's native myth.
 - Unlock path for cosmetics and voice lines (by commander level within the 20-level ladder).
 - **Cultural-sensitivity review** per 2026-04-25 Follow-up #5 (mandatory gate on content lock; external consultation for Aztec representation, 300-ideology audit for Leonidas, TV-show-vs-history framing for Ragnar).
+
+### In-match presence model — summoned-on-cast (NEW 2026-04-27)
+
+*Decision entry: [`2026-04-27 commander-as-summoned-ability-avatar`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted; Reversibility Medium; supersedes [`2026-04-20 commander-on-field-hero`](../decisions/2026-04-20-commander-on-field-hero.md)). 8-question PM refinement amendment landed same-day on the 2026-04-27 entry (Aztec pre-contact framing; round-30 antagonists per civ; mixed historicity; myth-mode counterfactual arc; Builder labels working). The per-commander one-page mechanical writeup gates above inherit this subsection's three-surface model. Reversibility: Medium.*
+
+The Commander has **three in-match surfaces and no others.** The board itself shows the Commander **only during a cast window** — between casts, the Commander is not present on the play field. This is load-bearing for tone: Leonidas does not stand around between "This Is Sparta!" invocations; he appears because he was invoked, then the moment ends.
+
+| Surface | Where | Player input | Physical avatar? |
+|---------|-------|--------------|------------------|
+| **Identity plinth** | HUD frame top-left (portrait + name + level + XP tick) | none — passive display | no — 2D portrait only |
+| **Passive effect** | per-tower icon pip on buffed towers (hoverable for tooltip explaining the rule) | none — always on | no — pip sprite only; **board-wide invisible**, not aura-scoped |
+| **Active cast** (short-CD / long-CD / signature) | emerges onto board, acts at target, retreats off-board | button / hotkey + click-target | **yes — summoned-on-cast avatar** |
+
+**Three-tier cast animation budget.** Commander emerges for *every active cast* (passive excluded). Tiered durations balance flavor against fatigue:
+
+| Cast class | Duration target [PROPOSAL] | Beats |
+|------------|----------------------------|-------|
+| Short-CD active | ~1.2s end-to-end | fade-in at target (0.2s) → pose + VO bark (0.6s) → fade-out (0.4s); no path travel |
+| Long-CD active | ~2.8s end-to-end | run-in from off-board (0.6s) → cast + full VO line (1.6s) → retreat (0.6s); screen-shake / civ-VFX at peak |
+| Signature (long-CD, match-changing) | ~4.5s cinematic | camera nudge → stride to target → cast peak with full VO + VFX + optional historical-event vignette → retreat. **Input non-blocking** (towers fire, enemies advance, player can click) |
+
+**Explicit non-goals** (these were prototype-scope inventions in the now-superseded 2026-04-20 on-field-hero design; none are concept-level intent):
+
+- No movement command. No relocate gesture.
+- No aura that lingers on the board (passive is board-wide invisible, signaled by per-tower pips).
+- No HP bar. No collision. No knock-back logic.
+
+**Fatigue mitigation.** Short-CD ceiling ~1.2s means even at minimum CD the Commander is on-screen <20% of the time during mashing. Variable VO banks ([PROPOSAL] 6 alts per commander per short-CD class) rotate to prevent line-repetition. **Reduce-motion accessibility toggle** (per §2.4a [LOCKED] floor) collapses short-CD emergence to a non-avatar VFX burst — opt-out path is built in, not patched on.
+
+**Cross-references:**
+
+- **Builder unit class** — see [§4.4a](#44a-builder-unit-class-new-2026-04-27) (queued in immediate follow-on turn). Commander does not place towers; the civ-coded Builder unit (Greek Mason Crew / Aztec Priest-Builder / Norse Thrall Gang — all working labels per Follow-up #5) handles construction. "Priest-Builder" specifically flagged for caste-accuracy review in the cultural-sensitivity pass (macehualtin commoners did Aztec construction, not priests).
+- **Historic match-arc beats** — see [§4.7](#47-enemy-system-pve-modes) banner extension (queued in immediate follow-on turn). Commander's historic arc + round-30 antagonist drive solo-mode environmental beats; PvP retains the 2026-04-25 lane-wars shape unchanged. Round-30 antagonists per civ: **Xerxes I** (Greek, named historic) / **two-phase Tlaxcalan war-leader → Tezcatlipoca avatar** (Aztec, pre-contact framing — Cortés explicitly OUT of all acts) / **Jörmungandr or Fenrir** (Norse, myth-overlay; sub-question OPEN). Cross-civ tonal arc escalates mortal → bridge → myth — intentional, not asymmetry oversight.
+
+**Cultural-sensitivity inheritance.** Cast-emerge pose (the summoned avatar's silhouette + animation) inherits the [`concept/phase-5.md §5.3`](phase-5.md) silhouette-forward art-direction gate + the 2026-04-25 Follow-up #5 cultural consultation requirement. **No pose lock until the consultation pass closes** — placeholder neutral-abstract silhouettes carry the cast-emerge pipeline through the reshape-plan C7.b prototype step.
+
+**Phase-3 cascade note.** Any prior on-field-hero references in [`concept/phase-3.md §3.2`](phase-3.md) (Commander system framing) and [`§3.4`](phase-3.md) (match loop) are **superseded transitively** by this subsection — no phase-3 amendment turn is owed as long as the §3.2 / §3.4 prose stays at framing level (no specific stale primitives like "aura," "Shift+click move," or "Q signature global empowerment"). If a phase-3 prose review surfaces specific stale primitives, file a banner there as a corollary turn under the same 2026-04-27 decision.
 
 ## 4.2 Divergence system
 

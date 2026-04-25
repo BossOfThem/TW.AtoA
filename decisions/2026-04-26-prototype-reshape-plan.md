@@ -97,3 +97,62 @@ Option **C** because it preserves the identity-floor plumbing via re-rebased 202
 - If engine choice locks during reshape execution (unlikely — see Alternative A), reshape-in-progress items should be completed in the prototype before any engine-porting work begins. Engine porting is a separate Phase-5 decision track per `concept/phase-7.md §7.1 #4`.
 - Number-balance [PROPOSAL] pass (2026-04-25 Follow-up #13) cross-cuts this plan's numeric placeholders (Tribute costs, Divinity earn rate, merge thresholds, RPS percentages, status-proc durations). Balance pass happens after the reshape lands, not before.
 - `CASCADE.md` bump + `PROGRESS.md` session-log row on Proposed filing; second bump on PM ratification (Accepted); third bump per reshape step if scope warrants.
+
+---
+
+## Amendment 2026-04-27 — C4 Cast-bar extension + new C7 step
+
+Filed concurrent with [`2026-04-27-commander-as-summoned-ability-avatar.md`](2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted; supersedes [`2026-04-20-commander-on-field-hero.md`](2026-04-20-commander-on-field-hero.md)). The 2026-04-27 decision adds two scope items to this plan. **Plan remains Proposed overall; execution PM-gated. No prototype files touched by this amendment — it extends the pending plan's Proposed scope only.**
+
+### Step C4 extension — Commander Cast bar
+
+The tier-ladder UI gains a dedicated **Commander Cast bar** alongside the existing tower-card / merge-preview / Fusion-menu surfaces:
+
+- Three buttons: passive (display-only) / short-CD active / long-CD + signature active.
+- Passive button shows the current pip-count of buffed towers; no input.
+- Short-CD and long-CD/signature buttons show a CD arc + click-to-cast input.
+- Cast input emits `commander.cast(class, target?)`. Targeting model (point-and-click vs. self-cast vs. board-wide) is TBD; resolved in the §4.1 amendment turn before C4 execution.
+
+### Step C7 — Summoned-Commander avatar + Builder unit class (two parts)
+
+Replaces the dying primitives from the superseded [`2026-04-20-commander-on-field-hero.md`](2026-04-20-commander-on-field-hero.md) and adds the new Builder class. Sequenced as two distinct execution turns: **C7.a gut first, C7.b add second.**
+
+**C7.a — Gut persistent on-field avatar logic.**
+
+- Remove aura render (2-cell dashed ring) + `commanderAuraEffectOn`.
+- Remove Shift-click handler + `C`-toggle + `moveCommanderTo` + the 1-move-per-wave reset in `startWave`.
+- Remove `Q` signature global aura empowerment + the lineage-flavored signature feed message.
+- Remove knock-back-on-enemy-overlap + the commander draw block + laurel-ring + cooldown-arc render.
+- Strip snapshot field `commander: {x, y, lineage, cd, sigActiveTtl, auraCells}` from `buildSnapshot` + `applyGuestSnapshot`.
+- Strip messages `{type:'commander-move', x, y}` and `{type:'commander-sig'}` from host broadcast + guest receivers.
+- All removals follow **C6 dead-code-pass discipline**: comment-out with dated `// SUPERSEDED 2026-04-27` marker rather than hard-delete; final delete is the C6 sweep, not C7.a.
+
+**C7.b — Add three-tier cast-emerge animation pipeline + Builder class.**
+
+- **Cast-emerge pipeline.** Reuse existing 1.4× silhouette render (`renderSilhouette`) as the cast-emerge avatar — no re-authoring; pose-lock still gated by C2's cultural-sensitivity pass.
+  - Three-tier budget: short-CD (~1.2s end-to-end), long-CD (~2.8s), signature (~4.5s, **input-non-blocking** — towers keep firing, player can still click).
+  - VO bank rotation: 6 alt barks per commander per short-CD class [PROPOSAL].
+  - Reduce-motion toggle (§2.4a [LOCKED]) collapses short-CD to non-avatar VFX burst.
+- **`BuilderUnit` class — degenerate mobile unit** (single anim, no AI, no combat).
+  - Spawn at home anchor on tower purchase → free-space lerp to target plot → civ-coded construction anim (~1.2s T1 / ~2.0s T2 / ~3.0s T3 / ~4.5s T4 / ~6.0s Fusion) → despawn at completion.
+  - Concurrency cap 3 per civ [PROPOSAL]; further purchases queue at home anchor.
+  - 90% refund on cancel before 50% progress; 1-frame lockout at 50% to prevent exploit-timing.
+  - Non-targetable by regular waves; boss-threat scope deferred to §4.7 ratification turn.
+  - Build-grid distinct from enemy-path-grid (`walkable-build-grid` vs. `enemy-path-grid`). JS prototype lerps directly; Godot port uses separate NavigationRegion2Ds.
+- **Additive snapshot fields** (host → guest; absence-tolerant for backwards compatibility):
+  - `commander: {castState, castTarget, castTtl}` (replaces the C7.a-removed five-field commander struct).
+  - `builders: [{x, y, target, ttl, civ, tier}]`.
+
+**C7 sequencing.** C7.a unblocks C6 dead-code-sweep cleanliness. C7.b depends on **C2 silhouette migration completing** (silhouettes are the cast-emerge agent). Effective execution order across the full plan: C1 → C2 → C3 → C4 (incl. Cast-bar extension) → C5 → **C7.a → C7.b** → C6.
+
+**Cultural-sensitivity gates inherited.** Builder labels (Mason Crew / Priest-Builder / Thrall Gang) remain working placeholders pending Follow-up #5; "Priest-Builder" specifically flagged for caste-accuracy review (macehualtin commoners did Aztec construction, not priests). Cast-emerge pose-lock inherits C2's pass.
+
+**Incremental Affects.** `prototype/index.html` (silhouette render reuse, cast-emerge pipeline, `BuilderUnit` class, snapshot field migration). `prototype/commanders.json` already in C1 scope; no additional changes from C7.
+
+### Amendment scope-conformance check
+
+- ✓ Does not commit to engine porting — C7 stays JS prototype + Godot-port-notes.
+- ✓ Does not lock any numbers — animation durations / concurrency cap / refund threshold all [PROPOSAL].
+- ✓ Does not lock silhouette poses — C7.b reuses C2's gated render.
+- ✓ Does not touch §2.4a accessibility floor [LOCKED] — references it as a constraint (reduce-motion toggle), does not amend it.
+- ✓ Does not touch §5.4 naming conventions [LOCKED] — Builder labels are working placeholders, not §5.4-locked.

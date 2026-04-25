@@ -1,9 +1,13 @@
 # Decision — Commander-as-Hero-Unit-on-Field (SC/WC3/HoMM DNA)
 
 **Date:** 2026-04-20
-**Status:** Accepted
+**Status:** **Superseded by [`2026-04-27-commander-as-summoned-ability-avatar.md`](2026-04-27-commander-as-summoned-ability-avatar.md)** (was: Accepted)
 **Reversibility:** Medium
 **Affects:** `prototype/index.html` (`initMatch`, `effectiveTowerStats`, `commanderAuraEffectOn`, `moveCommanderTo`, `fireCommanderSignature`, `startWave` reset, commander draw block, Q/C key handlers, `buildSnapshot`, `applyGuestSnapshot`, guest `commander-move`/`commander-sig` receivers)
+
+---
+
+> **🔁 Superseded 2026-04-27** by [`2026-04-27-commander-as-summoned-ability-avatar.md`](2026-04-27-commander-as-summoned-ability-avatar.md). At the 2026-04-26 prototype review PM identified that the persistent on-field Commander Avatar specced below does not match concept intent: the Commander is **not present on the field by default**. They emerge only on cast (short-CD / long-CD / signature), animate at target, retreat off-board. Tower construction moves to a separate civ-coded Builder unit class. Persistent avatar + 2-cell aura + Shift-click move + `Q` signature aura empowerment + knock-back are all **dying primitives**; surviving data surfaces (`commanders.json.stats.signature` schema, 20-level XP ladder + cosmetic slots from [`2026-04-20-commander-identity-floor.md`](2026-04-20-commander-identity-floor.md), silhouette-test harness) carry over into the new design. Body preserved below as historical reasoning record + prototype-scope traceability for the upcoming reshape-plan **C7** dead-code pass. Removal of the dying primitives from `prototype/index.html` is gated on PM ratification of [`2026-04-26-prototype-reshape-plan.md`](2026-04-26-prototype-reshape-plan.md); prototype files frozen until that ratification lands.
 
 ---
 
