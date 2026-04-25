@@ -568,6 +568,8 @@ Tier-up costs (Tribute; sell-refund schedule per [§4.10.6](#4106-sell-refund-sc
 
 On-curve Easy spend ≈ 10,700 T per match → ~14,300 T headroom against ~25,000 T income, sized for skill-bar (k)-induced overspend (placement misses, sells, redundant matchup buys).
 
+**Per-tower magnitudes AUTHORED 2026-05-06** (per-tower authoring sub-pass R1-RN, ARC CLOSED). All 45 launch towers (15 per civ × 3 civs) bound to the locked 7-field schema (attack_type / cd / range / status_proc / dps / aux_slot_compat / notes); per-tower dps within ±20% of the ladder above; per-civ falsifiable magnitude signatures confirmed (Greek control = dps-centered + cd-mid + lockdown-procs; Aztec economy = dps-band-high T2-T3 + cd-faster + Poison/Fire/Slashing-bleed compounding; Norse summon = dps-centered + cd-fastest + Bleed-density 6/15 + range-shortest). See [`per-tower R1 scope`](../decisions/2026-05-06-per-tower-authoring-scope.md) + [`R2 Greek`](../decisions/2026-05-06-per-tower-r2-greek-roster.md) / [`R3 Aztec`](../decisions/2026-05-06-per-tower-r3-aztec-roster.md) / [`R4 Norse`](../decisions/2026-05-06-per-tower-r4-norse-roster.md) rosters + [`RN cross-civ audit`](../decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md) for full spec.
+
 ### 4.11.6 Commander magnitudes (h)
 
 Per [§4.10.1](#4101-variable-nomenclature-locked-2026-05-04-extension-2026-05-04-r12) (h) and [`§4.1`](#41-commander-mechanical-spec-identity-floor-proposal-per-commander-writeup-open) identity-floor:
@@ -614,6 +616,7 @@ Hardcore expert realized DPS multiplier: 0.90 × 0.80 × 0.80 ≈ **0.58× reali
 ## 4.8 Exit condition for Phase 4
 
 - ✅ **Commander one-pagers complete** for all 3 launch commanders (Leonidas / Montezuma II / Ragnar Lothbrok) — passive + short-CD active + signature full specs under the §4.1 identity floor. **DONE 2026-05-05** per [`per-commander R5 audit and arc close`](../decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) §c (one-pagers) + R2-R4 decision files for per-round mechanical authoring.
+- ✅ **Per-tower spec table populated** for all 45 launch towers (Greek + Aztec + Norse, 6 T1-T3 mainline + 6 T4 Demigod + 3 God per civ) under the locked 7-field schema (attack_type / cd / range / status_proc / dps / aux_slot_compat / notes). **DONE 2026-05-06** per [`per-tower R1 scope`](../decisions/2026-05-06-per-tower-authoring-scope.md) + [`R2 Greek roster`](../decisions/2026-05-06-per-tower-r2-greek-roster.md) + [`R3 Aztec roster`](../decisions/2026-05-06-per-tower-r3-aztec-roster.md) + [`R4 Norse roster`](../decisions/2026-05-06-per-tower-r4-norse-roster.md) + [`RN cross-civ audit and arc close`](../decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md). Three falsifiable per-civ magnitude signatures empirically confirmed (Greek control / Aztec economy / Norse summon).
 - Fusion system shape signed off (done 2026-04-25: 9 locked Gods via 9 locked 2-Demigod recipes, Divinity-gated, menu-driven discovery). Fusion-numerics balance-pass remains [PROPOSAL].
 - Mobile unit control model resolved (§4.4 OPEN BLOCKER).
 - Enemy direction locked (§4.7 A/B/C choice ratified; leading placeholder = Option C hybrid).

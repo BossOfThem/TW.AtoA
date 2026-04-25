@@ -8,63 +8,47 @@
 
 ## TL;DR
 
-**Per-tower authoring sub-pass: R1 + R2 + R3 + R4 LANDED. RN remains.** This session produced R2 (Greek), R3 (Aztec), and R4 (Norse) rosters autonomously per PM autonomy mandate; all committed and dual-pushed. R2 at `04efad6`, R3 at `abe8e9a`, R4 at `9e5b332`. All three author 15 towers × the locked 7-field schema (`attack_type` / `cd` / `range` / `status_proc` / `dps` / `aux_slot_compat` / `notes`) with civ-identity-hook prose + per-tier reading + cross-arc parity hook. **All three falsifiable per-civ magnitude signatures empirically confirmed:** Greek Control = dps-centered/cd-1.7s/range-4.0/lockdown-procs; Aztec Economy = dps-band-high-T2-T3-and-God-tier/cd-1.4s/range-4.0/Poison-stack-Fire-splash-Slashing-bleed-rich; Norse Summon = dps-centered/cd-1.15s-fastest/range-3.5-shortest/Bleed-density-6-of-15-densest. All 45 attack_types verbatim-confirm 2026-04-26 mapping; all 45 dps within ±20% of 2026-05-05 R5 baseline ladder; all lane-tags clean (`controlled_by: leonidas` × 15 / `economy_target: montezuma_ii` × 15 / `summon_anchor: ragnar` × 15). cascade-lint clean every round (pre-existing phase-4 626/600 soft-cap carried). NEXT session opens at **RN — closing audit + spine-doc edits + arc close**.
+**Per-tower authoring sub-pass CLOSED.** All 4 rounds + audit landed this session: R2 Greek (`04efad6`), R3 Aztec (`abe8e9a`), R4 Norse (`9e5b332`), RN cross-civ audit + arc close (this commit). All 45 launch towers bound to the locked 7-field schema (attack_type / cd / range / status_proc / dps / aux_slot_compat / notes). RN audit verdict: **zero cascade-violations across 4 locks × 45 towers** (attack-type lock 45/45 verbatim / dps-band 81/81 in band / status-proc kind 45/45 match / lane-tag 45/45 match clean). All three falsifiable per-civ magnitude signatures empirically confirmed (3/3 PASS): **Greek Control** = dps-centered/cd-1.7s/range-4.0/lockdown-procs; **Aztec Economy** = dps-band-high-T2-T3-and-God-tier/cd-1.4s/range-4.0/Poison-Fire-Slashing-bleed-compounding; **Norse Summon** = dps-centered/cd-1.15s-fastest/range-3.5-shortest/Bleed-density-6-of-15-densest. Spine-doc edits applied: §4.8 exit-gate item #2 (per-tower spec table populated) ticked DONE 2026-05-06 + §4.11.5 closing cross-reference. Phase 4 exit-gate items #1 + #2 closed. CASCADE pointer flipped off per-tower arc. NEXT session opens at **next-track fork pick — AskUserQuestion to PM** (per-civ specialization / per-map / §4.4 / §4.7 / monetization / engine / art director).
 
 ---
 
 ## NEXT SESSION — primary directive
 
-**Produce RN — cross-civ × cross-tier audit + spine-doc edits + arc close — autonomously.** PM autonomy mandate continues to apply. RN is the largest round of the arc (audit table + multiple §4 spine-doc edits + exit-gate tick), so consider mid-round mini-handoffs if context tightens. Surface AskUserQuestion ONLY on:
+**Open next-track fork via AskUserQuestion to PM.** Per-tower arc closed; per-commander arc closed; multiple Phase 4 exit-gate items still open. Multiple candidate next-tracks; some have cross-arc dependencies on the per-commander + per-tower outputs that just landed. PM picks fork. This is a **genuine fork** (the trigger that justifies AskUserQuestion under autonomy mandate).
 
-- Cascade-violation discovered by audit (any of 45 towers actually outside locked bands; any lane-tag cross-civ pollution).
-- Spine-doc-edit scope expansion beyond what per-commander R5 deferred (i.e., §4.1 / §4.11.6 / §4.8 are in-scope; other §4.x sections are NOT in-scope without explicit PM go).
-- Cultural-sensitivity surface (Follow-up #5 — art / VFX / civ-flavor surface direction prose).
-- Handoff trigger.
+### Candidate next-tracks (pick one)
 
-### RN deliverable shape
+1. **Per-civ specialization** — Greek / Aztec / Norse identity profiles (matchup affinities + identity hooks + signature creep types). Cross-arc dep on per-commander R5 + per-tower R1-RN: **MET**. Intersects Follow-up #5 cultural-sensitivity gate (Aztec heaviest; gate before any art lock).
+2. **Per-map authoring** — good-cell + wave-randomization seeds + crystal-lock variance. Defends §4.11.8 thresholds from memorization meta. Cross-cuts all 6 modes. Cross-arc dep on per-commander summon-archetype path-engageability constraint: MET.
+3. **§4.4 mobile unit control** — Phase 4 exit-gate OPEN BLOCKER. Resolution unblocks engine-side input model. No prior arc deps; fully scoped within §4.4.
+4. **§4.7 enemy direction lock** — A/B/C choice ratified to Option C hybrid; locking the leading-placeholder finalizes wave-composition variance mandate from §4.7 R11. Cross-arc dep on attack-type lock + DPS ladder: MET.
+5. **Phase 4 numerics ratification** — Fusion balance pass [PROPOSAL] → ratified, §4.6 economy numerics [PROPOSAL] → ratified.
+6. **Monetization specifics** — cosmetic-only model is the non-negotiable; specifics (battle pass cadence, pack pricing tiers, premium currency presence/absence) remain open.
+7. **Engine choice lock** — Godot 4 leading per `concept/phase-5.md §5.5`; lock or pivot.
+8. **Art director scope** — engagement / scope doc / cultural-sensitivity consultant binding.
+9. **Phase 5 readiness gate** — engine-side telemetry implementation per §6.5; wave-composition variance per §4.7 R11.
 
-**Two artifacts:**
+### Recommended pick (PM autonomy fork — surface ALL candidates + Recommended via AskUserQuestion)
 
-**Artifact 1 — `decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md`** (Accepted, Medium):
-1. **Cross-civ × cross-tier audit table** — 45-tower matrix (3 civs × 5 tiers, with T1/T2/T3 collapsed per merge-progression model) sanity-checking dps-ladder ±20% adherence + cd/range bands + status-proc kind locks + lane-tag distribution. One row per tower, columns: civ / tower / tier / attack_type / cd / range / status_proc kind / dps / aux compat / lane-tag.
-2. **Per-civ signature confirmation summary** — explicit pass/fail audit on the three falsifiable signatures committed at R2/R3/R4. Format: predicted vs delivered, with quantitative comparison (median cd, median range, dps-cluster-direction, status-proc-density). Expected: all three pass.
-3. **Cross-civ band snapshot** — final locked numbers: dps medians per tier per civ; cd medians per tier per civ; range medians per tier per civ; Slashing-Bleed source counts; Poison source counts (Aztec only); Divine source counts; type-coverage gaps per civ.
-4. **3x debug loop** on the arc as a whole (does the per-tower schema legibly express three orthogonal civ-archetypes from one underlying ladder, or has the schema collapsed under the weight?).
-5. **Closes the per-tower authoring arc** — followups list: per-civ specialization (next major track) / per-map authoring / Phase 4 exit-gate item #2 ticked.
+**Recommended: per-civ specialization** (#1) — natural successor to per-commander + per-tower; banks Phase 4 exit-gate progress on identity surface; per-tower arc explicitly deferred civ-flavor surface direction (Follow-up #5) and per-civ specialization is where that gate gets engaged. Cross-arc deps already met. **Caveat:** Follow-up #5 hard-gates art / VFX / VO direction — per-civ specialization can do *mechanical-content* (matchup affinity tables / signature creep types) without engaging the gate, but stops short of any art lock.
 
-**Artifact 2 — Spine-doc edits to `concept/phase-4.md`** (per per-commander R5 deferral):
-- **§4.1 mechanical-content rewrite** — anointed-tower aura model + active-cast-vs-passive-aura distinction + summon-cap signature-window exception language. Source: per-commander R5 close (`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`) "Spine-doc edits specified" block.
-- **§4.11.6 deferral removal** — slow-soft-cap section had a deferral marker pending per-commander R5; per-commander R5 closed; remove deferral marker.
-- **§4.8 exit-gate item #2 tick** — per-tower spec table populated for all 45 launch towers (R2 Greek + R3 Aztec + R4 Norse rosters cumulatively); tick this item, leaving phase-4 exit gate showing items #1 + #2 closed.
-
-**Phase 4 line-cap discipline**: file is currently 626/600 (carried soft-cap). Spine-doc edits should aim for net-neutral or net-shrink, NOT net-grow. If the §4.1 rewrite naturally extends, identify a §4.x section to compress in compensation, OR flag the line-cap breach for PM ratification before committing.
+**Alternative if PM wants to clear blockers first:** §4.4 mobile unit control (#3) — explicit Phase 4 OPEN BLOCKER; resolution unblocks engine-port discipline (§4.10.9). Smaller scope than #1.
 
 ### Step-by-step procedure
 
 1. **Bootstrap** per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
-2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean — last R4 push was `9e5b332` to both session branch + main).
-3. **Read inputs** (Grep > full-file Read where possible):
-   - [`decisions/2026-05-06-per-tower-authoring-scope.md`](decisions/2026-05-06-per-tower-authoring-scope.md) — round queue + schema lock + guards (R1 scope).
-   - [`decisions/2026-05-06-per-tower-r2-greek-roster.md`](decisions/2026-05-06-per-tower-r2-greek-roster.md) — Greek 15-tower table + signature.
-   - [`decisions/2026-05-06-per-tower-r3-aztec-roster.md`](decisions/2026-05-06-per-tower-r3-aztec-roster.md) — Aztec 15-tower table + signature.
-   - [`decisions/2026-05-06-per-tower-r4-norse-roster.md`](decisions/2026-05-06-per-tower-r4-norse-roster.md) — Norse 15-tower table + signature.
-   - [`decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md`](decisions/2026-05-05-per-commander-r5-audit-and-arc-close.md) — spine-doc-edits-specified block, anointed-tower model, summon-cap exception language.
-   - [`concept/phase-4.md`](concept/phase-4.md) §4.1 / §4.11.6 / §4.8 — current state for editing.
-4. **Author RN audit decision file** (Artifact 1 above).
-5. **Edit phase-4.md** (§4.1 rewrite / §4.11.6 deferral removal / §4.8 exit-gate tick) per per-commander R5 deferral. Watch line-cap (currently 626/600).
-6. **Cascade-lint:** `python tools/cascade-lint.py` — expect clean OR reduced finding-set.
-7. **Add CASCADE.md decisions-table row** for RN (lint will flag if missing).
-8. **Update CASCADE.md current-work pointer** — close the per-tower authoring sub-pass; flip pointer forward to next-track pick (per-civ specialization / per-map authoring / etc.).
-9. **Commit RN + spine-doc edits + CASCADE updates** in one commit. Dual-push (session branch + main).
-10. **Mini-handoff and stop.** RN closes the arc; the next session is a fresh-track pick.
+2. `git fetch origin && git log --oneline HEAD..origin/main` (expect clean — last RN push to both session branch + main).
+3. **Open next-track fork via AskUserQuestion** — present 9 candidates + Recommended (#1 per-civ specialization) per the structure above. Surface caveats (Follow-up #5 gate on per-civ; cross-arc-dep on per-commander+per-tower already met).
+4. **Wait for PM pick.**
+5. **Open scope round (R1) of picked track** — same scope-decision discipline as 2026-05-06 per-tower R1 (axis pick + schema lock + 3x debug loop + hard guards + dual-push schedule + sub-arc round queue).
+6. **Proceed autonomously per PM autonomy mandate** — surface AskUserQuestion only on genuine forks / scope expansion / cascade-violation / cultural-sensitivity / handoff trigger.
 
 ### Discipline (carry forward)
 
 - **No game code edits.** Concept-only — Phase 4 hasn't exited.
-- **No spine-doc edits during R2/R3/R4.** All `phase-4.md §4.x` body edits + `§4.8` exit-gate tick happen at RN.
-- **3x debug loop** inline on any decision that touches CONCEPT constraints — but R2/R3/R4 are *populating* a locked schema, not deciding new constraints, so loops are unlikely to fire unless a tower deviates from the bands.
+- **3x debug loop** on any decision touching CONCEPT constraints.
 - **Dual-push every commit.** Push to session branch AND `main`.
-- **Cascade-lint after every round.**
+- **Cascade-lint after every round.** Phase-4 line-cap (currently 629/600) is breached carried-state — net-neutral target for future spine-doc edits OR explicit PM ratification of cap-bump.
 
 ---
 
