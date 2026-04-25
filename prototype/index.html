@@ -222,6 +222,34 @@
   .divinity-pip.filled { background: var(--divinity); opacity: 1; }
   .hud-btn.fusion { color: var(--divinity); border-color: var(--divinity); }
   .hud-btn.fusion:disabled { opacity: 0.35; cursor: not-allowed; }
+  /* C4 — Cast bar (civ commanders only) */
+  .cast-bar { margin-top: 12px; display: none; gap: 8px; align-items: center; padding: 8px 12px; background: var(--bg-1); border: 1px solid var(--line); border-radius: 3px; }
+  .cast-bar.on { display: flex; }
+  .cast-bar .label { font-family: var(--font-display); letter-spacing: 2px; font-size: 11px; color: var(--ink-2); text-transform: uppercase; margin-right: 6px; }
+  .cast-bar .cast-btn { padding: 7px 12px; font-size: 11px; letter-spacing: 1px; border: 1px solid var(--line-2); color: var(--ink-1); background: var(--bg-2); cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 130px; }
+  .cast-bar .cast-btn:hover:not(:disabled) { border-color: var(--ember-hi); color: var(--ember-hi); }
+  .cast-bar .cast-btn .cb-class { font-size: 9px; opacity: 0.65; letter-spacing: 1.5px; text-transform: uppercase; }
+  .cast-bar .cast-btn.passive { border-color: var(--ember); color: var(--ember-hi); cursor: default; }
+  .cast-bar .cast-btn.short  { border-color: var(--knowledge); }
+  .cast-bar .cast-btn.long   { border-color: var(--divinity); }
+  .cast-bar .cast-btn.cooling { opacity: 0.45; cursor: not-allowed; }
+  /* C4 — Fusion menu modal */
+  .fusion-modal { position: fixed; inset: 0; background: rgba(8,6,4,0.82); display: none; align-items: center; justify-content: center; z-index: 1500; }
+  .fusion-modal.on { display: flex; }
+  .fusion-modal .fm-card { background: var(--bg-1); border: 1px solid var(--divinity); padding: 22px 26px; max-width: 880px; width: 92vw; max-height: 86vh; overflow: auto; box-shadow: 0 0 30px rgba(192,132,252,0.35); }
+  .fusion-modal h2 { font-family: var(--font-display); letter-spacing: 4px; color: var(--divinity); margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
+  .fusion-modal .fm-sub { color: var(--ink-2); font-size: 11px; margin-bottom: 16px; }
+  .fusion-modal .fm-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .fusion-modal .fm-civ-col h3 { font-family: var(--font-display); letter-spacing: 2px; font-size: 11px; margin: 0 0 8px; text-transform: uppercase; }
+  .fusion-modal .fm-god { border: 1px solid var(--line-2); padding: 10px 12px; margin-bottom: 8px; cursor: pointer; background: var(--bg-2); }
+  .fusion-modal .fm-god.lit { border-color: var(--divinity); box-shadow: 0 0 10px rgba(192,132,252,0.3); }
+  .fusion-modal .fm-god.dim { opacity: 0.45; cursor: not-allowed; }
+  .fusion-modal .fm-god:hover.lit { background: rgba(192,132,252,0.08); }
+  .fusion-modal .fm-god .fm-name { font-family: var(--font-display); letter-spacing: 2px; color: var(--ink-1); font-size: 13px; margin-bottom: 4px; }
+  .fusion-modal .fm-god .fm-sources { color: var(--ink-2); font-size: 10px; margin-bottom: 3px; }
+  .fusion-modal .fm-god .fm-types { color: var(--knowledge); font-size: 10px; letter-spacing: 1px; margin-bottom: 3px; }
+  .fusion-modal .fm-god .fm-flavor { color: var(--ink-2); font-size: 10px; font-style: italic; }
+  .fusion-modal .fm-foot { margin-top: 16px; display: flex; gap: 10px; align-items: center; }
   .hud .age-label { color: var(--ember); } .hud .wave-label { color: var(--ink-2); }
   .hud .spacer { flex: 1; }
   .hud .banner-title { color: var(--ember-hi); letter-spacing: 3px; font-weight: 700; }
@@ -622,6 +650,14 @@
         </form>
       </div>
     </div>
+    <div class="cast-bar" id="cast-bar">
+      <span class="label">Cast</span>
+      <button type="button" class="cast-btn passive" id="cast-passive" disabled><span class="cb-class">Passive</span><span id="cast-passive-name">—</span></button>
+      <button type="button" class="cast-btn short" id="cast-short" onclick="castAbility('short')"><span class="cb-class">Short CD</span><span id="cast-short-name">—</span></button>
+      <button type="button" class="cast-btn long" id="cast-long" onclick="castAbility('long')"><span class="cb-class">Long CD · Signature</span><span id="cast-long-name">—</span></button>
+      <span class="spacer" style="flex:1"></span>
+      <span style="font-size:10px;color:var(--ink-2);letter-spacing:1px;">Targeting TBD · §4.1</span>
+    </div>
     <div class="action-bar" id="action-bar">
       <span class="label">Build</span>
       <button class="tower-btn" data-tower="sinew" onclick="selectTower('sinew')"><span class="glyph sinew"></span>Sinew <span class="cost">40g</span></button>
@@ -635,6 +671,20 @@
       <button class="tower-btn" id="btn-age-up" onclick="ageUp()" disabled>Age up <span class="cost">50 know</span></button>
       <button class="ghost" id="btn-info" onclick="openReference()" title="Tier reference (I)">Info</button>
       <button class="primary" id="btn-wave" onclick="startWave()">Begin Wave 1</button>
+    </div>
+  </div>
+</div>
+
+<!-- C4 — Fusion menu modal (populated from inlined FUSION_RECIPES) -->
+<div class="fusion-modal" id="fusion-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="fm-card">
+    <h2>Fusion · spend 1 Divinity per God</h2>
+    <div class="fm-sub">Lit gods are reachable with current Divinity. Source-Demigod consumption is stubbed in C4 (real T4 board state lands in C7.b).</div>
+    <div class="fm-grid" id="fm-grid"></div>
+    <div class="fm-foot">
+      <span style="font-size:10px;color:var(--ink-2);">Divinity available: <b id="fm-divinity">0</b>/6 · Menu unlock cost 2 (already paid) · Execution cost 1 per God</span>
+      <span style="flex:1"></span>
+      <button class="ghost" onclick="closeFusionMenu()">Close (Esc)</button>
     </div>
   </div>
 </div>
@@ -1831,13 +1881,95 @@ function updateHUD() {
     if (lbl) lbl.textContent = (HYBRIDS && HYBRIDS.sinew_ember) ? HYBRIDS.sinew_ember.label : "Tank Corps";
   }
   if (p === "t-" && $("step")) $("step").textContent = game.tutorialStep + " / 5";
+  if (p === "m-") renderCastBar();
 }
 
-// C3 — Fusion menu stub. Wired in C4 (Tier-ladder UI sketch) per reshape plan.
+// C4 — Fusion menu (data inlined per alongside discipline; boot loader untouched).
+// Source: prototype/data/fusion-recipes.json + civilizations.json. Update both surfaces together until C5/C6.
+const FUSION_RECIPES = [
+  { godId: "zeus",            godLabel: "Zeus",            civ: "greek", sources: ["Hercules", "Jason"],                damageTypes: ["crushing", "divine"],  flavor: "Thunder + sky-father judgment" },
+  { godId: "athena",          godLabel: "Athena",          civ: "greek", sources: ["Theseus", "Perseus"],                damageTypes: ["slashing", "divine"],  flavor: "Strategic warrior + wisdom-blessed" },
+  { godId: "poseidon",        godLabel: "Poseidon",        civ: "greek", sources: ["Achilles", "Odysseus"],              damageTypes: ["piercing", "arcane"],  flavor: "Trident + sea-magic" },
+  { godId: "quetzalcoatl",    godLabel: "Quetzalcoatl",    civ: "aztec", sources: ["Serpent-Priest", "High-Priest-King"], damageTypes: ["arcane", "divine"],    flavor: "Feathered-serpent + creator-god" },
+  { godId: "huitzilopochtli", godLabel: "Huitzilopochtli", civ: "aztec", sources: ["Nanahuatzin", "Jaguar-Champion"],    damageTypes: ["fire", "slashing"],    flavor: "Sun-war-god" },
+  { godId: "tezcatlipoca",    godLabel: "Tezcatlipoca",    civ: "aztec", sources: ["Blood-Priest", "Eagle-Champion"],    damageTypes: ["poison", "piercing"],  flavor: "Night-trickster obsidian mirror" },
+  { godId: "odin",            godLabel: "Odin",            civ: "norse", sources: ["Harald-Bluetooth", "Leif-Erikson"],  damageTypes: ["divine", "piercing"],  flavor: "Allfather + Gungnir spear" },
+  { godId: "thor",            godLabel: "Thor",            civ: "norse", sources: ["Bjorn-Ironside", "Beowulf"],         damageTypes: ["slashing", "crushing"], flavor: "Hammer-and-axe (lightning deferred · Follow-up #6)" },
+  { godId: "tyr",             godLabel: "Tyr",             civ: "norse", sources: ["Lagertha", "Sigurd"],                damageTypes: ["slashing", "fire"],    flavor: "Sword + sacrifice-fire" }
+];
+const FUSION_EXECUTION_COST = 1;
+const CIV_DISPLAY = { greek: "Greek", aztec: "Aztec", norse: "Norse" };
+
 function openFusionMenu() {
   if (!game) return;
   if ((game.divinity || 0) < 2) { toast("Need 2 Divinity to open the Fusion menu."); return; }
-  toast("Fusion menu — wired in C4.");
+  const grid = document.getElementById("fm-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  const lit = (game.divinity || 0) >= FUSION_EXECUTION_COST;
+  ["greek", "aztec", "norse"].forEach(civId => {
+    const col = document.createElement("div");
+    col.className = "fm-civ-col";
+    const pal = (CIV_PALETTE[civId] || CIV_PALETTE.greek);
+    col.innerHTML = '<h3 style="color:' + pal.primary + '">' + CIV_DISPLAY[civId] + '</h3>';
+    FUSION_RECIPES.filter(r => r.civ === civId).forEach(r => {
+      const card = document.createElement("div");
+      card.className = "fm-god " + (lit ? "lit" : "dim");
+      card.innerHTML =
+        '<div class="fm-name" style="color:' + pal.primary + '">' + r.godLabel + '</div>' +
+        '<div class="fm-sources">Sources · ' + r.sources.join(" + ") + '</div>' +
+        '<div class="fm-types">Damage · ' + r.damageTypes.join(" / ") + '</div>' +
+        '<div class="fm-flavor">' + r.flavor + '</div>';
+      if (lit) card.addEventListener("click", () => fusionExecute(r));
+      col.appendChild(card);
+    });
+    grid.appendChild(col);
+  });
+  document.getElementById("fm-divinity").textContent = game.divinity || 0;
+  const m = document.getElementById("fusion-modal");
+  m.classList.add("on"); m.setAttribute("aria-hidden", "false");
+}
+function closeFusionMenu() {
+  const m = document.getElementById("fusion-modal");
+  if (!m) return;
+  m.classList.remove("on"); m.setAttribute("aria-hidden", "true");
+}
+function fusionExecute(r) {
+  if (!game || (game.divinity || 0) < FUSION_EXECUTION_COST) { toast("Not enough Divinity."); return; }
+  game.divinity -= FUSION_EXECUTION_COST;
+  toast("[stub] Fused " + r.sources.join(" + ") + " → " + r.godLabel + " (consumes 2 T4 Demigods · C7.b wires the board slot)");
+  if (typeof emitFeed === "function") emitFeed("fusion", "Fusion · " + r.godLabel + " summoned");
+  closeFusionMenu();
+  updateHUD();
+}
+
+// C4 — Commander Cast bar (civ commanders only; legacy commanders skip).
+// Targeting model TBD per 2026-04-27 amendment §4.1; click currently captions a VO ability bark + decorative CD lockout.
+function renderCastBar() {
+  const bar = document.getElementById("cast-bar");
+  if (!bar || !COMMANDERS) return;
+  const c = COMMANDERS.roster[COMMANDERS.active];
+  if (!c || !c.civ || !c.stats) { bar.classList.remove("on"); return; }
+  bar.classList.add("on");
+  if (bar.dataset.cmdrId === COMMANDERS.active) return;
+  bar.dataset.cmdrId = COMMANDERS.active;
+  const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t || "—"; };
+  set("cast-passive-name", c.stats.passive);
+  set("cast-short-name",   c.stats.shortCdActive);
+  set("cast-long-name",    c.stats.longCdSignature);
+}
+function castAbility(slot) {
+  if (!COMMANDERS) return;
+  const c = COMMANDERS.roster[COMMANDERS.active];
+  if (!c || !c.civ) return;
+  const btn = document.getElementById("cast-" + slot);
+  if (!btn || btn.classList.contains("cooling")) return;
+  const cdMs = slot === "long" ? 18000 : 8000;
+  const bank = (c.vo && c.vo.ability) || [];
+  if (bank.length) caption("[VO]", bank[Math.floor(Math.random() * bank.length)].replace(/^\[VO\]\s*/, ""));
+  toast("[stub] " + c.name + " casts " + (slot === "long" ? c.stats.longCdSignature : c.stats.shortCdActive) + " · targeting TBD");
+  btn.classList.add("cooling");
+  setTimeout(() => btn.classList.remove("cooling"), cdMs);
 }
 
 // ============================================================================
@@ -3403,6 +3535,8 @@ document.addEventListener("keydown", (e) => {
   const panel = document.getElementById("reference-panel");
   const refOpen = panel && panel.classList.contains("show");
   if (refOpen && (e.key === "Escape" || e.key === "i" || e.key === "I")) { e.preventDefault(); closeReference(); return; }
+  const fmOpen = document.getElementById("fusion-modal");
+  if (fmOpen && fmOpen.classList.contains("on") && e.key === "Escape") { e.preventDefault(); closeFusionMenu(); return; }
   if (e.key === "Escape") { hideCtxMenu(); hideTip(); }
   if (currentScene !== "match" || !game || game.paused) return;
   if (e.key === " ") { e.preventDefault(); startWave(); }
