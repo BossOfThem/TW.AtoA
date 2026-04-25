@@ -570,13 +570,13 @@
   <div class="cmdr-roster" id="cmdr-roster"></div>
   <div class="cmdr-card">
     <div class="cmdr-portrait" id="cmdr-portrait">A</div>
-    <div class="cmdr-name" id="cmdr-name">Commander A</div>
-    <div class="cmdr-epithet" id="cmdr-epithet">Sinew-tilted · Frontline Specialist</div>
+    <div class="cmdr-name" id="cmdr-name">Leonidas</div>
+    <div class="cmdr-epithet" id="cmdr-epithet">Greek · Spartan King</div>
     <div class="cmdr-lore" id="cmdr-lore">—</div>
     <div class="cmdr-stats">
-      <div class="cmdr-stat"><b>Lineage tilt</b><span id="cmdr-stat-tilt">—</span></div>
-      <div class="cmdr-stat"><b>Generates</b><span id="cmdr-stat-generates">—</span></div>
+      <div class="cmdr-stat"><b>Civilization</b><span id="cmdr-stat-civ">—</span></div>
       <div class="cmdr-stat"><b>Passive</b><span id="cmdr-stat-passive">—</span></div>
+      <div class="cmdr-stat"><b>Short CD</b><span id="cmdr-stat-short">—</span></div>
       <div class="cmdr-stat"><b>Signature</b><span id="cmdr-stat-signature">—</span></div>
     </div>
     <div class="cmdr-progress">
@@ -982,14 +982,6 @@ function dismissSplash() {
 }
 document.addEventListener("keydown", (e) => {
   if (currentScene === "splash") { dismissSplash(); return; }
-  // Strand 7: Q fires commander signature; C toggles commander-move mode (mouse then click to relocate)
-  if (currentScene === "match" && game && !game.paused) {
-    // SUPERSEDED 2026-04-27 (C7.a) — Q signature + C move-mode gutted; cast-bar in C4 owns ability triggers, targeting model TBD §4.1. Final delete: C6 sweep.
-    /*
-    if (e.code === "KeyQ") { fireCommanderSignature(); e.preventDefault(); return; }
-    if (e.code === "KeyC") { game.commanderMoveMode = !game.commanderMoveMode; toast(game.commanderMoveMode ? "Commander move: click a build cell." : "Commander move cancelled."); e.preventDefault(); return; }
-    */
-  }
   if (e.key === "Escape") {
     if (currentScene === "match") { togglePause(); e.preventDefault(); }
     else if (currentScene === "options") { closeOptions(); e.preventDefault(); }
@@ -1294,13 +1286,6 @@ const Net = {
         if (ov) ov.classList.toggle("on", !!msg.paused);
         if (game) game.paused = !!msg.paused;
       }
-      // SUPERSEDED 2026-04-27 (C7.a) — commander-move/-sig net messages no-op now that on-field avatar is gutted. Final delete: C6 sweep.
-      if (false && msg.type === "commander-move" && game && game.commander) {
-        game.commander.x = msg.x; game.commander.y = msg.y;
-      }
-      if (false && msg.type === "commander-sig" && game && game.commander) {
-        game.commander.cd = 60*60; game.commander.sigActiveTtl = 8*60;
-      }
       if (msg.type === "match-end") {
         game = game || {};
         game.ended = msg.result;
@@ -1511,39 +1496,7 @@ async function loadData() {
 // ============================================================================
 // Commander UI
 // ============================================================================
-// Canvas-style SVG silhouettes per lineage — single color fill, accent rim
-const LINEAGE_COLORS = { sinew: "#dc2626", ember: "#d97706", forge: "#b45309", crown: "#7c3aed", veil: "#0891b2" };
-function silhouetteSVG(lineage, size) {
-  size = size || 96;
-  const c = LINEAGE_COLORS[lineage] || "#d97706";
-  // 5 body silhouettes via composed SVG paths (simple primitives, silhouette-readable in grayscale)
-  const bodies = {
-    sinew:  '<path d="M50 18 L56 14 L62 20 L58 30 L70 46 L68 62 L60 60 L58 82 L42 82 L40 60 L32 62 L30 46 L42 30 L38 20 L44 14 Z" />' +
-            '<rect x="48" y="28" width="4" height="50" fill="#3a342b"/>',
-    ember:  '<path d="M50 12 Q34 14 30 38 Q26 60 40 70 L44 84 L56 84 L60 70 Q74 60 70 38 Q66 14 50 12 Z" />' +
-            '<circle cx="50" cy="42" r="8" fill="#fff" opacity="0.25"/>',
-    forge:  '<rect x="28" y="50" width="44" height="30" rx="3" />' +
-            '<path d="M32 50 L40 28 L60 28 L68 50 Z" />' +
-            '<rect x="46" y="54" width="8" height="22" fill="#2a1a04"/>',
-    crown:  '<path d="M50 14 L42 22 L50 30 L58 22 Z" />' +
-            '<rect x="47" y="28" width="6" height="50" />' +
-            '<path d="M30 40 L70 40 L62 60 L50 56 L38 60 Z" />',
-    veil:   '<ellipse cx="50" cy="30" rx="16" ry="12" />' +
-            '<path d="M34 32 Q20 50 30 82 L70 82 Q80 50 66 32 Z" />' +
-            '<rect x="48" y="36" width="4" height="12" fill="#fff" opacity="0.18"/>'
-  };
-  const body = bodies[lineage] || bodies.ember;
-  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-    '<circle cx="50" cy="50" r="48" fill="' + c + '" opacity="0.12"/>' +
-    '<g fill="' + c + '" stroke="' + c + '" stroke-width="1.2">' + body + '</g>' +
-    '<circle cx="50" cy="50" r="47" fill="none" stroke="' + c + '" stroke-width="1.5" opacity="0.8"/>' +
-    '</svg>';
-}
-
-// C2 — Civ silhouettes (alongside the legacy 5-lineage silhouettes above).
-// Source-of-truth for palette: prototype/data/civilizations.json palette.primary/accent.
-// Inlined here because the boot loader still loads only ages/towers/commanders/balance/enemies (C3 will add civilizations.json fetch). Update both surfaces together until C3 lands.
-// Geometric primitives only — no civ-specific poses. Cultural-sensitivity pose-lock pass (Follow-up #5) gates anything beyond abstract shapes; glyph overlay deferred to styling pass (Follow-up #4) since the Aztec glyph in civilizations.json is wrong.
+// Civ silhouettes — geometric primitives, civ-paletted. Pose-lock gated by Follow-up #5; glyph overlay deferred to Follow-up #4 (Aztec glyph in civilizations.json wrong).
 const CIV_PALETTE = {
   greek: { primary: "#1e40af", accent: "#fbbf24" },
   aztec: { primary: "#15803d", accent: "#dc2626" },
@@ -1566,12 +1519,10 @@ function civSilhouetteSVG(civId, size) {
     '</svg>';
 }
 function commanderSilhouetteSVG(c, size) {
-  if (c && c.civ) return civSilhouetteSVG(c.civ, size);
-  return silhouetteSVG(c && c.lineageTilt, size);
+  return civSilhouetteSVG(c && c.civ, size);
 }
 function commanderSilhouetteColor(c) {
-  if (c && c.civ) return (CIV_PALETTE[c.civ] || CIV_PALETTE.greek).primary;
-  return getLineageCss(c && c.lineageTilt);
+  return (CIV_PALETTE[c && c.civ] || CIV_PALETTE.greek).primary;
 }
 
 function renderCommanderRoster() {
@@ -1607,9 +1558,9 @@ function applyCommanderCard() {
   if (!c) return;
   const portrait = document.getElementById("cmdr-portrait");
   if (portrait) {
-    portrait.className = "cmdr-portrait " + (c.civ || c.lineageTilt || "");
+    portrait.className = "cmdr-portrait " + (c.civ || "");
     portrait.innerHTML = commanderSilhouetteSVG(c, 96);
-    portrait.style.color = commanderSilhouetteColor(c) || "#d97706";
+    portrait.style.color = commanderSilhouetteColor(c) || "#1e40af";
     portrait.onclick = () => previewCommanderVO(c);
     portrait.style.cursor = "pointer";
     portrait.title = "Click to preview commander voice line";
@@ -1619,10 +1570,10 @@ function applyCommanderCard() {
   set("cmdr-epithet", c.epithet);
   set("cmdr-lore", c.lore);
   if (c.stats) {
-    set("cmdr-stat-tilt", c.stats.lineageTilt);
-    set("cmdr-stat-generates", c.stats.generates);
+    set("cmdr-stat-civ", c.stats.civ);
     set("cmdr-stat-passive", c.stats.passive);
-    set("cmdr-stat-signature", c.stats.signature);
+    set("cmdr-stat-short", c.stats.shortCdActive);
+    set("cmdr-stat-signature", c.stats.longCdSignature);
   }
   // Prefer profile-side progress if available, falls back to JSON
   const prog = (Profile.data && Profile.data.commanderProgress && Profile.data.commanderProgress[COMMANDERS.active])
@@ -1816,20 +1767,6 @@ function initMatch() {
       const d = Math.hypot(cx - home.x, cy - home.y);
       if (d < bestD) { bestD = d; best = cell; }
     }
-    // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar struct gutted; replaced by {castState,castTarget,castTtl} in C7.b. Final delete: C6 sweep.
-    /*
-    if (best) {
-      game.commander = {
-        x: best.x + best.w/2, y: best.y + best.h/2,
-        cell: best,
-        lineage: c ? c.lineageTilt : "sinew",
-        name: c ? c.name : "Commander",
-        signatureName: (c && c.stats && c.stats.signature) ? c.stats.signature.split(":")[0] : "Rally",
-        cd: 0, sigActiveTtl: 0, movedThisWave: false,
-        auraCells: 2
-      };
-    }
-    */
   }
   // Co-op UI
   const chat = document.getElementById("chat-panel");
@@ -1860,10 +1797,6 @@ function initMatch() {
     if (c && c.vo && c.vo.pick && c.vo.pick.length) caption("[VO]", c.vo.pick[0].replace(/^\[VO\]\s*/, ""));
   }
 }
-function getLineageCss(tilt) {
-  return { sinew: "#dc2626", ember: "#d97706", forge: "#b45309", crown: "#7c3aed", veil: "#0891b2" }[tilt] || "#d97706";
-}
-
 function initTutorial() {
   rebuildDerived();
   const b = setupBoard("board-tutorial");
@@ -2115,14 +2048,6 @@ function onBoardClick(ev) {
   if (game.paused) return;
   const rect = game.canvas.getBoundingClientRect();
   const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
-  // SUPERSEDED 2026-04-27 (C7.a) — Shift+click commander relocation gutted; C7.b moves to cast-target click model. Final delete: C6 sweep.
-  /*
-  if (game.commander && (ev.shiftKey || game.commanderMoveMode)) {
-    moveCommanderTo(mx, my);
-    game.commanderMoveMode = false;
-    return;
-  }
-  */
   if (game.isGuest) {
     // Guest sends intent with canvas-space click; host resolves to cell
     Net.sendIntent({ type: "place", x: mx, y: my, tower: game.selectedTower });
@@ -2220,71 +2145,12 @@ function effectiveTowerStats(t) {
   let rngMul = Math.pow(1.08, lvl - 1);
   let cdMul  = Math.pow(0.90, lvl - 1);
   const age = game.ageIdx;
-  // SUPERSEDED 2026-04-27 (C7.a) — commander aura mul gutted; passives now route through cast-bar (C4) + Cmdr identity floor §4.1. Final delete: C6 sweep.
-  const aura = { damage: 1, cd: 1, range: 1, active: false };
-  /*
-  const aura = commanderAuraEffectOn(t);
-  if (aura.damage) dmgMul *= aura.damage;
-  if (aura.cd) cdMul *= aura.cd;
-  if (aura.range) rngMul *= aura.range;
-  */
   const dmg = stat.damage && stat.damage[age] != null ? Math.round(stat.damage[age] * dmgMul) : 0;
   const cd  = stat.cd && stat.cd[age] != null ? Math.max(6, Math.round(stat.cd[age] * cdMul)) : 30;
   const range = Math.round(stat.range * rngMul);
   const kn  = stat.knowledge && stat.knowledge[age] != null ? Math.round(stat.knowledge[age] * dmgMul) : 0;
-  return { ...stat, damage: dmg, cd, range, knowledge: kn, level: lvl, auraBuffed: aura.active };
+  return { ...stat, damage: dmg, cd, range, knowledge: kn, level: lvl };
 }
-
-// SUPERSEDED 2026-04-27 (C7.a) — commanderAuraEffectOn / moveCommanderTo / fireCommanderSignature gutted; C7.b ships cast-emerge pipeline. Final delete: C6 sweep.
-/*
-function commanderAuraEffectOn(t) {
-  const out = { damage: 1, cd: 1, range: 1, active: false };
-  const cmdr = game && game.commander;
-  if (!cmdr) return out;
-  const cellSize = game.cellSize || 46;
-  const auraRadius = (cmdr.auraCells || 2) * (cellSize + 10);
-  const d = Math.hypot(t.x - cmdr.x, t.y - cmdr.y);
-  if (d > auraRadius) return out;
-  out.active = true;
-  const sigOn = (cmdr.sigActiveTtl || 0) > 0;
-  switch (cmdr.lineage) {
-    case "sinew": out.damage *= 1.15; break;
-    case "ember": out.cd *= 0.90; break;
-    case "forge": out.damage *= 1.10; break;
-    case "crown": out.range *= 1.15; break;
-    case "veil":  out.damage *= 1.08; break;
-  }
-  if (sigOn) {
-    out.damage *= 1.20;
-    out.cd *= 0.85;
-  }
-  return out;
-}
-
-function moveCommanderTo(mx, my) {
-  const cmdr = game.commander;
-  if (!cmdr) return;
-  if (cmdr.movedThisWave) { toast("Commander already moved this wave."); return; }
-  const cell = game.cells.find(c => !c.occupied && mx >= c.x && mx < c.x + c.w && my >= c.y && my < c.y + c.h);
-  if (!cell) { toast("Commander moves only to empty build cells."); return; }
-  cmdr.x = cell.x + cell.w/2;
-  cmdr.y = cell.y + cell.h/2;
-  cmdr.cell = cell;
-  cmdr.movedThisWave = true;
-  emitFeed && emitFeed("commander", (cmdr.name || "Commander") + " repositions.");
-  try { if (game.isCoop && Net.role === "host" && Net.conn) Net.conn.send({ type: "commander-move", x: cmdr.x, y: cmdr.y }); } catch(e) {}
-}
-
-function fireCommanderSignature() {
-  const cmdr = game && game.commander;
-  if (!cmdr) return;
-  if (cmdr.cd > 0) { toast("Signature cooling: " + Math.ceil(cmdr.cd/60) + "s"); return; }
-  cmdr.cd = 60 * 60;
-  cmdr.sigActiveTtl = 8 * 60;
-  emitFeed && emitFeed("commander", (cmdr.signatureName || "Signature") + " — aura towers empowered 8s.");
-  try { if (game.isCoop && Net.role === "host" && Net.conn) Net.conn.send({ type: "commander-sig" }); } catch(e) {}
-}
-*/
 
 function upgradeCost(t) {
   const stat = TOWER_STATS[t.type];
@@ -2381,8 +2247,6 @@ function startWave() {
   game.wave++;
   const def = WAVE_DEFS[game.wave - 1];
   game.spawn = { count: def.count, remaining: def.count, cd: 0, gap: def.gap, hp: def.hp, speed: def.speed, reward: def.reward };
-  // SUPERSEDED 2026-04-27 (C7.a) — per-wave move quota reset gutted with on-field avatar. Final delete: C6 sweep.
-  /* if (game.commander) game.commander.movedThisWave = false; */
   // Apply pending event modifiers to this wave
   if (game.pendingWaveMods) {
     const pm = game.pendingWaveMods;
@@ -2668,24 +2532,6 @@ function tick() {
     }
     game.builders = game.builders.filter(b => b.ttl > 0);
   }
-  // SUPERSEDED 2026-04-27 (C7.a) — commander tick (cd timer + knock-back) gutted with persistent avatar; cast-emerge ttl lands in C7.b. Final delete: C6 sweep.
-  /*
-  if (game.commander) {
-    const cmdr = game.commander;
-    if (cmdr.cd > 0) cmdr.cd--;
-    if (cmdr.sigActiveTtl > 0) cmdr.sigActiveTtl--;
-    for (const e of game.enemies) {
-      if (Math.hypot(e.x - cmdr.x, e.y - cmdr.y) < 18) {
-        const home = game.path[0];
-        const dx = home.x - cmdr.x, dy = home.y - cmdr.y;
-        const len = Math.hypot(dx, dy) || 1;
-        cmdr.x += (dx/len) * 30;
-        cmdr.y += (dy/len) * 30;
-        break;
-      }
-    }
-  }
-  */
   // Insight-layer ticks
   if (game.flashes) { for (const f of game.flashes) f.life--; game.flashes = game.flashes.filter(f => f.life > 0); }
   if (game.damageNumbers) {
@@ -3215,52 +3061,6 @@ function draw() {
     }
     ctx.restore();
   }
-  // SUPERSEDED 2026-04-27 (C7.a) — persistent on-field avatar + aura render gutted; C7.b reuses renderSilhouette() 1.4× as the cast-emerge agent (pose-lock gated by C2's sensitivity pass). Final delete: C6 sweep.
-  /*
-  if (game.commander) {
-    const cmdr = game.commander;
-    const cellSize = game.cellSize || 46;
-    const auraR = (cmdr.auraCells || 2) * (cellSize + 10);
-    const lineColor = getLineageCss(cmdr.lineage);
-    const sigOn = (cmdr.sigActiveTtl || 0) > 0;
-    ctx.save();
-    const gA = ctx.createRadialGradient(cmdr.x, cmdr.y, 4, cmdr.x, cmdr.y, auraR);
-    gA.addColorStop(0, hexA(lineColor, sigOn ? 0.22 : 0.10));
-    gA.addColorStop(1, hexA(lineColor, 0));
-    ctx.fillStyle = gA;
-    ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, auraR, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle = hexA(lineColor, sigOn ? 0.9 : 0.55);
-    ctx.lineWidth = sigOn ? 2 : 1.2;
-    ctx.setLineDash([6, 5]);
-    ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, auraR, 0, Math.PI*2); ctx.stroke();
-    ctx.setLineDash([]);
-    for (const t of game.towers) {
-      if (Math.hypot(t.x - cmdr.x, t.y - cmdr.y) <= auraR && t.cell) {
-        ctx.fillStyle = hexA(lineColor, sigOn ? 0.16 : 0.08);
-        ctx.fillRect(t.cell.x, t.cell.y, t.cell.w, t.cell.h);
-      }
-    }
-    const kind = cmdr.lineage === "sinew" ? "heavy"
-              : cmdr.lineage === "ember"  ? "ranged"
-              : cmdr.lineage === "forge"  ? "infantry"
-              : cmdr.lineage === "crown"  ? "elite"
-              : "swarmer";
-    renderSilhouette(ctx, kind, cmdr.x, cmdr.y, 1.4, lineColor, "#f4e8c8");
-    ctx.strokeStyle = "#f4e8c8"; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.arc(cmdr.x, cmdr.y, 22, 0, Math.PI*2); ctx.stroke();
-    if (cmdr.cd > 0) {
-      const frac = cmdr.cd / (60 * 60);
-      ctx.strokeStyle = hexA(lineColor, 0.85); ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.arc(cmdr.x, cmdr.y, 26, -Math.PI/2, -Math.PI/2 + Math.PI*2*frac);
-      ctx.stroke();
-    } else {
-      ctx.fillStyle = "#f4e8c8";
-      ctx.beginPath(); ctx.arc(cmdr.x + 20, cmdr.y - 20, 3, 0, Math.PI*2); ctx.fill();
-    }
-    ctx.restore();
-  }
-  */
   // Enemies
   const pathLen = game.pathLen || 1;
   const showThreat = Profile.setting("insight.threatBar", true);
