@@ -1,6 +1,6 @@
 # HANDOFF — Session Checkpoint
 
-**Last session:** 2026-05-05 (**clear-safe**).
+**Last session:** 2026-05-05 → 2026-05-06 (**clear-safe**).
 **Hand-off by:** Claude (Opus 4.7)
 **Hand-off to:** next Claude Code session after `/clear`.
 
@@ -8,123 +8,31 @@
 
 ## TL;DR
 
-**Phase A of the prototype UI verification sweep LANDED (`caa1e61`, dual-pushed).** All 11 scenes walked statically; report filed at [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md) with prioritized fix queue (5 small + 3 medium + 2 large NEEDS-FIX, ~25 (Test) rows for Phase B). NEXT session executes **Phase B — live in-browser sweep + small-fix loop**.
+**Phase B of the prototype UI verification sweep LANDED (`1b81f45` + `2d2a406`, dual-pushed).** All 5 small NEEDS-FIX applied + verified live via preview MCP; medium #7 (profile roster from `COMMANDERS.roster`) ratified by PM and landed. Live walk of (Test) rows updated in place. Report carrier still [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md). NEXT session executes **Phase C — remaining medium/large queue, Recommended-first**.
 
 ---
 
-## NEXT SESSION — primary directive (Phase B)
+## NEXT SESSION — primary directive (Phase C)
 
-Phase A is DONE (`caa1e61`). The carrier is [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md). Next session reads that file and goes straight to Phase B.
+Phase A + Phase B are DONE. Carrier is still [`prototype/UI-VERIFICATION-2026-05-05.md`](prototype/UI-VERIFICATION-2026-05-05.md). Read it, then pick the next item from the queue.
 
-### Phase B — Live in-browser sweep + small-fix loop
+### Phase C — medium/large NEEDS-FIX queue (remaining)
 
-1. Start `prototype/start.bat` (or `python -m http.server 8765` from `prototype/`).
-2. Load Claude-in-Chrome or preview MCP against `http://localhost:8765/prototype/index.html`.
-3. Walk every (Test) row in the report (~25) plus a representative sample of OK rows. For each: update Status in place via Edit (Test → OK or Test → NEEDS-FIX). New NEEDS-FIX discovered live → add a row.
-4. **Small NEEDS-FIX queue** (fix inline, commit per ~3-fix batch, dual-push):
-   - end-screen "Highest Age" `undefined` (populate or drop the row)
-   - tutorial Esc dead (extend global keydown ln 956 to include `tutorial`)
-   - `saveAndExit` toasts "Saved." for skirmish (gate to campaign)
-   - `menu-last` lineage map stale (resolve via `COMMANDERS.roster[id].civ`)
-   - `CAST_DURATIONS.long` dead key (remove or wire)
-5. **Medium NEEDS-FIX queue** (do NOT fix — surface in AskUserQuestion at end of B):
-   - input-rebind UI decorative (match keydown ln 3537 hardcodes keys; consult `Profile.setting("input.binds")` instead)
-   - profile scene roster hardcodes legacy commanders (source from `COMMANDERS.roster` filter `playable:true`)
-   - end-screen XP doesn't persist (mutates `COMMANDERS.roster.progression` only, never writes `Profile.data.commanderProgress`)
-6. **Large NEEDS-FIX queue** (require PM ratification before any fix):
-   - `A` (age-up) key absent from match keydown handler — was it intentionally retired or did it regress?
-   - end-screen Continue / Replay / Menu mismatch — markup has 2 buttons, scene-checklist promises 3
-7. End Phase B with AskUserQuestion to PM listing the queued medium+large items with a Recommended pick.
+Queue (Recommended-first, top is recommended starting point):
 
-### Original Phase A directive (kept for reference)
+1. **Medium #8 — end-screen XP doesn't persist.** `renderEnd` mutates `COMMANDERS.roster[cid].progression` only; it never writes back to `Profile.data.commanderProgress`. Result: XP awarded in-match evaporates on reload. Fix: after the in-memory progression mutation, `Profile.data.commanderProgress[cid] = { xp, level }` and `Profile.save()`. **Recommended first** — small, contained, no scene-flow risk, restores intended persistence.
+2. **Medium #6 — input rebind UI decorative.** Match `keydown` (around ln 3537) hardcodes keys; rebound bindings in `Profile.setting("input.binds")` are written but never read at dispatch. Fix: thread `Profile.setting("input.binds")` through the keydown handler with sensible defaults. Larger surface than #8 — touches input dispatch.
+3. **Large #9 — `A` (age-up) key absent from match keydown handler.** Was it intentionally retired or did it regress? **Requires PM intent call before any fix.** Check decisions/ + concept §4 for AGE mechanic status.
+4. **Large #10 — end-screen Continue / Replay / Menu mismatch.** Markup has 2 buttons; scene-checklist promises 3. **Requires PM intent call** on which is canonical (markup or checklist) before any fix.
 
-Read `prototype/index.html` plus the `prototype/data/*.json` files. For every interactive element across all 11 scenes (splash / login / menu / profile / mode-select / lobby-coop / commander-pick / tutorial / match / end / options) record one row in a single Markdown report:
+Each item: propose → PM "go" → apply → verify live in preview MCP → commit (dual-push). After Recommended #8 lands, AskUserQuestion to PM for #6 vs #9 vs #10 next pick.
 
-| Scene | Element | Handler / source | Status | Note |
-|-------|---------|-------------------|--------|------|
-| match | Send-Wave button | `onSendWaveClick()` line ~XXX | OK | Disabled while `waveActive` per intended spec |
-| match | Q key (commander cast-passive) | `keydown` line ~XXX | (Test) | Post-C7.a comment-out — verify still inert in browser |
-| ... | ... | ... | ... | ... |
+### Live-verify discipline (carry from Phase B)
 
-**Status legend:**
-- **OK** — verified working as designed by reading the code path end-to-end.
-- **(Test)** — code path exists but behavior is ambiguous, conditional on runtime state, or depends on something static analysis can't confirm. Carry into Phase B.
-- **NEEDS-FIX** — code is broken, dead, regressed, or contradicts the intended spec from CONCEPT / decisions / prior commits.
-
-Output file: `prototype/UI-VERIFICATION-2026-05-MM.md` (use today's date once known). Single file. Don't sprawl across multiple docs.
-
-End Phase A with: prioritized fix queue at the bottom of the report (NEEDS-FIX first, then (Test) ranked by player-facing severity).
-
-**Commit at end of Phase A** (single commit — `feat(prototype): UI verification sweep phase A static-analysis report`). Dual-push.
-
-### Phase B — Live in-browser sweep + small-fix loop
-
-Use Claude-in-Chrome or preview MCP. Start `prototype/start.bat` first (or `python -m http.server 8765` in `prototype/`). Then walk the (Test) rows and a sample of OK rows to confirm. For each row:
-
-- (Test) → OK or (Test) → NEEDS-FIX based on observed behavior. Update the report in place (Edit, not Write).
-- New NEEDS-FIX discovered live → add row to report.
-- **Small NEEDS-FIX** (typo / dead handler reference / off-by-one / one-line CSS / missing aria-label / broken selector): **fix inline** as you find them. Commit per ~3-fix batch. Dual-push each batch.
-- **Medium / large NEEDS-FIX** (touches game logic / data shape / scene flow / requires PM call on intended behavior): leave in queue, do not fix. Surface in AskUserQuestion at end.
-
-End Phase B with: AskUserQuestion to PM listing the queued medium/large NEEDS-FIX items with a Recommended pick for which to tackle next.
-
-### Scene checklist (carried from first handoff — all 11)
-
-1. **Splash** — auto-advance after 3s; click-to-dismiss; any-key-to-dismiss; reduce-motion respected. (Splash dismiss verified post-fix; re-verify is sanity check.)
-2. **Login** — username entry; "Continue as Guest"; Enter-key submit; localStorage `atoA.profile.v1` write; existing-profile detect → Returning branch.
-3. **Menu** — greeting reflects username; Continue / Play / Commander / Options / Logout / Quit; keyboard nav.
-4. **Profile** — XP bar; cosmetic-slot rendering; Back-to-menu; profile-clear option; mode-gated `writeMatchSave` annotation.
-5. **Mode-select** — Skirmish / Tutorial / Co-op Horde / Campaign-stub cards; hover state; selection commit; back.
-6. **Lobby-coop** — host invite-code generation; `?join=<peerID>` URL paste path; ready-state toggle; host-start gate; chat 100-char limit; disconnect flow.
-7. **Commander-pick** — 5 legacy + 3 civ portraits; XP progress; cosmetic L5/L10/L15 lock badges; pick commit; back; `?silhouette-test=1`.
-8. **Tutorial** — Skip → menu; build-glow affordance; sequenced prompts; codex (📖) button → modal opens with 7×5 RPS grid; Esc closes.
-9. **Match** — Send-Wave (Space); pause (Esc); age-up (A); tower-select 1-5; placement; merge-preview ghost; T3 promote `↑`; right-click sell + targeting; Tribute / Divinity / lives HUD; Fusion HUD button (≥2 Div); Cast Bar 3 buttons; Codex; toast feed; combat feed; chat (co-op); reduce-motion; UI-scale slider.
-10. **End-of-match** — Victory / Defeat banner; XP award (40 win / 12 loss); auto-level-up toasts; Continue / Replay / Menu; co-op host broadcast `match-end` sync.
-11. **Options** — 5 tabs (Audio / Input / Video / Accessibility / Gameplay): sliders + toggles persisted; rebind capture; UI-scale 75-150%; colorblind-glyph toggle; Apply / Reset / Back.
-
-### Cross-cutting checks
-
-- **Keyboard shortcuts global:** Space / A / 1-5 / Esc / Q (post-C7.a inert) / C (post-C7.a inert).
-- **Console clean** — no SyntaxError, no unhandled promise rejections, no fetch 404s (favicon 404 known-cosmetic).
-- **Data fetches** — `prototype/data/{balance,civilizations,fusion-recipes,attack-types,tiers,commanders,enemies}.json` all 200. **Verify in-browser whether `civilizations.json` actually contains commanders-shaped data** (flagged previously as possible curl-output-ordering artifact; needs Phase B confirmation).
-- **Co-op snapshot/intent loop** — host snapshot at 10Hz; guest intents drained per tick; guest-owned towers dashed-white border; net status badge.
-- **Mode-aware pause** — Resume / Options / Restart / Save-and-Exit / Quit per mode.
-
----
-
-## Cadence guardrails (per PM ask — soft, not hard)
-
-PM ask: *"a cadence that avoids over loading API and causing errors, also keep context window in check softly."*
-
-### API-overload avoidance
-
-- **Batch parallel reads** — when reading several files for a scene's verification, send all Read calls in a single message (parallel tool calls), not sequentially.
-- **Prefer Grep over full-file reads** — `prototype/index.html` is large. For a scene check, Grep for the scene's id / function names first, then Read with `offset` + `limit` around the hits. Don't read the whole file unless you genuinely need it (and you usually don't — the splash-fix this session was diagnosed via Grep + targeted Read).
-- **Don't re-read files already in context** — the harness tracks file state. If you already Read it this session and haven't edited it elsewhere, your context already has it.
-- **Keep tool calls per turn modest** — 3-6 well-chosen calls beats 15 scatter-shot ones.
-
-### Soft context-window discipline
-
-- **Archive findings to the report file, not into chat context.** Each scene's findings → Edit into `UI-VERIFICATION-*.md` immediately, then move to the next scene. Don't accumulate scene reports in your turn output.
-- **Use Edit not Write** for incremental report updates after the initial Write that creates the file.
-- **Summarize-and-discard intermediate scratch.** If you grep-and-read 200 lines to verify one handler, write the conclusion to the report and move on; don't quote 200 lines back in chat.
-- **Periodically self-check budget.** If a scene took heavy investigation, take a quick pulse before starting the next one — if budget feels tight, file a mini-handoff at the end of Phase A and let Phase B happen in a separate session.
-- **Acceptable to split A and B across two sessions** if budget pressure is real. Phase A's report file is the carrier between them; the second session reads the report and starts Phase B from there.
-
-### Commit cadence
-
-- **Phase A:** single commit at end of phase. Don't churn intermediate report drafts.
-- **Phase B:** commit per ~3-scene live-verification batch, AND per ~3-fix batch when fixing inline. So a typical Phase B session might have 4-8 commits. Each one dual-pushed.
-- **Never amend.** Pre-commit hook failure → fix and create a NEW commit.
-
-### Fix-in-flight discipline
-
-| Severity | Examples | Action |
-|----------|----------|--------|
-| Tiny | Typo in label / missing aria / one-line CSS / dead variable | Fix inline immediately, mention in report |
-| Small | Single-handler bug / off-by-one / wrong CSS class / broken selector | Fix inline within Phase B, commit in batch |
-| Medium | Touches game logic / data shape / multi-handler interaction | Queue to AskUserQuestion at end of Phase B |
-| Large | Touches scene flow / requires PM call on intended behavior / cross-arc cascade | Queue to AskUserQuestion; do NOT fix without ratification |
+- Preview server runs from `.claude/launch.json` config `prototype` (port **8766**, since 8765 is occupied on this machine). Start with the launch config or `python -m http.server 8766` from repo root and load `http://localhost:8766/prototype/index.html`.
+- Use `mcp__Claude_Preview__preview_*` tools for click/eval/screenshot. `COMMANDERS` is closed over inside the prototype IIFE — use `window.goto()` / `window.renderCommanderRoster()` helpers exposed at top level for navigation/state probing.
+- Update report Status in place via Edit (not Write).
+- Commit per fix or per ~3-fix batch. Dual-push every commit.
 
 ---
 
@@ -144,9 +52,11 @@ PM ask: *"a cadence that avoids over loading API and causing errors, also keep c
 - All per-commander R1-R5 spine-doc edits + lane locks (Leonidas=Control / Montezuma II=Economy / Ragnar=Summon, Hard reversibility) — Accepted.
 - Splash-fix `CODEX_DATA` rename — Accepted.
 
-### NEW this session
+### NEW this session (Phase B)
 
-Doc-hygiene only. No code or spine-doc surfaces touched.
+- 5 small inline fixes in `prototype/index.html` — Highest-Age row dropped from end screen; tutorial Esc → menu wired; `saveAndExit` toasts mode-aware (campaign saves; skirmish/co-op explicitly toast non-autosave per §4.9); `menu-last` lineage resolves via `COMMANDERS.roster[id].civ` with legacy fallback; `CAST_DURATIONS.long` dead key removed.
+- Medium #7 — Profile scene roster sourced from `COMMANDERS.roster` filter `playable:true` (no more legacy hardcode).
+- `.claude/launch.json` added with `prototype` config on port **8766** (machine-specific — 8765 occupied).
 
 ---
 
@@ -155,16 +65,15 @@ Doc-hygiene only. No code or spine-doc surfaces touched.
 ### Git
 
 - Branch: **`session/2026-04-25-q2-world-pitch`**.
-- Latest commit: **`caa1e61`** — Phase A static-analysis report (dual-pushed).
-- Prior commits: `e964cf5` (handoff prep), `2edb70c` (first handoff), `90f6f1c` (splash-fix), `6069c49` (per-commander arc close).
-- Working tree clean; `.accord/` untracked.
+- Latest commits: **`2d2a406`** (medium #7), **`1b81f45`** (small-fix batch 5/5), `e73a2f9` (handoff prep A→B), `caa1e61` (Phase A report). All dual-pushed.
+- Working tree at handoff: doc-hygiene bundle (PROGRESS / CASCADE / archives / HANDOFF) staged for the chore commit. `.accord/` untracked.
 
 ### Doc-hygiene state
 
-- `PROGRESS.md` session log: 3 entries (handoff prep / per-commander arc + splash-fix / CONCEPT amendment-pass arc). R10 archived.
-- `CASCADE.md` pointer: 1 most-recent block (handoff prep A→B). Prior pointer archived to `CASCADE-history.md`.
-- `CASCADE.md` version footer: 0.62 + 0.61. Older (0.60 / 0.59 / etc.) archived.
-- cascade-lint expected clean except pre-existing `concept/phase-4.md` 626/600 soft-cap (carried from per-commander R5 spine-doc edits — not introduced by this handoff).
+- `PROGRESS.md` session log: 3 most-recent entries (Phase B / Phase A landed / handoff prep A→B). Older archived to `PROGRESS-archive.md`.
+- `CASCADE.md` pointer: 1 most-recent block (Phase B LANDED). Prior pointer (Phase A LANDED) archived to `CASCADE-history.md`.
+- `CASCADE.md` version footer: 0.64 + 0.63. Older (0.62 / 0.61 / etc.) archived.
+- cascade-lint expected clean except pre-existing `concept/phase-4.md` 626/600 soft-cap (carried — not introduced by this handoff).
 
 ### Open follow-ups (carried — UNCHANGED)
 
@@ -176,20 +85,21 @@ Doc-hygiene only. No code or spine-doc surfaces touched.
 - **`admin/concept.json` staleness** — long-deferred.
 - **`research/06-tw-subgenres.md`** new stub.
 
-### Authoring sub-passes / roadmap (post-arc — preserve in any forward proposal)
+### Authoring sub-passes / roadmap (post-arc — preserve)
 
-1. **Per-tower** — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs. Per-tower target-side hooks already specified by per-commander arc.
-2. **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5 cultural-sensitivity gate.
+1. **Per-tower** — bind cd / range / attack-type / status-proc across 18 T1-T3 + 18 T4 Demigod + 9 God towers across 3 civs.
+2. **Per-civ specialization** — Greek / Aztec / Norse identity profiles. Intersects Follow-up #5.
 3. **Per-map / Round 11** — good-cell authoring + wave-randomization + crystal-lock variance per §4.7 R11 mandate.
 4. **Phase 5 readiness gate** — engine-side telemetry per §6.5 + wave variance per §4.7 R11.
 5. **`research/06-tw-subgenres.md`** new stub.
-6. **`admin/concept.json`** migration direction.
+6. **`admin/concept.json`** migration.
 
 ### Regression-watch
 
-- Tutorial / match flow / merge-preview / Promote-T4 indicator / Aztec glyph (◈) / `logBalanceCurve` / `effectiveTowerStats` / snapshot.
-- **Codex modal** post-splash-fix (rename touched `openCodex()` references) — Phase B should explicitly verify modal opens + 7×5 grid renders.
-- Data-loaded `ATTACK_TYPES` shape feeds in-match RPS multipliers — Phase B should verify multiplier math observable in damage numbers.
+- Tutorial Esc dismissal (just wired — re-verify next session sanity).
+- Profile scene roster (just re-sourced — re-verify L/XP rendering still correct after page reload, not just live nav).
+- End-screen layout post-Highest-Age row removal — confirm no orphan styling.
+- `menu-last` resolution path — confirm civ glyph correct for all three real-cultures commanders + legacy fallback path.
 
 ---
 
@@ -203,15 +113,17 @@ Doc-hygiene only. No code or spine-doc surfaces touched.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
 - **Doc hygiene on each handoff:** trim PROGRESS to 3, CASCADE pointer to 1 block, footer to 2.
+- **Preview MCP cadence:** prefer `preview_eval` for state probes over `preview_screenshot` (cheaper, deterministic). Screenshot only when visual layout is the question.
 
 ---
 
 ## Next-session prompt (copy-paste after `/clear`)
 
 ```
-Resuming Ash to Altar. Phase A of the prototype UI verification sweep
-LANDED (caa1e61, dual-pushed). Report carrier:
-prototype/UI-VERIFICATION-2026-05-05.md. NEXT session executes Phase B.
+Resuming Ash to Altar. Phase B of the prototype UI verification sweep
+LANDED (1b81f45 + 2d2a406, dual-pushed). All 5 small fixes applied + medium
+#7 (profile roster from COMMANDERS) landed. Report carrier:
+prototype/UI-VERIFICATION-2026-05-05.md. NEXT session executes Phase C.
 
 BOOTSTRAP per CLAUDE.md: README → CLAUDE → CASCADE → HANDOFF → PROGRESS.
 Then read prototype/UI-VERIFICATION-2026-05-05.md (the report).
@@ -220,30 +132,31 @@ BEFORE reading docs:
   git fetch origin
   git log --oneline HEAD..origin/main   # should be empty
 
-PRIMARY DIRECTIVE — Phase B (live in-browser sweep + small-fix loop):
-1. Start prototype/start.bat (or python -m http.server 8765 from prototype/).
-2. Load Claude-in-Chrome or preview MCP at
-   http://localhost:8765/prototype/index.html.
-3. Walk every (Test) row in the report (~25) + sample of OK rows.
-   Update Status in place via Edit (Test→OK or Test→NEEDS-FIX).
-4. Fix the 5 small NEEDS-FIX inline, commit per ~3-fix batch, dual-push:
-   - end-screen "Highest Age" undefined (populate or drop)
-   - tutorial Esc dead (extend keydown ln 956 to tutorial)
-   - saveAndExit toasts "Saved" for skirmish (gate to campaign)
-   - menu-last lineage map stale (use COMMANDERS.roster[id].civ)
-   - CAST_DURATIONS.long dead key (remove or wire)
-5. Queue 3 medium + 2 large NEEDS-FIX to AskUserQuestion at end of B,
-   Recommended-first.
+PRIMARY DIRECTIVE — Phase C (remaining medium/large queue):
+1. Start preview server via .claude/launch.json `prototype` config
+   (port 8766 — 8765 is occupied on this machine) or
+   python -m http.server 8766 from repo root, then load
+   http://localhost:8766/prototype/index.html.
+2. RECOMMENDED FIRST — Medium #8: end-screen XP persist.
+   renderEnd mutates COMMANDERS.roster[cid].progression but never writes
+   Profile.data.commanderProgress. Fix: after the in-memory mutation,
+   Profile.data.commanderProgress[cid] = { xp, level } and Profile.save().
+   Verify live: play a match → win → reload → confirm XP persisted.
+   Commit + dual-push. Update report row in place.
+3. Then AskUserQuestion to PM for next pick: Medium #6 (input rebind
+   wiring through keydown) vs Large #9 (A age-up intent call) vs
+   Large #10 (end-screen 2-vs-3 button mismatch intent call).
+   Large items REQUIRE PM intent ratification before any fix.
 
 CADENCE GUARDRAILS (per PM ask, soft):
 - Batch parallel reads; prefer Grep over full-file reads.
+- Prefer preview_eval over preview_screenshot for state probes.
 - Archive findings to the report file, not chat context.
-- Commit per ~3-fix batch; dual-push every commit.
-- AskUserQuestion at end of Phase B for medium/large items.
+- Commit per fix; dual-push every commit.
 
-REGRESSION-WATCH: Codex modal post-splash-fix; ATTACK_TYPES data-loaded
-shape feeds in-match RPS multipliers; merge-preview / Promote-T4 /
-Aztec glyph ◈ / snapshot.
+REGRESSION-WATCH: tutorial Esc; profile roster L/XP after reload;
+end-screen layout post-Highest-Age removal; menu-last civ glyph
+across all three real-cultures commanders + legacy fallback.
 
 VERIFY each commit with: python tools/cascade-lint.py
 DUAL-PUSH each commit: session branch + main.
@@ -283,6 +196,5 @@ Hard-stop and flag if:
 - Any Numbers-phase bound magnitude would be silently re-tuned.
 - Any amendment-pass §-anchor would be silently edited.
 - Any per-commander R1-R5 spine-doc surface would be silently edited.
-- A Phase B fix touches medium/large severity without PM ratification.
-- Phase A discovers something so broken that running prototype is unsafe → stop, file findings, AskUserQuestion before continuing.
-- Context budget pressure forces a mid-phase split → file mini-handoff and stop cleanly rather than running into context exhaustion.
+- A Phase C fix touches large severity without PM ratification.
+- Context budget pressure forces a mid-phase split → file mini-handoff and stop cleanly.
