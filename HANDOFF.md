@@ -90,7 +90,7 @@ The graduation cut is a large surgical pass. Things to manually sanity-check nex
 
 **Alternate (e) — Follow-up #6 patch-1 commanders + Thor recipe-layer dissonance.** Larger design pass.
 
-**Cadence:** propose plan via AskUserQuestion (Recommended first) → PM "go" → produce → verify (`python tools/cascade-lint.py`) → tick. Single PM-gated step per HANDOFF protocol.
+**Cadence:** if PM picks a track and the plan is concrete, execute end-to-end (verify + commit + dual-push) without intermediate gates. Use AskUserQuestion only on genuine ambiguity (cardinality breaks, [LOCKED] conflicts, cultural-sensitivity, mid-step scope blow-ups).
 
 ### LOCKED — do NOT touch
 
@@ -102,15 +102,16 @@ The graduation cut is a large surgical pass. Things to manually sanity-check nex
 
 ## Cadence rules carried forward
 
-- **Default: one-step-at-a-time with PM "go" gates** per `CLAUDE.md`.
-- **AskUserQuestion tool for PM gates** with "Recommended" first option (PM standing directive 2026-04-28).
-- **Alongside-and-non-breaking pattern (PM-ratified 2026-04-29):** when a step would break running surfaces, add new code/files alongside legacy; surface cardinality conflicts to PM via AskUserQuestion before unilateral action. **C6 was the explicit graduation point.** Pattern remains live for any future similar reshape.
+**Cadence exists to manage the context window, not to gate every step on PM input.** PM feedback 2026-05-03: per-step "propose → go → produce" rituals overclock the context window when the plan is already concrete. Default to autonomous execution; reserve PM gates for genuine ambiguity.
+
+- **When a plan is concrete (HANDOFF directive picked, ratified decision, queued PROGRESS step, scope already discussed):** execute end-to-end without intermediate gates. Batch independent edits in parallel. Verify with `python tools/cascade-lint.py`, commit, dual-push, summarize once at the end.
+- **When to gate via AskUserQuestion:** cardinality breaks, [LOCKED] surface conflicts, cultural-sensitivity gates (Follow-up #5), mid-step scope blow-ups beyond the original plan, ambiguity that affects which file or shape to produce. Always include a "Recommended" first option (PM standing directive 2026-04-28).
+- **Context-pressure self-trim:** when context budget tightens, batch tool calls, group parallel-safe edits, and re-gate only if context will not survive completion. Precedents: C4 slice + C7.b two-slice split + C6 two-slice split + C6 slice 2 three-sub-slice split.
+- **Alongside-and-non-breaking pattern (PM-ratified 2026-04-29):** when a step would break running surfaces, add new code/files alongside legacy. C6 was the explicit graduation point; pattern remains live for any future reshape of comparable scope.
 - **Dual-push discipline:** push to BOTH session branch AND `main` after every commit.
 - **Local-main hygiene:** `git fetch origin && git log --oneline HEAD..origin/main` BEFORE reading docs.
 - **3x debug loop** on any CONCEPT-constraint-touching proposal.
 - **Doc hygiene on each handoff:** trim PROGRESS to 3 entries, CASCADE pointer to 1 block, version footer to 2 bumps.
-- **Context-pressure self-trim + scope re-gate:** when context budget tightens OR scope balloons mid-step beyond proposed delete, stop and re-gate via AskUserQuestion with slice options. Precedents: C4 slice + C7.b two-slice split + C6 two-slice split + C6 slice 2 three-sub-slice split (this multi-session arc).
-- **Bias toward batched edits when context burns.** PM feedback this session: micro-step tool calls overclock the context window. Group independent edits into parallel batches when safe.
 
 ---
 
@@ -152,13 +153,17 @@ STATE ALOUD (before producing anything):
   Alternate = admin/concept.json direction. Alternate =
   Follow-up #6 commanders+Thor pass.
 
-CADENCE: one-step-at-a-time with PM "go" gates.
-USE AskUserQuestion for PM gates; always include a Recommended
-first option per 2026-04-28 PM standing directive.
-ALONGSIDE-AND-NON-BREAKING pattern remains live for any future
-reshape.
-BIAS toward batched edits when context burns (PM feedback
-2026-05-03: micro-step tool calls overclock context window).
+CADENCE (2026-05-03 PM directive): cadence is for managing the
+context window, NOT gating every step on user input. When the
+plan is concrete (HANDOFF directive, ratified decision, queued
+PROGRESS step), execute end-to-end without intermediate "go"
+gates — batch parallel-safe edits, verify with cascade-lint,
+commit, dual-push, summarize once at the end. AskUserQuestion
+is reserved for genuine ambiguity (cardinality breaks, [LOCKED]
+conflicts, cultural-sensitivity gates, mid-step scope blow-ups).
+Always include "Recommended" first option when you do gate.
+ALONGSIDE-AND-NON-BREAKING pattern remains live for future
+reshape work.
 
 REGRESSION-WATCH (from Slice C graduation cut):
 - Tutorial: TUT_TOWER_KEY = "greek_phalanx" pin; steps 1→5 advance.
