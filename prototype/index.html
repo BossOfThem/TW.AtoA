@@ -250,6 +250,26 @@
   .fusion-modal .fm-god .fm-types { color: var(--knowledge); font-size: 10px; letter-spacing: 1px; margin-bottom: 3px; }
   .fusion-modal .fm-god .fm-flavor { color: var(--ink-2); font-size: 10px; font-style: italic; }
   .fusion-modal .fm-foot { margin-top: 16px; display: flex; gap: 10px; align-items: center; }
+  /* C5 — Codex modal (7×5 RPS matrix) */
+  .codex-modal { position: fixed; inset: 0; background: rgba(8,6,4,0.82); display: none; align-items: center; justify-content: center; z-index: 1500; }
+  .codex-modal.on { display: flex; }
+  .codex-modal .cx-card { background: var(--bg-1); border: 1px solid var(--knowledge); padding: 22px 26px; max-width: 920px; width: 94vw; max-height: 88vh; overflow: auto; box-shadow: 0 0 30px rgba(96,165,250,0.28); }
+  .codex-modal h2 { font-family: var(--font-display); letter-spacing: 4px; color: var(--knowledge); margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
+  .codex-modal .cx-sub { color: var(--ink-2); font-size: 11px; margin-bottom: 14px; line-height: 1.45; }
+  .codex-modal .cx-sub code { font-family: monospace; color: var(--ink-1); background: var(--bg-2); padding: 1px 5px; border-radius: 2px; }
+  .codex-modal .cx-grid-wrap { overflow-x: auto; }
+  .codex-modal .cx-grid { border-collapse: collapse; font-family: var(--font-display); font-size: 10px; letter-spacing: 1px; width: 100%; margin-bottom: 16px; }
+  .codex-modal .cx-grid th, .codex-modal .cx-grid td { border: 1px solid var(--line-2); padding: 8px 10px; text-align: center; text-transform: uppercase; }
+  .codex-modal .cx-grid thead th { color: var(--ink-2); background: var(--bg-2); font-size: 9px; }
+  .codex-modal .cx-grid tbody th { color: var(--ink-1); background: var(--bg-2); text-align: left; font-size: 10px; }
+  .codex-modal .cx-grid td.strong { background: rgba(22,163,74,0.18); color: #4ade80; font-weight: 700; }
+  .codex-modal .cx-grid td.weak   { background: rgba(185,28,28,0.18); color: #f87171; font-weight: 700; }
+  .codex-modal .cx-grid td.neutral { color: var(--ink-2); }
+  .codex-modal .cx-legend-title { font-family: var(--font-display); letter-spacing: 3px; font-size: 11px; color: var(--ink-1); margin: 4px 0 8px; text-transform: uppercase; }
+  .codex-modal .cx-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-bottom: 14px; }
+  .codex-modal .cx-legend .cx-row { font-size: 10px; color: var(--ink-2); border-left: 2px solid var(--line-2); padding: 3px 0 3px 8px; }
+  .codex-modal .cx-legend .cx-row b { color: var(--ink-1); font-family: var(--font-display); letter-spacing: 1.5px; margin-right: 6px; }
+  .codex-modal .cx-foot { margin-top: 6px; display: flex; gap: 10px; align-items: center; }
   .hud .age-label { color: var(--ember); } .hud .wave-label { color: var(--ink-2); }
   .hud .spacer { flex: 1; }
   .hud .banner-title { color: var(--ember-hi); letter-spacing: 3px; font-weight: 700; }
@@ -603,6 +623,7 @@
       <div class="spacer"></div>
       <div class="hud-item wave-label">Step <b id="t-step">1 / 5</b></div>
       <button class="hud-btn fusion" id="t-btn-fusion" onclick="openFusionMenu()" disabled title="Spend 2 Divinity to open the Fusion menu">⚡ Fusion</button>
+      <button class="hud-btn codex" id="t-btn-codex" onclick="openCodex()" title="Codex — 7×5 attack-type vs armor RPS matrix">📖 Codex</button>
       <button class="hud-btn ghost" onclick="skipTutorial()">Skip</button>
     </div>
     <div class="board-wrap">
@@ -633,6 +654,7 @@
       <div class="spacer"></div>
       <div class="hud-item wave-label">Wave <b id="m-wave">0 / 3</b></div>
       <button class="hud-btn fusion" id="m-btn-fusion" onclick="openFusionMenu()" disabled title="Spend 2 Divinity to open the Fusion menu">⚡ Fusion</button>
+      <button class="hud-btn codex" id="m-btn-codex" onclick="openCodex()" title="Codex — 7×5 attack-type vs armor RPS matrix">📖 Codex</button>
       <button class="hud-btn ghost" onclick="togglePause()" title="Pause (Esc)">⏸ Pause</button>
     </div>
     <div class="board-wrap">
@@ -685,6 +707,24 @@
       <span style="font-size:10px;color:var(--ink-2);">Divinity available: <b id="fm-divinity">0</b>/6 · Menu unlock cost 2 (already paid) · Execution cost 1 per God</span>
       <span style="flex:1"></span>
       <button class="ghost" onclick="closeFusionMenu()">Close (Esc)</button>
+    </div>
+  </div>
+</div>
+
+<!-- C5 — Codex modal (7×5 RPS matrix; data inlined per alongside discipline) -->
+<div class="codex-modal" id="codex-modal" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this)closeCodex()">
+  <div class="cx-card">
+    <h2>Codex · Attack-Type vs Armor RPS</h2>
+    <div class="cx-sub">Rows = 7 attack types · Columns = 5 armor tags · +25% / −25% / neutral. Per <code>decisions/2026-04-26-attack-type-mapping.md</code> (Reversibility Medium); magnitudes [PROPOSAL] pending balance pass.</div>
+    <div class="cx-grid-wrap">
+      <table class="cx-grid" id="cx-grid"></table>
+    </div>
+    <h3 class="cx-legend-title">Status procs</h3>
+    <div class="cx-legend" id="cx-legend"></div>
+    <div class="cx-foot">
+      <span style="font-size:10px;color:var(--ink-2);">Bonus ×<b id="cx-bonus">1.25</b> · Penalty ×<b id="cx-penalty">0.75</b> · Poison stacks (max 5) · Divine reveals stealth (PvE)</span>
+      <span style="flex:1"></span>
+      <button class="ghost" onclick="closeCodex()">Close (Esc)</button>
     </div>
   </div>
 </div>
@@ -1941,6 +1981,70 @@ function fusionExecute(r) {
   if (typeof emitFeed === "function") emitFeed("fusion", "Fusion · " + r.godLabel + " summoned");
   closeFusionMenu();
   updateHUD();
+}
+
+// C5 — Codex (7×5 RPS matrix; data inlined per alongside discipline; mirror of prototype/data/attack-types.json).
+// Update both surfaces together until C6 retires inline copies.
+const ATTACK_TYPES = {
+  rpsBonusMultiplier: 1.25,
+  rpsPenaltyMultiplier: 0.75,
+  types: [
+    { id: "piercing", label: "Piercing", proc: "Armor-shred · −1 armor for 3s" },
+    { id: "slashing", label: "Slashing", proc: "Bleed · DoT ~5% wpn dmg/sec for 3s" },
+    { id: "crushing", label: "Crushing", proc: "Stagger · move-speed −20% for 1s" },
+    { id: "fire",     label: "Fire",     proc: "Burn + ~25% splash · DoT ~4%/sec for 3s" },
+    { id: "poison",   label: "Poison",   proc: "Toxin · DoT ~2% maxHP/sec, up to 5 stacks" },
+    { id: "arcane",   label: "Arcane",   proc: "Hex · attack/cast-speed −25% for 2s" },
+    { id: "divine",   label: "Divine",   proc: "Smite · +10% true dmg vs Spirit/Colossal; reveals stealth (PvE)" }
+  ],
+  armorTags: [
+    { id: "unarmored", label: "Unarmored" },
+    { id: "shielded",  label: "Shielded"  },
+    { id: "beast",     label: "Beast"     },
+    { id: "spirit",    label: "Spirit"    },
+    { id: "colossal",  label: "Colossal"  }
+  ],
+  rpsMatrix: {
+    piercing: { strongVs: ["shielded"],  weakVs: ["spirit"]   },
+    slashing: { strongVs: ["unarmored"], weakVs: ["shielded"] },
+    crushing: { strongVs: ["shielded"],  weakVs: ["unarmored"]},
+    fire:     { strongVs: ["beast"],     weakVs: ["spirit"]   },
+    poison:   { strongVs: ["beast"],     weakVs: ["colossal"] },
+    arcane:   { strongVs: ["spirit"],    weakVs: ["beast"]    },
+    divine:   { strongVs: ["colossal"],  weakVs: ["shielded"] }
+  }
+};
+
+function openCodex() {
+  const grid = document.getElementById("cx-grid");
+  const legend = document.getElementById("cx-legend");
+  if (!grid || !legend) return;
+  let html = "<thead><tr><th>Attack \\ Armor</th>";
+  ATTACK_TYPES.armorTags.forEach(a => { html += "<th>" + a.label + "</th>"; });
+  html += "</tr></thead><tbody>";
+  ATTACK_TYPES.types.forEach(t => {
+    const row = ATTACK_TYPES.rpsMatrix[t.id] || {};
+    const strong = row.strongVs || [], weak = row.weakVs || [];
+    html += "<tr><th>" + t.label + "</th>";
+    ATTACK_TYPES.armorTags.forEach(a => {
+      if (strong.includes(a.id))      html += '<td class="strong">+25%</td>';
+      else if (weak.includes(a.id))   html += '<td class="weak">−25%</td>';
+      else                            html += '<td class="neutral">·</td>';
+    });
+    html += "</tr>";
+  });
+  html += "</tbody>";
+  grid.innerHTML = html;
+  legend.innerHTML = ATTACK_TYPES.types.map(t => '<div class="cx-row"><b>' + t.label + '</b>' + t.proc + '</div>').join("");
+  document.getElementById("cx-bonus").textContent = ATTACK_TYPES.rpsBonusMultiplier.toFixed(2);
+  document.getElementById("cx-penalty").textContent = ATTACK_TYPES.rpsPenaltyMultiplier.toFixed(2);
+  const m = document.getElementById("codex-modal");
+  m.classList.add("on"); m.setAttribute("aria-hidden", "false");
+}
+function closeCodex() {
+  const m = document.getElementById("codex-modal");
+  if (!m) return;
+  m.classList.remove("on"); m.setAttribute("aria-hidden", "true");
 }
 
 // C4 — Commander Cast bar (civ commanders only; legacy commanders skip).
@@ -3537,6 +3641,8 @@ document.addEventListener("keydown", (e) => {
   if (refOpen && (e.key === "Escape" || e.key === "i" || e.key === "I")) { e.preventDefault(); closeReference(); return; }
   const fmOpen = document.getElementById("fusion-modal");
   if (fmOpen && fmOpen.classList.contains("on") && e.key === "Escape") { e.preventDefault(); closeFusionMenu(); return; }
+  const cxOpen = document.getElementById("codex-modal");
+  if (cxOpen && cxOpen.classList.contains("on") && e.key === "Escape") { e.preventDefault(); closeCodex(); return; }
   if (e.key === "Escape") { hideCtxMenu(); hideTip(); }
   if (currentScene !== "match" || !game || game.paused) return;
   if (e.key === " ") { e.preventDefault(); startWave(); }
