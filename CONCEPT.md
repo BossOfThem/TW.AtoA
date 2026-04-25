@@ -38,9 +38,11 @@ Open only the phase you need. Each file is self-contained with its own §-sectio
 
 The only locked naming decision in the cascade. Full context in [phase-5.md#54-naming-conventions-locked-at-phase-5](concept/phase-5.md#54-naming-conventions-locked-at-phase-5).
 
+**Amendment 2026-04-28:** Lineages row deleted; Civilizations row added. Per [`decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md`](decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md) (closes Follow-up #10). Original Lineages convention archived in [`CASCADE-history.md`](CASCADE-history.md).
+
 - **Game title:** TBD. Current working title is placeholder.
 - **Commanders:** evocative titles, may be first-name + epithet. Never generic.
-- **Lineages:** one-syllable, ancient-feeling nouns (pattern: Sinew, Ember, Forge, Crown, Veil).
+- **Civilizations:** real-culture proper nouns; the culture names itself. No invented placeholders. Launch roster: Greek / Aztec / Norse. Expansions follow the same pattern (real cultures only).
 - **Ages:** evocative compound nouns, not dates (pattern: The Mudbrick Era).
 - **Towers/Units:** job titles, never proper nouns (pattern: Warhost, Spirebinder).
 - **Hybrids:** compound or hyphenated (pattern: Tank Corps, Rune-Smiths).

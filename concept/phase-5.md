@@ -71,11 +71,13 @@ Art director contract discipline unchanged: contract *before* vertical slice wor
 
 ## 5.4 Naming conventions (LOCKED at Phase 5)
 
+**Amendment banner — 2026-04-28 Lineages-row deletion + Civilizations-row addition.** Per [`decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md`](../decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md) (closes Follow-up #10 from [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md)). The Lineages convention (one-syllable kenning: Sinew / Ember / Forge / Crown / Veil) was orphaned by the 2026-04-25 real-cultures ratification and is removed. A Civilizations convention is added in its place. Original Lineages row text archived verbatim in [`CASCADE-history.md`](../CASCADE-history.md). No other §5.4 row is touched.
+
 Duplicated in the [CONCEPT.md hub](../CONCEPT.md) for cross-reference; canonical location is here.
 
 - **Game title:** TBD. Current working title is placeholder.
 - **Commanders:** evocative titles, may be first-name + epithet. Never generic.
-- **Lineages:** one-syllable, ancient-feeling nouns (pattern: Sinew, Ember, Forge, Crown, Veil).
+- **Civilizations:** real-culture proper nouns; the culture names itself. No invented placeholders. Launch roster: Greek / Aztec / Norse. Expansions follow the same pattern (real cultures only; no synthetic-myth coinages).
 - **Ages:** evocative compound nouns, not dates (pattern: The Mudbrick Era).
 - **Towers/Units:** job titles, never proper nouns (pattern: Warhost, Spirebinder).
 - **Hybrids:** compound or hyphenated (pattern: Tank Corps, Rune-Smiths).

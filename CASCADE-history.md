@@ -6,6 +6,8 @@ Archived from [`CASCADE.md`](CASCADE.md). Not loaded at bootstrap. Contains prio
 
 ## Archived pointer blocks
 
+**2026-04-27 (continuation — Commander-as-summoned-ability-avatar plan-mode pass, ALL 8 steps LANDED).** Plan-mode design pass executing per HANDOFF directive. **Step 1:** filed [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](decisions/2026-04-27-commander-as-summoned-ability-avatar.md) (Accepted, Reversibility **Medium**, 3x debug loop inline, supersedes 2026-04-20 on-field-hero). Decision: Commander is **not on the field by default**; emerges only on cast (short-CD ~1.2s / long-CD ~2.8s / signature ~4.5s), animates to target, retreats. Three-surface model (identity plinth out-of-match / passive pip in-HUD / active cast avatar). Builder unit class separated as degenerate mobile-hero. 30-wave historic match-arc beats (solo-only). Same-day amendment banner captures 8-Q PM refinement: Aztec **pre-contact** (Cortés OUT), Greek antagonist **Xerxes I**, Aztec two-phase **Tlaxcalan→Tezcatlipoca** boss, Norse **Jörmungandr** locked (Fenrir post-launch), Follow-up #10 (§5.4 Lineages-row deletion confirmed-in-principle). **Steps 2-4** as previously archived. **Steps 5-8 LANDED in same-day continuation:** §4.4a NEW Builder unit class subsection; §4.4 line-150 redaction; §4.7 Historic match-arc beats subsection (Xerxes / Tlaxcalan→Tezcatlipoca / Jörmungandr round-30 roster; Follow-up #11 CLOSED). CASCADE pointer + version v0.26 → v0.27. PROGRESS continuation note. §2.4a + §5.4 [LOCKED] untouched. Commits `7fd3be8` (steps 1-4) + handoff bundle + continuation commit.
+
 **2026-04-27 — Context-window fix (doc hygiene system).** Bootstrap was ~125KB (~32K tokens); API errors and context exhaustion frequent. Root cause: append-only session log (`PROGRESS.md` 50KB) + pointer history (`CASCADE.md` 41KB) with no pruning mechanism. Solution: archive split + permanent trim discipline. Created [`PROGRESS-archive.md`](PROGRESS-archive.md) (old session log entries) and [`CASCADE-history.md`](CASCADE-history.md) (old pointer blocks + version history). Trimmed `PROGRESS.md` (50KB → 23KB) and `CASCADE.md` (41KB → 16KB). Added "Doc hygiene" section to [`CLAUDE.md`](CLAUDE.md) — handoff trigger step 3 now instructs trim on every handoff going forward. Bootstrap total: ~125KB → ~78KB. `cascade-lint` clean. CASCADE doc version v0.24 → v0.25.
 
 **2026-04-26 (later, continuation — stages 03/07 stub-amendments + admin/concept.json staleness banner).** Three more autonomy-safe commits after the Phase 1 exit one-pager pass: [`stages/03-match-setup.md`](stages/03-match-setup.md) stub-amendment (Tribute+Divinity supersede gold/knowledge/influence; starting-age → starting-tier; civ-coded map + tonal framing), [`stages/07-match-end.md`](stages/07-match-end.md) stub-amendment (MVP civilization + final-tier + Fusion count + named-Gods + Tribute/Divinity stats; commander voice-line cultural-sensitivity gate), and [`admin/concept.json`](admin/concept.json) `meta.staleNotice` banner added (file still reflects pre-2026-04-21 5-lineage / 11-age shape; NOT migrated through 2026-04-21 or 2026-04-25; migration tracked as a PROGRESS debt pending PM direction on rewrite-vs-regenerate-vs-retire). Stages 00/02/08 verified frame-independent (no stale-term hits) — no amendments owed. §5.4 + §2.4a [LOCKED] untouched. `cascade-lint` clean. CASCADE doc version v0.23 → v0.24.
@@ -63,3 +65,19 @@ Prior: v0.13 — 2026-04-20 handoff: **Meta-UI concept-fidelity + TW/HoMM/AoE/SC
 Prior: v0.12 — 2026-04-20 handoff: next-session agenda set to **Meta-UI concept-fidelity pass** (splash/login/menu polish + profile/availability layer + Options 5-tab make-real + commander-pick identity-floor upgrade + first-run prompt surface). All research rails already filed; pass executes against existing decisions. Pointer: concept-fidelity pass is forecasted for next autonomous window; Step 5 playtest remains the downstream gate.
 
 Prior: v0.11 — 2026-04-20 visuals+insight pass + doc-cascade split. Prototype now ships silhouettes/hex+glyph/projectile shapes + damage-numbers/status-icons/threat-bar/next-wave-telegraph/combat-feed (see [visuals-insight decision](decisions/2026-04-20-visuals-insight-pass.md)). CONCEPT.md restructured into hub + [concept/phase-1..7.md](concept/) (see [doc-cascade split decision](decisions/2026-04-20-doc-cascade-split.md)). `cascade-lint` extended with 600-line soft cap, `concept/` folder integrity check, and stale §-anchor warning.
+
+
+---
+
+## Archived naming conventions
+
+Superseded rows from `concept/phase-5.md §5.4` / `CONCEPT.md §5.4` mirror. Preserved verbatim for traceability. **Not active conventions** — do NOT use these patterns to generate new content.
+
+### Lineages (deleted 2026-04-28)
+
+> **Lineages:** one-syllable, ancient-feeling nouns (pattern: Sinew, Ember, Forge, Crown, Veil).
+
+- **Active:** Phase 5 lock through 2026-04-28.
+- **Superseded by:** Civilizations row addition per [`decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md`](decisions/2026-04-28-phase-5-naming-conventions-lineages-row-deletion.md).
+- **Reason orphaned:** 2026-04-25 real-cultures ratification ([`decisions/2026-04-25-q2-real-cultures-direction-ratified.md`](decisions/2026-04-25-q2-real-cultures-direction-ratified.md)) replaced the five invented one-syllable lineages with three real cultures (Greek / Aztec / Norse). The convention's pattern words (Sinew / Ember / Forge / Crown / Veil) had no surviving design surface that consumed them.
+- **Closes:** Follow-up #10 from [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](decisions/2026-04-27-commander-as-summoned-ability-avatar.md).
