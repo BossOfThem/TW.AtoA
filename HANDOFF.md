@@ -109,7 +109,7 @@ LANDED COMMITS (all dual-pushed):
   7c3f338  per-civ R3 Aztec
   5f58829  per-civ R4 Norse
   a98a5d3  per-civ RN audit + arc close + spine-doc edits
-  <pending> post-arc ratifications + handoff bundle
+  0b7160e  post-arc ratifications + handoff bundle
 
 KNOWN GIT DEBT (carried): commit 49c4c54 has 69MB .accord/events.jsonl
 blob in history. Cleanup 78cba67 removes from tracking + .gitignore.
