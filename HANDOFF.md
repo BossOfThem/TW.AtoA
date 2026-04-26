@@ -88,7 +88,7 @@
 Resuming Ash to Altar. Per-civ specialization sub-pass IN PROGRESS.
 R1 scope LANDED at b0d7841. R2 Greek LANDED at 49c4c54 (+ cleanup
 78cba67 untracking .accord/). R3 Aztec LANDED at 7c3f338. Doc-hygiene
-refactor LANDED [pending-commit-sha]. All dual-pushed.
+refactor LANDED 8fcdc1a. All dual-pushed.
 
 R3 deliverable: decisions/2026-05-06-per-civ-r3-aztec-profile.md
 (Accepted, Medium). 5 fields bound; identity_hook 3x debug ran; cross-
