@@ -73,20 +73,34 @@ def check_decisions() -> None:
 
 
 SIZE_CAP = 600
+# Per-file overrides for soft-cap. phase-4.md ratified 600 → 700 on
+# 2026-05-06 per post-per-civ-arc ratifications (the file is the
+# heaviest spine doc by design; remaining Phase-4-exit content
+# §4.4 + §4.7 + Fusion numerics + economy numerics + monetization
+# stub + art-director stub still incoming).
+SIZE_CAP_OVERRIDES: dict[str, int] = {
+    "concept/phase-4.md": 700,
+}
+
+
+def _cap_for(rel: str) -> int:
+    return SIZE_CAP_OVERRIDES.get(rel, SIZE_CAP)
 
 
 def check_size_caps() -> None:
-    """Soft-cap warning for MDs over the 200-600 readability band."""
+    """Soft-cap warning for MDs over the 200-600 readability band (per-file overrides allowed)."""
     roots = [ROOT / "CASCADE.md", ROOT / "CONCEPT.md", ROOT / "HANDOFF.md", ROOT / "PROGRESS.md", ROOT / "CLAUDE.md", ROOT / "README.md"]
     for p in roots:
         if p.exists():
             n = len(p.read_text(encoding="utf-8").splitlines())
-            if n > SIZE_CAP:
-                add(f"oversized: {p.relative_to(ROOT)} ({n} lines, cap {SIZE_CAP})")
+            cap = _cap_for(str(p.relative_to(ROOT)).replace("\\", "/"))
+            if n > cap:
+                add(f"oversized: {p.relative_to(ROOT)} ({n} lines, cap {cap})")
     for p in sorted((ROOT / "concept").glob("*.md")) if (ROOT / "concept").exists() else []:
         n = len(p.read_text(encoding="utf-8").splitlines())
-        if n > SIZE_CAP:
-            add(f"oversized: {p.relative_to(ROOT)} ({n} lines, cap {SIZE_CAP})")
+        cap = _cap_for(str(p.relative_to(ROOT)).replace("\\", "/"))
+        if n > cap:
+            add(f"oversized: {p.relative_to(ROOT)} ({n} lines, cap {cap})")
 
 
 def check_concept_folder() -> None:

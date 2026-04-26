@@ -32,18 +32,17 @@ Stages + research tables (status, last-reviewed) live in [`CASCADE-tables.md`](C
 5. [`PROGRESS.md`](PROGRESS.md) — step tracker; first unchecked box = next step (unless queue paused).
 6. [`CONCEPT.md`](CONCEPT.md) — vision hub. Phase content lives under [`concept/phase-1..7.md`](concept/); open only what you need.
 7. [`CONCEPT-GAPS.md`](CONCEPT-GAPS.md) — ephemeral proposal layer.
-8. [`admin/concept.json`](admin/concept.json) — PM's structured edits. Diff against `HANDOFF.md` state snapshot.
-9. Target stage / research / decision doc per "Current work pointer" below.
+8. Target stage / research / decision doc per "Current work pointer" below.
 
 ---
 
 ## Current work pointer
 
-**2026-05-06 — Per-civ RN (cross-civ × cross-field audit + arc close) LANDED — CLOSES PER-CIV ARC 4/4** ([`decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md`](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md), commit pending, dual-pushed). 5×3 civ-aggregate audit matrix (zero cascade-violations across 15 bindings × 5 locks) + three-civ-three-equation-form fingerprint LOCKED as Phase-4-spec-level invariant (Greek deceleration-weighted / Aztec kill-multiplication-weighted / Norse summon-cleave-propagation-weighted) + spine-doc edits (§4.12 new + §4.8 ticked) + 3x debug on arc.
+**2026-05-06 — Per-civ RN LANDED + post-arc ratifications LANDED. NEXT TRACK: §4.7 enemy direction lock + Round 11 wave-composition variance mandate, bundled.** Per-civ arc CLOSED 4/4 ([`decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md`](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md), commit `a98a5d3`, dual-pushed). Post-arc 4-item PM ratification ([`decisions/2026-05-06-post-arc-ratifications.md`](decisions/2026-05-06-post-arc-ratifications.md)): (1) §4.7+R11 next-track; (2) `admin/concept.json` retired from source-of-truth chain; (3) `concept/phase-4.md` cap bumped 600→700 via per-file override in cascade-lint; (4) cultural-sensitivity Follow-up #5 consultation timing locked to Phase-4 exit.
 
-**Remaining queue:** PM picks next-track fork — per-map authoring / Round 11 / §4.4 BLOCKER mobile-unit-control / §4.7 OPEN enemy direction / Phase 4 numerics / Phase 5 readiness gate / monetization / engine / art director / `admin/concept.json` migration / Follow-ups #5/#6/#7/#8/#9 + C7.b deferred. AskUserQuestion next session.
+**Next-session directive:** open §4.7 enemy direction sub-arc. Likely 3-5 round queue (R1 scope → per-archetype creep-roster → per-mode wave-composition → cross-mode audit → spine-doc edits to `concept/phase-4.md §4.7` + Round 11 variance mandate body). PM autonomy mandate carries from per-civ + per-tower arcs. AskUserQuestion only on R1 scope axis-pick (per established arc-open pattern).
 
-**Carried blockers / debt:** phase-4.md soft-cap 636/600 (RN +7 net lines; pre-existing breach not made materially worse) · `49c4c54` `.accord/` 69MB blob in history (purge needs PM authorization) · `admin/concept.json` staleness · §4.4 mobile unit control (Phase 4 OPEN BLOCKER).
+**Carried blockers / debt:** `49c4c54` `.accord/` 69MB blob in history (purge needs explicit PM authorization) · §4.4 mobile-unit-control (Phase 4 OPEN BLOCKER, deferred to next-track-after-§4.7) · cultural-sensitivity Follow-up #5 (now scheduled at Phase-4 exit, not currently blocking).
 
 *Older pointers archived to [`CASCADE-history.md`](CASCADE-history.md).*
 
@@ -57,6 +56,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 | Date | Decision | Reversibility |
 |------|----------|---------------|
+| 2026-05-06 | [Post-per-civ-arc ratifications (next-track §4.7+R11 / admin.json retired / phase-4 cap 600→700 / cultural-sensitivity at Phase-4 exit)](decisions/2026-05-06-post-arc-ratifications.md) | Mixed |
 | 2026-05-06 | [Per-civ RN — cross-civ × cross-field audit + arc close (CLOSES ARC 4/4; 15/15 zero cascade-violations; 3-civ-3-equation-form fingerprint locked)](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md) | Medium |
 | 2026-05-06 | [Per-civ R4 — Norse profile (5 fields + identity_hook 3x debug + R3-prediction validated + → RN hook)](decisions/2026-05-06-per-civ-r4-norse-profile.md) | Medium |
 | 2026-05-06 | [Per-civ R3 — Aztec profile (5 fields + identity_hook 3x debug + R2-prediction reconciliation + → R4 hook)](decisions/2026-05-06-per-civ-r3-aztec-profile.md) | Medium |
@@ -140,7 +140,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 ## Admin UI / Prototype / Legacy
 
-- [`admin/index.html`](admin/index.html) + [`admin/concept.json`](admin/concept.json) + [decision](decisions/2026-04-19-admin-ui-v1.md). **Conflict rule:** MD wins on naming; JSON wins on roster/positions.
+- [`admin/index.html`](admin/index.html) — node-graph admin UI per [decision](decisions/2026-04-19-admin-ui-v1.md). **`admin/concept.json` retired 2026-05-06** from source-of-truth chain per [post-arc ratifications](decisions/2026-05-06-post-arc-ratifications.md); `concept/phase-*.md` tree + `decisions/` files are sole truth. JSON file remains in repo as historical artifact only.
 - [`prototype/index.html`](prototype/index.html) + [`prototype/data/`](prototype/data/) + [`prototype/start.bat`](prototype/start.bat) (Python `http.server` :8765) + [`prototype/PORT-NOTES.md`](prototype/PORT-NOTES.md) + [decision](decisions/2026-04-19-design-prototype-scope.md).
 - `tw-commanders-starter/` — original starter; archived 2026-04-19. Do not edit.
 
@@ -157,4 +157,4 @@ Treat `CASCADE.md` as single source of truth for "what exists and where." If it 
 
 ---
 
-*Document version: 0.71 — 2026-05-06: Per-civ RN LANDED — CLOSES ARC 4/4. 5×3 civ-aggregate audit (zero cascade-violations) + three-civ-three-equation-form fingerprint locked as Phase-4-spec-level invariant + §4.12 new + §4.8 ticked. Prior 0.70 — Doc-hygiene refactor. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
+*Document version: 0.72 — 2026-05-06: Post-per-civ-arc ratifications. Next-track §4.7+R11 locked; admin/concept.json retired from source-of-truth chain; phase-4.md cap bumped 600→700 via cascade-lint per-file override; cultural-sensitivity Follow-up #5 scheduled at Phase-4 exit. Reading order item #8 dropped (admin/concept.json). Prior 0.71 — Per-civ RN LANDED, CLOSES ARC 4/4. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*

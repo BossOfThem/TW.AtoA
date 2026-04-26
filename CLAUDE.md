@@ -21,7 +21,7 @@ Load this after [`README.md`](README.md). Reading order and stage/research table
 ## Handoff trigger
 
 When the PM types **"prepare for handoff"** (or "handoff time", "wrap session", "checkpoint"):
-1. Re-read `PROGRESS.md`, `CASCADE.md`, `admin/concept.json` head, `prototype/index.html` BALANCE region, `decisions/` listing.
+1. Re-read `PROGRESS.md`, `CASCADE.md`, `prototype/index.html` BALANCE region, `decisions/` listing. (`admin/concept.json` retired from source-of-truth chain 2026-05-06.)
 2. Rewrite `HANDOFF.md` TL;DR + state snapshot + carried debts/blockers.
 3. Bump `CASCADE.md` pointer if doc statuses changed. **Trim live docs** (see Doc hygiene below): archive old session log entries from `PROGRESS.md` and old pointer blocks from `CASCADE.md`.
 4. Emit a single fenced copy-pasteable prompt for the next session after `/clear`.
