@@ -39,9 +39,9 @@ Stages + research tables (status, last-reviewed) live in [`CASCADE-tables.md`](C
 
 ## Current work pointer
 
-**2026-05-06 — Per-civ R3 (Aztec profile) LANDED** ([`decisions/2026-05-06-per-civ-r3-aztec-profile.md`](decisions/2026-05-06-per-civ-r3-aztec-profile.md), commit `7c3f338`, dual-pushed). 5-field profile bound + R2-prediction reconciliation (Aztec-vs-Unarmored / Aztec-vs-Shielded bins inverted under direct RPS aggregation; pattern substantively confirmed) + identity_hook 3x debug + → R4 Norse hook.
+**2026-05-06 — Per-civ R4 (Norse profile) LANDED** ([`decisions/2026-05-06-per-civ-r4-norse-profile.md`](decisions/2026-05-06-per-civ-r4-norse-profile.md), commit pending, dual-pushed). 5-field profile bound + R3-prediction validated at all five bins (Beast / Colossal flat-NEUTRAL → NEUTRAL-tilted-favorable upward shifts under God-tier-partial weighting; structural pattern fully confirmed) + identity_hook 3x debug + → RN cross-civ × cross-field audit hook (3-civ-3-equation-form free-variable-set-grounding empirically NOT hollow).
 
-**Remaining queue:** R4 Norse profile / RN cross-civ × cross-field audit + `phase-4.md §4.x` per-civ specialization body + possible §4.8 exit-gate item add. PM autonomy mandate carries.
+**Remaining queue:** RN cross-civ × cross-field audit + `phase-4.md §4.x` per-civ specialization body + possible §4.8 exit-gate item add. PM autonomy mandate carries.
 
 **Carried blockers / debt:** phase-4.md soft-cap 629/600 (carried) · `49c4c54` `.accord/` 69MB blob in history (purge needs PM authorization) · `admin/concept.json` staleness · §4.4 mobile unit control (Phase 4 OPEN BLOCKER).
 
@@ -57,6 +57,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 | Date | Decision | Reversibility |
 |------|----------|---------------|
+| 2026-05-06 | [Per-civ R4 — Norse profile (5 fields + identity_hook 3x debug + R3-prediction validated + → RN hook)](decisions/2026-05-06-per-civ-r4-norse-profile.md) | Medium |
 | 2026-05-06 | [Per-civ R3 — Aztec profile (5 fields + identity_hook 3x debug + R2-prediction reconciliation + → R4 hook)](decisions/2026-05-06-per-civ-r3-aztec-profile.md) | Medium |
 | 2026-05-06 | [Per-civ R2 — Greek profile (5 fields + identity_hook 3x debug + → R3 hook)](decisions/2026-05-06-per-civ-r2-greek-profile.md) | Medium |
 | 2026-05-06 | [Per-civ specialization sub-pass scope (4-round queue + 5-field schema + Axis A)](decisions/2026-05-06-per-civ-specialization-scope.md) | Medium |
