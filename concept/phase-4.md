@@ -308,23 +308,39 @@ Every enemy archetype must carry **1–2 armor tags** from the 5-tag taxonomy:
 
 Rock-paper-scissors matrix (attack type × armor tag at +25% / −25%) is locked per 2026-04-26 mapping. Enemy design must make armor tags **read at gameplay speed** (icon + silhouette cue).
 
-### Direction sketches under real-cultures frame (themes OPEN)
+### Direction ratified — Option C (hybrid) LOCKED 2026-05-06
 
-- **A — Cross-cultural myth creatures (shared PvE pool).** A unified bestiary drawing from Greek / Aztec / Norse myth — Minotaurs, Hydra, Cyclops, Jaguar-spirits, Cihuateteo, Draugr, Jötnar, Trolls, serpents, etc. Assigned to armor tags per archetype (e.g., Draugr = Spirit + Shielded; Jötunn = Colossal + Shielded; Hydra = Beast + Colossal). Easier to build one shared PvE pool; thematically legible across all 3 civs.
-- **B — Civ-matched native-myth creatures (per-civ PvE pools).** Greek PvE faces Greek myth antagonists (Minotaur, Hydra, Medusa, Titans); Aztec faces Aztec myth (Cipactli, Cihuateteo, Tzitzimimeh); Norse faces Norse myth (Jötnar, Draugr, Fenrir, Midgard Serpent). Thematically richer; three times the art burden; harder matchmaking in co-op Horde if players pick different civs.
-- **C — Hybrid (leading placeholder).** Civ-matched **boss-tier** enemies (mini-boss every 5 rounds + main-boss every 10 rounds — aligns with the 30-round match arc + 6-Divinity cap from 2026-04-25 ratification). Regular-wave enemies drawn from a shared cross-cultural pool. Trailer moments without tripling the art burden.
+*Decision entries: [`2026-05-06 R1 scope`](../decisions/2026-05-06-enemy-direction-r1-scope.md) + [`R2 Direction lock`](../decisions/2026-05-06-enemy-direction-r2-direction-lock.md) + [`R3 R11 variance grammar`](../decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md) + [`RN cross-arc audit and arc close`](../decisions/2026-05-06-enemy-direction-rn-cross-arc-audit-and-arc-close.md). Reversibility: Medium.*
 
-**Leading direction (placeholder, not ratified): Option C — hybrid.** Civ-matched bosses at 5/10/15/20/25/30, shared regular-wave pool between.
+**Option C ratified.** Civ-matched **boss-tier** enemies (mini-bosses at R5/R15/R25 + main bosses at R10/R20/R30, per the 2026-04-27 historic-arc table verbatim) + **shared cross-cultural regular-wave pool** for the 24 non-boss rounds. Three evidentiary streams converged at R2: (i) the §4.7 leading placeholder; (ii) the 2026-04-27 historic-arc table presupposes C-shaped framing (Xerxes / Tlaxcalan→Tezcatlipoca / Jörmungandr R30 antagonists already civ-matched and locked); (iii) per-civ RN signature_creep_types cluster boss-tier at civ-distinct armor classes. A and B both require Hard-class supersession against locked upstream content (A: 2026-04-27 + Follow-up #11 Jörmungandr-lock; B: lean-launch floor + Follow-up #5 hard-gate scheduling).
 
-### Blockers before Phase 5 begins
+**Boss-tier civ-distinct armor-class clustering** (binds per-civ RN signature_creep_types verbatim):
 
-1. **Direction A / B / C ratification** (PM input required).
-2. **Boss roster locked** — 2026-04-25 Follow-up #3, requires PM-ratified myth-creature list per civ once direction lands.
-3. **Regular-wave archetype roster + armor-tag assignments** (populates the 5 armor tags at waves 1–29).
-4. **Cultural-sensitivity pass** — boss names drawn from myth must pass the 2026-04-25 Follow-up #5 review before any Phase 5 art lock (especially Aztec creatures, which carry the highest representational risk).
-5. **PvE campaign scope** — the deferred AGES concept (PvE campaign + leveling + attributes per 2026-04-25 Follow-up #8) may reopen this decision by introducing per-chapter enemy-direction overrides.
+| Civ | Boss-tier armor-class cluster | R30 armor tags | Mini-boss space (R5/R15/R25) |
+|-----|-------------------------------|----------------|------------------------------|
+| Greek | **Colossal + Shielded** | Xerxes I = Shielded; Persian Immortal vanguard R25-29 = Shielded swarm | Shielded baseline; one mini-boss may add Colossal scale (satrap/champion tier) |
+| Aztec | **Beast + Spirit + Unarmored** | Tlaxcalan phase-1 = Unarmored + Beast; Tezcatlipoca phase-2 = Spirit | Beast+Spirit+Unarmored; Beast at R15 (myth-fauna) densest |
+| Norse | **Shielded + Unarmored** sub-boss; **Colossal + Spirit** R30 | Jörmungandr = Colossal + Spirit; R25-29 vanguard = Beast + Spirit (kraken-tier) | Shielded+Unarmored at lower tiers; R25 Jötunn herald may add Colossal at half-Jörmungandr-magnitude |
 
-Full enemy roster and per-wave archetype list deferred to Phase 5 under the §5.3 silhouette-forward aesthetic **and** the 2026-04-26 armor-tag legibility constraint. Decision required before Phase 5 begins.
+The Norse R30 Colossal+Spirit boss is **intentionally** Norse-WEAK (per per-civ RN matchup_affinity) — the Eddic Ragnarök-foreshadow tension is the design's first explicit *boss-tier-as-civ-WEAK* falsification surface. Greek and Aztec R30s are civ-STRONG self-affinity (boss-tier difficulty curve their civ is built to answer); the asymmetry is intentional per civ identity_hook narrative.
+
+**Shared regular-wave pool — 5-armor-class distribution band envelope** (24 regular-wave rounds, civ-neutral):
+
+| Armor class | Target distribution | Rationale |
+|-------------|---------------------|-----------|
+| **Unarmored** | 35-45% | Common swarm baseline; Greek deceleration target-time-integral surface |
+| **Shielded** | 20-30% | Heavy-elite pressure; Aztec WEAK encounterable surface |
+| **Beast** | 15-20% | Myth-monster pressure; Greek WEAK encounterable surface |
+| **Spirit** | 8-12% | Threat-class density (not baseline); Norse WEAK encounterable surface |
+| **Colossal** | 3-7% | Reserved for elite waves; preserves boss-tier Colossal as special |
+
+Bands are **distribution envelopes** sampled per-wave by the R11 variance grammar (next subsection). Bands defend three structural failure modes: (i) no unwinnable matchup at any (k) × civ × armor combination (per-tower RN type-coverage table verified RN cross-arc audit); (ii) per-civ matchup_affinity surface coherence — every civ's WEAK class is encounterable at felt-identity grain (Greek=Beast / Aztec=Shielded / Norse=Spirit); (iii) three-civ-three-equation-form fingerprint preserved — all three equation forms find their pressure-surface within the same shared distribution. Full band rationale + cross-arc audit at [`R2`](../decisions/2026-05-06-enemy-direction-r2-direction-lock.md) and [`RN`](../decisions/2026-05-06-enemy-direction-rn-cross-arc-audit-and-arc-close.md).
+
+**Civ-neutral effect-type language only.** Regular-wave creep references the 5-armor taxonomy verbatim per 2026-04-26 attack-type lock; no per-creature-name authoring beyond the locked content-skeleton boss roster (Xerxes / Tlaxcalan / Tezcatlipoca / Jörmungandr). Mini-boss candidate names from 2026-04-27 (hoplite-rivals → satrap commanders → Persian Immortal champion / rival altepetl warlords → Cipactli-tier myth fauna → priest-king of Triple-Alliance enemy state / rival jarls → Draugr lord → Jötunn herald) remain placeholder-pending-Follow-up-#5. Cultural-sensitivity Follow-up #5 hard-gate review at Phase-4 exit covers 18 boss-instance art-locks (6 per civ × 3 civs); per-creep-row roster authoring stays deferred to Phase 5 + Follow-up #5 consultation.
+
+**Alternatives considered and rejected (R2):** Option A (cross-cultural shared bosses) requires Hard-class supersession against the 2026-04-27 historic-arc table + voiding Follow-up #11; flattens the cross-civ tonal escalation. Option B (per-civ regular-wave pools) triples the art burden + breaks Follow-up #5 hard-gate scheduling; structurally incompatible with lean-launch floor. Option C-modified ("shared boss skin + civ-matched cinematic only") was also rejected — the 2026-04-27 table specifies *boss-fight-mechanic* civ-matching, not flavor cosmetic.
+
+**Open Phase-5 work** carried after this lock: boss roster art-lock per 2026-04-25 Follow-up #3 (gated by Follow-up #5); per-wave regular-creep silhouette + icon authoring under §5.3 silhouette-forward aesthetic + 2026-04-26 armor-tag legibility constraint; per-map authoring sub-pass populating spawn-point sets + crystal-lock tile neighborhoods + boss-spike-tile per map (R3 binds the count + selection rule, per-map authoring populates); deferred AGES per-chapter enemy-direction overrides (2026-04-25 Follow-up #8) may reopen this section.
 
 ### Historic match-arc beats (solo-only) — NEW 2026-04-27
 
@@ -350,9 +366,19 @@ The 30-round match arc (mini-bosses at 5/15/25, main bosses at 10/20/30) is **dr
 
 **Cultural-sensitivity gate (Follow-up #5).** Every name in the table above (Xerxes / Tlaxcalan / Tezcatlipoca / Jörmungandr) and every mini-boss candidate is **placeholder-pending-consultation**. The Aztec two-phase reveal in particular requires consultation review for the Tezcatlipoca framing (Smoking Mirror is an active living-religion deity figure for some communities, not a museum-cabinet myth); the Tlaxcalan-as-villain framing requires care to avoid flattening Aztec-Tlaxcalan history into a simple good-vs-evil. No round-30 art-lock until the 2026-04-25 Follow-up #5 pass closes.
 
-### Wave-composition variance mandate (NEW 2026-05-05 R9 close-out)
+### Wave-composition variance grammar (LOCKED 2026-05-06 R3)
 
-Per [`decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md`](../decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md), the [§4.11.8](#4118-skill-bar-thresholds-per-k) skill-bar thresholds are vulnerable to a **memorization meta** — a player who learns one fixed wave script can clear Hardcore at novice skill-bar values. To defend threshold integrity, the wave-composition system must support: (a) **random-seeded armor-tag mix per wave** (within difficulty-appropriate distributions; the matchup-correctness axis stays measurable but non-memorizable); (b) **per-map crystal-lock variance** (the boss-spike tile or wave-spawn point is map-specific and not editor-cloned across modes). Implementation lives in Phase 5; this section is the spec mandate. Locked content-skeleton bosses (R10 / R15 / R30 per civ) are exempt — their *composition* can vary but the *identity* (Xerxes / Tezcatlipoca / Jörmungandr) is fixed per the locked roster.
+*Decision entry: [`2026-05-06 R3 R11 variance grammar`](../decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md). Reversibility: Medium. Originating R9 mandate: [`2026-05-05 balance-pass 2 R9 skill-bar thresholds`](../decisions/2026-05-05-balance-pass-2-round-9-skill-bar-thresholds.md).*
+
+The [§4.11.8](#4118-skill-bar-thresholds-per-k) skill-bar thresholds are vulnerable to a **memorization meta** — a fixed wave script lets a player clear Hardcore at novice skill-bar values. R3 binds the wave-composition variance grammar at five spec-level points to defend the three §4.11.8 axes (matchup-correctness / placement-coverage / ability-uptime) against memorization at all (k) tiers:
+
+1. **Per-wave random-seeded armor-tag mix sampler with (k) band-center modulation + per-civ matchup-affinity overlay.** LCG-seeded match-deterministic; without-replacement-within-wave, with-replacement-across-waves. (k) shifts band centers (Easy 44/22/16/9/4 → Hardcore 35/30/20/12/7 across Unarmored/Shielded/Beast/Spirit/Colossal). Per-civ overlay: Greek +5pp Beast / Aztec +5pp Shielded / Norse +5pp Spirit (−5pp Unarmored compensatory) so each civ's WEAK affinity surfaces at gameplay-felt grain.
+2. **Per-wave armor-class diversity constraint at instance-count grain.** Min 3 of 5 armor classes present / max 70% single-class / min 5%-or-zero floor; 8-retry escape rule on constraint failure to bound sampler runtime.
+3. **Per-map crystal-lock variance grammar.** 2-4 spawn-point set per map / per-map fixed boss-spike tile / crystal-lock ≤2-tile shift per match / PvP locks for symmetry. Per-map authoring sub-pass populates the spawn-point neighborhood; R3 binds the count + selection rule.
+4. **Locked content-skeleton boss exemption with composition-variance bounds.** Boss *identity* fixed per the 2026-04-27 historic-arc table (Xerxes / Tlaxcalan→Tezcatlipoca / Jörmungandr); boss *composition* varies within bounds: Greek R30 Xerxes Shielded core + 0-2 Colossal vanguard / Aztec R30 Tlaxcalan→Tezcatlipoca two-phase + 1-3 auto-summoned Beast minions / Norse R30 Jörmungandr Colossal+Spirit core + 0-3 kraken-tier Beast/Spirit attendants.
+5. **§4.11.8 three-axis falsification gate.** Compositional variance defends matchup-correctness (memorized civ-vs-creep fails on per-wave realized variance ±20pp from mean); topological variance defends placement-coverage (memorized tower layout fails on per-match crystal/spawn shifts); boss-vanguard variance defends ability-uptime (memorized cast rotation fails on shifting engagement-density at boss waves).
+
+Implementation lives in Phase 5; this section is the spec mandate. Sample-space arithmetic at R3: ~10^7-10^8 effective campaign realizations per civ-locked seed >> 10^3 memorization horizon — memorization meta defeated empirically. RN cross-arc audit verified 42 cells across (i) per-civ RN matchup_affinity coherence + (ii) per-tower RN type-coverage coherence + (iii) §4.11.8 three-axis defense at zero cascade-violations. Norse sub-T4 Spirit-pressure (R20-R29 pre-T4 window) verified as gameplay-felt-WEAK affinity surface at Hardcore-expert threshold (1 Rune Stone T3 + Bleed-density-cascade closes within 1.0× cumulative-DPS budget); multi_civ_play_hook is sub-expert relief, not Hardcore gating.
 
 ## 4.9 Save model
 
@@ -626,7 +652,7 @@ Source-of-truth decision files: [`per-civ R1 scope`](../decisions/2026-05-06-per
 - ✅ **Per-civ specialization profile bound** for all 3 launch civs (Greek / Aztec / Norse) under the locked 5-field schema (matchup_affinity / identity_hook / signature_creep_types / multi_civ_play_hook / commander_synergy). **DONE 2026-05-06** per [`per-civ R1 scope`](../decisions/2026-05-06-per-civ-specialization-scope.md) + R2-R4 + [`RN cross-civ audit and arc close`](../decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md). Three-civ-three-equation-form fingerprint locked as Phase-4-spec-level invariant (Greek deceleration-weighted / Aztec kill-multiplication-weighted / Norse summon-cleave-propagation-weighted).
 - Fusion system shape signed off (done 2026-04-25: 9 locked Gods via 9 locked 2-Demigod recipes, Divinity-gated, menu-driven discovery). Fusion-numerics balance-pass remains [PROPOSAL].
 - Mobile unit control model resolved (§4.4 OPEN BLOCKER).
-- Enemy direction locked (§4.7 A/B/C choice ratified; leading placeholder = Option C hybrid).
+- ✅ **Enemy direction locked** (§4.7 Option C ratified — civ-matched boss-tier + shared regular-wave pool + R11 wave-composition variance grammar). **DONE 2026-05-06** per [`R1 scope`](../decisions/2026-05-06-enemy-direction-r1-scope.md) + [`R2 Direction lock`](../decisions/2026-05-06-enemy-direction-r2-direction-lock.md) + [`R3 R11 variance grammar`](../decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md) + [`RN cross-arc audit and arc close`](../decisions/2026-05-06-enemy-direction-rn-cross-arc-audit-and-arc-close.md). 42-cell 3-axis cross-arc audit at zero cascade-violations.
 - Economy balanced on paper (Tribute + Divinity income curves, per-tier tower costs, Fusion spend cadence; §4.6 locks shape, numerics [PROPOSAL]).
 - Monetization model specifics resolved (cosmetic-only; no-pay-to-win non-negotiable).
 - Engine choice locked (leading: Godot 4 per `concept/phase-5.md §5.5`).
