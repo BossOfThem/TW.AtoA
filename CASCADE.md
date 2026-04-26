@@ -38,7 +38,7 @@ Stages + research tables (status, last-reviewed) live in [`CASCADE-tables.md`](C
 
 ## Current work pointer
 
-**2026-05-06 — §4.7 enemy direction R2 LANDED (Option C ratified).** Civ-matched boss-tier (R5/R10/R15/R20/R25/R30 per 2026-04-27 historic-arc table verbatim) + shared cross-cultural regular-wave pool (24 regular-wave rounds at 5-armor-class distribution bands). Three evidentiary streams converged on C; A/B rejected with explicit reconciliation. Cross-property coherence hook to R3 R11 variance grammar embedded. Next: R3 R11 wave-composition variance grammar autonomously. ([`decisions/2026-05-06-enemy-direction-r2-direction-lock.md`](decisions/2026-05-06-enemy-direction-r2-direction-lock.md))
+**2026-05-06 — §4.7 enemy direction R3 LANDED (R11 wave-composition variance grammar).** 5 spec-level bindings: per-wave random-seeded armor-tag mix sampler with (k) band-center + matchup-affinity surface adjustment (+5pp WEAK / −5pp Unarmored per locked civ); per-wave armor-class diversity constraint (min 3 of 5 / max 70% / min 5%-or-zero at instance-count grain); per-map crystal-lock variance grammar (2-4 spawn-points per map / per-map fixed boss-spike / crystal ≤2-tile shift); locked content-skeleton boss exemption with composition-variance bounds; §4.11.8 three-axis falsification gate verified per-axis. 3x debug loop ran; cross-property coherence hook to RN with explicit 3-axis audit deliverables embedded; Norse sub-T4 Spirit-pressure pre-flagged for RN verification. Next: RN cross-arc audit + spine-doc edits + arc close autonomously. ([`decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md`](decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md))
 
 **Carried blockers / debt:** `49c4c54` `.accord/` 69MB blob in history (purge needs explicit PM authorization) · §4.4 mobile-unit-control (Phase 4 OPEN BLOCKER, deferred to next-track-after-§4.7) · cultural-sensitivity Follow-up #5 (now scheduled at Phase-4 exit, not currently blocking).
 
@@ -54,6 +54,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 | Date | Decision | Reversibility |
 |------|----------|---------------|
+| 2026-05-06 | [§4.7 enemy direction R3 — R11 wave-composition variance grammar (5 spec-level bindings; (k) band-center + matchup-affinity overlay + diversity envelope)](decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md) | Medium |
 | 2026-05-06 | [§4.7 enemy direction R2 — Option C ratified (civ-matched bosses + shared regular-wave pool; 5-class distribution bands)](decisions/2026-05-06-enemy-direction-r2-direction-lock.md) | Medium |
 | 2026-05-06 | [§4.7 enemy direction + R11 wave-variance R1 scope (4-round per-property axis; R11 bundled)](decisions/2026-05-06-enemy-direction-r1-scope.md) | Medium |
 | 2026-05-06 | [Post-per-civ-arc ratifications (next-track §4.7+R11 / admin.json retired / phase-4 cap 600→700 / cultural-sensitivity at Phase-4 exit)](decisions/2026-05-06-post-arc-ratifications.md) | Mixed |
@@ -157,4 +158,4 @@ Treat `CASCADE.md` as single source of truth for "what exists and where." If it 
 
 ---
 
-*Document version: 0.74 — 2026-05-06: §4.7 enemy direction R2 LANDED (Option C ratified). Civ-matched boss-tier per 2026-04-27 historic-arc table + shared cross-cultural regular-wave pool at 5-armor-class distribution bands (Unarmored 35-45% / Shielded 20-30% / Beast 15-20% / Spirit 8-12% / Colossal 3-7%). Three evidentiary streams converged; A/B rejected with explicit cascade-discipline reconciliation. Cross-property coherence hook to R3 embedded. PM autonomy mandate carries — R3 + RN autonomous. Prior 0.73 — §4.7+R11 R1 scope LANDED. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
+*Document version: 0.75 — 2026-05-06: §4.7 enemy direction R3 LANDED (R11 wave-composition variance grammar). 5 spec-level bindings: per-wave random-seeded armor-tag mix sampler with (k) band-center + matchup-affinity surface adjustment + per-wave armor-class diversity constraint (instance-count grain) + per-map crystal-lock variance grammar + locked-boss exemption + §4.11.8 three-axis falsification gate. 3x debug loop ran; RN cross-arc audit hooks with 3-axis deliverables + Norse sub-T4 Spirit-pressure pre-flagged risk. PM autonomy mandate carries — RN autonomous. Prior 0.74 — §4.7 R2 Option C ratified. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
