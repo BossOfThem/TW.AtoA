@@ -38,7 +38,7 @@ Stages + research tables (status, last-reviewed) live in [`CASCADE-tables.md`](C
 
 ## Current work pointer
 
-**2026-05-06 — §4.7 enemy direction + R11 wave-variance sub-pass R1 SCOPE LANDED.** 4-round per-property queue (R1 scope → R2 Direction A/B/C lock + body → R3 R11 variance grammar → R4 RN cross-arc audit + spine-doc edits). R11 bundled per post-arc ratification item 1. Dual-push after R1 + each content round + RN. PM autonomy mandate carries — R2 onward autonomous. ([`decisions/2026-05-06-enemy-direction-r1-scope.md`](decisions/2026-05-06-enemy-direction-r1-scope.md))
+**2026-05-06 — §4.7 enemy direction R2 LANDED (Option C ratified).** Civ-matched boss-tier (R5/R10/R15/R20/R25/R30 per 2026-04-27 historic-arc table verbatim) + shared cross-cultural regular-wave pool (24 regular-wave rounds at 5-armor-class distribution bands). Three evidentiary streams converged on C; A/B rejected with explicit reconciliation. Cross-property coherence hook to R3 R11 variance grammar embedded. Next: R3 R11 wave-composition variance grammar autonomously. ([`decisions/2026-05-06-enemy-direction-r2-direction-lock.md`](decisions/2026-05-06-enemy-direction-r2-direction-lock.md))
 
 **Carried blockers / debt:** `49c4c54` `.accord/` 69MB blob in history (purge needs explicit PM authorization) · §4.4 mobile-unit-control (Phase 4 OPEN BLOCKER, deferred to next-track-after-§4.7) · cultural-sensitivity Follow-up #5 (now scheduled at Phase-4 exit, not currently blocking).
 
@@ -54,6 +54,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 | Date | Decision | Reversibility |
 |------|----------|---------------|
+| 2026-05-06 | [§4.7 enemy direction R2 — Option C ratified (civ-matched bosses + shared regular-wave pool; 5-class distribution bands)](decisions/2026-05-06-enemy-direction-r2-direction-lock.md) | Medium |
 | 2026-05-06 | [§4.7 enemy direction + R11 wave-variance R1 scope (4-round per-property axis; R11 bundled)](decisions/2026-05-06-enemy-direction-r1-scope.md) | Medium |
 | 2026-05-06 | [Post-per-civ-arc ratifications (next-track §4.7+R11 / admin.json retired / phase-4 cap 600→700 / cultural-sensitivity at Phase-4 exit)](decisions/2026-05-06-post-arc-ratifications.md) | Mixed |
 | 2026-05-06 | [Per-civ RN — cross-civ × cross-field audit + arc close (CLOSES ARC 4/4; 15/15 zero cascade-violations; 3-civ-3-equation-form fingerprint locked)](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md) | Medium |
@@ -156,4 +157,4 @@ Treat `CASCADE.md` as single source of truth for "what exists and where." If it 
 
 ---
 
-*Document version: 0.73 — 2026-05-06: §4.7 enemy direction + R11 wave-variance R1 scope LANDED. 4-round per-property axis (R1 scope → R2 Direction A/B/C lock + body → R3 R11 variance grammar → R4 RN cross-arc audit + spine-doc edits). R11 bundled per post-arc ratification item 1. Dual-push after R1 + each content round + RN. PM autonomy mandate carries — R2 onward autonomous. Prior 0.72 — Post-per-civ-arc ratifications. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
+*Document version: 0.74 — 2026-05-06: §4.7 enemy direction R2 LANDED (Option C ratified). Civ-matched boss-tier per 2026-04-27 historic-arc table + shared cross-cultural regular-wave pool at 5-armor-class distribution bands (Unarmored 35-45% / Shielded 20-30% / Beast 15-20% / Spirit 8-12% / Colossal 3-7%). Three evidentiary streams converged; A/B rejected with explicit cascade-discipline reconciliation. Cross-property coherence hook to R3 embedded. PM autonomy mandate carries — R3 + RN autonomous. Prior 0.73 — §4.7+R11 R1 scope LANDED. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
