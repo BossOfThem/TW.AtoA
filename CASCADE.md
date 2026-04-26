@@ -39,11 +39,11 @@ Stages + research tables (status, last-reviewed) live in [`CASCADE-tables.md`](C
 
 ## Current work pointer
 
-**2026-05-06 — Per-civ R4 (Norse profile) LANDED** ([`decisions/2026-05-06-per-civ-r4-norse-profile.md`](decisions/2026-05-06-per-civ-r4-norse-profile.md), commit pending, dual-pushed). 5-field profile bound + R3-prediction validated at all five bins (Beast / Colossal flat-NEUTRAL → NEUTRAL-tilted-favorable upward shifts under God-tier-partial weighting; structural pattern fully confirmed) + identity_hook 3x debug + → RN cross-civ × cross-field audit hook (3-civ-3-equation-form free-variable-set-grounding empirically NOT hollow).
+**2026-05-06 — Per-civ RN (cross-civ × cross-field audit + arc close) LANDED — CLOSES PER-CIV ARC 4/4** ([`decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md`](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md), commit pending, dual-pushed). 5×3 civ-aggregate audit matrix (zero cascade-violations across 15 bindings × 5 locks) + three-civ-three-equation-form fingerprint LOCKED as Phase-4-spec-level invariant (Greek deceleration-weighted / Aztec kill-multiplication-weighted / Norse summon-cleave-propagation-weighted) + spine-doc edits (§4.12 new + §4.8 ticked) + 3x debug on arc.
 
-**Remaining queue:** RN cross-civ × cross-field audit + `phase-4.md §4.x` per-civ specialization body + possible §4.8 exit-gate item add. PM autonomy mandate carries.
+**Remaining queue:** PM picks next-track fork — per-map authoring / Round 11 / §4.4 BLOCKER mobile-unit-control / §4.7 OPEN enemy direction / Phase 4 numerics / Phase 5 readiness gate / monetization / engine / art director / `admin/concept.json` migration / Follow-ups #5/#6/#7/#8/#9 + C7.b deferred. AskUserQuestion next session.
 
-**Carried blockers / debt:** phase-4.md soft-cap 629/600 (carried) · `49c4c54` `.accord/` 69MB blob in history (purge needs PM authorization) · `admin/concept.json` staleness · §4.4 mobile unit control (Phase 4 OPEN BLOCKER).
+**Carried blockers / debt:** phase-4.md soft-cap 636/600 (RN +7 net lines; pre-existing breach not made materially worse) · `49c4c54` `.accord/` 69MB blob in history (purge needs PM authorization) · `admin/concept.json` staleness · §4.4 mobile unit control (Phase 4 OPEN BLOCKER).
 
 *Older pointers archived to [`CASCADE-history.md`](CASCADE-history.md).*
 
@@ -57,6 +57,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 | Date | Decision | Reversibility |
 |------|----------|---------------|
+| 2026-05-06 | [Per-civ RN — cross-civ × cross-field audit + arc close (CLOSES ARC 4/4; 15/15 zero cascade-violations; 3-civ-3-equation-form fingerprint locked)](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md) | Medium |
 | 2026-05-06 | [Per-civ R4 — Norse profile (5 fields + identity_hook 3x debug + R3-prediction validated + → RN hook)](decisions/2026-05-06-per-civ-r4-norse-profile.md) | Medium |
 | 2026-05-06 | [Per-civ R3 — Aztec profile (5 fields + identity_hook 3x debug + R2-prediction reconciliation + → R4 hook)](decisions/2026-05-06-per-civ-r3-aztec-profile.md) | Medium |
 | 2026-05-06 | [Per-civ R2 — Greek profile (5 fields + identity_hook 3x debug + → R3 hook)](decisions/2026-05-06-per-civ-r2-greek-profile.md) | Medium |
@@ -156,4 +157,4 @@ Treat `CASCADE.md` as single source of truth for "what exists and where." If it 
 
 ---
 
-*Document version: 0.70 — 2026-05-06: Doc-hygiene refactor. Compressed CASCADE pointer + decisions-table rows + footer; moved Stages + Research tables to [`CASCADE-tables.md`](CASCADE-tables.md); HANDOFF + PROGRESS de-duplicated. Bootstrap chain ~70% smaller. No content lost — full prose lives in decision files. See [`CLAUDE.md`](CLAUDE.md) Doc hygiene for new compression standard. Prior 0.69 — Per-civ R3 LANDED. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
+*Document version: 0.71 — 2026-05-06: Per-civ RN LANDED — CLOSES ARC 4/4. 5×3 civ-aggregate audit (zero cascade-violations) + three-civ-three-equation-form fingerprint locked as Phase-4-spec-level invariant + §4.12 new + §4.8 ticked. Prior 0.70 — Doc-hygiene refactor. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
