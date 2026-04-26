@@ -38,9 +38,7 @@ Stages + research tables (status, last-reviewed) live in [`CASCADE-tables.md`](C
 
 ## Current work pointer
 
-**2026-05-06 — Per-civ RN LANDED + post-arc ratifications LANDED. NEXT TRACK: §4.7 enemy direction lock + Round 11 wave-composition variance mandate, bundled.** Per-civ arc CLOSED 4/4 ([`decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md`](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md), commit `a98a5d3`, dual-pushed). Post-arc 4-item PM ratification ([`decisions/2026-05-06-post-arc-ratifications.md`](decisions/2026-05-06-post-arc-ratifications.md)): (1) §4.7+R11 next-track; (2) `admin/concept.json` retired from source-of-truth chain; (3) `concept/phase-4.md` cap bumped 600→700 via per-file override in cascade-lint; (4) cultural-sensitivity Follow-up #5 consultation timing locked to Phase-4 exit.
-
-**Next-session directive:** open §4.7 enemy direction sub-arc. Likely 3-5 round queue (R1 scope → per-archetype creep-roster → per-mode wave-composition → cross-mode audit → spine-doc edits to `concept/phase-4.md §4.7` + Round 11 variance mandate body). PM autonomy mandate carries from per-civ + per-tower arcs. AskUserQuestion only on R1 scope axis-pick (per established arc-open pattern).
+**2026-05-06 — §4.7 enemy direction + R11 wave-variance sub-pass R1 SCOPE LANDED.** 4-round per-property queue (R1 scope → R2 Direction A/B/C lock + body → R3 R11 variance grammar → R4 RN cross-arc audit + spine-doc edits). R11 bundled per post-arc ratification item 1. Dual-push after R1 + each content round + RN. PM autonomy mandate carries — R2 onward autonomous. ([`decisions/2026-05-06-enemy-direction-r1-scope.md`](decisions/2026-05-06-enemy-direction-r1-scope.md))
 
 **Carried blockers / debt:** `49c4c54` `.accord/` 69MB blob in history (purge needs explicit PM authorization) · §4.4 mobile-unit-control (Phase 4 OPEN BLOCKER, deferred to next-track-after-§4.7) · cultural-sensitivity Follow-up #5 (now scheduled at Phase-4 exit, not currently blocking).
 
@@ -56,6 +54,7 @@ Every concept-constraint change + every ratified gap-resolution lives here. Form
 
 | Date | Decision | Reversibility |
 |------|----------|---------------|
+| 2026-05-06 | [§4.7 enemy direction + R11 wave-variance R1 scope (4-round per-property axis; R11 bundled)](decisions/2026-05-06-enemy-direction-r1-scope.md) | Medium |
 | 2026-05-06 | [Post-per-civ-arc ratifications (next-track §4.7+R11 / admin.json retired / phase-4 cap 600→700 / cultural-sensitivity at Phase-4 exit)](decisions/2026-05-06-post-arc-ratifications.md) | Mixed |
 | 2026-05-06 | [Per-civ RN — cross-civ × cross-field audit + arc close (CLOSES ARC 4/4; 15/15 zero cascade-violations; 3-civ-3-equation-form fingerprint locked)](decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md) | Medium |
 | 2026-05-06 | [Per-civ R4 — Norse profile (5 fields + identity_hook 3x debug + R3-prediction validated + → RN hook)](decisions/2026-05-06-per-civ-r4-norse-profile.md) | Medium |
@@ -157,4 +156,4 @@ Treat `CASCADE.md` as single source of truth for "what exists and where." If it 
 
 ---
 
-*Document version: 0.72 — 2026-05-06: Post-per-civ-arc ratifications. Next-track §4.7+R11 locked; admin/concept.json retired from source-of-truth chain; phase-4.md cap bumped 600→700 via cascade-lint per-file override; cultural-sensitivity Follow-up #5 scheduled at Phase-4 exit. Reading order item #8 dropped (admin/concept.json). Prior 0.71 — Per-civ RN LANDED, CLOSES ARC 4/4. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
+*Document version: 0.73 — 2026-05-06: §4.7 enemy direction + R11 wave-variance R1 scope LANDED. 4-round per-property axis (R1 scope → R2 Direction A/B/C lock + body → R3 R11 variance grammar → R4 RN cross-arc audit + spine-doc edits). R11 bundled per post-arc ratification item 1. Dual-push after R1 + each content round + RN. PM autonomy mandate carries — R2 onward autonomous. Prior 0.72 — Post-per-civ-arc ratifications. Older versions archived to [`CASCADE-history.md`](CASCADE-history.md).*
