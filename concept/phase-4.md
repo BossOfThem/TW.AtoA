@@ -166,15 +166,44 @@ Cross-civilization fusion is **parked** as the future Foresight-coin mechanic (2
 
 ## 4.4 Mobile hero units specification
 
-*→ active drill-down: [stage 04 — in-match core](../stages/04-in-match-core.md). **Contains OPEN BLOCKER** (control model).*
+*→ active drill-down: [stage 04 — in-match core](../stages/04-in-match-core.md). **Locked 2026-05-06 R1-RN** per [`R1 scope`](../decisions/2026-05-06-mobile-unit-control-r1-scope.md) + [`R2 control-model direction lock`](../decisions/2026-05-06-mobile-unit-control-r2-direction-lock.md) + [`R3 spec-grammar authoring`](../decisions/2026-05-06-mobile-unit-control-r3-spec-grammars.md) + [`RN cross-arc audit and arc close`](../decisions/2026-05-06-mobile-unit-control-rn-cross-arc-audit-and-arc-close.md). 12-cell 3-axis cross-arc audit at zero cascade-violations.*
 
-Mobile units need:
-- Movement speed per unit tier.
-- Pathing mode (patrol, follow lane, direct to waypoint, attack-move).
-- Engagement rules (auto-engage, hold, fall back).
-- Control complexity: waypoint + mode flags, NOT full RTS per-unit micro.
+The control model is **waypoint + mode flags** (Option (i) ratified at R2). Four locked bodies define the surface; per-unit numerics within an archetype remain Phase-5 territory.
 
-**OPEN ISSUE:** Exact control model. Full RTS per-unit micro is scope-blowing and wrong genre. Waypoint + mode flags is achievable. Attack-Move command is useful. Must resolve before unit spec work starts.
+**(a) Movement-speed-per-tier ladder** binds the 4-tier mobile-unit ladder to the §4.11.4 archetype-multiplier table verbatim (Numbers-phase #13 R4, read-only):
+
+| Mobile-unit tier | Bound archetype | Multiplier (×) | Speed (u/s) |
+|---|---|---|---|
+| T1 swarm | Swarm | 1.5 | 75 |
+| T2 mainline | Standard | 1.0 | 50 |
+| T3 elite | Standard | 1.0 | 50 |
+| T4 Demigod | Boss | 0.7 | 35 |
+
+T2 mainline + T3 elite share the Standard row intentionally — tier expression lives in stats + signature passive framing, not in movement speed. Builder is exempt per [§4.4a](#4-4a-builder-unit-class-new-2026-04-27) (deterministic walkable-build-grid path; consumes its own speed value).
+
+**(b) Pathing-mode catalog** = four mode flags, all available at every tier:
+
+| Flag | Default | Semantics (spec-level) |
+|---|---|---|
+| `Patrol` |  | Unit cycles between two waypoints; auto-engages within `R_engage`; returns to patrol after combat. |
+| `Follow-Lane` | ✅ default | Unit advances along the lane vector; auto-engages within `R_engage`; resumes lane on combat exit. |
+| `Hold` |  | Unit holds current position; auto-engages within `R_engage`; does not pursue beyond `R_engage`. |
+| `Attack-Move` |  | Unit advances to the assigned waypoint and engages any RPS-valid target en route within `R_engage`. |
+
+Group-select rule: `group_select(units).waypoint(wp) ≡ for u in units: u.waypoint(wp)`. Mode flags are untouched by box-select. UI-affordance grain (radial-menu vs hotkeys vs context-bar) is deferred to Phase 5.
+
+**(c) Engagement-rule catalog** = three defaults plus aggro-priority shape, all tier-invariant:
+
+| Rule | Shape (spec-level) | §3.4 floor verification |
+|---|---|---|
+| `R_engage` | Auto-engage radius (Phase-5 numerics per archetype). | T1-T4: passive radius, no per-unit input. **PASS.** |
+| `HP_fall_back` | Fall-back-at-HP% threshold (Phase-5 numerics per archetype; **Builders excluded as anchors** — walk-and-despawn lifecycle would orphan units). | T1-T4: passive threshold, no per-unit input. **PASS.** |
+| `Hold_fire` | Binary toggle that suppresses auto-engagement (decoupled from `Hold` mode flag — a `Patrol`-flagged unit can `Hold_fire` while still patrolling). | T1-T4: binary state, no per-unit input. **PASS.** |
+| Aggro-priority | RPS-strong → low-HP → nearest, with stable-sort by spawn-order entity-id and **no per-target manual override** (cost-acknowledged: eagle-vs-near-dead-berserker is structural cost of no-buttons rule). | T1-T4: priority is engine-side, no per-unit input. **PASS.** |
+
+**(d) Control-surface no-tier-scaling principle.** The surface above is identical at T1, T2, T3, and T4 — same flags, same defaults, same toggle, same priority. Tier expression lives in stats + signature passive framing, never in new buttons. Negative space (verbatim, all tiers): no per-target manual aggro / no formation commands / no active-pause RTS surface / no per-unit retreat micro / no ability buttons.
+
+All four bodies apply identically to Greek / Aztec / Norse rosters; per-civ differentiation lives in tower-DPS-band / status-proc archetype / signature-passive framing per [per-civ RN](../decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md), not in mobile-unit control surface.
 
 ~~Commander Hero Units (signature ability deployments) have richer control — direct movement + 2–3 abilities + return-to-base. One active Commander Hero per player per match.~~ **Superseded 2026-04-27** by [`decisions/2026-04-27-commander-as-summoned-ability-avatar.md`](../decisions/2026-04-27-commander-as-summoned-ability-avatar.md) — Commander is no longer a controllable on-field unit; emerges only on cast (see [§4.1 in-match presence model](#in-match-presence-model--summoned-on-cast-new-2026-04-27)). Mobile units in this section refer exclusively to the 15 launch-roster units (5/civ) per [`concept/phase-3.md §3.2`](phase-3.md), not to the Commander.
 
@@ -651,7 +680,7 @@ Source-of-truth decision files: [`per-civ R1 scope`](../decisions/2026-05-06-per
 - ✅ **Per-tower spec table populated** for all 45 launch towers (Greek + Aztec + Norse, 6 T1-T3 mainline + 6 T4 Demigod + 3 God per civ) under the locked 7-field schema (attack_type / cd / range / status_proc / dps / aux_slot_compat / notes). **DONE 2026-05-06** per [`per-tower R1 scope`](../decisions/2026-05-06-per-tower-authoring-scope.md) + [`R2 Greek roster`](../decisions/2026-05-06-per-tower-r2-greek-roster.md) + [`R3 Aztec roster`](../decisions/2026-05-06-per-tower-r3-aztec-roster.md) + [`R4 Norse roster`](../decisions/2026-05-06-per-tower-r4-norse-roster.md) + [`RN cross-civ audit and arc close`](../decisions/2026-05-06-per-tower-rn-cross-civ-audit-and-arc-close.md). Three falsifiable per-civ magnitude signatures empirically confirmed (Greek control / Aztec economy / Norse summon).
 - ✅ **Per-civ specialization profile bound** for all 3 launch civs (Greek / Aztec / Norse) under the locked 5-field schema (matchup_affinity / identity_hook / signature_creep_types / multi_civ_play_hook / commander_synergy). **DONE 2026-05-06** per [`per-civ R1 scope`](../decisions/2026-05-06-per-civ-specialization-scope.md) + R2-R4 + [`RN cross-civ audit and arc close`](../decisions/2026-05-06-per-civ-rn-cross-civ-audit-and-arc-close.md). Three-civ-three-equation-form fingerprint locked as Phase-4-spec-level invariant (Greek deceleration-weighted / Aztec kill-multiplication-weighted / Norse summon-cleave-propagation-weighted).
 - Fusion system shape signed off (done 2026-04-25: 9 locked Gods via 9 locked 2-Demigod recipes, Divinity-gated, menu-driven discovery). Fusion-numerics balance-pass remains [PROPOSAL].
-- Mobile unit control model resolved (§4.4 OPEN BLOCKER).
+- ✅ **Mobile unit control model resolved** (§4.4 — waypoint + mode flags ratified; 4-flag catalog + 3-default engagement shape + no-tier-scaling principle + speed-ladder T1-T4 binding to §4.11.4 archetype multipliers). **DONE 2026-05-06** per [`R1 scope`](../decisions/2026-05-06-mobile-unit-control-r1-scope.md) + [`R2 control-model direction lock`](../decisions/2026-05-06-mobile-unit-control-r2-direction-lock.md) + [`R3 spec-grammar authoring`](../decisions/2026-05-06-mobile-unit-control-r3-spec-grammars.md) + [`RN cross-arc audit and arc close`](../decisions/2026-05-06-mobile-unit-control-rn-cross-arc-audit-and-arc-close.md). 12-cell 3-axis cross-arc audit at zero cascade-violations.
 - ✅ **Enemy direction locked** (§4.7 Option C ratified — civ-matched boss-tier + shared regular-wave pool + R11 wave-composition variance grammar). **DONE 2026-05-06** per [`R1 scope`](../decisions/2026-05-06-enemy-direction-r1-scope.md) + [`R2 Direction lock`](../decisions/2026-05-06-enemy-direction-r2-direction-lock.md) + [`R3 R11 variance grammar`](../decisions/2026-05-06-enemy-direction-r3-r11-variance-grammar.md) + [`RN cross-arc audit and arc close`](../decisions/2026-05-06-enemy-direction-rn-cross-arc-audit-and-arc-close.md). 42-cell 3-axis cross-arc audit at zero cascade-violations.
 - Economy balanced on paper (Tribute + Divinity income curves, per-tier tower costs, Fusion spend cadence; §4.6 locks shape, numerics [PROPOSAL]).
 - Monetization model specifics resolved (cosmetic-only; no-pay-to-win non-negotiable).
