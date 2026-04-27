@@ -1015,6 +1015,9 @@ document.addEventListener("keydown", (e) => {
     else if (currentScene === "options") { closeOptions(); e.preventDefault(); }
     else if (currentScene === "tutorial") { skipTutorial(); }
     else if (currentScene === "mode-select" || currentScene === "commander-pick") { goto("menu"); }
+    // P2 fix (2026-04-27 sweep): Esc on the end scene was unmapped, leaving the player without a
+    // keyboard exit. Mirror "back to menu" since that is the dominant action the end scene offers.
+    else if (currentScene === "end") { goto("menu"); e.preventDefault(); }
   }
 });
 document.getElementById("scene-splash").addEventListener("click", dismissSplash);
