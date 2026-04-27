@@ -1022,9 +1022,24 @@ document.getElementById("scene-splash").addEventListener("click", dismissSplash)
 // requestAnimationFrame is throttled by the browser but the simulation still drifts (creeps walk,
 // timers advance) — and in co-op horde the host kept streaming snapshots to a backgrounded guest,
 // causing snap-back desync on return.
+// P1 fix (2026-04-26 playthrough cont.): tutorial scene runs the same gameLoop, so a hidden tab
+// throttles the tutorial wave-spawner identically — playthrough confirmed the wave never spawned.
+// togglePause() early-returns for game.mode !== "match", so tutorial gets a direct game.paused flip
+// (it has no pause overlay; gameLoop honors the flag the same way).
+function autoPauseForHidden() {
+  if (!game || game.paused || game.ended) return;
+  if (currentScene === "match") {
+    try { togglePause(); } catch(e) { console.warn("[autoPauseForHidden] match auto-pause failed:", e); }
+  } else if (currentScene === "tutorial") {
+    game.paused = true;
+  }
+}
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden && currentScene === "match" && game && !game.paused && !game.ended) {
-    try { togglePause(); } catch(e) { console.warn("[visibilitychange] auto-pause failed:", e); }
+  if (document.hidden) {
+    autoPauseForHidden();
+  } else if (currentScene === "tutorial" && game && game.paused && !game.ended) {
+    // Tutorial has no pause overlay — auto-resume on return so the player isn't stuck.
+    game.paused = false;
   }
 });
 function buildSplashGlyphs() {
@@ -2214,9 +2229,7 @@ function initMatch() {
   // (e.g. user navigated to a backgrounded tab, or restored a tab that was hidden), the
   // visibilitychange listener never sees a transition and auto-pause never engages —
   // simulation still drifts under throttled RAF. Match the listener's behavior on init.
-  if (document.hidden && game && !game.paused && !game.ended) {
-    try { togglePause(); } catch(e) { console.warn("[initMatch] initial-hidden auto-pause failed:", e); }
-  }
+  if (document.hidden) autoPauseForHidden();
 }
 function initTutorial() {
   rebuildDerived();
@@ -2233,6 +2246,9 @@ function initTutorial() {
   updateHUD(); bindCanvas(); setTutorialStep(1);
   renderActionBarBuildSet();
   cancelGameLoop(); _gameRafId = requestAnimationFrame(() => gameLoop(_gameSession));
+  // P1 fix (2026-04-26 playthrough cont.): mirror initMatch — tutorial has the same throttled-RAF
+  // failure mode when launched into a hidden tab.
+  if (document.hidden) autoPauseForHidden();
 }
 function skipTutorial() { if (game) game.playing = false; leaveMatchCleanup(); goto("menu"); toast("Tutorial skipped."); }
 
