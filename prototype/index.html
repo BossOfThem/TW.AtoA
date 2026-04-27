@@ -20,6 +20,9 @@
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; background: var(--bg-0); color: var(--ink-0); font-family: var(--font-body); font-size: calc(14px * var(--ui-scale)); overflow: hidden; }
   html.reduce-motion *, body.reduce-motion * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  body.reduce-flash .action-bar .wave-indicator.active,
+  body.reduce-flash .pulse,
+  body.reduce-flash [class*="flash"] { animation: none !important; opacity: 1 !important; }
   body { display: flex; flex-direction: column; align-items: center; justify-content: center; }
   h1 { font-family: var(--font-display); font-size: calc(62px * var(--ui-scale)); letter-spacing: 8px; color: var(--ember-hi); text-shadow: 0 0 30px var(--ember-glow); margin: 0 0 6px; }
   h2 { font-family: var(--font-display); font-size: calc(32px * var(--ui-scale)); letter-spacing: 4px; color: var(--ember-hi); margin: 0 0 10px; }
@@ -95,7 +98,11 @@
      Mode select
      ============================================================ */
   #scene-mode-select .mode-grid { display: grid; grid-template-columns: repeat(2, 300px); gap: 18px; margin-top: 18px; }
-  .mode-card { background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember); padding: 20px 22px; cursor: pointer; border-radius: 2px; transition: all 0.18s; }
+  .mode-card { background: var(--bg-1); border: 1px solid var(--line-2); border-left: 2px solid var(--ember); padding: 20px 22px; cursor: pointer; border-radius: 2px; transition: all 0.18s; font: inherit; color: inherit; text-align: left; width: 100%; display: block; }
+  button.mode-card { -webkit-appearance: none; appearance: none; }
+  button.mode-card[disabled] { cursor: not-allowed; }
+  button.linklike { background: none; border: 0; padding: 0; color: var(--ink-2); text-decoration: underline; cursor: pointer; font: inherit; letter-spacing: inherit; }
+  button.linklike:hover { color: var(--ember-hi); }
   .mode-card:hover { border-color: var(--ember); box-shadow: 0 0 16px var(--ember-glow); }
   .mode-card:focus-visible { outline: 2px solid var(--ember-hi); outline-offset: 3px; }
   .mode-card h3 { font-family: var(--font-display); letter-spacing: 3px; color: var(--ember-hi); margin: 0 0 6px; font-size: 18px; }
@@ -453,11 +460,11 @@
     <button onclick="goto('commander-pick')">Commander</button>
     <button id="menu-profile-btn" onclick="goto('profile')">Profile</button>
     <button onclick="openOptions('menu')">Options</button>
-    <button class="ghost" onclick="doLogout()">Logout</button>
+    <button class="ghost" onclick="confirmLogout()">Logout</button>
   </div>
   <div class="menu-footer">
     <span id="menu-user-label">— signed in as: —</span>
-    <a onclick="confirmQuit()">Quit</a>
+    <button type="button" class="linklike" onclick="confirmQuit()">Quit</button>
   </div>
 </div>
 
@@ -489,30 +496,30 @@
 <div class="scene" id="scene-mode-select">
   <div class="pick-head">Choose Your Engagement</div>
   <div class="mode-grid">
-    <div class="mode-card" tabindex="0" onclick="startMode('skirmish')" onkeydown="if(event.key==='Enter')startMode('skirmish')">
+    <button type="button" class="mode-card" onclick="startMode('skirmish')">
       <h3>Solo Skirmish</h3>
       <div class="mode-sub">Single player · 3 waves</div>
-      <div class="mode-body">A quick test of the loop. Three waves, three ages. The original prototype scope.</div>
+      <div class="mode-body">A quick test of the loop. Build the T1→T3 ladder, promote a T4 Demigod, glimpse Fusion. Concept-phase scope.</div>
       <div class="mode-tag">Available</div>
-    </div>
-    <div class="mode-card" tabindex="0" onclick="startMode('tutorial')" onkeydown="if(event.key==='Enter')startMode('tutorial')">
+    </button>
+    <button type="button" class="mode-card" onclick="startMode('tutorial')">
       <h3>Tutorial</h3>
       <div class="mode-sub">Five steps · narrated</div>
       <div class="mode-body">Learn to build, defend, merge, and promote. Skippable. Returns you to menu.</div>
       <div class="mode-tag">Available</div>
-    </div>
-    <div class="mode-card" tabindex="0" onclick="startMode('horde')" onkeydown="if(event.key==='Enter')startMode('horde')">
+    </button>
+    <button type="button" class="mode-card" onclick="startMode('horde')">
       <h3>Co-op Horde</h3>
-      <div class="mode-sub">Two players · 11 waves</div>
-      <div class="mode-body">One wave per age. Shared economy. Host or join via invite link. WebRTC peer-to-peer.</div>
-      <div class="mode-tag">Phase 10.3 — lobby opens, match not yet wired</div>
-    </div>
-    <div class="mode-card disabled" tabindex="0" aria-disabled="true">
+      <div class="mode-sub">Two players · shared economy</div>
+      <div class="mode-body">Co-op against shared waves through the T1→T3 ladder, T4 Demigod promotions, and a God via Fusion. Host or join via invite link. WebRTC peer-to-peer. Match autosave is C5/C6 work; sessions don't persist.</div>
+      <div class="mode-tag">Phase 10.3 — playable shell via PeerJS</div>
+    </button>
+    <button type="button" class="mode-card" onclick="startMode('campaign')">
       <h3>Solo Campaign</h3>
-      <div class="mode-sub">11 waves · autosave</div>
-      <div class="mode-body">Full 11-age arc solo. Autosave every 2 min. Not yet wired.</div>
-      <div class="mode-tag">Phase 10.2 — stub</div>
-    </div>
+      <div class="mode-sub">30-wave historic arc · 3 acts</div>
+      <div class="mode-body">Three 10-wave acts (Rising / Campaign / Reckoning) ending in your commander's historic antagonist. Autosave is C5/C6 work; for now matches play through but don't persist between sessions.</div>
+      <div class="mode-tag">Phase 10.2 — playable shell, content placeholder</div>
+    </button>
   </div>
   <div class="cta-row">
     <button class="ghost" onclick="goto('menu')">Back</button>
@@ -520,7 +527,7 @@
 </div>
 
 <!-- ============================================================
-     Scene: Co-op Lobby (Phase 10.3 — stub)
+     Scene: Co-op Lobby (Phase 10.3 — playable shell)
      ============================================================ -->
 <div class="scene" id="scene-lobby-coop">
   <h2>Co-op Horde Lobby</h2>
@@ -534,11 +541,11 @@
     <div class="divider"></div>
     <div style="font-family:var(--font-display); letter-spacing:2px; font-size:12px; color:var(--ink-2); text-transform:uppercase; margin-bottom:8px;">Join</div>
     <div>Paste the invite code your friend shared.</div>
-    <div style="display:flex; gap:8px; margin-top:10px;">
-      <input type="text" id="lobby-join-code" placeholder="Invite code" />
-      <button onclick="coopJoin()">Join</button>
-    </div>
-    <div id="lobby-status" style="margin-top:14px; font-size:12px; color:var(--ink-2); font-style:italic;">PeerJS integration lands in Phase 10.3.</div>
+    <form style="display:flex; gap:8px; margin-top:10px;" onsubmit="event.preventDefault(); coopJoin();">
+      <input type="text" id="lobby-join-code" placeholder="Invite code" autocomplete="off" />
+      <button type="submit">Join</button>
+    </form>
+    <div id="lobby-status" style="margin-top:14px; font-size:12px; color:var(--ink-2); font-style:italic;">Host a match to generate an invite code, or paste a friend's code to join.</div>
   </div>
   <div class="cta-row">
     <button class="ghost" onclick="goto('mode-select')">Back</button>
@@ -582,7 +589,7 @@
     </div>
     <div class="cta-row">
       <button class="ghost" onclick="goto('menu')">Back to menu</button>
-      <button onclick="selectCommander()">Take the field</button>
+      <button onclick="selectCommander()">Confirm &amp; choose mode</button>
     </div>
   </div>
 </div>
@@ -609,7 +616,7 @@
     </div>
     <div class="board-wrap">
       <canvas id="board-tutorial"></canvas>
-      <div id="narrator">
+      <div id="narrator" role="region" aria-live="polite" aria-label="Tutorial narrator">
         <div class="narr-step" id="t-narr-step">Step 1</div>
         <div class="narr-body" id="t-narr-body">Welcome, Commander. The creeps are coming. Click a glowing cell beside the path to place a Phalanx (Greek T1).</div>
         <div class="narr-cta" id="t-narr-cta"></div>
@@ -670,7 +677,7 @@
 </div>
 
 <!-- C4 — Fusion menu modal (populated from inlined FUSION_RECIPES) -->
-<div class="fusion-modal" id="fusion-modal" role="dialog" aria-modal="true" aria-hidden="true">
+<div class="fusion-modal" id="fusion-modal" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this)closeFusionMenu()">
   <div class="fm-card">
     <h2>Fusion · spend 1 Divinity per God</h2>
     <div class="fm-sub">Lit gods are reachable with current Divinity. Source-Demigod consumption is stubbed in C4 (real T4 board state lands in C7.b).</div>
@@ -797,7 +804,7 @@
   </div>
 </div>
 
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="first-run-toast"><div class="fr-msg" id="fr-msg">—</div><div class="fr-actions"><button class="ghost" onclick="dismissFirstRun(false)">Got it</button><button onclick="dismissFirstRun(true)">Don't show again</button></div></div>
 
 <!-- Interaction layer: hover tooltip, right-click menu, reference panel -->
@@ -814,31 +821,67 @@
     </div>
   </div>
 </div>
-<div id="caption"></div>
+<div id="caption" aria-live="polite" aria-atomic="true"></div>
 
 <script>
 // ============================================================================
 // Profile module — localStorage-backed, per CONCEPT §4.9 mode-split save model
 // ============================================================================
 const PROFILE_KEY = "atoA.profile.v1";
+const PROFILE_SCHEMA_VERSION = 1; // bump when profile shape changes incompatibly
 const Profile = {
   data: null,
   load() {
     try {
       const raw = localStorage.getItem(PROFILE_KEY);
-      if (raw) this.data = JSON.parse(raw);
-    } catch (e) { console.warn("[Profile] parse failed", e); this.data = null; }
+      if (!raw) return this.data;
+      const parsed = JSON.parse(raw);
+      // Schema-version gate. Bump PROFILE_SCHEMA_VERSION when shape changes incompatibly.
+      if (!parsed || typeof parsed !== "object" || !parsed.username) {
+        throw new Error("profile schema invalid (missing username)");
+      }
+      // R1-β: undefined schemaVersion = pre-v1 profile from earlier dev builds; treat as mismatch and reset.
+      // Any non-matching version (including undefined) routes through the same wipe path.
+      if (parsed.schemaVersion !== PROFILE_SCHEMA_VERSION) {
+        console.warn("[Profile] schema mismatch stored=" + parsed.schemaVersion + " expected=" + PROFILE_SCHEMA_VERSION + "; resetting.");
+        try { localStorage.removeItem(PROFILE_KEY); } catch(_){}
+        this.data = null;
+        return null;
+      }
+      // R1-β: defensive backfill — even within the matching schema, ensure required sub-objects exist.
+      if (!parsed.settings || typeof parsed.settings !== "object") parsed.settings = {};
+      if (!parsed.saves || typeof parsed.saves !== "object") parsed.saves = {};
+      if (!parsed.commanderProgress || typeof parsed.commanderProgress !== "object") parsed.commanderProgress = {};
+      this.data = parsed;
+    } catch (e) {
+      console.warn("[Profile] parse failed; clearing corrupt profile", e);
+      try { localStorage.removeItem(PROFILE_KEY); } catch(_){}
+      this.data = null;
+      if (typeof toast === "function") {
+        setTimeout(() => toast("Saved profile was corrupt — reset to a fresh login."), 600);
+      }
+    }
     return this.data;
   },
   save() {
     if (!this.data) return;
-    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(this.data)); }
-    catch (e) { console.warn("[Profile] save failed", e); }
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(this.data)); this._saveWarned = false; }
+    catch (e) {
+      console.warn("[Profile] save failed", e);
+      // P1-α fix (2026-04-26 swarm): surface persistence failure once per session via toast so the
+      // player knows their commander/lastMode/saves won't survive reload (common cause: file://
+      // localStorage restrictions in some browsers, or quota exceeded).
+      if (!this._saveWarned && typeof toast === "function") {
+        this._saveWarned = true;
+        try { toast("Profile save failed — progress won't persist between sessions."); } catch(_){}
+      }
+    }
   },
   login(username) {
     const existing = this.load();
     if (existing && existing.username === username) { this.data = existing; return this.data; }
     this.data = {
+      schemaVersion: PROFILE_SCHEMA_VERSION,
       username,
       createdAt: Date.now(),
       commanderId: "commander-a",
@@ -889,6 +932,8 @@ const Profile = {
   readMatchSave(mode) { return this.data && this.data.saves ? this.data.saves[mode] : null; },
   updateSetting(key, value) {
     if (!this.data) return;
+    // R1-β: settings sub-object may be missing on hand-edited profiles; ensure it exists before write.
+    if (!this.data.settings || typeof this.data.settings !== "object") this.data.settings = {};
     this.data.settings[key] = value;
     this.save();
   },
@@ -921,6 +966,12 @@ function goto(scene) {
   if (scene === "commander-pick") { renderCommanderRoster(); applyCommanderCard(); }
   if (scene === "options")    syncOptsUI();
   if (scene === "splash")     Profile.clickCount = 0;
+  // Suspend AudioContext when leaving match for menu/login/splash to free DSP graph.
+  if (scene === "menu" || scene === "login" || scene === "splash") {
+    if (typeof _audioCtx !== "undefined" && _audioCtx && _audioCtx.state === "running") {
+      try { _audioCtx.suspend(); } catch(_){}
+    }
+  }
 }
 
 function toast(msg) {
@@ -943,20 +994,39 @@ function caption(prefix, text) {
 // ============================================================================
 // Splash handling
 // ============================================================================
+let _splashTimer = null;
 function dismissSplash() {
   if (currentScene !== "splash") return;
+  if (_splashTimer) { clearTimeout(_splashTimer); _splashTimer = null; }
   const u = Profile.currentUser();
   goto(u ? "menu" : "login");
 }
 document.addEventListener("keydown", (e) => {
-  if (currentScene === "splash") { dismissSplash(); return; }
+  // P1-δ3 fix (2026-04-26 swarm): only dismiss splash on intentional keys (printable char, Enter,
+  // Escape, Space). Bare modifiers (Ctrl/Shift/Alt/Meta) and OS shortcuts (Win/Cmd) no longer
+  // race the splash dismissal during Alt+Tab or Win+L.
+  if (currentScene === "splash") {
+    const intentional = (e.key.length === 1) || e.key === "Enter" || e.key === "Escape" || e.key === " ";
+    if (intentional) dismissSplash();
+    return;
+  }
   if (e.key === "Escape") {
     if (currentScene === "match") { togglePause(); e.preventDefault(); }
     else if (currentScene === "options") { closeOptions(); e.preventDefault(); }
-    else if (currentScene === "mode-select" || currentScene === "commander-pick" || currentScene === "tutorial") { goto("menu"); }
+    else if (currentScene === "tutorial") { skipTutorial(); }
+    else if (currentScene === "mode-select" || currentScene === "commander-pick") { goto("menu"); }
   }
 });
 document.getElementById("scene-splash").addEventListener("click", dismissSplash);
+// P1-δ1 fix (2026-04-26 swarm): auto-pause when the tab loses focus mid-match. Without this,
+// requestAnimationFrame is throttled by the browser but the simulation still drifts (creeps walk,
+// timers advance) — and in co-op horde the host kept streaming snapshots to a backgrounded guest,
+// causing snap-back desync on return.
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && currentScene === "match" && game && !game.paused && !game.ended) {
+    try { togglePause(); } catch(e) { console.warn("[visibilitychange] auto-pause failed:", e); }
+  }
+});
 function buildSplashGlyphs() {
   const row = document.getElementById("splash-title-row");
   if (!row) return;
@@ -973,7 +1043,8 @@ function buildSplashGlyphs() {
   }
 }
 buildSplashGlyphs();
-setTimeout(() => {
+_splashTimer = setTimeout(() => {
+  _splashTimer = null;
   if (currentScene === "splash") dismissSplash();
 }, Profile.setting("a11y.reduceMotion", false) ? 300 : 3000);
 
@@ -1006,8 +1077,12 @@ function applyLoginCopy() {
 }
 function doLogin() {
   const input = document.getElementById("login-username");
-  const name = (input.value || "").trim();
+  let name = (input.value || "").trim();
   if (!name) { toast("Enter a name."); input.focus(); return; }
+  // Reject only HTML angle brackets — apostrophes/ampersands round-trip safely via escapeHtml at render.
+  // Keeps legit names like "O'Brien", "D'Artagnan", "Baker & Sons".
+  if (/[<>]/.test(name)) { toast("No < or > in names."); input.focus(); return; }
+  name = name.slice(0, 24);
   Profile.login(name);
   applyUISettings();
   toast("Welcome, " + name + ".");
@@ -1061,28 +1136,47 @@ function refreshMenu() {
     if (last) last.style.display = "none";
   }
 }
+// Holds the campaign payload to apply at next initMatch — set by menuContinue, consumed once by initMatch.
+let _pendingCampaignResume = null;
 function menuContinue() {
   const last = Profile.data && Profile.data.lastMode;
-  if (last && Profile.hasSave(last)) startMode(last);
-  else if (last) startMode(last);
-  else toast("No save found.");
+  if (last && Profile.hasSave(last)) {
+    if (last === "campaign") {
+      const save = Profile.readMatchSave("campaign");
+      if (save && save.payload) _pendingCampaignResume = save.payload;
+    }
+    startMode(last);
+  }
+  else if (last) toast("No save found for " + last + " — start a new run from Play.");
+  else toast("No previous mode recorded.");
 }
-function menuNewGame() { goto("commander-pick"); }
+function menuNewGame() {
+  if (!DATA_READY) {
+    toast(DATA_LOAD_ERROR ? ("Data load failed: " + DATA_LOAD_ERROR + ". Refresh to retry.") : "Data still loading… try again in a moment.");
+    return;
+  }
+  goto("commander-pick");
+}
 function menuPlay() { goto("mode-select"); }
 
 // ============================================================================
 // Profile scene (Strand 2)
 // ============================================================================
 Profile.clickCount = 0;
+function escapeHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
 function renderProfileScene() {
   const data = Profile.data;
   const header = document.getElementById("profile-header");
   const roster = document.getElementById("profile-roster");
   const settings = document.getElementById("profile-settings");
   if (!header || !data) return;
-  header.innerHTML = '<div>' + (data.username || "Commander") +
-    '</div><span class="profile-sub">Joined ' + new Date(data.createdAt || Date.now()).toLocaleDateString() +
-    ' · Last mode: ' + (data.lastMode || "—") + '</span>';
+  header.innerHTML = '<div>' + escapeHtml(data.username || "Commander") +
+    '</div><span class="profile-sub">Joined ' + escapeHtml(new Date(data.createdAt || Date.now()).toLocaleDateString()) +
+    ' · Last mode: ' + escapeHtml(data.lastMode || "—") + '</span>';
   const legacyTilt = {"commander-a":"Sinew","commander-b":"Ember","commander-c":"Forge","commander-d":"Crown","commander-e":"Veil"};
   const defs = (typeof COMMANDERS !== "undefined" && COMMANDERS.roster)
     ? Object.entries(COMMANDERS.roster)
@@ -1101,11 +1195,11 @@ function renderProfileScene() {
     const isLast = (data.commanderId === d.id);
     const maxLvl = p.maxLevel || 20;
     return '<div class="profile-cmdr' + (isLast ? ' last' : '') + '">' +
-      '<div class="p-cmdr-name">' + d.name + '</div>' +
-      '<div class="p-cmdr-tilt">' + d.tilt + '</div>' +
+      '<div class="p-cmdr-name">' + escapeHtml(d.name) + '</div>' +
+      '<div class="p-cmdr-tilt">' + escapeHtml(d.tilt) + '</div>' +
       '<div class="p-cmdr-xp"><div class="p-cmdr-xp-fill" style="width:' + pct + '%"></div></div>' +
-      '<div class="p-cmdr-level">L' + (p.level || 1) + ' / ' + maxLvl + '</div>' +
-      '<div class="p-cmdr-unlocks">' + (p.unlockedCosmetics || 0) + ' / 3 cosmetics</div>' +
+      '<div class="p-cmdr-level">L' + escapeHtml(p.level || 1) + ' / ' + escapeHtml(maxLvl) + '</div>' +
+      '<div class="p-cmdr-unlocks">' + escapeHtml(p.unlockedCosmetics || 0) + ' / 3 cosmetics</div>' +
       '</div>';
   }).join("");
   const s = data.settings || {};
@@ -1133,10 +1227,24 @@ function confirmQuit() {
 // Mode select
 // ============================================================================
 function startMode(mode) {
+  if (!DATA_READY) {
+    toast(DATA_LOAD_ERROR ? ("Data load failed: " + DATA_LOAD_ERROR + ". Refresh to retry.") : "Data still loading… try again in a moment.");
+    return;
+  }
+  // P1 fix (2026-04-26 β-swarm): skirmish/campaign/horde all need a commander selected, otherwise
+  // the action-bar renders empty (no civDef) and the cast bar hides — soft-lock at "Begin Wave 1".
+  // Tutorial is allowed to run without a commander (it's the on-ramp). If no commander is set,
+  // bounce to commander-pick instead of letting the player walk into an empty match.
+  const needsCommander = (mode === "skirmish" || mode === "campaign" || mode === "horde");
+  if (needsCommander && !(COMMANDERS && COMMANDERS.active && COMMANDERS.roster && COMMANDERS.roster[COMMANDERS.active])) {
+    toast("Pick a commander first.");
+    goto("commander-pick");
+    return;
+  }
   if (mode === "tutorial")  { currentMatchMode = "tutorial"; goto("tutorial"); return; }
   if (mode === "skirmish")  { currentMatchMode = "skirmish"; BALANCE.MATCH_WAVES = 3; rebuildDerived(); goto("match"); return; }
   if (mode === "horde")     { currentMatchMode = "horde"; goto("lobby-coop"); return; }
-  if (mode === "campaign")  { currentMatchMode = "campaign"; BALANCE.MATCH_WAVES = 11; rebuildDerived(); goto("match"); return; }
+  if (mode === "campaign")  { currentMatchMode = "campaign"; BALANCE.MATCH_WAVES = 30; rebuildDerived(); goto("match"); return; }
 }
 let currentMatchMode = "skirmish";
 
@@ -1159,6 +1267,8 @@ const Net = {
     try { if (this.peer) this.peer.destroy(); } catch(e) {}
     this.peer = null; this.conn = null; this.role = null; this.connected = false;
     this.remoteName = null; this.pendingIntents = []; this.disconnectStart = 0;
+    this._sizeWarned = false; // re-arm snapshot-size warn for next session (R1-β follow-up)
+    this._helloReceived = false; // re-arm hello-gate for next session (R1-γ #8)
     updateNetStatus("Offline", "");
   },
   host() {
@@ -1171,11 +1281,26 @@ const Net = {
     status.textContent = "Contacting PeerJS broker…";
     this.peer.on("open", (id) => {
       idBox.style.display = "";
-      const link = window.location.origin + window.location.pathname + "?join=" + id;
-      idBox.innerHTML = "<b>Invite code:</b> " + id + "<br><b>Link:</b> " + link;
+      const link = window.location.origin + window.location.pathname + "?join=" + encodeURIComponent(id);
+      // textContent + DOM construction (no innerHTML) — peer ID is broker-supplied; never trust as HTML.
+      idBox.textContent = "";
+      const codeLabel = document.createElement("b"); codeLabel.textContent = "Invite code: ";
+      const codeVal = document.createElement("span"); codeVal.textContent = id;
+      const br = document.createElement("br");
+      const linkLabel = document.createElement("b"); linkLabel.textContent = "Link: ";
+      const linkVal = document.createElement("span"); linkVal.textContent = link;
+      idBox.append(codeLabel, codeVal, br, linkLabel, linkVal);
       status.textContent = "Waiting for friend to join…";
     });
-    this.peer.on("connection", (conn) => { this._bindConn(conn); });
+    this.peer.on("connection", (conn) => {
+      if (this.connected && this.conn) {
+        console.warn("[Net] rejecting second incoming connection — already in match");
+        try { conn.close(); } catch(e) {}
+        toast("Second player attempt rejected — already in match.");
+        return;
+      }
+      this._bindConn(conn);
+    });
     this.peer.on("error", (err) => {
       console.warn("[Net] peer error", err);
       status.textContent = "PeerJS broker error: " + (err.type || err.message || "unknown") + ". Try again in 5 min or self-host.";
@@ -1192,6 +1317,23 @@ const Net = {
       status.textContent = "Dialing " + code + "…";
       const conn = this.peer.connect(code, { reliable: true });
       this._bindConn(conn);
+      // Pre-open error hook: surface dial failures before the handshake completes.
+      conn.on("error", (err) => {
+        if (!this.connected) {
+          status.textContent = "Connection failed before opening: " + (err.type || err.message || "unknown");
+          toast("Could not reach host — check the invite code.");
+          this.reset();
+        }
+      });
+      // 15s dial timeout — abort if handshake never completes.
+      const dialTimer = setTimeout(() => {
+        if (!this.connected) {
+          status.textContent = "Dial timed out after 15s.";
+          toast("Co-op dial timed out — host may be offline.");
+          this.reset();
+        }
+      }, 15000);
+      conn.on("open", () => { clearTimeout(dialTimer); });
     });
     this.peer.on("error", (err) => {
       console.warn("[Net] peer error", err);
@@ -1205,7 +1347,11 @@ const Net = {
       this.connected = true;
       this.disconnectStart = 0;
       const name = Profile.currentUser() || "Commander";
-      conn.send({ type: "hello", name });
+      // Ship matchMode + totalWaves in hello so guest can mirror authoritative match shape.
+      // Today this is locked to horde/11 on both sides, but propagating now defends future campaign-coop
+      // (R1-δ #5: latent desync if host's BALANCE.MATCH_WAVES diverges from guest's).
+      const intendedWaves = BALANCE.WAVES_FULL || 11;
+      conn.send({ type: "hello", name, matchMode: "horde", totalWaves: intendedWaves });
       if (status) status.textContent = "Connected. Starting Co-op Horde…";
       updateNetStatus("Connected", "connected");
       // Host kicks off the match after a brief delay so both sides see the transition
@@ -1225,26 +1371,66 @@ const Net = {
     if (!this.connected) return;
     this.connected = false;
     this.disconnectStart = Date.now();
-    updateNetStatus("Friend disconnected — 10s reconnect window…", "lost");
-    chatSystem("Friend disconnected. Waiting 10s…");
-    setTimeout(() => {
-      if (!this.connected) {
-        chatSystem("Reconnect window expired. Match aborting.");
-        toast("Co-op match aborted — friend did not reconnect.");
-        quitToMenu();
-        this.reset();
-      }
-    }, 10000);
+    // R1-β: PeerJS DataConnection cannot re-open after close — there is no in-prototype reconnect path.
+    // The previous 10s "waiting…" was theatrical. Abort immediately and surface the truth.
+    updateNetStatus("Friend disconnected — match aborting.", "lost");
+    chatSystem("Friend disconnected. Co-op cannot reconnect; returning to menu.");
+    // R3-Skeptic fix: if match-end already resolved (game.ended populated by a prior 'match-end'
+    // wire message or local resolution), preserve the result screen instead of yanking to menu.
+    // Prior code dropped the resolution UI + any post-match side-effects (XP, achievements, autosave).
+    if (game && game.ended) {
+      toast("Friend disconnected — match already resolved.");
+      this.reset();
+      return;
+    }
+    toast("Co-op match aborted — friend disconnected.");
+    quitToMenu();
+    this.reset();
   },
   _onMessage(msg) {
-    if (!msg || !msg.type) return;
+    if (!msg || typeof msg !== "object" || !msg.type) return;
+    // Type allowlist — reject anything unexpected (peer may be malicious or version-skewed).
+    const ALLOWED_TYPES = ["hello","intent","snapshot","chat","paused","result","event-roll","pause-vote","match-end"];
+    if (ALLOWED_TYPES.indexOf(msg.type) === -1) {
+      console.warn("[Net] rejected message of unknown type:", msg.type);
+      return;
+    }
+    // 64KB size cap — guards against pathological snapshots / DoS.
+    try {
+      const serialized = JSON.stringify(msg);
+      if (serialized.length > 65536) {
+        console.warn("[Net] rejected oversized message:", serialized.length, "bytes, type=", msg.type);
+        return;
+      }
+    } catch(e) { return; /* unserializable → reject */ }
     if (msg.type === "hello") {
-      this.remoteName = msg.name;
-      chatSystem("Connected to " + msg.name + ".");
+      this.remoteName = (typeof msg.name === "string") ? msg.name.slice(0, 64) : "friend";
+      this._helloReceived = true; // R1-γ #8 gate: subsequent snapshot/intent now permitted.
+      // Guest mirrors host's authoritative match shape (defends campaign-coop expansion per R1-δ #5).
+      if (this.role === "guest") {
+        const allowedModes = ["horde", "campaign", "skirmish"];
+        if (typeof msg.matchMode === "string" && allowedModes.indexOf(msg.matchMode) !== -1) {
+          currentMatchMode = msg.matchMode;
+        }
+        if (typeof msg.totalWaves === "number" && msg.totalWaves > 0 && msg.totalWaves <= 60) {
+          BALANCE.MATCH_WAVES = msg.totalWaves;
+        }
+      }
+      chatSystem("Connected to " + this.remoteName + ".");
+      return;
+    }
+    // R1-γ #8: any non-hello traffic before hello is rejected — protects against snapshots arriving
+    // pre-handshake (would apply against an uninitialized game) and against attackers who skip hello.
+    if (!this._helloReceived) {
+      console.warn("[Net] rejected pre-hello message of type:", msg.type);
       return;
     }
     if (msg.type === "chat") {
-      appendChat(msg.who || this.remoteName || "friend", msg.text);
+      const text = (typeof msg.text === "string") ? msg.text.slice(0, 280) : "";
+      if (!text) return;
+      // R1-δ C: cap who length + type-guard before fallback chain (memory DoS via 1MB peer-supplied who).
+      const whoCapped = (typeof msg.who === "string" && msg.who.length > 0) ? msg.who.slice(0, 64) : null;
+      appendChat(whoCapped || this.remoteName || "friend", text);
       return;
     }
     if (this.role === "host") {
@@ -1273,7 +1459,16 @@ const Net = {
     this.snapshotTimer = setInterval(() => {
       if (!this.connected || !this.conn || !game || game.mode !== "match") return;
       try {
-        this.conn.send({ type: "snapshot", payload: buildSnapshot() });
+        const msg = { type: "snapshot", payload: buildSnapshot() };
+        // Warn host (once per threshold cross) if snapshot approaches the 64KB receive-side cap.
+        try {
+          const sz = JSON.stringify(msg).length;
+          if (sz > 49152 && !this._sizeWarned) {
+            console.warn("[Net] snapshot size " + sz + " bytes — approaching 64KB cap; guest may drop.");
+            this._sizeWarned = true;
+          }
+        } catch(_){}
+        this.conn.send(msg);
       } catch(e) { console.warn("[Net] snapshot send failed", e); }
     }, 100);
   },
@@ -1327,19 +1522,73 @@ function buildSnapshot() {
   };
 }
 function applyGuestSnapshot(snap) {
-  if (!game || !snap) return;
-  game.wave = snap.wave; game.totalWaves = snap.totalWaves; game.waveActive = snap.waveActive;
-  game.gold = snap.gold; game.divinity = snap.divinity || 0; game.lives = snap.lives;
-  game.totalKills = snap.totalKills;
-  game.towers = snap.towers; game.enemies = snap.enemies; game.shots = snap.shots;
+  if (!game || !snap || typeof snap !== "object") return;
+  // Type-guard scalars (R1-δ: malicious host could send strings/objects to crash render loop).
+  const num = (v, d) => (typeof v === "number" && isFinite(v)) ? v : d;
+  const bool = (v) => v === true;
+  const arr = (v, cap) => Array.isArray(v) ? v.slice(0, cap) : [];
+  game.wave = num(snap.wave, 0);
+  game.totalWaves = num(snap.totalWaves, 3);
+  game.waveActive = bool(snap.waveActive);
+  game.gold = num(snap.gold, 0);
+  game.divinity = num(snap.divinity, 0);
+  game.lives = num(snap.lives, 0);
+  game.totalKills = num(snap.totalKills, 0);
+  // Length caps: snapshots from a sane host fit comfortably; oversized arrays signal tampering.
+  // Inner-element validation (R1-δ A): each tower/enemy/shot scalar is type-guarded; non-conforming
+  // entries are dropped, not coerced. `t.type` whitelisted against TOWER_STATS via hasOwnProperty
+  // (closes the `__proto__` lookup wedge that returned Object.prototype).
+  const safeTower = (t) => {
+    if (!t || typeof t !== "object") return null;
+    const type = typeof t.type === "string" ? t.type : null;
+    if (!type || !Object.prototype.hasOwnProperty.call(TOWER_STATS, type)) return null;
+    if (typeof t.x !== "number" || !isFinite(t.x)) return null;
+    if (typeof t.y !== "number" || !isFinite(t.y)) return null;
+    return {
+      x: t.x, y: t.y, type, cd: 0,
+      owner: typeof t.owner === "string" ? t.owner.slice(0, 16) : "host",
+      level: num(t.level, 1), invested: num(t.invested, 0),
+    };
+  };
+  const safeEnemy = (e) => {
+    if (!e || typeof e !== "object") return null;
+    if (typeof e.x !== "number" || !isFinite(e.x)) return null;
+    if (typeof e.y !== "number" || !isFinite(e.y)) return null;
+    return {
+      x: e.x, y: e.y, hp: num(e.hp, 1), maxHp: num(e.maxHp, 1), dist: num(e.dist, 0),
+      kind: typeof e.kind === "string" ? e.kind.slice(0, 32) : "creep",
+      color: typeof e.color === "string" ? e.color.slice(0, 16) : "#888",
+      accent: typeof e.accent === "string" ? e.accent.slice(0, 16) : "#555",
+      label: typeof e.label === "string" ? e.label.slice(0, 32) : "",
+      statuses: Array.isArray(e.statuses) ? e.statuses.slice(0, 8).filter(s => s && typeof s.kind === "string").map(s => ({ kind: s.kind.slice(0, 16), ttl: num(s.ttl, 0) })) : [],
+    };
+  };
+  const safeShot = (s) => {
+    if (!s || typeof s !== "object") return null;
+    // R3-Skeptic fix: also reject Infinity/NaN — bare typeof===number lets host-sent
+    // ±Infinity slip through and crash ctx.lineTo on the guest renderer.
+    if (typeof s.x1 !== "number" || !isFinite(s.x1)) return null;
+    if (typeof s.y1 !== "number" || !isFinite(s.y1)) return null;
+    if (typeof s.x2 !== "number" || !isFinite(s.x2)) return null;
+    if (typeof s.y2 !== "number" || !isFinite(s.y2)) return null;
+    return { x1: s.x1, y1: s.y1, x2: s.x2, y2: s.y2,
+      color: typeof s.color === "string" ? s.color.slice(0, 16) : "#fff",
+      accent: typeof s.accent === "string" ? s.accent.slice(0, 16) : "#fff",
+      life: num(s.life, 0) };
+  };
+  game.towers = arr(snap.towers, 256).map(safeTower).filter(Boolean);
+  game.enemies = arr(snap.enemies, 512).map(safeEnemy).filter(Boolean);
+  game.shots = arr(snap.shots, 128).map(safeShot).filter(Boolean);
   // C7.b slice 1 — apply cast-emerge state from host (absence-tolerant; legacy commander field shape ignored).
-  if (snap.commander && game.commander && snap.commander.castState !== undefined) {
-    game.commander.castState = snap.commander.castState;
-    game.commander.castTarget = snap.commander.castTarget;
-    game.commander.castTtl = snap.commander.castTtl || 0;
+  if (snap.commander && typeof snap.commander === "object" && game.commander && snap.commander.castState !== undefined) {
+    game.commander.castState = typeof snap.commander.castState === "string" ? snap.commander.castState.slice(0, 32) : null;
+    game.commander.castTarget = (snap.commander.castTarget && typeof snap.commander.castTarget === "object") ? snap.commander.castTarget : null;
+    game.commander.castTtl = num(snap.commander.castTtl, 0);
   }
-  // C7.b slice 2 — apply builders[] from host (absence-tolerant).
-  if (Array.isArray(snap.builders)) game.builders = snap.builders;
+  // C7.b slice 2 — apply builders[] from host with element-shape guard.
+  if (Array.isArray(snap.builders)) {
+    game.builders = snap.builders.slice(0, 32).filter(b => b && typeof b === "object" && typeof b.x === "number" && typeof b.y === "number");
+  }
   // Reconcile guest-side cell occupancy from authoritative tower positions.
   if (game.cells) {
     for (const c of game.cells) c.occupied = false;
@@ -1354,13 +1603,20 @@ function applyGuestSnapshot(snap) {
 }
 
 // ---- Chat ----
+const CHAT_LOG_MAX_LINES = 200;
 function appendChat(who, text) {
   const log = document.getElementById("chat-log");
   if (!log) return;
+  // R1-δ C defense-in-depth: cap who/text at render time too. _onMessage already caps the wire path,
+  // but local callers (sendChat, devtools) shouldn't be able to bypass.
+  const whoSafe = String(who == null ? "friend" : who).slice(0, 64);
+  const textSafe = String(text == null ? "" : text).slice(0, 280);
   const line = document.createElement("div");
   line.className = "chat-line";
-  line.innerHTML = '<span class="who">' + escapeHtml(who) + '</span>' + escapeHtml(text);
+  line.innerHTML = '<span class="who">' + escapeHtml(whoSafe) + '</span>' + escapeHtml(textSafe);
   log.appendChild(line);
+  // Cap rendered chat-log lines so a chatty peer can't bloat DOM unbounded.
+  while (log.childElementCount > CHAT_LOG_MAX_LINES) log.removeChild(log.firstChild);
   log.scrollTop = log.scrollHeight;
 }
 function chatSystem(text) {
@@ -1403,6 +1659,8 @@ let CIVILIZATIONS = null;
 let TIERS = null;
 let ATTACK_TYPES = null;
 let DATA_SOURCE = "inline";
+let DATA_READY = false;
+let DATA_LOAD_ERROR = null;
 
 // C6 slice 2 / C4-continuation Slice A (Bridge) — civ-tower base stats by tier.
 // [PROPOSAL] numbers under Follow-up #13 balance-pass debt; tier semantics from tiers.json.
@@ -1522,14 +1780,36 @@ async function loadData() {
     COMMANDERS = cmd;
     ENEMIES = ene.enemies;
     DATA_SOURCE = "json";
+    DATA_READY = true;
     console.log("[atoA] data loaded from prototype/data/*.json");
   } catch (e) {
-    console.warn("[atoA] data load failed (" + e + "); using inline defaults. This is expected under file:// on some browsers.");
+    DATA_LOAD_ERROR = String(e);
+    console.warn("[atoA] data load failed (" + e + "). DATA_READY=false; mode-cards gated. Common cause: file:// fetch blocked.");
+    // Hard-fail the gate but let the rest of the boot continue so menus render. The retryDataLoad()
+    // console hook + toast guidance is the recovery path; no inline-defaults fallback exists.
+    if (typeof toast === "function") {
+      setTimeout(() => toast("Data load failed (" + DATA_LOAD_ERROR + "). Type retryDataLoad() in console, or refresh."), 800);
+    }
+    DATA_READY = false;
   }
   renderCommanderRoster();
   applyCommanderCard();
   renderActionBarBuildSet();
 }
+
+// Console-callable retry hook for the file:// hard-fail dead-end. Re-runs loadData and re-renders menus.
+// Re-entrancy guard: a second call while the first is in-flight is a no-op (R1-β follow-up).
+window.retryDataLoad = async function() {
+  if (window._retryInFlight) { toast("Retry already in flight…"); return; }
+  window._retryInFlight = true;
+  toast("Retrying data load…");
+  try {
+    await loadData();
+    if (DATA_READY) toast("Data loaded. Modes enabled.");
+    else toast("Still failing: " + DATA_LOAD_ERROR);
+  } catch(e) { toast("Retry threw: " + e); }
+  finally { window._retryInFlight = false; }
+};
 
 // ============================================================================
 // Commander UI
@@ -1757,9 +2037,21 @@ function logBalanceCurve() {
 let game = null;
 
 function selectCommander() {
-  if (Profile.data && COMMANDERS) { Profile.data.commanderId = COMMANDERS.active; Profile.save(); }
-  goto("menu");
-  toast("Commander set. Play → Solo Skirmish to begin.");
+  if (Profile.data && COMMANDERS) {
+    Profile.data.commanderId = COMMANDERS.active;
+    // Seed lastMode so refreshMenu() reveals the Play button on first-run return-to-menu.
+    // Without this the toast points at a button that's still display:none. (P0 fix.)
+    if (!Profile.data.lastMode) Profile.data.lastMode = "skirmish";
+    Profile.save();
+  }
+  // P0 fix (2026-04-26 swarm): button label "Take the field" promised gameplay but routed back
+  // to menu, creating a perceived loop (Menu → New game → commander-pick → Take the field → Menu →
+  // "what now?"). Now route directly into mode-select where the player picks the actual mode. The
+  // menu remains reachable via mode-select Back. If Profile.save() silently fails (file:// quirks)
+  // the user STILL gets to gameplay via mode-select rather than getting trapped at a menu where
+  // both "New game" and "Continue" are hidden.
+  goto("mode-select");
+  toast("Commander locked in. Choose a mode.");
 }
 
 // ============================================================================
@@ -1860,8 +2152,8 @@ function initMatch() {
   } else {
     updateNetStatus("", "");
   }
-  const modeLabel = document.getElementById("m-mode-label");
-  if (modeLabel) modeLabel.textContent = currentMatchMode === "horde" ? "Co-op Horde" : currentMatchMode === "campaign" ? "Campaign" : "Skirmish";
+  // Mode label now includes campaign act. updateHUD() also refreshes this on wave advance.
+  refreshModeLabel();
   // Commander silhouette in HUD
   if (COMMANDERS) {
     const c = COMMANDERS.roster[COMMANDERS.active];
@@ -1870,11 +2162,50 @@ function initMatch() {
     if (sil && c) { sil.textContent = c.name.replace(/[^A-Z]/g, "").slice(-1) || c.name[0].toUpperCase(); sil.style.color = commanderSilhouetteColor(c); }
     if (nm && c) nm.textContent = c.name;
   }
+  // Campaign resume — apply pending save payload (set by menuContinue) once, then clear.
+  // Payload is treated as untrusted (devtools-tampered localStorage is in-scope per R1-δ D):
+  // - clamp scalars to finite ranges
+  // - cap towers array length
+  // - whitelist t.type via hasOwnProperty (no __proto__ wedge)
+  if (_pendingCampaignResume && currentMatchMode === "campaign") {
+    const p = _pendingCampaignResume;
+    _pendingCampaignResume = null;
+    try {
+      const clampInt = (v, lo, hi, d) => {
+        if (typeof v !== "number" || !isFinite(v)) return d;
+        return Math.max(lo, Math.min(hi, Math.floor(v)));
+      };
+      // R3-Skeptic fix: resolve effective totalWaves FIRST so wave clamps against the payload's
+      // ceiling, not a smaller pre-resume init. Prior order silently rewound legitimate Act II/III
+      // saves to Act I when the payload's totalWaves field was corrupted/absent.
+      const effTotal = clampInt(p.totalWaves, 1, 60, game.totalWaves || 30);
+      game.totalWaves = effTotal;
+      if (typeof p.wave === "number") game.wave = clampInt(p.wave, 0, effTotal, 0);
+      if (typeof p.gold === "number") game.gold = clampInt(p.gold, 0, 1e6, BALANCE.STARTING_GOLD_MATCH);
+      if (typeof p.lives === "number") game.lives = clampInt(p.lives, 0, 999, BALANCE.STARTING_LIVES_MATCH);
+      if (Array.isArray(p.towers)) {
+        const towerSlice = p.towers.slice(0, 256); // cap
+        for (const t of towerSlice) {
+          if (!t || typeof t !== "object") continue;
+          if (typeof t.type !== "string") continue;
+          if (!Object.prototype.hasOwnProperty.call(TOWER_STATS, t.type)) continue;
+          const stat = TOWER_STATS[t.type];
+          if (typeof t.x !== "number" || !isFinite(t.x)) continue;
+          if (typeof t.y !== "number" || !isFinite(t.y)) continue;
+          const cell = game.cells.find(c => t.x >= c.x && t.x < c.x + c.w && t.y >= c.y && t.y < c.y + c.h);
+          if (!cell || cell.occupied) continue;
+          cell.occupied = true;
+          game.towers.push({ x: t.x, y: t.y, type: t.type, cd: 0, cell, owner: null, level: 1, invested: stat.cost });
+        }
+      }
+      toast("Resumed at wave " + game.wave + " / " + game.totalWaves + ".");
+    } catch(e) { console.warn("[resume] payload apply failed:", e); }
+  }
   updateHUD();
   bindCanvas();
   renderActionBarBuildSet();
   logBalanceCurve();
-  requestAnimationFrame(gameLoop);
+  cancelGameLoop(); _gameRafId = requestAnimationFrame(() => gameLoop(_gameSession));
   if (COMMANDERS) {
     const c = COMMANDERS.roster[COMMANDERS.active];
     if (c && c.vo && c.vo.pick && c.vo.pick.length) caption("[VO]", c.vo.pick[0].replace(/^\[VO\]\s*/, ""));
@@ -1894,25 +2225,49 @@ function initTutorial() {
   };
   updateHUD(); bindCanvas(); setTutorialStep(1);
   renderActionBarBuildSet();
-  requestAnimationFrame(gameLoop);
+  cancelGameLoop(); _gameRafId = requestAnimationFrame(() => gameLoop(_gameSession));
 }
-function skipTutorial() { if (game) game.playing = false; goto("menu"); toast("Tutorial skipped."); }
+function skipTutorial() { if (game) game.playing = false; leaveMatchCleanup(); goto("menu"); toast("Tutorial skipped."); }
 
 function bindCanvas() {
   const c = game.canvas;
-  c.onclick = null;
-  c.addEventListener("click", onBoardClick);
-  c.addEventListener("mousemove", onBoardMove);
-  c.addEventListener("mouseleave", onBoardLeave);
-  c.addEventListener("contextmenu", onBoardContext);
+  // Direct property assignment is idempotent — repeated bindCanvas() calls overwrite, not stack.
+  c.onclick = onBoardClick;
+  c.onmousemove = onBoardMove;
+  c.onmouseleave = onBoardLeave;
+  c.oncontextmenu = onBoardContext;
 }
 
 // ============================================================================
 // HUD
 // ============================================================================
+// Campaign act metadata — three 10-wave acts per CONCEPT §4.7 R11 + decisions/2026-04-25-q2-real-cultures-direction-ratified.md.
+const CAMPAIGN_ACTS = [
+  { wavesEnd: 10, label: "Act I — Rising" },
+  { wavesEnd: 20, label: "Act II — Campaign" },
+  { wavesEnd: 30, label: "Act III — Reckoning" },
+];
+function currentCampaignAct(wave) {
+  for (const a of CAMPAIGN_ACTS) if (wave <= a.wavesEnd) return a;
+  return CAMPAIGN_ACTS[CAMPAIGN_ACTS.length - 1];
+}
+function refreshModeLabel() {
+  const el = document.getElementById("m-mode-label");
+  if (!el) return;
+  if (currentMatchMode === "horde") { el.textContent = "Co-op Horde"; return; }
+  if (currentMatchMode === "campaign") {
+    const w = Math.max(1, (game && game.wave) || 1);
+    el.textContent = "Campaign · " + currentCampaignAct(w).label;
+    return;
+  }
+  el.textContent = "Skirmish";
+}
+
 function updateHUD() {
   const p = game.hudPrefix;
   const $ = id => document.getElementById(p + id);
+  // Keep act label in sync with wave progression.
+  if (p === "m-") refreshModeLabel();
   if ($("gold")) $("gold").textContent = Math.floor(game.gold);
   // C3 — Tribute mirrors gold value (alongside; underlying field stays game.gold until C5/C6 dismantle).
   if ($("tribute")) $("tribute").textContent = Math.floor(game.gold);
@@ -1947,7 +2302,9 @@ function updateHUD() {
 }
 
 // C4 — Fusion menu (data inlined per alongside discipline; boot loader untouched).
-// Source: prototype/data/fusion-recipes.json + civilizations.json. Update both surfaces together until C5/C6.
+// CANONICAL: this inline FUSION_RECIPES array is the sole source of truth in the prototype.
+// `prototype/data/fusion-recipes.json` is a LEGACY/SKETCH copy retained for future C5/C6 loader work; do NOT edit it expecting prototype effect.
+// See `decisions/2026-04-26-fusion-recipes-canonical-inline.md`.
 const FUSION_RECIPES = [
   { godId: "zeus",            godLabel: "Zeus",            civ: "greek", sources: ["Hercules", "Jason"],                damageTypes: ["crushing", "divine"],  flavor: "Thunder + sky-father judgment" },
   { godId: "athena",          godLabel: "Athena",          civ: "greek", sources: ["Theseus", "Perseus"],                damageTypes: ["slashing", "divine"],  flavor: "Strategic warrior + wisdom-blessed" },
@@ -2444,6 +2801,10 @@ function restartCurrentMatch() {
   if (!game) return;
   game.paused = false;
   document.getElementById("pause-overlay").classList.remove("on");
+  // P1-δ5 fix (2026-04-26 swarm): tear down the previous match's RAF + Net + audio before
+  // re-initing. initMatch's own cancelGameLoop covers RAF, but Net snapshot timer + chat panel
+  // state would otherwise leak across the restart boundary in co-op.
+  try { leaveMatchCleanup(); } catch(e) { console.warn("[restart] cleanup failed:", e); }
   initMatch();
 }
 function saveAndExit() {
@@ -2466,17 +2827,36 @@ function quitToMenu() {
   if (game) game.playing = false;
   document.getElementById("pause-overlay").classList.remove("on");
   if (game) game.paused = false;
+  leaveMatchCleanup();
   goto("menu");
 }
 
 // ============================================================================
 // Game loop
 // ============================================================================
-function gameLoop() {
+let _gameSession = 0;
+let _gameRafId = 0;
+function cancelGameLoop() {
+  _gameSession++;
+  if (_gameRafId) { try { cancelAnimationFrame(_gameRafId); } catch(_){} _gameRafId = 0; }
+}
+function leaveMatchCleanup() {
+  cancelGameLoop();
+  try { if (typeof Net !== "undefined" && Net && Net.role && typeof Net.reset === "function") Net.reset(); } catch(_){}
+  try { if (typeof _audioCtx !== "undefined" && _audioCtx && typeof _audioCtx.suspend === "function") _audioCtx.suspend(); } catch(_){}
+  // P1-δ4 fix (2026-04-26 swarm): drop canvas handlers so stale closures don't fire against a
+  // null/torn-down `game` between matches. bindCanvas re-attaches on the next initMatch.
+  try {
+    const c = (game && game.canvas) || document.getElementById("match-canvas");
+    if (c) { c.onclick = null; c.onmousemove = null; c.onmouseleave = null; c.oncontextmenu = null; }
+  } catch(_) {}
+}
+function gameLoop(session) {
+  if (session !== _gameSession) return; // stale loop from previous match
   if (!game || !game.playing) return;
-  if (game.snapshotPending) { game.snapshotPending = false; requestAnimationFrame(gameLoop); return; }
+  if (game.snapshotPending) { game.snapshotPending = false; _gameRafId = requestAnimationFrame(() => gameLoop(session)); return; }
   if (!game.paused) { tick(); draw(); }
-  requestAnimationFrame(gameLoop);
+  _gameRafId = requestAnimationFrame(() => gameLoop(session));
 }
 function tick() {
   // Guest runs no local simulation — state comes from host snapshots.
@@ -3276,9 +3656,9 @@ function showCtxMenu(t, cx, cy) {
   const promoteKey = promoteTargetKey(t);
   const canPromote = !!promoteKey && game.gold >= CIV_PROMOTE_T4_COST;
   const promoteLabel = promoteKey && BALANCE.TOWER_META[promoteKey] ? BALANCE.TOWER_META[promoteKey].label : "T4";
-  const tierTag = meta ? `<span class="tier-badge">${meta.tier}</span>` : "";
+  const tierTag = meta ? `<span class="tier-badge">${escapeHtml(meta.tier)}</span>` : "";
   m.innerHTML = `
-    <div class="ctx-title">${TOWER_STATS[t.type].label} ${tierTag} · L${t.level || 1}</div>
+    <div class="ctx-title">${escapeHtml(TOWER_STATS[t.type].label)} ${tierTag} · L${escapeHtml(t.level || 1)}</div>
     <div class="ctx-sub">DMG ${eff.damage} · CD ${eff.cd} · RNG ${eff.range}</div>
     <button class="ctx-item" id="ctx-upgrade" ${canUp ? "" : "disabled"}>Upgrade <span class="ctx-cost">${atMax ? "MAX" : up + "g"}</span></button>
     ${promoteKey ? `<button class="ctx-item" id="ctx-promote" ${canPromote ? "" : "disabled"}>Promote → ${promoteLabel} <span class="ctx-cost">${CIV_PROMOTE_T4_COST}g</span></button>` : ""}
@@ -3311,9 +3691,12 @@ function openReference() {
   const panel = document.getElementById("reference-panel");
   const content = document.getElementById("ref-content");
   if (!panel || !content || !game) return;
-  const civId = (game.commander && game.commander.civ) || (CIVS_DATA && Object.keys(CIVS_DATA)[0]);
-  const civ = CIVS_DATA && civId ? CIVS_DATA[civId] : null;
-  const civLabel = civ ? civ.label : "—";
+  // Source civ data from CIVILIZATIONS (civilizations.json) — array of {id,name,towersT1T3,...}.
+  // (Bug M2 fix: prior code referenced an undefined CIVS_DATA, crashing the Info panel.)
+  const civList = (CIVILIZATIONS && CIVILIZATIONS.civilizations) || [];
+  const civId = (game.commander && game.commander.civ) || (civList[0] && civList[0].id);
+  const civ = civId ? civList.find(c => c.id === civId) : null;
+  const civLabel = civ ? (civ.name || civ.label || civId) : "—";
   document.getElementById("ref-sub").textContent = `Civilization: ${civLabel}. Tier ladder T1 → T2 → T3 → T4 (promote). Numbers [PROPOSAL].`;
   let rows = "";
   if (civ) {
@@ -3325,11 +3708,11 @@ function openReference() {
       const dmg = stat.damage && stat.damage[0] != null ? stat.damage[0] : 0;
       const cd  = stat.cd && stat.cd[0] != null ? stat.cd[0] : 30;
       const atk = attackTypeFor(key) || "—";
-      rows += `<tr><td><span class="ref-lineage" style="background:${stat.color}"></span>${stat.label}</td><td>${tw.tier}</td><td>${stat.cost}g</td><td>${dmg}</td><td>${cd}</td><td>${stat.range}</td><td>${atk}</td></tr>`;
+      rows += `<tr><td><span class="ref-lineage" style="background:${escapeHtml(stat.color)}"></span>${escapeHtml(stat.label)}</td><td>${escapeHtml(tw.tier)}</td><td>${escapeHtml(stat.cost)}g</td><td>${escapeHtml(dmg)}</td><td>${escapeHtml(cd)}</td><td>${escapeHtml(stat.range)}</td><td>${escapeHtml(atk)}</td></tr>`;
     }
   }
   content.innerHTML = `
-    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:0 0 8px;">Towers · ${civLabel}</h3>
+    <h3 style="font-size:12px;letter-spacing:3px;color:var(--ink-1);margin:0 0 8px;">Towers · ${escapeHtml(civLabel)}</h3>
     <table>
       <thead><tr><th>Tower</th><th>Tier</th><th>Cost</th><th>DMG</th><th>CD</th><th>Range</th><th>Attack</th></tr></thead>
       <tbody>${rows}</tbody>
@@ -3384,9 +3767,14 @@ function bindActionBarTooltips() {
 // End
 // ============================================================================
 function endMatch(won) {
+  // P1-γ-2 fix (2026-04-26 swarm): hide any open ctx-menu / tooltip before transitioning to end
+  // scene; otherwise the fixed-position menu floats over the result panel with stale refs.
+  try { hideCtxMenu(); } catch(e) {}
+  try { hideTip(); } catch(e) {}
   game.playing = false;
   game.ended = { won, kills: game.totalKills, gold: game.totalGold || 0, lives: game.lives, towers: game.towers.length, waves: game.wave, totalWaves: game.totalWaves || 3 };
   if (game.isCoop && Net.role === "host") Net.broadcastMatchEnd(game.ended);
+  leaveMatchCleanup();
   // Award XP to active commander (persists to Profile.data.commanderProgress per §4.9)
   if (COMMANDERS && Profile.data) {
     const cid = COMMANDERS.active;
@@ -3423,21 +3811,33 @@ function renderEnd() {
   t.classList.toggle("defeat", !e.won);
   document.getElementById("end-sub").textContent = e.won ? "The altar stands" : "The altar fell to ash";
   document.getElementById("end-stats").innerHTML = `
-    <div class="row"><span>Waves survived</span><b>${e.won ? e.totalWaves : Math.max(0, e.waves - 1)}</b></div>
-    <div class="row"><span>Creeps slain</span><b>${e.kills}</b></div>
-    <div class="row"><span>Gold earned</span><b>${e.gold}</b></div>
-    <div class="row"><span>Towers built</span><b>${e.towers}</b></div>
-    <div class="row"><span>Lives remaining</span><b>${e.lives}</b></div>
+    <div class="row"><span>Waves survived</span><b>${escapeHtml(e.won ? e.totalWaves : Math.max(0, e.waves - 1))}</b></div>
+    <div class="row"><span>Creeps slain</span><b>${escapeHtml(e.kills)}</b></div>
+    <div class="row"><span>Gold earned</span><b>${escapeHtml(e.gold)}</b></div>
+    <div class="row"><span>Towers built</span><b>${escapeHtml(e.towers)}</b></div>
+    <div class="row"><span>Lives remaining</span><b>${escapeHtml(e.lives)}</b></div>
   `;
 }
-function restart() { initMatch(); goto("match"); }
+function restart() { goto("match"); }
 
 // ============================================================================
 // Options
 // ============================================================================
 let optsOrigin = "menu";
-function openOptions(origin) { optsOrigin = origin || "menu"; goto("options"); }
-function closeOptions() { if (optsOrigin === "pause") { goto("match"); } else { goto("menu"); } }
+function openOptions(origin) { optsOrigin = origin || "menu"; _pendingBinds = {}; goto("options"); }
+function closeOptions() {
+  if (typeof cancelActiveRebind === "function") cancelActiveRebind();
+  // Discard any staged rebinds and snap displays back to saved state. (Bug O1 fix.)
+  if (Object.keys(_pendingBinds).length) {
+    _pendingBinds = {};
+    const binds = Profile.setting("input.binds", {}) || {};
+    document.querySelectorAll(".bind-display").forEach(el => {
+      const action = el.dataset.bindFor;
+      if (binds[action]) el.textContent = prettyKey(binds[action]);
+    });
+  }
+  if (optsOrigin === "pause") { goto("match"); } else { goto("menu"); }
+}
 function selectOptsTab(tab) {
   document.querySelectorAll(".opts-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
   document.querySelectorAll(".opts-panel").forEach(p => p.classList.toggle("active", p.dataset.panel === tab));
@@ -3460,11 +3860,18 @@ function syncOptsUI() {
   });
 }
 function saveOptsAndClose() {
+  if (typeof cancelActiveRebind === "function") cancelActiveRebind();
   document.querySelectorAll("[data-opt]").forEach(el => {
     const key = el.dataset.opt;
     const v = el.type === "checkbox" ? el.checked : (el.type === "range" ? Number(el.value) : el.value);
     Profile.updateSetting(key, v);
   });
+  // Commit any staged rebinds. (Bug O1 fix.)
+  if (Object.keys(_pendingBinds).length) {
+    const binds = Object.assign({}, Profile.setting("input.binds", {}) || {}, _pendingBinds);
+    Profile.updateSetting("input.binds", binds);
+    _pendingBinds = {};
+  }
   applyUISettings();
   toast("Settings saved.");
   closeOptions();
@@ -3478,24 +3885,43 @@ function prettyKey(code) {
   if (code.startsWith("Arrow")) return code.slice(5);
   return code;
 }
+// Pending rebinds — staged in this map and only committed on saveOptsAndClose().
+// Cancel/closeOptions() clears them so unsaved rebinds are discarded, matching
+// the Save/Cancel contract that already governs sliders/checkboxes. (Bug O1 fix.)
+let _pendingBinds = {};
+let _rebindCtrl = null;
+function cancelActiveRebind() {
+  if (_rebindCtrl) { try { _rebindCtrl.abort(); } catch(_){} _rebindCtrl = null; }
+}
 function beginRebind(action, btn) {
+  cancelActiveRebind(); // tear down any prior rebind listener (prevents leak if user clicks Rebind on different row)
+  _rebindCtrl = new AbortController();
+  const sig = _rebindCtrl.signal;
   btn.textContent = "Press key…";
   btn.disabled = true;
+  const restore = () => { btn.textContent = "Rebind…"; btn.disabled = false; };
+  sig.addEventListener("abort", restore);
   const onKey = (e) => {
     e.preventDefault(); e.stopPropagation();
     const code = e.code;
-    if (code === "Escape") { btn.textContent = "Rebind…"; btn.disabled = false; document.removeEventListener("keydown", onKey, true); return; }
-    const binds = Object.assign({}, Profile.setting("input.binds", {}));
-    binds[action] = code;
-    Profile.updateSetting("input.binds", binds);
+    if (code === "Escape") { cancelActiveRebind(); return; }
+    // Collision check — search saved + pending binds for this code (excluding current action).
+    const saved = Profile.setting("input.binds", {}) || {};
+    const merged = Object.assign({}, saved, _pendingBinds);
+    for (const a in merged) {
+      if (a !== action && merged[a] === code) {
+        toast("Key already bound to " + a + "; unbind that first.");
+        cancelActiveRebind();
+        return;
+      }
+    }
+    _pendingBinds[action] = code;
     const disp = document.querySelector('.bind-display[data-bind-for="' + action + '"]');
     if (disp) disp.textContent = prettyKey(code);
-    btn.textContent = "Rebind…";
-    btn.disabled = false;
-    document.removeEventListener("keydown", onKey, true);
-    toast("Bound " + action + " → " + prettyKey(code));
+    cancelActiveRebind();
+    toast("Bound " + action + " → " + prettyKey(code) + " (pending — Save to keep)");
   };
-  document.addEventListener("keydown", onKey, true);
+  document.addEventListener("keydown", onKey, { capture: true, signal: sig });
 }
 // Minimal WebAudio for Master + UI bus test tones (per audio-architecture.md)
 let _audioCtx = null;
@@ -3505,8 +3931,16 @@ function ensureAudioCtx() {
 }
 function playTestTone(bus) {
   const ctx = ensureAudioCtx(); if (!ctx) { toast("AudioContext unavailable."); return; }
+  // Chrome/Safari auto-suspend until first user gesture; resume before scheduling.
+  if (ctx.state === "suspended") { try { ctx.resume(); } catch(e) {} }
   const master = (Profile.setting("vol.master", 80) / 100);
-  const busVol = (Profile.setting(bus === "ui" ? "vol.ui" : "vol.master", 80) / 100);
+  // Bus mapping fix: previously non-"ui" buses re-read vol.master, applying master² gain.
+  const busKey = (bus === "ui") ? "vol.ui"
+               : (bus === "sfx") ? "vol.sfx"
+               : (bus === "music") ? "vol.music"
+               : (bus === "voice") ? "vol.voice"
+               : null;
+  const busVol = busKey ? (Profile.setting(busKey, 80) / 100) : 1.0;
   const v = Math.max(0.0001, master * busVol);
   const o = ctx.createOscillator(); const g = ctx.createGain();
   o.frequency.value = bus === "ui" ? 880 : 440;
@@ -3524,7 +3958,13 @@ function toggleFullscreen() {
     else { (d.exitFullscreen || d.webkitExitFullscreen).call(d); }
   } catch(e) { toast("Fullscreen unavailable in this context."); }
 }
-function remapStub(action) { beginRebind(action, event.target); }
+function remapStub(action, ev) {
+  // Prefer explicit event arg; fall back to window.event (Chromium onclick attr) only if present.
+  // beginRebind needs a valid button element to drive UX feedback; bail if neither source provides one.
+  const tgt = (ev && ev.target) || (typeof window !== "undefined" && window.event && window.event.target) || null;
+  if (!tgt) { console.warn("[remapStub] no event/target available — call from an onclick handler"); return; }
+  beginRebind(action, tgt);
+}
 
 // Live-preview values while dragging
 document.addEventListener("input", (e) => {
@@ -3592,15 +4032,30 @@ bindActionBarTooltips();
 // Auto-join flow: ?join=<peerID> in URL kicks the guest into lobby → auto-dial after login
 (function(){
   const params = new URLSearchParams(window.location.search);
-  const joinCode = params.get("join");
+  let joinCode = params.get("join");
   if (!joinCode) return;
-  // Wait until splash dismissed + login resolved, then dial
+  // Clamp + validate peerID shape: PeerJS IDs are alphanumeric/dash/underscore. Reject anything else.
+  joinCode = String(joinCode).slice(0, 64);
+  if (!/^[a-zA-Z0-9_-]+$/.test(joinCode)) { console.warn("[auto-join] rejected malformed peerID"); return; }
+  // Wait until splash dismissed + login resolved, then dial. Only count attempts AFTER splash —
+  // user may sit on login arbitrarily long. Cap post-login wait at 60 attempts × 400ms = 24s.
+  let _joinAttempts = 0;
   const tryDial = () => {
-    if (currentScene === "splash" || currentScene === "login") { setTimeout(tryDial, 400); return; }
+    if (currentScene === "splash") {
+      // Splash is auto-dismissed after 3s; don't count this against the cap.
+      setTimeout(tryDial, 400);
+      return;
+    }
+    if (currentScene === "login") {
+      if (++_joinAttempts > 60) { toast("Auto-join timed out — sign in and join manually."); return; }
+      setTimeout(tryDial, 400);
+      return;
+    }
     goto("lobby-coop");
     document.getElementById("lobby-join-code").value = joinCode;
-    toast("Auto-joining host…");
-    setTimeout(() => Net.join(joinCode), 400);
+    // R1-δ B: do NOT auto-dial. The URL is untrusted — phishing wedge if we connect without
+    // user consent. Pre-fill the code, surface a clear "click Join to dial" prompt.
+    toast("Click Join to connect to " + joinCode.slice(0, 16) + "… (from invite link)");
   };
   setTimeout(tryDial, 600);
 })();
