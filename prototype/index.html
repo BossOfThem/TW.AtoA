@@ -2210,6 +2210,13 @@ function initMatch() {
     const c = COMMANDERS.roster[COMMANDERS.active];
     if (c && c.vo && c.vo.pick && c.vo.pick.length) caption("[VO]", c.vo.pick[0].replace(/^\[VO\]\s*/, ""));
   }
+  // P1 fix (2026-04-26 playthrough): if the page is already hidden when the match begins
+  // (e.g. user navigated to a backgrounded tab, or restored a tab that was hidden), the
+  // visibilitychange listener never sees a transition and auto-pause never engages —
+  // simulation still drifts under throttled RAF. Match the listener's behavior on init.
+  if (document.hidden && game && !game.paused && !game.ended) {
+    try { togglePause(); } catch(e) { console.warn("[initMatch] initial-hidden auto-pause failed:", e); }
+  }
 }
 function initTutorial() {
   rebuildDerived();
