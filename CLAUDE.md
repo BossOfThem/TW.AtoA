@@ -60,12 +60,12 @@ Every name is placeholder unless explicitly `[LOCKED]`. Naming conventions in [`
 
 Across every doc, "Commander" is the player's persistent identity. When working on commander / unit / UI flows, adopt first-person player perspective. The Commander is not an NPC.
 
-## No code yet
+## No code yet (engine work imminent under paid-EA — see PROJECT-ARC.md Phase C)
 
-Concept-only until Phase 5 opens. Do not generate game code, engine configuration, shader pseudocode, or asset pipelines until Phase 4 exits and engine is locked. Exceptions:
+Concept-only until Phase 5 opens. Do not generate game code, engine configuration, shader pseudocode, or asset pipelines until **Phase 4 exits (items #9 engine + #10 art director remaining) and engine is locked via PROJECT-ARC.md Phase C engine-choice mini-arc (PM-Fork-6 resolves Godot 4 / Unity / Unreal)**. Under the 2026-04-28 paid-EA supersession (Accepted 2026-04-29), engine code-writing is now **imminent rather than indefinite** — Phase C is the next major arc after Phase B close-out. Exceptions:
 - Structural docs, decision entries, design-artifact markup (tables, diagrams).
 - Tooling for doc management (lint scripts, prototype editors).
-- Throwaway HTML/JS in `prototype/` per [`decisions/2026-04-19-design-prototype-scope.md`](decisions/2026-04-19-design-prototype-scope.md). **Port findings, not code.**
+- HTML/JS in `prototype/` is **port-source under paid-EA** per [`decisions/2026-04-29-prototype-port-source-re-supersession.md`](decisions/2026-04-29-prototype-port-source-re-supersession.md) (re-supersedes the 2026-04-19 throwaway framing; the prototype's preserved 50-55% deliverable-logic ports forward to engine paid-EA build during Phase E, not extended toward a Steam-shippable SKU). **Port deliverable-logic, not literal code.**
 
 ## What Claude should do
 

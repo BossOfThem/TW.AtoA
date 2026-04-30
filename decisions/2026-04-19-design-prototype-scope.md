@@ -1,7 +1,7 @@
 # Decision — Design Prototype Scope (browser-only, throwaway)
 
 **Date:** 2026-04-19
-**Status:** Accepted
+**Status:** Accepted — re-superseded 2026-04-29 by [`2026-04-29-prototype-port-source-re-supersession.md`](2026-04-29-prototype-port-source-re-supersession.md) clarifying disposition under paid-EA single-product arc; the 2026-05-07 attempt to promote the prototype to a free Steam SKU is voided by the 2026-04-28 supersession Accepted 2026-04-29
 **Reversibility:** Easy
 **Affects:** CLAUDE.md ("What Claude Code should NOT do"), CONCEPT.md §phase discipline, new `prototype/` directory
 
